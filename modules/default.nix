@@ -13,8 +13,10 @@
     programs.home-manager.enable = true;
 
     imports = [
+        ./nvim2
         ./git
-        ./nvim
+        ./brave
         ./packages
+        ./environment/gnome.nix
     ];
 }

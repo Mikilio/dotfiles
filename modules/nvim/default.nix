@@ -1,90 +1,98 @@
 {  lib, config, pkgs, ... }:
 with lib;
 let
-    cfg = config.modules.nvim;
+  cfg = config.modules.nvim;
 in {
-    options.modules.nvim = { enable = mkEnableOption "nvim"; };
-    config = mkIf cfg.enable {
+  options.modules.nvim = { enable = mkEnableOption "nvim"; };
+  config = mkIf cfg.enable {
 
-        home.file.".config/nvim/settings.lua".source = ./init.lua;
-        
-        home.packages = with pkgs; [
-            rnix-lsp nixfmt # Nix
-            sumneko-lua-language-server stylua # Lua
-        ];
+    home.file.".config/nvim/settings.lua".source = ./init.lua;
 
-        programs.bash = {
-            initExtra = ''
+    home.packages = with pkgs; [
+      rnix-lsp nixfmt # Nix
+      sumneko-lua-language-server stylua # Lua
+    ];
+
+    programs.bash = {
+      initExtra = ''
                 export EDITOR="nvim"
-            '';
+      '';
 
-            shellAliases = {
-                v = "nvim -i NONE";
-                nvim = "nvim -i NONE";
-            };
-        };
-
-        programs.neovim = {
-            enable = true;
-            vimAlias = true;
-            viAlias = true;
-            plugins = with pkgs.vimPlugins; [ 
-                vim-nix
-                plenary-nvim
-                telescope-fzf-native-nvim
-                nvim-web-devicons
-                {
-                    plugin = zk-nvim;
-                    config = "lua require('zk').setup()";
-                }
-                {
-                    plugin = nord-nvim;
-                    config = "lua vim.cmd[[colorscheme nord]]";
-                }
-                {
-                    plugin = impatient-nvim;
-                    config = "lua require('impatient')";
-                }
-                {
-                    plugin = lualine-nvim;
-                    config = "lua require('lualine').setup()";
-                }
-                {
-                    plugin = telescope-nvim;
-                    config = "lua require('telescope').setup()";
-                }
-                {
-                    plugin = indent-blankline-nvim;
-                    config = "lua require('indent_blankline').setup()";
-                }
-                {
-                    plugin = nvim-lspconfig;
-                    config = ''
-                        lua << EOF
-                        require('lspconfig').rust_analyzer.setup{}
-                        require('lspconfig').sumneko_lua.setup{}
-                        require('lspconfig').rnix.setup{}
-                        EOF
-                    '';
-                }
-                {
-                    plugin = nvim-treesitter;
-                    config = ''
-                    lua << EOF
-                    require('nvim-treesitter.configs').setup {
-                        highlight = {
-                            enable = true,
-                            additional_vim_regex_highlighting = false,
-                        },
-                    }
-                    EOF
-                    '';
-                }
-            ];
-
-            extraConfig = ''
-                luafile ~/.config/nvim/settings.lua
-            '';
-        };
+      shellAliases = {
+        v = "nvim -i NONE";
+        nvim = "nvim -i NONE";
+      };
     };
+
+    programs.neovim = {
+      enable = true;
+      vimAlias = true;
+      viAlias = true;
+      plugins = with pkgs.vimPlugins; [ 
+        vim-nix
+        plenary-nvim
+        telescope-fzf-native-nvim
+        nvim-web-devicons
+        {
+          plugin = zk-nvim;
+          config = "lua require('zk').setup()";
+        }
+        {
+          plugin = nord-nvim;
+          config = "lua vim.cmd[[colorscheme nord]]";
+        }
+        {
+          plugin = impatient-nvim;
+          config = "lua require('impatient')";
+        }
+        {
+          plugin = lualine-nvim;
+          config = "lua require('lualine').setup()";
+        }
+        {
+          plugin = telescope-nvim;
+          config = "lua require('telescope').setup()";
+        }
+        {
+          plugin = indent-blankline-nvim;
+          config = "lua require('indent_blankline').setup()";
+        }
+        {
+          plugin = nvim-lspconfig;
+          config = ''
+          lua << EOF
+          require('lspconfig').rust_analyzer.setup{}
+          require('lspconfig').sumneko_lua.setup{
+            settings = {
+              Lua = {
+                diagnostics = {
+                  globals = { 'vim' }
+                }
+              }
+            }
+          }
+          require('lspconfig').rnix.setup{}
+          EOF
+          '';
+        }
+        {
+          plugin = nvim-treesitter;
+          config = ''
+          lua << EOF
+          require('nvim-treesitter.configs').setup {
+            highlight = {
+              enable = true,
+              additional_vim_regex_highlighting = false,
+            },
+          }
+          EOF
+          '';
+        }
+      ];
+
+      extraConfig = ''
+      luafile ~/.config/nvim/settings.lua
+      '';
+    };
+  };
 }

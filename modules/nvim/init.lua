@@ -1,18 +1,34 @@
-local o = vim.opt
+local opt = vim.opt
 local g = vim.g
+local api = vim.api
 
--- Autocmds
-vim.cmd [[
-augroup CursorLine
-    au!
-    au VimEnter * setlocal cursorline
-    au WinEnter * setlocal cursorline
-    au BufWinEnter * setlocal cursorline
-    au WinLeave * setlocal nocursorline
-augroup END
+-- only load filtype.lua
+g.do_filetype_lua = 1
+g.did_load_filetypes = 0
 
-autocmd FileType nix setlocal shiftwidth=4
-]]
+-- cursor behavior
+local cursorGrp = api.nvim_create_augroup("CursorLine", { clear = true })
+api.nvim_create_autocmd(
+  { "InsertLeave", "WinEnter" },
+  { pattern = "*", command = "set cursorline", group = cursorGrp }
+)
+api.nvim_create_autocmd(
+  { "InsertEnter", "WinLeave" },
+  { pattern = "*", command = "set nocursorline", group = cursorGrp }
+)
+
+-- highlight on yank
+local yankGrp = api.nvim_create_augroup("YankHighlight", { clear = true })
+api.nvim_create_autocmd("TextYankPost", {
+  command = "silent! lua vim.highlight.on_yank()",
+  group = yankGrp,
+})
+
+-- reduce shiftwidth in certain filtypes
+api.nvim_create_autocmd(
+  "FileType",
+  { pattern = { "nix", "lua" }, command = "setlocal shiftwidth = 2" }
+)
 
 -- Keybinds
 local map = vim.api.nvim_set_keymap
@@ -31,53 +47,52 @@ map('n', ';', ':', { noremap = true } )
 g.mapleader = ' '
 
 -- Performance
-o.lazyredraw = true;
-o.shell = "zsh"
-o.shadafile = "NONE"
+opt.lazyredraw = true;
+opt.shell = "bash"
+opt.shadafile = "NONE"
 
 -- Colors
-o.termguicolors = true
+opt.termguicolors = true
 
 -- Undo files
-o.undofile = true
+opt.undofile = true
 
--- Indentation
-o.smartindent = true
-o.tabstop = 2
-o.shiftwidth = 2
-o.shiftround = true
-o.expandtab = true
-o.scrolloff = 3
+-- Indentation (autoindentation behavior on by default)
+opt.tabstop = 4
+opt.shiftwidth = 4
+opt.shiftround = true
+opt.expandtab = true
+opt.scrolloff = 15
 
 -- Set clipboard to use system clipboard
-o.clipboard = "unnamedplus"
+opt.clipboard = "unnamedplus"
 
 -- Use mouse
-o.mouse = "a"
+opt.mouse = "a"
 
 -- Nicer UI settings
-o.cursorline = true
-o.relativenumber = true
-o.number = true
+opt.cursorline = true
+opt.relativenumber = true
+opt.number = true
 
 -- Get rid of annoying viminfo file
-o.viminfo = ""
-o.viminfofile = "NONE"
+opt.viminfo = ""
+opt.viminfofile = "NONE"
 
 -- Miscellaneous quality of life
-o.ignorecase = true
-o.ttimeoutlen = 5
-o.hidden = true
-o.shortmess = "atI"
-o.wrap = false
-o.backup = false
-o.writebackup = false
-o.errorbells = false
-o.swapfile = false
-o.showmode = false
-o.laststatus = 3
-o.pumheight = 6
-o.splitright = true
-o.splitbelow = true
-o.completeopt = "menuone,noselect"
+opt.ignorecase = true
+opt.ttimeoutlen = 5
+opt.hidden = true
+opt.shortmess = "atI"
+opt.wrap = false
+opt.backup = false
+opt.writebackup = false
+opt.errorbells = false
+opt.swapfile = false
+opt.showmode = false
+opt.laststatus = 3
+opt.pumheight = 6
+opt.splitright = true
+opt.splitbelow = true
+opt.completeopt = "menuone,noselect"
 
