@@ -1,11 +1,12 @@
 { config, lib, inputs, ...}:
 
 {
-    imports = [ ./modules/default.nix ];
+    imports = [ ./modules];
     config.modules = {
 
         nvim.enable = true;
-	packages.enable = true;
+        brave.enable = true;
+        packages.enable = true;
 
     };
 }
