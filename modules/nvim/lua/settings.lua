@@ -2,10 +2,6 @@ local opt = vim.opt
 local g = vim.g
 local api = vim.api
 
--- only load filtype.lua
-g.do_filetype_lua = 1
-g.did_load_filetypes = 0
-
 -- cursor behavior
 local cursorGrp = api.nvim_create_augroup("CursorLine", { clear = true })
 api.nvim_create_autocmd(
@@ -27,27 +23,13 @@ api.nvim_create_autocmd("TextYankPost", {
 -- reduce shiftwidth in certain filtypes
 api.nvim_create_autocmd(
   "FileType",
-  { pattern = { "nix", "lua" }, command = "setlocal shiftwidth = 2" }
+  { pattern = { "nix", "lua" }, command = "setlocal shiftwidth=2" }
 )
 
 -- Keybinds
-local map = vim.api.nvim_set_keymap
-local opts = { silent = true, noremap = true }
-
-map("n", "<C-h>", "<C-w>h", opts)
-map("n", "<C-j>", "<C-w>j", opts)
-map("n", "<C-k>", "<C-w>k", opts)
-map("n", "<C-l>", "<C-w>l", opts)
-map('n', '<C-n>', ':Telescope live_grep <CR>', opts)
-map('n', '<C-f>', ':Telescope find_files <CR>', opts)
-map('n', 'j', 'gj', opts)
-map('n', 'k', 'gk', opts)
-map('n', ';', ':', { noremap = true } )
-
-g.mapleader = ' '
-
+require('keymaps')
 -- Performance
-opt.lazyredraw = true;
+opt.lazyredraw = true
 opt.shell = "bash"
 opt.shadafile = "NONE"
 
