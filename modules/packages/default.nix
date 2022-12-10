@@ -8,7 +8,7 @@ in {
     options.modules.packages = { enable = mkEnableOption "packages"; };
     config = mkIf cfg.enable {
         home.packages = with pkgs; [
-            ripgrep zk clang
+            ripgrep fd zk clang
             htop fzf unzip
             git python3 lua 
             xclip 
