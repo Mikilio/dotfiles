@@ -12,12 +12,9 @@ vim.g.mapleader = " "
 --   visual_block_mode = "x",
 --   term_mode = "t",
 --   command_mode = "c",
+
 --   Better Command keymap
 keymap("n", ";", ":", opts)
-
--- Better to save file & exit file --
-keymap("n", "Q", ":q<CR>", opts)
-keymap("n", "S", ":w<CR>", opts)
 
 -- Better window navigation --
 keymap("n", "<C-h>", "<C-w>h", opts)
@@ -34,10 +31,10 @@ keymap("v", "<", "<gv", opts)
 keymap("v", ">", ">gv", opts)
 
 -- Move text up and down --
-keymap("x", "J", ":move '>+1<CR>gv-gv", opts)
-keymap("x", "K", ":move '<-2<CR>gv-gv", opts)
-keymap("v", "J", ":move '>+1<CR>gv-gv", opts)
-keymap("v", "K", ":move '<-2<CR>gv-gv", opts)
+keymap("x", "J", ":move '>+1<CR>gv=gv", opts)
+keymap("x", "K", ":move '<-2<CR>gv=gv", opts)
+keymap("v", "J", ":move '>+1<CR>gv=gv", opts)
+keymap("v", "K", ":move '<-2<CR>gv=gv", opts)
 
 -- Better split screen --
 keymap("", "s", "<Nop>", opts)
@@ -48,6 +45,7 @@ keymap("n", "sj", ":set splitbelow<CR>:split<CR>", opts)
 
 --  Average adjustment window --
 keymap("n", "<C-=>", "<C-w>=", opts)
+
 -- Swap and move windows --
 keymap("n", "<Space>h", "<C-w>H", opts)
 keymap("n", "<Space>j", "<C-w>J", opts)
@@ -69,11 +67,18 @@ keymap("n", "<Space><CR>", ":nohlsearch<CR>", opts)
 keymap("n", "n", "nzz", opts)
 keymap("n", "N", "Nzz", opts)
 
+keymap("n", "<leader>d", "\"_d", opts)
+keymap("n", "<leader>Y", "\"+Y", opts)
+keymap("n", "<leader>y", "\"+y", opts)
+keymap("v", "<leader>y", "\"+y", opts)
+keymap("x", "<leader>p", "\"_dP", opts)
+keymap("v", "<leader>d", "\"_d", opts)
+
 -- Markdown preview --
 keymap("n", "<Leader>mp", ":MarkdownPreview<CR>", opts)
 
--- open telscope --
-keymap("n", "<Leader>e", ":Telescope<CR>", opts)
+-- open nextrw --
+keymap("n", "<Leader>nb", ":ene <BAR> startinsert <CR>", opts)
 
 -- open or close trouble.nvim --
 keymap("n", "tr", ":TroubleToggle<CR>", opts)
