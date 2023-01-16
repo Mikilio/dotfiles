@@ -199,14 +199,14 @@ in
         type = "lua";
       }
 
-# Popup API from vim
+# Pop-up API from vim
       popup-nvim
 
 # git-worktrees
         git-worktree-nvim
 
 #-----------------------------------------------
-# ------------Miscellanous----------------------
+# ------------Miscellaneous----------------------
 #-----------------------------------------------
         vim-startuptime
         {

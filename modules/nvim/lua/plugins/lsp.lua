@@ -13,8 +13,20 @@ lsp.setup_servers({
   'zk',
   force = true})
 
+lsp.setup_nvim_cmp({
+  sorces = {
+      name = 'spell',
+      option = {
+        keep_all_entries = false,
+        enable_in_context = function()
+          return require('cmp.config.context').in_treesitter_capture('spell')
+        end,
+      },
+  },
+})
+
 -- Lua-for-nvim
--- TODO: make this smarter by recognizing context
+-- TODO: make this smarter by recognizing context (nvim or other)
 lsp.configure('sumneko', {
 	settings = {
 		Lua = {
@@ -42,12 +54,14 @@ null_ls.setup({
   on_attach = null_opts.on_attach,
   sources = {
     -- you must download code formatter by yourself!
-    require('null-ls').builtins.formatting.stylua,
-    require('null-ls').builtins.formatting.black,
-    require('null-ls').builtins.formatting.prettier,
-    require('null-ls').builtins.formatting.nixpkgs_fmt,
-    require('null-ls').builtins.formatting.beautysh,
-    require('null-ls').builtins.formatting.rustfmt,
+    null_ls.builtins.formatting.stylua,
+    null_ls.builtins.formatting.black,
+    null_ls.builtins.formatting.prettier,
+    null_ls.builtins.formatting.nixpkgs_fmt,
+    null_ls.builtins.formatting.beautysh,
+    null_ls.builtins.formatting.rustfmt,
+    --[[ null_ls.builtins.diagnostics.cspell, ]]
+    --[[ null_ls.builtins.code_actions.cspell ]]
   },
 })
 

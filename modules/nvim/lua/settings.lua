@@ -59,13 +59,15 @@ local options  = {
 	number = true,
 	numberwidth = 4,
 	relativenumber = true,
-	wrap = false,
+	textwidth = 79,
+	colorcolumn = "+1,+2",
 	scrolloff = 8,
 	fileencodings = "utf-8,gbk",
-	updatetime = 50, -- faster completion (4000ms default)
+  updatetime = 50, -- faster completion (4000ms default)
   incsearch = true,
-	foldenable = false,
-	foldlevel = 99,
+  spell = true,
+	spelllang = 'en_us',
+  spelloptions = 'camel'
 }
 
 -- Keybinds
