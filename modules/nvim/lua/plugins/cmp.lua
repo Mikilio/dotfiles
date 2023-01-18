@@ -72,9 +72,18 @@ cmp.setup({
         nvim_lua = '[API]',
         path = '[Path]',
         rg = '[RG]',
+        omni = '[Omni]',
+        spell = '[Spell]'
       })[entry.source.name]
       return item
     end,
+  },
+  completion = {
+    keyword_length = 1,
+    completeopt = "menu,noselect"
+  },
+  view = {
+    entries = 'custom',
   },
   window = {
     completion = {
@@ -120,14 +129,15 @@ cmp.setup({
         's',
       }),
   }),
+
   sources = cmp.config.sources({
-    { name = 'omni', priority = 1},
-    { name = 'nvim_lsp', priority = 2},
-    { name = 'buffer', priority = 3 },
-    { name = 'rg', priority = 4 },
-    { name = 'luasnip', priority = 5 },
-    { name = 'path', priority = 6 },
-    { name = 'spell', priority = 7 ,
+    { name = 'luasnip', priority = 7 },
+    { name = 'omni', priority = 6 },
+    { name = 'nvim_lsp', priority = 5 },
+    { name = 'buffer', priority = 4 },
+    { name = 'rg', priority = 3 },
+    { name = 'path', priority = 2 },
+    { name = 'spell', priority = 1,
       option = {
         keep_all_entries = false,
         enable_in_context = function()

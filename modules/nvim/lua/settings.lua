@@ -65,7 +65,6 @@ local options  = {
 	fileencodings = "utf-8,gbk",
   updatetime = 50, -- faster completion (4000ms default)
   incsearch = true,
-  spell = true,
 	spelllang = 'en_us',
   spelloptions = 'camel'
 }

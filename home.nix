@@ -1,13 +1,13 @@
 { config, lib, inputs, ...}:
 
 {
-    imports = [ ./modules];
-    config.modules = {
+  imports = [ ./modules];
+  config.modules = {
 
-        nvim.enable = true;
-        brave.enable = true;
-        zathura.enable = true;
-        packages.enable = true;
+    nvim.enable = true;
+    brave.enable = true;
+    zathura.enable = true;
+    packages.enable = true;
 
-    };
+  };
 }

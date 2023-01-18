@@ -2,15 +2,25 @@
 with lib;
 let
 cfg = config.modules.nvim;
-lsp-zero = pkgs.vimUtils.buildVimPluginFrom2Nix {
-  name = "lsp-zero-nvim";
+texmagic = pkgs.vimUtils.buildVimPluginFrom2Nix {
+  name = "texmagic-nvim";
   src = pkgs.fetchFromGitHub {
-    owner = "VonHeikemen";
-    repo = "lsp-zero.nvim";
-    rev = "dfe0c552442114e1fc9fa93589ef84eb460f368a";
-    hash = "sha256-KfHgZKlJ4m3v/d/XBaCHSMgl62XUNl3i8Xpi4oGPqkI=";
+    owner = "jakewvincent";
+    repo = "texmagic.nvim";
+    rev = "3c0d3b63c62486f02807663f5c5948e8b237b182";
+    hash = "sha256-+IltvS5R9st+b97PtEdDnflymSP2JFpmqlXOrnzTJqc=";
   };
 };
+knap = pkgs.vimUtils.buildVimPluginFrom2Nix {
+  name = "knap";
+  src = pkgs.fetchFromGitHub {
+    owner = "frabjous";
+    repo = "knap";
+    rev = "62eae7803d9d87d33513b3b565c6f5791f1de1ea";
+    hash = "sha256-+IltvS5R9st+b97PtEdDnflymSP2JFpmqlXOrnzTJqc=";
+  };
+};
+
 in
 {
   options.modules.nvim = { enable = mkEnableOption "nvim"; };
@@ -38,24 +48,25 @@ in
       extraPackages = with pkgs; [
 #--- LSP ---#
         rnix-lsp
-          sumneko-lua-language-server
-          ccls
-          pyright
-          zk
-          nodePackages.bash-language-server
-          rust-analyzer
-          texlab
+        sumneko-lua-language-server
+        ccls
+        pyright
+        zk
+        nodePackages.bash-language-server
+        rust-analyzer
+        texlab
+        ltex-ls
 #--null-ls--#
-          stylua
-          black
-          nixpkgs-fmt
-          rustfmt
-          beautysh
-          nodePackages.prettier
+        stylua
+        black
+        nixpkgs-fmt
+        rustfmt
+        beautysh
+        nodePackages.prettier
       ];
       extraLuaPackages = lua: with lua; [
         plenary-nvim
-          luautf8
+        luautf8
       ];
 
       plugins = with pkgs.vimPlugins; [
@@ -68,70 +79,74 @@ in
           config = "require('plugins.catppuccin')";
           type = "lua";
         }
-      {
-        plugin = indent-blankline-nvim;
-        config = "require('plugins.indent-blankline')";
-        type = "lua";
-      }
-      nvim-ts-rainbow
-
-# ----------------------------------------------
-# ------------User Interface--------------------
-#-----------------------------------------------
-      {
-        plugin = bufferline-nvim;
-        config = "require('plugins.bufferline')";
-        type = "lua";
-      }
-      {
-        plugin = lualine-nvim;
-        config = "require('plugins.lualine')";
-        type = "lua";
-      }
-      {
-        plugin = gitsigns-nvim;
-        config = "require('plugins.gitsigns')";
-        type = "lua";
-      }
-      {
-        plugin = alpha-nvim;
-        config = "require('plugins.alpha')";
-        type = "lua";
-      }
-
-# ----------Apps-----------
-      undotree
-        markdown-preview-nvim
         {
-          plugin = diffview-nvim;
-          config = "require('plugins.diffview')";
+          plugin = indent-blankline-nvim;
+          config = "require('plugins.indent-blankline')";
           type = "lua";
         }
-      {
-        plugin = nvim-dap-ui;
-        config = "require('plugins.dapui')";
+        nvim-ts-rainbow
+
+  # ----------------------------------------------
+  # ------------User Interface--------------------
+  #-----------------------------------------------
+        {
+          plugin = bufferline-nvim;
+          config = "require('plugins.bufferline')";
+          type = "lua";
+        }
+        {
+          plugin = lualine-nvim;
+          config = "require('plugins.lualine')";
+          type = "lua";
+        }
+        {
+          plugin = gitsigns-nvim;
+          config = "require('plugins.gitsigns')";
+          type = "lua";
+        }
+        {
+          plugin = alpha-nvim;
+          config = "require('plugins.alpha')";
+          type = "lua";
+        }
+
+  # ----------Apps-----------
+        undotree
+        {
+          plugin = knap;
+          config = "require('plugins.knap')";
+          type = "lua";
+        }
+        {
+        plugin = diffview-nvim;
+        config = "require('plugins.diffview')";
         type = "lua";
-      }
-      {
-        plugin = toggleterm-nvim;
-        config = "require('plugins.toggleterm')";
-        type = "lua";
-      }
-      {
-        plugin = lspsaga-nvim;
-        config = "require('plugins.lspsaga')";
-        type = "lua";
-      }
+        }
+        {
+          plugin = nvim-dap-ui;
+          config = "require('plugins.dapui')";
+          type = "lua";
+        }
+        {
+          plugin = toggleterm-nvim;
+          config = "require('plugins.toggleterm')";
+          type = "lua";
+        }
+        {
+          plugin = lspsaga-nvim;
+          config = "require('plugins.lspsaga')";
+          type = "lua";
+        }
 
 #-----------------------------------------------
 # ------------Language Server Protocol----------
 #-----------------------------------------------
-      null-ls-nvim
-      {
-        plugin = nvim-lspconfig;
-        config = "require('plugins.lsp')";
-        type = "lua";
-      }
+        null-ls-nvim
+        {
+          plugin = nvim-lspconfig;
+          config = "require('plugins.lsp')";
+          type = "lua";
+        }
 
 # ------Auto-Completion----
         cmp-buffer
@@ -169,59 +184,60 @@ in
 #-----------------------------------------------
 # ------------Editing Features------------------
 #-----------------------------------------------
-      targets-vim
+        targets-vim
         nvim-ts-context-commentstring
         {
           plugin = comment-nvim;
           config = "require('plugins.comment')";
           type = "lua";
         }
-      {
-        plugin = nvim-surround;
-        config = "require('nvim-surround').setup()";
-        type = "lua";
-      }
-      {
-        plugin = nvim-autopairs;
-        config = "require('plugins.autopairs')";
-        type = "lua";
-      }
-      {
-        plugin = hop-nvim;
-        config = "require('plugins.hop')";
-        type = "lua";
-      }
+        {
+          plugin = nvim-surround;
+          config = "require('nvim-surround').setup()";
+          type = "lua";
+        }
+        {
+          plugin = nvim-autopairs;
+          config = "require('plugins.autopairs')";
+          type = "lua";
+        }
+        {
+          plugin = hop-nvim;
+          config = "require('plugins.hop')";
+          type = "lua";
+        }
 
 
 #-----------------------------------------------
 # ------------Integration-----------------------
 #-----------------------------------------------
 #Zettelkasten
-      {
-        plugin = zk-nvim;
-        config = "require('zk').setup()";
-        type = "lua";
-      }
-
-# LaTex
-      {
-        plugin = vimtex;
-        config = "require('plugins.vimtex')";
-        type = "lua";
-      }
+        {
+          plugin = zk-nvim;
+          config = "require('zk').setup()";
+          type = "lua";
+        }
 
 #Debug Adapter Protocol
-      nvim-dap
+        nvim-dap
+
+#TeXMagic
+        {
+          plugin = texmagic;
+          config = "require('texmagic').setup{}";
+          type = "lua";
+        }
+
 
 #Tree-Sitter
-      {
-        plugin = nvim-treesitter.withAllGrammars;
-        config = "require('plugins.treesitter')";
-        type = "lua";
-      }
+        {
+          plugin = nvim-treesitter.withAllGrammars;
+          config = "require('plugins.treesitter')";
+          type = "lua";
+        }
 
 # Pop-up API from vim
-      popup-nvim
+        popup-nvim
 
 # git-worktrees
         git-worktree-nvim
@@ -229,6 +245,7 @@ in
 #-----------------------------------------------
 # ------------Miscellaneous----------------------
 #-----------------------------------------------
+        neomake
         vim-startuptime
         {
           plugin = impatient-nvim;
