@@ -16,6 +16,7 @@
     ./nvim
     ./git
     ./brave
+    ./zathura
     ./packages
     ./environment/gnome.nix
   ];

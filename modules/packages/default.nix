@@ -1,7 +1,7 @@
 { pkgs, lib, config, ... }:
 
 with lib;
-let cfg = 
+let cfg =
     config.modules.packages;
 
 in {
@@ -10,8 +10,8 @@ in {
         home.packages = with pkgs; [
             ripgrep fd zk clang
             htop fzf unzip
-            git python3 lua 
-            xclip 
+            git python3 lua
+            xclip texlive.combined.scheme-full
         ];
     };
 }

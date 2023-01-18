@@ -44,6 +44,7 @@ in
           zk
           nodePackages.bash-language-server
           rust-analyzer
+          texlab
 #--null-ls--#
           stylua
           black
@@ -52,7 +53,7 @@ in
           beautysh
           nodePackages.prettier
       ];
-      extraLuaPackages = with pkgs.lua51Packages; [
+      extraLuaPackages = lua: with lua; [
         plenary-nvim
           luautf8
       ];
@@ -125,21 +126,28 @@ in
 #-----------------------------------------------
 # ------------Language Server Protocol----------
 #-----------------------------------------------
+      null-ls-nvim
       {
-        plugin = lsp-zero;
+        plugin = nvim-lspconfig;
         config = "require('plugins.lsp')";
         type = "lua";
       }
-      null-ls-nvim
-        nvim-lspconfig
 
 # ------Auto-Completion----
-        nvim-cmp
         cmp-buffer
         cmp-path
         cmp_luasnip
         cmp-nvim-lsp
+        cmp-nvim-lsp-signature-help
         cmp-nvim-lua
+        cmp-omni
+        cmp-rg
+        cmp-spell
+        {
+          plugin = nvim-cmp;
+          config = "require('plugins.cmp')";
+          type = "lua";
+        }
 
 # ------Snippets-----------
         luasnip
@@ -178,6 +186,12 @@ in
         config = "require('plugins.autopairs')";
         type = "lua";
       }
+      {
+        plugin = hop-nvim;
+        config = "require('plugins.hop')";
+        type = "lua";
+      }
+
 
 #-----------------------------------------------
 # ------------Integration-----------------------
@@ -186,6 +200,13 @@ in
       {
         plugin = zk-nvim;
         config = "require('zk').setup()";
+        type = "lua";
+      }
+
+# LaTex
+      {
+        plugin = vimtex;
+        config = "require('plugins.vimtex')";
         type = "lua";
       }
 

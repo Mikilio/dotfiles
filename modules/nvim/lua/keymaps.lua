@@ -47,10 +47,10 @@ keymap("n", "sj", ":set splitbelow<CR>:split<CR>", opts)
 keymap("n", "<C-=>", "<C-w>=", opts)
 
 -- Swap and move windows --
-keymap("n", "<Space>h", "<C-w>H", opts)
-keymap("n", "<Space>j", "<C-w>J", opts)
-keymap("n", "<Space>k", "<C-w>K", opts)
-keymap("n", "<Space>l", "<C-w>L", opts)
+keymap("n", "<C-w>h", "<C-w>H", opts)
+keymap("n", "<C-w>j", "<C-w>J", opts)
+keymap("n", "<C-w>k", "<C-w>K", opts)
+keymap("n", "<C-w>l", "<C-w>L", opts)
 
 -- Adjust the direction of the split screen --
 keymap("n", ",", "<C-w>t<C-w>K", opts)

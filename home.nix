@@ -6,6 +6,7 @@
 
         nvim.enable = true;
         brave.enable = true;
+        zathura.enable = true;
         packages.enable = true;
 
     };
