@@ -1,23 +1,31 @@
 -- set shorter name for keymap function
 local kmap = vim.keymap.set
 local knap = require("knap")
+local scan = require'plenary.scandir'
 
--- F5 processes the document once, and refreshes the view
-kmap('i','<leader>cc', function() knap.process_once() end)
-kmap('v','<leader>cc', function() knap.process_once() end)
+local group = vim.api.nvim_create_augroup('knap_autocmds', {clear = true})
+
+_G.makefilecheck = function()
+  local root_dir = vim.lsp.buf.list_workspace_folders()[1]
+  if (root_dir ~= nil and scan.scan_dir(root_dir, { depth = 1, search_pattern = 'Makefile'})) then
+      local knapsettings = vim.b.knap_settings or {}
+      knapsettings["textopdf"] = 'make -C ' .. root_dir;
+      knapsettings["outdir"] = root_dir ..  '/build/';
+      vim.b.knap_settings = knapsettings
+  end
+end
+vim.api.nvim_create_autocmd(
+  {'LspAttach'},
+  {pattern = {'*.tex'}, group = group, callback = makefilecheck})
+
+-- processes the document once, and refreshes the view
 kmap('n','<leader>cc', function() knap.process_once() end)
 
--- F6 closes the viewer application, and allows settings to be reset
-kmap('i','<leader>ev', function() knap.close_viewer() end)
-kmap('v','<leader>ev', function() knap.close_viewer() end)
-kmap('n','<leader>ev', function() knap.close_viewer() end)
+-- closes the viewer application, and allows settings to be reset
+kmap('n', '<leader>ev', function() knap.close_viewer() end)
 
--- F7 toggles the auto-processing on and off
-kmap('i','<leader>acc', function() knap.toggle_autopreviewing() end)
-kmap('v','<leader>acc', function() knap.toggle_autopreviewing() end)
+-- toggles the auto-processing on and off
 kmap('n','<leader>acc', function() knap.toggle_autopreviewing() end)
 
--- F8 invokes a SyncTeX forward search, or similar, where appropriate
-kmap('i','gV', function() knap.forward_jump() end)
-kmap('v','gV', function() knap.forward_jump() end)
-kmap('n','gV', function() knap.forward_jump() end)
+-- invokes a SyncTeX forward search, or similar, where appropriate
+kmap('n','gv', function() knap.forward_jump() end)

@@ -60,7 +60,6 @@ local options  = {
 	numberwidth = 4,
 	relativenumber = true,
 	textwidth = 79,
-	colorcolumn = "+1,+2",
 	scrolloff = 8,
 	fileencodings = "utf-8,gbk",
   updatetime = 50, -- faster completion (4000ms default)

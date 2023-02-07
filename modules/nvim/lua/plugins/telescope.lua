@@ -43,8 +43,8 @@ telescope.setup({
     },
     project = {
       base_dirs = {
-        {'~/.', max_depth = 1},
-        {'~/Src'},
+        {'~/.', max_depth = 2},
+        {'~/${XDG_DEV_DIR}'},
       },
     }
   }

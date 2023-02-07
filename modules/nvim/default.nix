@@ -14,10 +14,10 @@ texmagic = pkgs.vimUtils.buildVimPluginFrom2Nix {
 knap = pkgs.vimUtils.buildVimPluginFrom2Nix {
   name = "knap";
   src = pkgs.fetchFromGitHub {
-    owner = "frabjous";
+    owner = "Mikilio";
     repo = "knap";
-    rev = "62eae7803d9d87d33513b3b565c6f5791f1de1ea";
-    hash = "sha256-+IltvS5R9st+b97PtEdDnflymSP2JFpmqlXOrnzTJqc=";
+    rev = "f7d6e0938cfd832279ef2eda623aeb8341a37b7d";
+    hash = "sha256-WN6gmgn6+/ayvTDUFQ2oTUvkqR7taegUroTiLHg7rCs=";
   };
 };
 

@@ -8,6 +8,6 @@
     brave.enable = true;
     zathura.enable = true;
     packages.enable = true;
-
+    environment.profile = "gnome";
   };
 }

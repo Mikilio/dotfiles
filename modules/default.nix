@@ -4,9 +4,7 @@
   home.username = "mikilio";
   home.homeDirectory = "/home/mikilio";
 
-  home.stateVersion = "21.05";
-
-  #Workaround
+  home.stateVersion = "22.11";
   manual.manpages.enable = false;
 
   # Let Home Manager install and manage itself.
@@ -18,6 +16,6 @@
     ./brave
     ./zathura
     ./packages
-    ./environment/gnome.nix
+    ./environment
   ];
 }
