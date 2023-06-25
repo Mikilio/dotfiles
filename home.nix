@@ -5,7 +5,7 @@
   config.modules = {
 
     nvim.enable = true;
-    brave.enable = true;
+    vivaldi.enable = true;
     zathura.enable = true;
     packages.enable = true;
     environment.profile = "gnome";

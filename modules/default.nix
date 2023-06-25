@@ -14,6 +14,7 @@
     ./nvim
     ./git
     ./brave
+    ./vivaldi
     ./zathura
     ./packages
     ./environment
