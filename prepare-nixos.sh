@@ -117,4 +117,4 @@ echo "More info on https://nixos.org/nixos/manual/index.html#sec-installation-in
 echo ""
 echo "You should edit /mnt/etc/nixos/configuration.nix to suit your needs, then run the install-nixos.sh script."
 echo "If this one fail for whatever reason just run:"
-echo "$ sudo --preserve-paths=PATH,NIX_PATH `which nixos-install` --root /mnt"
+echo "$ sudo --preserve-env=PATH,NIX_PATH `which nixos-install` --root /mnt"

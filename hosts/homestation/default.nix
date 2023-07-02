@@ -9,15 +9,13 @@
 } @ args: {
   imports = [./hardware-configuration.nix];
 
-  age.secrets.spotify = {
-    file = "${self}/secrets/spotify.age";
-    owner = "mikilio";
-    group = "users";
-  };
+  /* age.secrets.spotify = { */
+  /*   file = "${self}/secrets/spotify.age"; */
+  /*   owner = "mikilio"; */
+  /*   group = "users"; */
+  /* }; */
 
   boot = {
-    bootspec.enable = true;
-
     initrd = {
       systemd.enable = true;
       supportedFilesystems = ["ext4"];
@@ -31,15 +29,16 @@
 
     kernelParams = ["amd_pstate=active"];
 
-    lanzaboote = {
-      enable = true;
-      pkiBundle = "/etc/secureboot";
-    };
+    /* lanzaboote = { */
+    /*   enable = true; */
+    /*   pkiBundle = "/etc/secureboot"; */
+    /* }; */
 
     loader = {
       # systemd-boot on UEFI
       efi.canTouchEfiVariables = true;
       systemd-boot.enable = lib.mkForce false;
+      grub.device = "nodev";
     };
 
     plymouth = {
