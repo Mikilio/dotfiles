@@ -6,10 +6,11 @@
       systems = ["x86_64-linux"];
 
       imports = [
-        ./pkgs
+        ./home/profiles
+        ./hosts
         ./lib
         ./modules
-        ./home/profiles
+        ./pkgs
       ];
 
       debug = true;

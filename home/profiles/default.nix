@@ -11,6 +11,7 @@
   }: [
     ../.
     ../shell
+    module_args
     {_module.args = {inherit inputs' self';};}
   ]);
 
@@ -35,11 +36,11 @@ in {
   flake = {
     homeConfigurations = withSystem "x86_64-linux" ({pkgs, ...}: {
       miobox = homeManagerConfiguration {
-        modules = homeImports.miobox  ++ [ module_args ] ;
+        modules = homeImports.miobox ++ module_args;
         inherit pkgs;
       };
       server = homeManagerConfiguration {
-        modules = homeImports.server  ++ [ module_args ] ;
+        modules = homeImports.server ++ module_args;
         inherit pkgs;
       };
     });
