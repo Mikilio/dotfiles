@@ -11,20 +11,18 @@
   }: [
     ../.
     ../shell
-    module_args
     {_module.args = {inherit inputs' self';};}
   ]);
 
   homeImports = {
     miobox =
       [
-        # ./miobox
-        # inputs.anyrun.homeManagerModules.default
-        # inputs.nix-index-db.hmModules.nix-index
-        # inputs.spicetify-nix.homeManagerModule
-        # inputs.hyprland.homeManagerModules.default
-      ]
-      ++ sharedModules;
+        ./miobox
+        inputs.anyrun.homeManagerModules.default
+        inputs.nix-index-db.hmModules.nix-index
+        inputs.spicetify-nix.homeManagerModule
+        inputs.hyprland.homeManagerModules.default
+      ] ++ sharedModules;
     server = sharedModules ++ [./server];
   };
 
@@ -37,11 +35,11 @@ in {
   flake = {
     homeConfigurations = withSystem "x86_64-linux" ({pkgs, ...}: {
       miobox = homeManagerConfiguration {
-        modules = homeImports.miobox ++ module_args;
+        modules = homeImports.miobox  ++ [ module_args ] ;
         inherit pkgs;
       };
       server = homeManagerConfiguration {
-        modules = homeImports.server ++ module_args;
+        modules = homeImports.server  ++ [ module_args ] ;
         inherit pkgs;
       };
     });

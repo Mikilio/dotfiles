@@ -9,13 +9,13 @@
     enableAutosuggestions = true;
     autocd = true;
     dirHashes = {
-      dl = "$HOME/Downloads";
-      docs = "$HOME/Documents";
-      code = "$HOME/Documents/code";
-      dots = "$HOME/Documents/code/dotfiles";
-      pics = "$HOME/Pictures";
-      vids = "$HOME/Videos";
-      nixpkgs = "$HOME/Documents/code/git/nixpkgs";
+      dl = "$HOME/etc/download";
+      docs = "$HOME/docs";
+      code = "$HOME/dev/";
+      dots = "$HOME/dotfiles";
+      pics = "$HOME/media/pics";
+      vids = "$HOME/media/videos/";
+      nixpkgs = "$HOME/dev/nixpkgs";
     };
     dotDir = ".config/zsh";
     history = {

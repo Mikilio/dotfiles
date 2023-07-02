@@ -41,7 +41,7 @@ in {
       createDirectories = true;
       desktop = null;
       documents = "${config.home.homeDirectory}/docs";
-      download = "${config.home.homeDirectory}/etc/private";
+      download = "${config.home.homeDirectory}/etc/download";
       music = "${config.home.homeDirectory}/media/music";
       pictures = "${config.home.homeDirectory}/media/pics";
       videos = "${config.home.homeDirectory}/media/videos";

@@ -41,7 +41,7 @@
       sshKeys = ["73D1C4271E8C508E1E55259660C94BE828B07738"];
     };
 
-    keepassx.enable = true;
+    # keepassxc.enable = true;
     syncthing.enable = true;
   };
 }

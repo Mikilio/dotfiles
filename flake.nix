@@ -8,8 +8,11 @@
       imports = [
         ./pkgs
         ./lib
+        ./modules
         ./home/profiles
       ];
+
+      debug = true;
 
       perSystem = {
         config,

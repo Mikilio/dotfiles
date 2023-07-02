@@ -49,11 +49,11 @@
   security.sudo.wheelNeedsPassword = false;
 
   # don't touch this
-  system.stateVersion = lib.mkDefault "20.09";
+  system.stateVersion = lib.mkDefault "23.05";
 
   time.timeZone = lib.mkDefault "Europe/Bucharest";
 
-  users.users.mihai = {
+  users.users.mikilio = {
     isNormalUser = true;
     shell = pkgs.zsh;
     extraGroups = ["adbusers" "input" "libvirtd" "networkmanager" "plugdev" "transmission" "video" "wheel"];

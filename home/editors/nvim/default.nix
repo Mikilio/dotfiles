@@ -2,6 +2,7 @@
 with lib;
 let
 cfg = config.modules.nvim;
+cmd = "nvim -i NONE";
 texmagic = pkgs.vimUtils.buildVimPluginFrom2Nix {
   name = "texmagic-nvim";
   src = pkgs.fetchFromGitHub {
@@ -23,8 +24,6 @@ knap = pkgs.vimUtils.buildVimPluginFrom2Nix {
 
 in
 {
-  options.modules.nvim = { enable = mkEnableOption "nvim"; };
-  config = mkIf cfg.enable {
 
     home.file.".config/nvim/lua".source = ./lua;
 
@@ -34,8 +33,9 @@ in
         '';
 
       shellAliases = {
-        v = "nvim -i NONE";
-        nvim = "nvim -i NONE";
+        vi = cmd;
+        vim = cmd;
+        nvim = cmd;
       };
     };
 
@@ -256,6 +256,5 @@ in
       extraConfig = ''
         luafile ~/.config/nvim/lua/settings.lua
         '';
-    };
   };
 }
