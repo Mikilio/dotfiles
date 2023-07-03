@@ -56,6 +56,7 @@
   users.users.mikilio = {
     isNormalUser = true;
     shell = pkgs.zsh;
+    hashedPassword = "$y$j9T$N1613XZaSwZ3YxfS2OdDQ1$jPEw5R7FxQq8MZl4Am06IBaHQpCEA6tBPWNRWF7nPnC";
     extraGroups = ["adbusers" "input" "libvirtd" "networkmanager" "plugdev" "transmission" "video" "wheel"];
   };
 

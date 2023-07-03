@@ -37,8 +37,7 @@
     loader = {
       # systemd-boot on UEFI
       efi.canTouchEfiVariables = true;
-      systemd-boot.enable = lib.mkForce false;
-      grub.device = "nodev";
+      systemd-boot.enable = lib.mkForce true;
     };
 
     plymouth = {
