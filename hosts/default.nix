@@ -1,34 +1,53 @@
 {
+  default,
   inputs,
+  lib,
+  self,
   withSystem,
   sharedModules,
-  desktopModules,
-  homeImports,
   ...
-}: {
+}:
+
+with lib;
+
+let
+  sharedModules = [
+    inputs.agenix.nixosModules.default
+    self.nixosModules.core
+    self.nixosModules.network
+    self.nixosModules.nix
+    self.nixosModules.security
+  ];
+
+  desktopModules = with inputs; [
+    hyprland.nixosModules.default
+    kmonad.nixosModules.default
+    nix-gaming.nixosModules.default
+  ];
+in {
   flake.nixosConfigurations = withSystem "x86_64-linux" ({
     system,
     self',
     inputs',
     ...
-  }: let
-    systemInputs = [{_module.args = {inherit self' inputs';};}];
-  in {
+  } : {
     homestation = inputs.nixpkgs.lib.nixosSystem {
       inherit system;
+
+      specialArgs = {
+        inherit self inputs self' inputs' default;
+      };
 
       modules =
         [
           ./homestation
-          ../modules/greetd.nix
-          ../modules/desktop.nix
-          ../modules/gamemode.nix
-          /* inputs.lanzaboote.nixosModules.lanzaboote */
-          {home-manager.users.mikilio.imports = homeImports.miobox;}
+          self.nixosModules.greetd
+          self.nixosModules.desktop
+          self.nixosModules.gamemode
+          inputs.lanzaboote.nixosModules.lanzaboote
         ]
         ++ sharedModules
-        ++ desktopModules
-        ++ systemInputs;
+        ++ desktopModules;
     };
   });
 }

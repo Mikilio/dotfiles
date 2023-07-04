@@ -1,11 +1,11 @@
 { lib, config, ... }:
 
 {
-    home = {
+     home = {
       sessionVariables = {
         EDITOR = "nvim";
         BROWSER = "vivaldi";
-        TERMINAL = "gnome-terminal";
+        TERMINAL = "alacritty";
         GTK_IM_MODULE = "ibus";
         QT_IM_MODULE = "ibus";
         XMODIFIERS = "@im=ibus";

@@ -9,11 +9,11 @@
 } @ args: {
   imports = [./hardware-configuration.nix];
 
-  /* age.secrets.spotify = { */
-  /*   file = "${self}/secrets/spotify.age"; */
-  /*   owner = "mikilio"; */
-  /*   group = "users"; */
-  /* }; */
+  age.secrets.master = {
+    file = "${self}/secrets/master.age";
+    owner = "mikilio";
+    group = "users";
+  };
 
   boot = {
     initrd = {
@@ -29,15 +29,21 @@
 
     kernelParams = ["amd_pstate=active"];
 
-    /* lanzaboote = { */
-    /*   enable = true; */
-    /*   pkiBundle = "/etc/secureboot"; */
-    /* }; */
+
+
+    lanzaboote = {
+      enable = true;
+      pkiBundle = "/etc/secureboot";
+    };
 
     loader = {
       # systemd-boot on UEFI
       efi.canTouchEfiVariables = true;
-      systemd-boot.enable = lib.mkForce true;
+      # Lanzaboote currently replaces the systemd-boot module.
+      # This setting is usually set to true in configuration.nix
+      # generated at installation time. So we force it to false
+      # for now.
+      systemd-boot.enable = lib.mkForce false;
     };
 
     plymouth = {
@@ -52,23 +58,6 @@
   ];
 
   hardware = {
-    /* bluetooth = { */
-    /*   enable = true; */
-    /*   # battery info support */
-    /*   package = pkgs.bluez5-experimental; */
-    /*   settings = { */
-    /*     # make Xbox Series X controller work */
-    /*     General = { */
-    /*       Class = "0x000100"; */
-    /*       ControllerMode = "bredr"; */
-    /*       FastConnectable = true; */
-    /*       JustWorksRepairing = "always"; */
-    /*       Privacy = "device"; */
-    /*       Experimental = true; */
-    /*     }; */
-    /*   }; */
-    /* }; */
-
     # smooth backlight control
     brillo.enable = true;
 
@@ -76,15 +65,7 @@
 
     enableRedistributableFirmware = true;
 
-
-  };
-
-  networking = {
-    hostName = "homestation";
-    firewall = {
-      allowedTCPPorts = [42355];
-      allowedUDPPorts = [5353];
-    };
+    xpadneo.enable = true;
   };
 
   programs = {
@@ -99,10 +80,45 @@
     abrmd.enable = true;
   };
 
+
   services = {
     # for SSD/NVME
     fstrim.enable = true;
 
+<<<<<<< HEAD
+||||||| parent of 740415e (added plymouth again and improved prepare-install to reduce error accosiated with hardware-configuration.nix and reformating the disks)
+    kmonad.keyboards = {
+      io = {
+        name = "homestation";
+        device = "/dev/input/by-id/usb-Logitech_G512_RGB_MECHANICAL_GAMING_KEYBOARD_186130623937-if01-event-kbd";
+        defcfg = {
+          enable = true;
+          fallthrough = true;
+          allowCommands = false;
+        };
+        config = builtins.readFile "${self}/modules/main.kbd";
+      };
+    };
+
+=======
+    # keyboard remapping (commented out because of chroot issues)
+    kmonad = {
+      enable = true;
+      package = inputs'.kmonad.packages.default;
+      keyboards = {
+        logitech = {
+          device = "/dev/input/by-id/usb-Logitech_G512_RGB_MECHANICAL_GAMING_KEYBOARD_186130623937-event-kbd";
+          defcfg = {
+            enable = true;
+            fallthrough = true;
+            allowCommands = false;
+          };
+          config = builtins.readFile "${self}/modules/logitech.kbd";
+        };
+      };
+    };
+
+>>>>>>> 740415e (added plymouth again and improved prepare-install to reduce error accosiated with hardware-configuration.nix and reformating the disks)
     logind.extraConfig = ''
       HandlePowerKey=suspend
     '';
@@ -111,5 +127,20 @@
     pipewire.lowLatency.enable = true;
 
     printing.enable = true;
+  };
+
+  networking = {
+    hostName = "homestation";
+    firewall = {
+      allowedTCPPorts = [42355];
+      allowedUDPPorts = [5353];
+    };
+  };
+
+  users.users.mikilio = {
+    isNormalUser = true;
+    shell = pkgs.zsh;
+    passwordFile = config.age.secrets.master.path;
+    extraGroups = ["adbusers" "input" "libvirtd" "networkmanager" "plugdev" "transmission" "video" "wheel"];
   };
 }

@@ -2,7 +2,7 @@
   pkgs,
   config,
   lib,
-  self,
+  self',
   ...
 }:
 # configuration shared by all hosts
@@ -19,7 +19,7 @@
     supportedLocales = [
       "en_US.UTF-8/UTF-8"
       "ja_JP.UTF-8/UTF-8"
-      "ro_RO.UTF-8/UTF-8"
+      "de_DE.UTF-8/UTF-8"
     ];
   };
 
@@ -27,7 +27,7 @@
   hardware.opengl.enable = true;
 
   # pickup pkgs from flake export
-  nixpkgs.pkgs = self.legacyPackages.${config.nixpkgs.system};
+  nixpkgs.pkgs = self'.legacyPackages;
 
   # enable programs
   programs = {
@@ -51,15 +51,8 @@
   # don't touch this
   system.stateVersion = lib.mkDefault "23.05";
 
-  time.timeZone = lib.mkDefault "Europe/Bucharest";
+  time.timeZone = lib.mkDefault "Europe/Berlin";
 
-  users.users.mikilio = {
-    isNormalUser = true;
-    shell = pkgs.zsh;
-    hashedPassword = "$y$j9T$N1613XZaSwZ3YxfS2OdDQ1$jPEw5R7FxQq8MZl4Am06IBaHQpCEA6tBPWNRWF7nPnC";
-    extraGroups = ["adbusers" "input" "libvirtd" "networkmanager" "plugdev" "transmission" "video" "wheel"];
-  };
-
-  # compresses half the ram for use as swap
+   # compresses half the ram for use as swap
   zramSwap.enable = true;
 }

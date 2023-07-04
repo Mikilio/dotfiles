@@ -1,3 +1,4 @@
+<<<<<<< HEAD
  {
   home = {
     username = "mikilio";
@@ -5,15 +6,41 @@
     stateVersion = "23.05";
     extraOutputsToInstall = ["doc" "devdoc"];
   };
-
-  # disable manuals as nmd fails to build often
-  manual = {
-    html.enable = false;
-    json.enable = false;
-    manpages.enable = false;
+||||||| parent of 740415e (added plymouth again and improved prepare-install to reduce error accosiated with hardware-configuration.nix and reformating the disks)
+{
+  home = {
+    username = "mikilio";
+    homeDirectory = "/home/mikilio";
+    stateVersion = "23.05";
+    extraOutputsToInstall = ["doc" "devdoc"];
   };
+=======
+{ inputs, self, lib, config, ... }:
+>>>>>>> 740415e (added plymouth again and improved prepare-install to reduce error accosiated with hardware-configuration.nix and reformating the disks)
 
+with lib;
 
-  # let HM manage itself when in standalone mode
-  programs.home-manager.enable = true;
+  inputs.flake-parts.lib.mkTransposedPerSystemModule {
+    name = "homeManagerModules";
+    option = mkOption {
+      type = types.lazyAttrsOf types.unspecified;
+      default = { };
+      apply = mapAttrs (k: v: { _file = "${toString self.outPath}/flake.nix#homeManagerModules.${k}"; imports = [ v ]; });
+      description = ''
+        A module for home-manager configurations.
+
+        You may use this for reusable pieces of configuration, service modules,
+        etc.
+      '';
+    };
+    file = ./default.nix;
+} // {
+
+  imports = [
+    ./profiles
+    ./applications
+    ./shells
+    ./wayland
+    ./bootstrap.nix
+  ];
 }

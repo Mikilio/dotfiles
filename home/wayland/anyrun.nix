@@ -1,5 +1,10 @@
-{inputs', ...}: {
-  programs.anyrun = {
+{
+  config,
+  pkgs,
+  inputs',
+  ...
+}:{
+  config.programs.anyrun = {
     enable = true;
 
     config = {
@@ -11,11 +16,6 @@
         symbols
         translate
       ];
-
-      width.fraction = 0.3;
-      verticalOffset.absolute = 15;
-      hidePluginInfo = true;
-      closeOnClick = true;
     };
 
     extraCss = ''

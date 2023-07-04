@@ -1,8 +1,8 @@
 {
+  default,
   config,
   pkgs,
   lib,
-  default,
   ...
 }: {
   wayland.windowManager.sway = {

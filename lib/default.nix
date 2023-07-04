@@ -22,6 +22,11 @@ in {
     legacyPackages = import inputs.nixpkgs {
       inherit system;
       config.allowUnfree = true;
+      # allow spotify to be installed if you don't have unfree enabled already
+      /* config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ */
+      /*   "spotify" */
+      /* ]; */
+      /**/
       overlays = [
         (
           _: prev: {

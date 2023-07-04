@@ -1,5 +1,5 @@
 # security tweaks borrowed from @hlissner
-{
+{config, pkgs, lib, inputs', ...} : {
   boot.kernel.sysctl = {
     # The Magic SysRq key is a key combo that allows users connected to the
     # system console of a Linux kernel to perform some low-level commands.
@@ -47,4 +47,8 @@
     acceptTerms = true;
     defaults.email = "official.mikilio+sec@gmail.com";
   };
+
+  environment.systemPackages = [
+    inputs'.agenix.packages.default
+  ];
 }

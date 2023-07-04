@@ -1,9 +1,9 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}: let
+{ config
+, pkgs
+, lib
+, ...
+}:
+let
   programs = lib.makeBinPath [
     config.programs.hyprland.package
     pkgs.coreutils
@@ -20,7 +20,8 @@
     export HYPRLAND_INSTANCE_SIGNATURE=$(ls -1 /tmp/hypr | tail -1)
     hyprctl --batch 'keyword decoration:blur 1 ; keyword animations:enabled 1 ; keyword misc:vfr 1'
   '';
-in {
+in
+{
   programs.gamemode = {
     enable = true;
     settings = {
