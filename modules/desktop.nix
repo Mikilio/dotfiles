@@ -99,7 +99,11 @@
   };
 
   # make HM-managed GTK stuff work
-  programs.dconf.enable = true;
+  programs = {
+    dconf.enable = true;
+
+    seahorse.enable = true;
+  };
 
   services = {
     # use Ambient Light Sensors for auto brightness adjustment
@@ -113,25 +117,24 @@
       };
     };
 
-    # provide location
-    geoclue2.enable = true;
+    gnome.gnome-keyring.enable = true;
 
-    # keyboard remapping
-    kmonad = {
-      enable = true;
-      package = inputs'.kmonad.packages.default;
-      keyboards = {
-        one2mini = {
-          device = "/dev/input/by-id/usb-Ducky_Ducky_One2_Mini_RGB_DK-V1.17-190813-event-kbd";
-          defcfg = {
-            enable = true;
-            fallthrough = true;
-            allowCommands = false;
-          };
-          config = builtins.readFile "${self}/modules/main.kbd";
-        };
-      };
-    };
+    # keyboard remapping (commented out because of chroot issues)
+    /* kmonad = { */
+    /*   enable = true; */
+    /*   package = inputs'.kmonad.packages.default; */
+    /*   keyboards = { */
+    /*     logitech = { */
+    /*       device = "/dev/input/by-id/usb-Logitech_G512_RGB_MECHANICAL_GAMING_KEYBOARD_186130623937-event-kbd"; */
+    /*       defcfg = { */
+    /*         enable = true; */
+    /*         fallthrough = true; */
+    /*         allowCommands = false; */
+    /*       }; */
+    /*       config = builtins.readFile "${self}/modules/logitech.kbd"; */
+    /*     }; */
+    /*   }; */
+    /* }; */
 
     pipewire = {
       enable = true;
@@ -146,8 +149,6 @@
       resyncTimer = "10m";
     };
 
-    # battery info & stuff
-    upower.enable = true;
 
     # needed for GNOME services outside of GNOME Desktop
     dbus.packages = [pkgs.gcr];

@@ -2,6 +2,7 @@
   inputs,
   withSystem,
   module_args,
+  default,
   ...
 }: let
   sharedModules = withSystem "x86_64-linux" ({
@@ -11,8 +12,7 @@
   }: [
     ../.
     ../shell
-    module_args
-    {_module.args = {inherit inputs' self';};}
+    {_module.args = {inherit inputs' self' default;};}
   ]);
 
   homeImports = {
@@ -36,11 +36,11 @@ in {
   flake = {
     homeConfigurations = withSystem "x86_64-linux" ({pkgs, ...}: {
       miobox = homeManagerConfiguration {
-        modules = homeImports.miobox ++ module_args;
+        modules = homeImports.miobox;
         inherit pkgs;
       };
       server = homeManagerConfiguration {
-        modules = homeImports.server ++ module_args;
+        modules = homeImports.server;
         inherit pkgs;
       };
     });

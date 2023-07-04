@@ -40,11 +40,11 @@
       systemd-boot.enable = lib.mkForce true;
     };
 
-    /* plymouth = { */
-    /*   enable = true; */
-    /*   themePackages = [self'.packages.catppuccin-plymouth]; */
-    /*   theme = "catppuccin-mocha"; */
-    /* }; */
+    plymouth = {
+      enable = true;
+      themePackages = [self'.packages.catppuccin-plymouth];
+      theme = "catppuccin-mocha";
+    };
   };
 
   environment.systemPackages = [
@@ -102,19 +102,6 @@
   services = {
     # for SSD/NVME
     fstrim.enable = true;
-
-    kmonad.keyboards = {
-      io = {
-        name = "homestation";
-        device = "/dev/input/by-id/usb-Logitech_G512_RGB_MECHANICAL_GAMING_KEYBOARD_186130623937-if01-event-kbd";
-        defcfg = {
-          enable = true;
-          fallthrough = true;
-          allowCommands = false;
-        };
-        config = builtins.readFile "${self}/modules/main.kbd";
-      };
-    };
 
     logind.extraConfig = ''
       HandlePowerKey=suspend

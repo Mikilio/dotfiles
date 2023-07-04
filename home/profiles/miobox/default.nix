@@ -3,6 +3,9 @@
     ../../editors/helix
     ../../editors/nvim
     ../../programs
+    ../../programs/games.nix
+    ../../programs/dunst.nix
+    ../../wayland
     ../../terminals/alacritty.nix
  ];
 

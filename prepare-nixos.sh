@@ -29,6 +29,21 @@ select_disk() {
         fi
     done
 }
+select_folder() {
+    local folders=()
+    while IFS= read -r folder; do
+        folders+=("${folder%/}")
+    done < <(ls -d ./hosts/*/ | sed 's#./hosts/##' | sort -z)
+
+    select folder in "${folders[@]}"; do
+        if [[ -n $folder ]]; then
+            echo "$folder"
+            break
+        else
+            echo "Invalid option. Please try again."
+        fi
+    done
+}
 
 # Use select_disk function to choose the disk
 echo "Select disk:"
@@ -113,8 +128,17 @@ sudo swapon "${DISK}${NAME_DIVIDER}2"
 # The command nixos-generate-config can generate an initial configuration file for you:
 sudo `which nixos-generate-config` --root /mnt
 
+# select target
+TARGET=$(select_folder)
+
+sudo cp /mnt/etc/nixos/hardware-configuration.nix ./hosts/${TARGET}/hardware-configuration.nix
+git commit -a --amend
+git push -f
+sudo rm -rf /mnt/etc/nixos
+sudo git clone https://github.com/Mikilio/dotfiles.git /mnt/etc/nixos
+
 echo "More info on https://nixos.org/nixos/manual/index.html#sec-installation-installing "
 echo ""
-echo "You should edit /mnt/etc/nixos/configuration.nix to suit your needs, then run the install-nixos.sh script."
+echo "You should run the install-nixos.sh script."
 echo "If this one fail for whatever reason just run:"
-echo "$ sudo --preserve-env=PATH,NIX_PATH `which nixos-install` --root /mnt"
+echo "$ sudo --preserve-env=PATH,NIX_PATH `which nixos-install` --root /mnt --flake /mnt/etc/nixos#${TARGET}"

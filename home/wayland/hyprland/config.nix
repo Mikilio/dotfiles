@@ -14,6 +14,9 @@ in {
     env = _JAVA_AWT_WM_NONREPARENTING,1
     env = QT_WAYLAND_DISABLE_WINDOWDECORATION,1
 
+    # kill xdg-desktop-portal-wlr so we can have sway on the system
+    exec-once = killall -e xdg-desktop-portal-wlr
+
     # scale apps
     exec-once = xprop -root -f _XWAYLAND_GLOBAL_OUTPUT_SCALE 32c -set _XWAYLAND_GLOBAL_OUTPUT_SCALE 2
 
@@ -37,12 +40,6 @@ in {
       vrr = 1
     }
 
-    # touchpad gestures
-    gestures {
-      workspace_swipe = true
-      workspace_swipe_forever = true
-    }
-
     input {
       kb_layout = ro
 
@@ -52,17 +49,6 @@ in {
       touchpad {
         scroll_factor = 0.3
       }
-    }
-
-    device:MSFT0001:00 04F3:31EB Touchpad {
-      accel_profile = adaptive
-      natural_scroll = true
-      sensitivity = 0.1
-    }
-    device:elan1200:00-04f3:3090-touchpad {
-      accel_profile = adaptive
-      natural_scroll = true
-      sensitivity = 0.1
     }
 
     general {
@@ -164,7 +150,7 @@ in {
 
     # utility
     # launcher
-    bindr = $mod, SUPER_L, exec, pkill .${default.launcher}-wrapped || run-as-service ${default.launcher}
+    bindr = $mod, Space, exec, pkill .${default.launcher}-wrapped || run-as-service ${default.launcher}
     # terminal
     bind = $mod, Return, exec, run-as-service ${default.terminal.name}
     # logout menu

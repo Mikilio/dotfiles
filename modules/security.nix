@@ -45,6 +45,6 @@
   # So we don't have to do this later...
   security.acme = {
     acceptTerms = true;
-    defaults.email = "fufexan@proton.me";
+    defaults.email = "official.mikilio+sec@gmail.com";
   };
 }
