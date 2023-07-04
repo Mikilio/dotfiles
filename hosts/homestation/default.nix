@@ -40,11 +40,11 @@
       systemd-boot.enable = lib.mkForce true;
     };
 
-    plymouth = {
-      enable = true;
-      themePackages = [self'.packages.catppuccin-plymouth];
-      theme = "catppuccin-mocha";
-    };
+    /* plymouth = { */
+    /*   enable = true; */
+    /*   themePackages = [self'.packages.catppuccin-plymouth]; */
+    /*   theme = "catppuccin-mocha"; */
+    /* }; */
   };
 
   environment.systemPackages = [
