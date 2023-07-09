@@ -30,12 +30,7 @@
   _    _    _    _    _    _    _    _    _    _    _    _    _    _     _    _    _    _    _    _    _
   _    _    _    _    _    _    _    _    _    _    _    _    _    _     _    _    _    _    _    _    _
   _    _    _    _    @cmk _    _    @qwe _    _    _    _    _                         _    _    _
-<<<<<<< HEAD
-  _    _    _    _    _    _    _    _    _    _    _    _    _               _         _    _    _    _
-||||||| parent of 740415e (added plymouth again and improved prepare-install to reduce error accosiated with hardware-configuration.nix and reformating the disks)
-=======
   _    _    _    _    _    _    _    _    _    _    _    _                   _         _    _    _    _
->>>>>>> 740415e (added plymouth again and improved prepare-install to reduce error accosiated with hardware-configuration.nix and reformating the disks)
   _    _    _              _                   _    _    _    _          _    _    _    _    _
 )
 

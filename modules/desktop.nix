@@ -120,43 +120,6 @@
 
     gnome.gnome-keyring.enable = true;
 
-<<<<<<< HEAD
-    # keyboard remapping (commented out because of chroot issues)
-    /* kmonad = { */
-    /*   enable = true; */
-    /*   package = inputs'.kmonad.packages.default; */
-    /*   keyboards = { */
-    /*     logitech = { */
-    /*       device = "/dev/input/by-id/usb-Logitech_G512_RGB_MECHANICAL_GAMING_KEYBOARD_186130623937-event-kbd"; */
-    /*       defcfg = { */
-    /*         enable = true; */
-    /*         fallthrough = true; */
-    /*         allowCommands = false; */
-    /*       }; */
-    /*       config = builtins.readFile "${self}/modules/logitech.kbd"; */
-    /*     }; */
-    /*   }; */
-    /* }; */
-||||||| parent of 740415e (added plymouth again and improved prepare-install to reduce error accosiated with hardware-configuration.nix and reformating the disks)
-    # keyboard remapping
-    kmonad = {
-      enable = true;
-      package = inputs'.kmonad.packages.default;
-      keyboards = {
-        one2mini = {
-          device = "/dev/input/by-id/usb-Ducky_Ducky_One2_Mini_RGB_DK-V1.17-190813-event-kbd";
-          defcfg = {
-            enable = true;
-            fallthrough = true;
-            allowCommands = false;
-          };
-          config = builtins.readFile "${self}/modules/main.kbd";
-        };
-      };
-    };
-=======
->>>>>>> 740415e (added plymouth again and improved prepare-install to reduce error accosiated with hardware-configuration.nix and reformating the disks)
-
     pipewire = {
       enable = true;
       alsa.enable = true;
@@ -170,14 +133,6 @@
       resyncTimer = "10m";
     };
 
-<<<<<<< HEAD
-
-||||||| parent of 740415e (added plymouth again and improved prepare-install to reduce error accosiated with hardware-configuration.nix and reformating the disks)
-    # battery info & stuff
-    upower.enable = true;
-
-=======
->>>>>>> 740415e (added plymouth again and improved prepare-install to reduce error accosiated with hardware-configuration.nix and reformating the disks)
     # needed for GNOME services outside of GNOME Desktop
     dbus.packages = [pkgs.gcr];
     udev.packages = with pkgs; [gnome.gnome-settings-daemon];

@@ -6,7 +6,7 @@
   config.programs.git = {
       enable = true;
       userName = "Mikilio";
-      userEmail = "official.mikilio+dev@gmail.com";
+      userEmail = "official.mikilio@gmail.com";
       delta.enable = true;
       signing = {
         signByDefault = true;

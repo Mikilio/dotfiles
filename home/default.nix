@@ -1,22 +1,4 @@
-<<<<<<< HEAD
- {
-  home = {
-    username = "mikilio";
-    homeDirectory = "/home/mikilio";
-    stateVersion = "23.05";
-    extraOutputsToInstall = ["doc" "devdoc"];
-  };
-||||||| parent of 740415e (added plymouth again and improved prepare-install to reduce error accosiated with hardware-configuration.nix and reformating the disks)
-{
-  home = {
-    username = "mikilio";
-    homeDirectory = "/home/mikilio";
-    stateVersion = "23.05";
-    extraOutputsToInstall = ["doc" "devdoc"];
-  };
-=======
 { inputs, self, lib, config, ... }:
->>>>>>> 740415e (added plymouth again and improved prepare-install to reduce error accosiated with hardware-configuration.nix and reformating the disks)
 
 with lib;
 
