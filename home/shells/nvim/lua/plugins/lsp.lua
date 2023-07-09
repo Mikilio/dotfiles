@@ -41,7 +41,7 @@ lsp.rnix.setup{
   flags = lsp_flags,
 }
 
-lsp.sumneko_lua.setup{
+require'lspconfig'.lua_ls.setup {
   settings = {
     Lua = {
       runtime = {
@@ -62,8 +62,6 @@ lsp.sumneko_lua.setup{
       },
     },
   },
-  on_attach = on_attach,
-  flags = lsp_flags
 }
 
 lsp.ccls.setup {

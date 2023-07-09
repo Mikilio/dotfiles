@@ -40,19 +40,7 @@ in {
       vrr = 1
     }
 
-    input {
-      kb_layout = ro
-
-      # focus change on cursor move
-      follow_mouse = 1
-      accel_profile = flat
-      touchpad {
-        scroll_factor = 0.3
-      }
-    }
-
     general {
-      gaps_in = 5
       gaps_out = 5
       border_size = 2
       col.active_border = rgb(${colors.blue}) rgb(${colors.mauve}) 270deg
@@ -65,13 +53,9 @@ in {
 
     decoration {
       rounding = 16
-      blur = true
       blur_size = 3
       blur_passes = 3
-      blur_new_optimizations = true
 
-      drop_shadow = true
-      shadow_ignore_window = true
       shadow_offset = 0 5
       shadow_range = 50
       shadow_render_power = 3
@@ -110,8 +94,8 @@ in {
     windowrulev2 = tile, title:^(Spotify)$
     windowrulev2 = workspace 9 silent, title:^(Spotify)$
 
-    # start Discord/WebCord in ws2
-    windowrulev2 = workspace 2, title:^(.*(Disc|WebC)ord.*)$
+    # start Discord/WebCord in ws0
+    windowrulev2 = workspace 10, title:^(.*(Disc|WebC)ord.*)$
 
     # idle inhibit while watching videos
     windowrulev2 = idleinhibit focus, class:^(mpv|.+exe)$

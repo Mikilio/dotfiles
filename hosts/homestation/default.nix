@@ -85,22 +85,6 @@
     # for SSD/NVME
     fstrim.enable = true;
 
-<<<<<<< HEAD
-||||||| parent of 740415e (added plymouth again and improved prepare-install to reduce error accosiated with hardware-configuration.nix and reformating the disks)
-    kmonad.keyboards = {
-      io = {
-        name = "homestation";
-        device = "/dev/input/by-id/usb-Logitech_G512_RGB_MECHANICAL_GAMING_KEYBOARD_186130623937-if01-event-kbd";
-        defcfg = {
-          enable = true;
-          fallthrough = true;
-          allowCommands = false;
-        };
-        config = builtins.readFile "${self}/modules/main.kbd";
-      };
-    };
-
-=======
     # keyboard remapping (commented out because of chroot issues)
     kmonad = {
       enable = true;
@@ -118,7 +102,9 @@
       };
     };
 
->>>>>>> 740415e (added plymouth again and improved prepare-install to reduce error accosiated with hardware-configuration.nix and reformating the disks)
+    #Proper disk mounting
+    udisks2.enable = true;
+
     logind.extraConfig = ''
       HandlePowerKey=suspend
     '';

@@ -29,7 +29,6 @@ let
     "application/pdf" = ["sioyek.desktop"];
     "x-scheme-handler/discord" = ["discordcanary.desktop"];
     "x-scheme-handler/spotify" = ["spotify.desktop"];
-    "x-scheme-handler/tg" = ["telegramdesktop.desktop"];
   };
 in {
   config.xdg = {

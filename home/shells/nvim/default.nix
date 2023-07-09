@@ -50,7 +50,6 @@ in
       extraPackages = with pkgs; [
 #--- LSP ---#
         rnix-lsp
-        sumneko-lua-language-server
         ccls
         pyright
         zk
@@ -69,6 +68,7 @@ in
       extraLuaPackages = lua: with lua; [
         plenary-nvim
         luautf8
+        lua-lsp
       ];
 
       plugins = with pkgs.vimPlugins; [

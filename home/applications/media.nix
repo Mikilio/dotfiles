@@ -50,6 +50,10 @@ in {
     services = {
       playerctld.enable = true;
 
+      easyeffects = {
+        enable = true;
+      };
+
       spotifyd = {
         enable = true;
         package = pkgs.spotifyd.override {withMpris = true;};
