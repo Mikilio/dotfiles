@@ -5,18 +5,12 @@
   pkgs,
   ...
 }:
-
-with lib;
-
-let
-
+with lib; let
   cfg = config.home.shells;
-
 in {
   imports = [./languages.nix];
 
-  config = mkIf (cfg.editor=="helix"){
-
+  config = mkIf (cfg.editor == "helix") {
     programs.helix = {
       enable = true;
       package = inputs'helix.packages.default.overrideAttrs (self: {

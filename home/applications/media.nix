@@ -4,35 +4,33 @@
   config,
   self',
   ...
-} :
-
-with lib;
-
-let
-
+}:
+with lib; let
   cfg = config.home.applications;
-# media - control and enjoy audio/video
+  # media - control and enjoy audio/video
 in {
   imports = [
     ./spicetify.nix
   ];
 
-  config = mkIf (cfg!=null && cfg.media) {
-    home.packages = with pkgs; [
-      # audio control
-      pavucontrol
-      playerctl
-      pulsemixer
-      # images
-      imv
-      # torrents
-      transmission-remote-gtk
+  config = mkIf (cfg != null && cfg.media) {
+    home.packages = with pkgs;
+      [
+        # audio control
+        pavucontrol
+        playerctl
+        pulsemixer
+        # images
+        imv
+        # torrents
+        transmission-remote-gtk
 
-      spotify-tui
-    ] ++ (with self'.packages; [
-      discord-canary
-      waveform
-    ]);
+        spotify-tui
+      ]
+      ++ (with self'.packages; [
+        discord-canary
+        waveform
+      ]);
 
     programs = {
       mpv = {

@@ -5,14 +5,11 @@
   inputs',
   ...
 }:
-
-with lib;
-
-let
+with lib; let
   cfg = config.home.applications;
-# games
+  # games
 in {
-  config = mkIf (cfg!=null && cfg.games) {
+  config = mkIf (cfg != null && cfg.games) {
     home.packages = with pkgs; [
       inputs'.nix-gaming.packages.osu-lazer-bin
       gamescope

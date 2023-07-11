@@ -1,8 +1,8 @@
 {
   pkgs,
   config,
-  ... }:
-let
+  ...
+}: let
   browser = ["vivaldi.desktop"];
   homeDir = config.home.homeDirectory;
 
@@ -35,7 +35,6 @@ in {
     enable = true;
     cacheHome = homeDir + "/.local/cache";
     configHome = homeDir + "/.config";
-
 
     mimeApps = {
       enable = true;

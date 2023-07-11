@@ -4,84 +4,78 @@
   lib,
   ...
 }:
-
-with lib;
-
-let
-
+with lib; let
   cfg = config.home.applications;
-
 in {
-
-  config = mkIf (cfg!=null && cfg.reader=="sioyek"){
+  config = mkIf (cfg != null && cfg.reader == "sioyek") {
     programs.sioyek = {
       enable = true;
       config = {
         # (can be 0 or 1) if set, shows a notification on startup if a new version of sioyek is available
-        "check_for_updates_on_startup"	= "0";
+        "check_for_updates_on_startup" = "0";
 
         # Use old keybind parsing method (only for backwards compatibility)
         "use_legacy_keybinds" = "0";
 
         # The color with which the screen is cleared before rendering the pdf (this is the background color of the application and not the PDF file)
-        "background_color"    = "0.97 0.97 0.97";
-        "dark_mode_background_color"    = "0.0 0.0 0.0";
+        "background_color" = "0.97 0.97 0.97";
+        "dark_mode_background_color" = "0.0 0.0 0.0";
 
         # Showing full white text on black background can be irritating for the eye, we can dim the whites a little bit using the contrast option
-        "dark_mode_contrast"			= "0.8";
+        "dark_mode_contrast" = "0.8";
 
         # Highlight color when text is selected using mouse
-        "text_highlight_color"    = "1.0 1.0 0.0";
+        "text_highlight_color" = "1.0 1.0 0.0";
 
         # The color of highlight ruler which is displayed when right click is pressed
-        "visual_mark_color"    = "0.0 0.0 0.0 0.1";
+        "visual_mark_color" = "0.0 0.0 0.0 0.1";
 
         # Highlight color when text is a search match
-        "search_highlight_color"  = "0.0 1.0 0.0";
+        "search_highlight_color" = "0.0 1.0 0.0";
 
         # Hihglight color for PDF links (note that highlight is off by default
         # and can only be seen by performing a toggle_highlight command. See keys.config for more details)
-        "link_highlight_color"    = "0.0 0.0 1.0";
+        "link_highlight_color" = "0.0 0.0 1.0";
 
         # Hihglight color for synctex forward search highlights
-        "synctex_highlight_color"    = "1.0 0.0 1.0";
+        "synctex_highlight_color" = "1.0 0.0 1.0";
 
         # Urls to use when executing external_search commands
-        "search_url_s"	= "https://scholar.google.com/scholar?q=";
-        "search_url_l"	= "http://gen.lib.rus.ec/scimag/?q=";
-        "search_url_g"	= "https://www.google.com/search?q=";
+        "search_url_s" = "https://scholar.google.com/scholar?q=";
+        "search_url_l" = "http://gen.lib.rus.ec/scimag/?q=";
+        "search_url_g" = "https://www.google.com/search?q=";
 
         # Which search url to choose when middle clicking or shift middle clicking on text (the values are the letters of corresponding search_url_* )
         # for example if i set `middle_click_search_engine	s`, then we use the url associated with `search_url_s` to handle middle click searches
-        "middle_click_search_engine"			= "s";
-        "shift_middle_click_search_engine"	= "l";
+        "middle_click_search_engine" = "s";
+        "shift_middle_click_search_engine" = "l";
 
         # The factor by which we increase/decrease zoom when performing zoom_in or zoom_out
-        "zoom_inc_factor"         = "1.2";
+        "zoom_inc_factor" = "1.2";
 
         # How many inches we move vertically/horizontally when performing move_* commands
-        "vertical_move_amount"    = "1.0";
-        "horizontal_move_amount"    = "1.0";
+        "vertical_move_amount" = "1.0";
+        "horizontal_move_amount" = "1.0";
 
         # When performing screen_down/screen_up we usually don't move a full screen because it causes the user to lose context
         # Here we specify the fraction of the screen width by which we move when performing these commands
-        "move_screen_ratio"      = "0.5";
+        "move_screen_ratio" = "0.5";
 
         # If 0, Table of Contents is shown in a hierarchial tree, otherwise it is a flat list (can improve performance for extremely large table of contents)
-        "flat_toc"                            = "0";
+        "flat_toc" = "0";
 
         # If it is 1, when launching the application if we detect multiple monitors, we automatically launch the helper window in second monitor
-        "should_use_multiple_monitors"        = "0";
+        "should_use_multiple_monitors" = "0";
 
         # If the last opened document is empty, load the tutorial pdf instead
-        "should_load_tutorial_when_no_other_file"	= "1";
+        "should_load_tutorial_when_no_other_file" = "1";
 
         # (deprecated, use `should_launch_new_window` instead) If it is 0, then we use the previous instance of sioyek when launching a new file.
         # otherwise a new instance is launched every time we open a new file.
-        "should_launch_new_instance"				= "0";
+        "should_launch_new_instance" = "0";
 
         # If set, we open a new sioyek window when a new file is opened, otherwise we open the file in the previous window
-        "should_launch_new_window"				= "0";
+        "should_launch_new_window" = "0";
 
         # The command to use when trying to do inverse search into a LaTeX document. Uncomment and provide your own command.
         # %1 expands to the name of the file and %2 expans to the line number.
@@ -90,13 +84,13 @@ in {
         # you can specify the exact highlight color for each of 26 different highlight types
 
         # When moving to the next line using visual marker, this setting specifies the distance of the market to the top of the screen in fractions of screen size (center of the screen is zero, top of the screen is one)
-        "visual_mark_next_page_fraction"	= "0.75";
+        "visual_mark_next_page_fraction" = "0.75";
 
         # When moving to the next line using visual marker, this setting determines at which point we move the screen (center of the screen is zero, bottom of the screen is one)
-        "visual_mark_next_page_threshold"	= "0.25";
+        "visual_mark_next_page_threshold" = "0.25";
 
         # If set, we display a checkerboard pattern for unrendered pages (by default we display nothing)
-        "should_draw_unrendered_pages"	= "0";
+        "should_draw_unrendered_pages" = "0";
 
         # If 0, we use the previous renders for overview window which may cause it to be blurry
         # if it is 1, we rerender with the proper resolution for overview window which looks better
@@ -114,10 +108,10 @@ in {
         # "linear_filter" = "0"
 
         # Use dark mode by default (deprecated, better add `toggle_dark_mode` to `startup_commands` )
-        "default_dark_mode"	= "0";
+        "default_dark_mode" = "0";
 
         # If set, we sort the bookmarks by their location instead of their creation time
-        "sort_bookmarks_by_location"	= "1";
+        "sort_bookmarks_by_location" = "1";
 
         ## Path to shared.db database file. If not set, we use the default path.
         ## you can set this to be a file in a synced folder (e.g. dropbox folder) to automatically sync
@@ -241,57 +235,57 @@ in {
         # "case_sensitive_search" = "0"
 
         #Amethyst
-        "highlight_color_a"	= "0.94 0.64 1.00";
+        "highlight_color_a" = "0.94 0.64 1.00";
         #Blue
-        "highlight_color_b"	= "0.00 0.46 0.86";
+        "highlight_color_b" = "0.00 0.46 0.86";
         #Caramel
-        "highlight_color_c"	= "0.60 0.25 0.00";
+        "highlight_color_c" = "0.60 0.25 0.00";
         #Damson
-        "highlight_color_d"	= "0.30 0.00 0.36";
+        "highlight_color_d" = "0.30 0.00 0.36";
         #Ebony
-        "highlight_color_e"	= "0.10 0.10 0.10";
+        "highlight_color_e" = "0.10 0.10 0.10";
         #Forest
-        "highlight_color_f"	= "0.00 0.36 0.19";
+        "highlight_color_f" = "0.00 0.36 0.19";
         #Green
-        "highlight_color_g"	= "0.17 0.81 0.28";
+        "highlight_color_g" = "0.17 0.81 0.28";
         #Honeydew
-        "highlight_color_h"	= "1.00 0.80 0.60";
+        "highlight_color_h" = "1.00 0.80 0.60";
         #Iron
-        "highlight_color_i"	= "0.50 0.50 0.50";
+        "highlight_color_i" = "0.50 0.50 0.50";
         #Jade
-        "highlight_color_j"	= "0.58 1.00 0.71";
+        "highlight_color_j" = "0.58 1.00 0.71";
         #Khaki
-        "highlight_color_k"	= "0.56 0.49 0.00";
+        "highlight_color_k" = "0.56 0.49 0.00";
         #Lime
-        "highlight_color_l"	= "0.62 0.80 0.00";
+        "highlight_color_l" = "0.62 0.80 0.00";
         #Mallow
-        "highlight_color_m"	= "0.76 0.00 0.53";
+        "highlight_color_m" = "0.76 0.00 0.53";
         #Navy
-        "highlight_color_n"	= "0.00 0.20 0.50";
+        "highlight_color_n" = "0.00 0.20 0.50";
         #Orpiment
-        "highlight_color_o"	= "1.00 0.64 0.02";
+        "highlight_color_o" = "1.00 0.64 0.02";
         #Pink
-        "highlight_color_p"	= "1.00 0.66 0.73";
+        "highlight_color_p" = "1.00 0.66 0.73";
         #Quagmire
-        "highlight_color_q"	= "0.26 0.40 0.00";
+        "highlight_color_q" = "0.26 0.40 0.00";
         #Red
-        "highlight_color_r"	= "1.00 0.00 0.06";
+        "highlight_color_r" = "1.00 0.00 0.06";
         #Sky
-        "highlight_color_s"	= "0.37 0.95 0.95";
+        "highlight_color_s" = "0.37 0.95 0.95";
         #Turquoise
-        "highlight_color_t"	= "0.00 0.60 0.56";
+        "highlight_color_t" = "0.00 0.60 0.56";
         #Uranium
-        "highlight_color_u"	= "0.88 1.00 0.40";
+        "highlight_color_u" = "0.88 1.00 0.40";
         #Violet
-        "highlight_color_v"	= "0.45 0.04 1.00";
+        "highlight_color_v" = "0.45 0.04 1.00";
         #Wine
-        "highlight_color_w"	= "0.60 0.00 0.00";
+        "highlight_color_w" = "0.60 0.00 0.00";
         #Xanthin
-        "highlight_color_x"	= "1.00 1.00 0.50";
+        "highlight_color_x" = "1.00 1.00 0.50";
         #Yellow
-        "highlight_color_y"	= "1.00 1.00 0.00";
+        "highlight_color_y" = "1.00 1.00 0.00";
         #Zinnia
-        "highlight_color_z"	= "1.00 0.31 0.02";
+        "highlight_color_z" = "1.00 0.31 0.02";
       };
     };
   };

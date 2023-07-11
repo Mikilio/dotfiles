@@ -1,13 +1,20 @@
-{ inputs, self, lib, config, ... }:
-
+{
+  inputs,
+  self,
+  lib,
+  config,
+  ...
+}:
 with lib;
-
   inputs.flake-parts.lib.mkTransposedPerSystemModule {
     name = "homeManagerModules";
     option = mkOption {
       type = types.lazyAttrsOf types.unspecified;
-      default = { };
-      apply = mapAttrs (k: v: { _file = "${toString self.outPath}/flake.nix#homeManagerModules.${k}"; imports = [ v ]; });
+      default = {};
+      apply = mapAttrs (k: v: {
+        _file = "${toString self.outPath}/flake.nix#homeManagerModules.${k}";
+        imports = [v];
+      });
       description = ''
         A module for home-manager configurations.
 
@@ -16,13 +23,13 @@ with lib;
       '';
     };
     file = ./default.nix;
-} // {
-
-  imports = [
-    ./profiles
-    ./applications
-    ./shells
-    ./wayland
-    ./bootstrap.nix
-  ];
-}
+  }
+  // {
+    imports = [
+      ./profiles
+      ./applications
+      ./shells
+      ./wayland
+      ./bootstrap.nix
+    ];
+  }

@@ -1,12 +1,22 @@
-{ inputs, default, ... }@top :
 {
-  perSystem = { pkgs, lib, self', inputs', ... }@ps:
-    let
-      module = { config, lib, pkgs, ... }@hm:
-
-      with lib;
-
-      let
+  inputs,
+  default,
+  ...
+} @ top: {
+  perSystem = {
+    pkgs,
+    lib,
+    self',
+    inputs',
+    ...
+  } @ ps: let
+    module = {
+      config,
+      lib,
+      pkgs,
+      ...
+    } @ hm:
+      with lib; let
         cfg = config.home;
 
         listOfBrowsers = [
@@ -32,7 +42,6 @@
 
         appsModule = types.submodule {
           options = {
-
             enable = mkEnableOption "applications";
 
             media = mkOption {
@@ -96,7 +105,6 @@
               '';
             };
 
-
             misc = mkOption {
               type = types.listOf types.str;
               default = [];
@@ -107,7 +115,6 @@
             };
           };
         };
-
       in {
         #import all common configurations
         imports = [
@@ -139,7 +146,6 @@
           };
         };
       };
-
   in {
     homeManagerModules.applications = module;
   };

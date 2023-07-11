@@ -4,15 +4,9 @@
   lib,
   ...
 }:
-
-with lib;
-
-let
-
+with lib; let
   cfg = config.home.shells.zsh;
-
 in {
-
   config = mkIf cfg {
     programs.zsh = {
       enable = true;

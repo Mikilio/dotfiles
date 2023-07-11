@@ -9,12 +9,6 @@
 } @ args: {
   imports = [./hardware-configuration.nix];
 
-  age.secrets.master = {
-    file = "${self}/secrets/master.age";
-    owner = "mikilio";
-    group = "users";
-  };
-
   boot = {
     initrd = {
       systemd.enable = true;
@@ -28,8 +22,6 @@
     kernelPackages = pkgs.linuxPackages_xanmod_latest;
 
     kernelParams = ["amd_pstate=active"];
-
-
 
     lanzaboote = {
       enable = true;
@@ -80,7 +72,6 @@
     abrmd.enable = true;
   };
 
-
   services = {
     # for SSD/NVME
     fstrim.enable = true;
@@ -115,6 +106,8 @@
     printing.enable = true;
   };
 
+  sops.defaultSopsFile = "${self.outPath}/secrets/groups/homestation.yaml";
+
   networking = {
     hostName = "homestation";
     firewall = {
@@ -122,11 +115,11 @@
       allowedUDPPorts = [5353];
     };
   };
-
+  users.mutableUsers = false;
   users.users.mikilio = {
     isNormalUser = true;
     shell = pkgs.zsh;
-    passwordFile = config.age.secrets.master.path;
+    passwordFile = "${self.outPath}/secrets/hashes/mikilio.txt";
     extraGroups = ["adbusers" "input" "libvirtd" "networkmanager" "plugdev" "transmission" "video" "wheel"];
   };
 }

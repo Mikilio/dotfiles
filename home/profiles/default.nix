@@ -4,49 +4,57 @@
   default,
   withSystem,
   ...
-}@top: let
-    #External homeManagerModules are almost never present in perSystem
-    #scoped inputs' so I can't acces them in my homeConfigurations
-    #so until these are fixed I'm just adding them here.
-    buggedModules = {
-      spicetify-nix_module = inputs.spicetify-nix.homeManagerModule;
-      nur_module = inputs.nur.hmModules.nur;
-      nix-index-db_module = inputs.nix-index-db.hmModules.nix-index ;
-    };
+} @ top: let
+  #External homeManagerModules are almost never present in perSystem
+  #scoped inputs' so I can't acces them in my homeConfigurations
+  #so until these are fixed I'm just adding them here.
+  buggedModules = {
+    spicetify-nix_module = inputs.spicetify-nix.homeManagerModule;
+    nur_module = inputs.nur.hmModules.nur;
+    nix-index-db_module = inputs.nix-index-db.hmModules.nix-index;
+  };
 
-    sharedModules = withSystem "x86_64-linux" ({ inputs', self', ...}:
-      {
-        imports = [
-            self'.homeManagerModules.shells
-            buggedModules.nur_module
-            buggedModules.nix-index-db_module
-          ];
+  sharedModules = withSystem "x86_64-linux" (
+    {
+      inputs',
+      self',
+      ...
+    }: {
+      imports = [
+        self'.homeManagerModules.shells
+        buggedModules.nur_module
+        buggedModules.nix-index-db_module
+        inputs.sops-nix.homeManagerModule
+      ];
 
-        config = {
-          home.shells = {
-            zsh = true;
-            starship = true;
-          };
-          programs.nix-index-database.comma.enable = true;
-
-          # let HM manage itself when in standalone mode
-          programs.home-manager.enable = true;
-
-          home.stateVersion = "23.05";
+      config = {
+        home.shells = {
+          zsh = true;
+          starship = true;
         };
-      }
-    );
+        programs.nix-index-database.comma.enable = true;
 
-    inherit (inputs.hm.lib) homeManagerConfiguration;
+        # let HM manage itself when in standalone mode
+        programs.home-manager.enable = true;
 
+        home.stateVersion = "23.05";
+      };
+    }
+  );
+
+  inherit (inputs.hm.lib) homeManagerConfiguration;
 in {
   flake = {
-    homeConfigurations = withSystem "x86_64-linux" ({pkgs, self', inputs', ...}: let
+    homeConfigurations = withSystem "x86_64-linux" ({
+      pkgs,
+      self',
+      inputs',
+      ...
+    }: let
       extraSpecialArgs = {
         inherit inputs' self' default;
         inherit (buggedModules) spicetify-nix_module eww_module;
       };
-
     in {
       desktop = homeManagerConfiguration {
         inherit pkgs extraSpecialArgs;

@@ -140,7 +140,20 @@
 
   security = {
     # allow wayland lockers to unlock the screen
-    pam.services.swaylock.text = "auth include login";
+    pam = {
+      services = let
+        defaults = {
+          gnupg = {
+            enable = true;
+            noAutostart = true;
+            storeOnly = true;
+          };
+        };
+      in {
+        login = defaults;
+        swaylock = defaults // {text = "auth include login";};
+      };
+    };
 
     # userland niceness
     rtkit.enable = true;

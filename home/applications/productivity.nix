@@ -12,6 +12,5 @@
     obsidian
     # 3d modelling
     blender
-
   ];
 }

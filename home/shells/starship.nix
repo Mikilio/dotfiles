@@ -1,13 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
-
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
   cfg = config.home.shells.starship;
-
 in {
-
   config = mkIf cfg {
     home.sessionVariables.STARSHIP_CACHE = "${config.xdg.cacheHome}/starship";
 

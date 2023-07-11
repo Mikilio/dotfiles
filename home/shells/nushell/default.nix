@@ -1,12 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
-
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
   cfg = config.home.shells.nushell;
 in {
-
   config = mkIf cfg {
     programs.nushell = {
       enable = true;

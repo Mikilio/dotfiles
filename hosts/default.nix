@@ -7,12 +7,9 @@
   sharedModules,
   ...
 }:
-
-with lib;
-
-let
+with lib; let
   sharedModules = [
-    inputs.agenix.nixosModules.default
+    inputs.sops-nix.nixosModules.default
     self.nixosModules.core
     self.nixosModules.network
     self.nixosModules.nix
@@ -30,7 +27,7 @@ in {
     self',
     inputs',
     ...
-  } : {
+  }: {
     homestation = inputs.nixpkgs.lib.nixosSystem {
       inherit system;
 

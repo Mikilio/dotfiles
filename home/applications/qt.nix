@@ -3,16 +3,12 @@
   lib,
   config,
   ...
-} :
-
-with lib;
-
-let
+}:
+with lib; let
   cfg = config.home.applications;
-
 in {
-# Qt theming with Kvantum
-  config = mkIf (cfg!= null && cfg.gui) {
+  # Qt theming with Kvantum
+  config = mkIf (cfg != null && cfg.gui) {
     home.packages = with pkgs; [
       libsForQt5.qtstyleplugin-kvantum
       (catppuccin-kvantum.override {

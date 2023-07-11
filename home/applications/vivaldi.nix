@@ -4,23 +4,17 @@
   lib,
   ...
 }:
-
-with lib;
-
-let
-
+with lib; let
   cfg = config.home.applications;
-
 in {
-
-  config = mkIf (cfg!=null && cfg.browser=="vivaldi"){
-
+  config = mkIf (cfg != null && cfg.browser == "vivaldi") {
     programs.vivaldi = {
       enable = true;
       commandLineArgs = [
         "--disable-gpu-driver-bug-workarounds"
         "--enable-features=WaylandWindowDecorations"
-        "--enable-gpu-rasterization" "--enable-zero-copy"
+        "--enable-gpu-rasterization"
+        "--enable-zero-copy"
         "--ignore-gpu-blocklist"
         "--ozone-platform=wayland"
         "--ozone-platform-hint=auto"

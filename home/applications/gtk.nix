@@ -4,14 +4,10 @@
   lib,
   ...
 }:
-
-with lib;
-
-let
+with lib; let
   cfg = config.home.applications;
-
 in {
-  config = mkIf (cfg!=null && cfg.gui) {
+  config = mkIf (cfg != null && cfg.gui) {
     home.pointerCursor = {
       package = pkgs.bibata-cursors;
       name = "Bibata-Modern-Classic";

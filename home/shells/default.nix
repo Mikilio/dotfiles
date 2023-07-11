@@ -1,16 +1,16 @@
 {
-  perSystem = { ... }@perSystem:
-    let
-      module = { config, lib, pkgs, ... }@hm:
-
-      with lib;
-
-      let
+  perSystem = {...} @ perSystem: let
+    module = {
+      config,
+      lib,
+      pkgs,
+      ...
+    } @ hm:
+      with lib; let
         cfg = config.home.shells;
 
         shellsModule = types.submodule {
           options = {
-
             zsh = mkOption {
               type = types.bool;
               default = false;
@@ -42,13 +42,11 @@
                 Choose your editor
               '';
             };
-
           };
         };
-
       in {
         #import all common configurations
-        imports =  [
+        imports = [
           ./zsh.nix
           ./starship.nix
           ./nushell
@@ -73,7 +71,6 @@
           };
         };
       };
-
   in {
     homeManagerModules.shells = module;
   };

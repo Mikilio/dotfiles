@@ -5,19 +5,14 @@
   config,
   ...
 }:
-
-with lib;
-
-let
-
+with lib; let
   cfg = config.home.desktop;
-
 in {
   imports = [
-      ./config.nix
-    ];
+    ./config.nix
+  ];
 
-  config = mkIf (cfg=="hyprland") {
+  config = mkIf (cfg == "hyprland") {
     home.packages = with pkgs; [
       jaq
       xorg.xprop

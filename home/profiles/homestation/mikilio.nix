@@ -1,12 +1,12 @@
-{ config, options, lib, pkgs, ... }:
-
-with lib;
-
-let
-
-
+{
+  config,
+  options,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
 in {
-
   config = {
     home = {
       username = "mikilio";
@@ -32,7 +32,8 @@ in {
       };
       applications.enable = true;
     };
-
-
+    sops = {
+      defaultSopsFile = ../../secrets/groups/mikilio.yaml;
+    };
   };
- }
+}

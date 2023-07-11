@@ -4,9 +4,7 @@
   default,
   ...
 }: let
-
 in {
-
   flake.nixosModules = {
     core = import ./core.nix;
     desktop = import ./desktop.nix;

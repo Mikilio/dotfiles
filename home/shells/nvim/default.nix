@@ -1,8 +1,10 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
   cfg = config.home.shells;
   cmd = "nvim -i NONE";
   texmagic = pkgs.vimUtils.buildVimPluginFrom2Nix {
@@ -23,16 +25,14 @@ let
       hash = "sha256-WN6gmgn6+/ayvTDUFQ2oTUvkqR7taegUroTiLHg7rCs=";
     };
   };
-
-in
-{
-  config = mkIf (cfg.editor=="nvim"){
+in {
+  config = mkIf (cfg.editor == "nvim") {
     home.file.".config/nvim/lua".source = ./lua;
 
     programs.bash = {
       initExtra = ''
         export EDITOR="nvim"
-        '';
+      '';
 
       shellAliases = {
         vi = cmd;
@@ -48,7 +48,7 @@ in
       withNodeJs = true;
       withPython3 = true;
       extraPackages = with pkgs; [
-#--- LSP ---#
+        #--- LSP ---#
         rnix-lsp
         ccls
         pyright
@@ -57,7 +57,7 @@ in
         rust-analyzer
         texlab
         ltex-ls
-#--null-ls--#
+        #--null-ls--#
         stylua
         black
         nixpkgs-fmt
@@ -65,16 +65,17 @@ in
         beautysh
         nodePackages.prettier
       ];
-      extraLuaPackages = lua: with lua; [
-        plenary-nvim
-        luautf8
-        lua-lsp
-      ];
+      extraLuaPackages = lua:
+        with lua; [
+          plenary-nvim
+          luautf8
+          lua-lsp
+        ];
 
       plugins = with pkgs.vimPlugins; [
-# ----------------------------------------------
-# ------------Styling---------------------------
-# ----------------------------------------------
+        # ----------------------------------------------
+        # ------------Styling---------------------------
+        # ----------------------------------------------
         nvim-web-devicons
         {
           plugin = catppuccin-nvim;
@@ -88,9 +89,9 @@ in
         }
         nvim-ts-rainbow
 
-  # ----------------------------------------------
-  # ------------User Interface--------------------
-  #-----------------------------------------------
+        # ----------------------------------------------
+        # ------------User Interface--------------------
+        #-----------------------------------------------
         {
           plugin = bufferline-nvim;
           config = "require('plugins.bufferline')";
@@ -112,7 +113,7 @@ in
           type = "lua";
         }
 
-  # ----------Apps-----------
+        # ----------Apps-----------
         undotree
         {
           plugin = knap;
@@ -120,9 +121,9 @@ in
           type = "lua";
         }
         {
-        plugin = diffview-nvim;
-        config = "require('plugins.diffview')";
-        type = "lua";
+          plugin = diffview-nvim;
+          config = "require('plugins.diffview')";
+          type = "lua";
         }
         {
           plugin = nvim-dap-ui;
@@ -140,9 +141,9 @@ in
           type = "lua";
         }
 
-#-----------------------------------------------
-# ------------Language Server Protocol----------
-#-----------------------------------------------
+        #-----------------------------------------------
+        # ------------Language Server Protocol----------
+        #-----------------------------------------------
         null-ls-nvim
         {
           plugin = nvim-lspconfig;
@@ -150,7 +151,7 @@ in
           type = "lua";
         }
 
-# ------Auto-Completion----
+        # ------Auto-Completion----
         cmp-buffer
         cmp-path
         cmp_luasnip
@@ -166,13 +167,13 @@ in
           type = "lua";
         }
 
-# ------Snippets-----------
+        # ------Snippets-----------
         luasnip
         friendly-snippets
 
-#-----------------------------------------------
-# ------------Search and Find-------------------
-#-----------------------------------------------
+        #-----------------------------------------------
+        # ------------Search and Find-------------------
+        #-----------------------------------------------
         telescope-media-files-nvim
         telescope-project-nvim
         telescope-fzy-native-nvim
@@ -183,9 +184,9 @@ in
           type = "lua";
         }
 
-#-----------------------------------------------
-# ------------Editing Features------------------
-#-----------------------------------------------
+        #-----------------------------------------------
+        # ------------Editing Features------------------
+        #-----------------------------------------------
         targets-vim
         nvim-ts-context-commentstring
         {
@@ -209,44 +210,42 @@ in
           type = "lua";
         }
 
-
-#-----------------------------------------------
-# ------------Integration-----------------------
-#-----------------------------------------------
-#Zettelkasten
+        #-----------------------------------------------
+        # ------------Integration-----------------------
+        #-----------------------------------------------
+        #Zettelkasten
         {
           plugin = zk-nvim;
           config = "require('zk').setup()";
           type = "lua";
         }
 
-#Debug Adapter Protocol
+        #Debug Adapter Protocol
         nvim-dap
 
-#TeXMagic
+        #TeXMagic
         {
           plugin = texmagic;
           config = "require('texmagic').setup{}";
           type = "lua";
         }
 
-
-#Tree-Sitter
+        #Tree-Sitter
         {
           plugin = nvim-treesitter.withAllGrammars;
           config = "require('plugins.treesitter')";
           type = "lua";
         }
 
-# Pop-up API from vim
+        # Pop-up API from vim
         popup-nvim
 
-# git-worktrees
+        # git-worktrees
         git-worktree-nvim
 
-#-----------------------------------------------
-# ------------Miscellaneous----------------------
-#-----------------------------------------------
+        #-----------------------------------------------
+        # ------------Miscellaneous----------------------
+        #-----------------------------------------------
         neomake
         vim-startuptime
         {
