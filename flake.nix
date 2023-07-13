@@ -14,8 +14,6 @@
         ./secrets
       ];
 
-      debug = true;
-
       perSystem = {
         config,
         pkgs,
@@ -24,14 +22,10 @@
         # set flake-wide pkgs to the one exported by ./lib
         imports = [{_module.args.pkgs = config.legacyPackages;}];
 
-        devShells.default = pkgs.mkShell {
-          packages = [
-            pkgs.alejandra
-            pkgs.git
-            config.packages.repl
+        devShells.default =pkgs.devshell.mkShell {
+          imports = [
+            (pkgs.devshell.importTOML ./devshell.toml)
           ];
-          name = "dots";
-          DIRENV_LOG_FORMAT = "";
         };
 
         formatter = pkgs.alejandra;
