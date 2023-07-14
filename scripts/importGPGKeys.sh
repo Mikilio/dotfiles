@@ -5,14 +5,14 @@ local key dir
   fi
   for key in ${sopsPGPKeys-}; do
     if [[ -f "$key" ]]; then
-        @gpg@ --quiet --import "$key"
+        gpg --quiet --import "$key"
     else
         echo "$key does not exists" >&2
     fi
   done
   for dir in ${sopsPGPKeyDirs-}; do
     while IFS= read -r -d '' key; do
-      @gpg@ --quiet --import "$key"
+      gpg --quiet --import "$key"
     done < <(find -L "$dir" -type f \( -name '*.gpg' -o -name '*.asc' \) -print0)
   done
 

@@ -18,22 +18,34 @@ in {
     }
   ];
 
-  perSystem = {system, ...}: {
-    legacyPackages = import inputs.nixpkgs {
+  perSystem = {system, pkgs, packageList, ...}: {
+    _module.args.pkgs= import inputs.nixpkgs {
       inherit system;
-      config.allowUnfree = true;
       # allow spotify to be installed if you don't have unfree enabled already
-      /*
       config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-      */
-      /*
       "spotify"
-      */
-      /*
+      "vivaldi"
       ];
-      */
-      /**/
       overlays = [
+        #enable devshell
+        inputs.devshell.overlays.default
+
+        #import this flakes packages into global pkgs
+        # TODO : this is kinda bad find alternative
+        (
+          with builtins;
+          final: prev: (
+            listToAttrs (
+              map (p: {
+                name = baseNameOf p;
+                value = prev.callPackage p {};
+                }
+              ) packageList
+            )
+          )
+        )
+
+        #all normal overrides
         (
           _: prev: {
             steam = prev.steam.override {
@@ -80,9 +92,13 @@ in {
                 hash = "sha256-0NYWEJNVDfp8KNyWVY8LkvKIQUTq2MGvKUGcuAcl82U=";
               };
             });
+
+            discord-canary = prev.discord-canary.override {
+              nss = prev.nss_latest;
+              withOpenASAR = true;
+            };
           }
         )
-        inputs.devshell.overlays.default
       ];
     };
   };

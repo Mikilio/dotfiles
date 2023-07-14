@@ -1,3 +1,36 @@
+[[env]]
+name = "sopsCreateGPGHome"
+value = true
+
+[[env]]
+name = "sopsPGPKeys"
+value = "./secrets/keys/hosts ./secrets/keys/users"
+
 [[commands]]
-name = "foo"
-command = "echo foo"
+name = "getgpg"
+help = "Use admin keys instead of user keyring"
+category = "scripts"
+command = "source './scripts/importGPGKeys.sh'"
+
+[[commands]]
+name = "preinstall"
+help = "Install nixos to available drives"
+category = "scripts"
+command = "source './scripts/prepare-nixos.sh'"
+
+[[commands]]
+category = "programs"
+package = "sops"
+
+[[commands]]
+category = "programs"
+package = "repl"
+
+[devshell]
+packages = [
+  "gnupg",
+  "coreutils",
+  "parted",
+  "nixos-install-tools",
+  "alejandra",
+]

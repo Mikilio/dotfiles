@@ -45,6 +45,8 @@ select_folder() {
     done
 }
 
+cd $PRJ_ROOT
+
 # Use select_disk function to choose the disk
 echo "Select disk:"
 DISK=$(select_disk)
@@ -125,13 +127,12 @@ sudo mount /dev/disk/by-label/boot /mnt/boot
 # If your machine has a limited amount of memory, you may want to activate swap devices now (swapon device). The installer (or rather, the build actions that it may spawn) may need quite a bit of RAM, depending on your configuration.
 sudo swapon "${DISK}${NAME_DIVIDER}2"
 
-# The command nixos-generate-config can generate an initial configuration file for you:
-sudo `which nixos-generate-config` --root /mnt
-
 # select target
 TARGET=$(select_folder)
 
-sudo cp /mnt/etc/nixos/hardware-configuration.nix ./hosts/${TARGET}/hardware-configuration.nix
+# The command nixos-generate-config can generate an initial configuration file for you:
+sudo `which nixos-generate-config` --root /mnt --show-hardware-config > ./hosts/${TARGET}/hardware-configuration.nix
+
 git commit -a --amend
 git push -f
 sudo rm -rf /mnt/etc/nixos
@@ -139,6 +140,5 @@ sudo git clone https://github.com/Mikilio/dotfiles.git /mnt/etc/nixos
 
 echo "More info on https://nixos.org/nixos/manual/index.html#sec-installation-installing "
 echo ""
-echo "You should run the install-nixos.sh script."
-echo "If this one fail for whatever reason just run:"
-echo "$ sudo --preserve-env=PATH,NIX_PATH `which nixos-install` --root /mnt --flake /mnt/etc/nixos#${TARGET}"
+echo "To finalize the install run:"
+echo "$ sudo --preserve-env=PATH,NIX_PATH `which nixos-install` --root /mnt --flake /mnt/etc/nixos#${TARGET} --no-root-password"

@@ -1,25 +1,26 @@
-{
+let
+  packageList = [
+    ./repl
+    ./catppuccin-plymouth
+    ./gdb-frontend
+    ./howdy
+    ./linux-enable-ir-emitter
+    ./waveform
+  ];
+in {
   systems = ["x86_64-linux"];
 
-  perSystem = {pkgs, ...}: {
-    packages = {
-      # instant repl with automatic flake loading
-      repl = pkgs.callPackage ./repl {};
+  perSystem = {pkgs, ...}: with builtins; {
 
-      catppuccin-plymouth = pkgs.callPackage ./catppuccin-plymouth {};
+    _module.args.packageList = packageList;
 
-      discord-canary = pkgs.discord-canary.override {
-        nss = pkgs.nss_latest;
-        withOpenASAR = true;
-      };
-
-      gdb-frontend = pkgs.callPackage ./gdb-frontend {};
-
-      howdy = pkgs.callPackage ./howdy {};
-
-      linux-enable-ir-emitter = pkgs.callPackage ./linux-enable-ir-emitter {};
-
-      waveform = pkgs.callPackage ./waveform {};
-    };
+    packages = listToAttrs (
+      map (p: {
+        name = baseNameOf p;
+        value = pkgs.callPackage p {};
+        }
+      ) packageList
+    );
+    legacyPackages = pkgs;
   };
 }
