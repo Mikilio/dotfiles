@@ -28,17 +28,12 @@ with lib; let
 in {
   config = mkIf (cfg.editor == "nvim") {
     home.file.".config/nvim/lua".source = ./lua;
+    home.sessionVariables.EDITOR = "nvim";
 
-    programs.bash = {
-      initExtra = ''
-        export EDITOR="nvim"
-      '';
-
-      shellAliases = {
-        vi = cmd;
-        vim = cmd;
-        nvim = cmd;
-      };
+    programs.bash.shellAliases = {
+      vi = cmd;
+      vim = cmd;
+      nvim = cmd;
     };
 
     programs.neovim = {

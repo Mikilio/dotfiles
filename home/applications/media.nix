@@ -3,6 +3,7 @@
   lib,
   config,
   self',
+  flakePath,
   ...
 }:
 with lib; let
@@ -54,7 +55,7 @@ in {
 
       spotifyd = {
         enable = true;
-        package = pkgs.spotifyd.override {withMpris = true;};
+        package = pkgs.spotifyd.override {withMpris = true; withKeyring = true;};
         settings.global = {
           autoplay = true;
           backend = "pulseaudio";
@@ -62,12 +63,16 @@ in {
           cache_path = "${config.xdg.cacheHome}/spotifyd";
           device_type = "computer";
           initial_volume = "100";
+          password_cmd = "sops -d --extract '[\"spotify\"][\"pwd\"]' ${flakePath}/secrets/groups/mikilio.yaml";
           use_mpris = true;
+          username_cmd = "sops -d --extract '[\"spotify\"][\"usr\"]' ${flakePath}/secrets/groups/mikilio.yaml";
           volume_normalisation = false;
         };
       };
 
       udiskie.enable = true;
     };
+
+    systemd.user.services.spotifyd.Unit.After = [ "sops-nix.service" ];
   };
 }

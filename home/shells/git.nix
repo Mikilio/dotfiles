@@ -60,7 +60,10 @@
         smtpEncryption = "tls";
         smtpUser = "official.mikilio@gmail.com";
       };
-      credential.helper = "libsecret";
+      credential."smtp://smtp.gmail.com:587".helper = ''
+        !f() { echo username=official.mikilio@gmail.com; echo "password=$(cat ${config.sops.secrets.google-git.path})"; }; f 2> /dev/null
+      '';
+      credential.helper = "store";
       advice = {
         detachedHead = false;
         skippedCherryPicks = false;

@@ -120,6 +120,6 @@
     isNormalUser = true;
     shell = pkgs.zsh;
     passwordFile = "${self.outPath}/secrets/hashes/mikilio.txt";
-    extraGroups = ["adbusers" "input" "libvirtd" "networkmanager" "plugdev" "transmission" "video" "wheel"];
+    extraGroups = ["adbusers" "input" "libvirtd" "networkmanager" "plugdev" "keys" "transmission" "video" "wheel"];
   };
 }

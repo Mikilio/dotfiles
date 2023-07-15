@@ -22,10 +22,15 @@ in {
     _module.args.pkgs= import inputs.nixpkgs {
       inherit system;
       # allow spotify to be installed if you don't have unfree enabled already
-      config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-      "spotify"
-      "vivaldi"
-      ];
+      config.allowUnfreePredicate = pkg: builtins.elem  [] (
+        map (re: builtins.match re (lib.getName pkg)) [
+          "spotify"
+          "vivaldi"
+          "steam.*"
+          "discord-canary"
+          "waveform"
+        ]
+      );
       overlays = [
         #enable devshell
         inputs.devshell.overlays.default

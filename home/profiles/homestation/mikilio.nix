@@ -3,6 +3,7 @@
   options,
   lib,
   pkgs,
+  flakePath,
   ...
 }:
 with lib; let
@@ -14,9 +15,7 @@ in {
       stateVersion = "23.05";
       extraOutputsToInstall = ["doc" "devdoc"];
       sessionVariables = {
-        EDITOR = "nvim";
-        BROWSER = "vivaldi";
-        TERMINAL = "alacritty";
+
         # clean up ~
         LESSHISTFILE = "$XDG_CACHE_HOME/less/history";
         LESSKEY = "$XDG_CONFIG_HOME/less/lesskey";
@@ -33,7 +32,15 @@ in {
       applications.enable = true;
     };
     sops = {
-      defaultSopsFile = ../../secrets/groups/mikilio.yaml;
+      # or some other source for the decryption key
+      gnupg.home = "${config.xdg.dataHome}/gnupg";
+      # or which file contains the encrypted secrets
+      defaultSopsFile = "${flakePath}/secrets/groups/mikilio.yaml";
+      defaultSymlinkPath = "$XDG_RUNTIME_DIR/secrets";
+      defaultSecretsMountPoint = "$XDG_RUNTIME_DIR/secrets.d";
+      secrets = {
+        google-git = { };
+      };
     };
   };
 }

@@ -13,6 +13,9 @@ with lib;
     cfg = config.home.applications;
   in {
     config = mkIf (cfg != null && cfg.terminal == "alacritty") {
+
+      home.sessionVariables.TERMINAL = "alacritty";
+
       programs.alacritty = {
         enable = true;
         settings = {

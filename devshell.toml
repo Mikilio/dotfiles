@@ -3,8 +3,8 @@ name = "sopsCreateGPGHome"
 value = true
 
 [[env]]
-name = "sopsPGPKeys"
-value = "./secrets/keys/hosts ./secrets/keys/users"
+name = "sopsPGPKeyDirs"
+value = "secrets/keys/hosts secrets/keys/users"
 
 [[commands]]
 name = "getgpg"

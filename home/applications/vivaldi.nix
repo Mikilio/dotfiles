@@ -8,6 +8,9 @@ with lib; let
   cfg = config.home.applications;
 in {
   config = mkIf (cfg != null && cfg.browser == "vivaldi") {
+
+    home.sessionVariables.BROWSER = "vivaldi";
+
     programs.vivaldi = {
       enable = true;
       commandLineArgs = [

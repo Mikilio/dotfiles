@@ -14,6 +14,8 @@
     nix-index-db_module = inputs.nix-index-db.hmModules.nix-index;
   };
 
+  flakePath = self.outPath;
+
   sharedModules = withSystem "x86_64-linux" (
     {
       inputs',
@@ -52,7 +54,7 @@ in {
       ...
     }: let
       extraSpecialArgs = {
-        inherit inputs' self' default;
+        inherit inputs' self' default flakePath;
         inherit (buggedModules) spicetify-nix_module eww_module;
       };
     in {

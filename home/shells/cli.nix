@@ -3,7 +3,8 @@
     # archives
     zip
     unzip
-    unrar
+    unar
+    unrar-wrapper
 
     # utils
     file
