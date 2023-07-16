@@ -58,12 +58,12 @@ in {
         inherit (buggedModules) spicetify-nix_module eww_module;
       };
     in {
-      desktop = homeManagerConfiguration {
+      full = homeManagerConfiguration {
         inherit pkgs extraSpecialArgs;
         modules = [
           self'.homeManagerModules.applications
           self'.homeManagerModules.desktop
-          ./homestation/mikilio.nix
+          ./full.nix
           sharedModules
         ];
       };
