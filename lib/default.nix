@@ -53,7 +53,7 @@ in {
 
         #all normal overrides
         (
-          _: prev: {
+          final : prev: {
             steam = prev.steam.override {
               extraPkgs = pkgs:
                 with pkgs; [
@@ -105,9 +105,27 @@ in {
             };
 
             vivaldi = prev.vivaldi.override {
-              /* proprietaryCodecs = true; */
+              proprietaryCodecs = true;
               enableWidevine = true;
             };
+
+            vivaldi-ffmpeg-codecs = prev.vivaldi-ffmpeg-codecs.overrideAttrs (_: rec {
+              version = "111306";
+              src = final.fetchurl {
+                url = "https://api.snapcraft.io/api/v1/snaps/download/XXzVIXswXKHqlUATPqGCj2w2l7BxosS8_34.snap";
+                sha256 = "sha256-Dna9yFgP7JeQLAeZWvSZ+eSMX2yQbX2/+mX0QC22lYY=";
+              };
+
+              buildInputs = with final; [squashfsTools];
+
+              unpackPhase = ''
+                unsquashfs -dest . $src
+              '';
+
+              installPhase = ''
+                install -vD chromium-ffmpeg-${version}/chromium-ffmpeg/libffmpeg.so $out/lib/libffmpeg.so
+              '';
+            });
           }
         )
       ];

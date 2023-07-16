@@ -55,7 +55,7 @@ in {
 
       spotifyd = {
         enable = true;
-        package = pkgs.spotifyd.override {withMpris = true; withKeyring = true;};
+        package = pkgs.spotifyd.override {withMpris = true;};
         settings.global = {
           autoplay = true;
           backend = "pulseaudio";
