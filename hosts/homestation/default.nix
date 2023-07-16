@@ -31,7 +31,16 @@
 
     lanzaboote = {
       enable = true;
+      #currently breaks system
+      /* enrollKeys = true; */
+      configurationLimit = 10;
       pkiBundle = "/etc/secureboot";
+      settings = {
+        #currently breaks system
+        /* password = "$__file{${config.sops.secrets.boot_pwd.path}}"; */
+        splash_bmp_load = "YES";
+        splash_pcx_load = "YES";
+      };
     };
 
     loader = {
@@ -43,6 +52,7 @@
       # generated at installation time. So we force it to false
       # for now.
       systemd-boot.enable = lib.mkForce false;
+      systemd-boot.consoleMode = "auto";
     };
 
     plymouth = {
@@ -107,7 +117,11 @@
     printing.enable = true;
   };
 
-  sops.defaultSopsFile = "${self.outPath}/secrets/groups/homestation.yaml";
+  sops = {
+    age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+    defaultSopsFile = "${self.outPath}/secrets/groups/homestation.yaml";
+    secrets.boot_pwd = {};
+  };
 
   networking = {
     hostName = "homestation";
