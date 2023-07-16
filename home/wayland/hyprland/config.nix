@@ -14,9 +14,6 @@ in {
     env = _JAVA_AWT_WM_NONREPARENTING,1
     env = QT_WAYLAND_DISABLE_WINDOWDECORATION,1
 
-    # kill xdg-desktop-portal-wlr so we can have sway on the system
-    exec-once = killall -e xdg-desktop-portal-wlr
-
     # scale apps
     exec-once = xprop -root -f _XWAYLAND_GLOBAL_OUTPUT_SCALE 32c -set _XWAYLAND_GLOBAL_OUTPUT_SCALE 2
 
@@ -25,6 +22,11 @@ in {
 
     exec-once = systemctl --user start clight
     exec-once = eww open bar
+
+    #monitor setups:
+    #homestation
+    monitor=DP-1, 1920x1080, 0x0, 1
+    monitor=DP-2, 1920x1080, 1920x0, 1
 
     # use this instead of hidpi patches
     xwayland {
@@ -38,6 +40,8 @@ in {
       animate_mouse_windowdragging = false
       # enable variable refresh rate (effective depending on hardware)
       vrr = 1
+      #we have already handled this adequately
+      suppress_portal_warnings = true
     }
 
     general {

@@ -5,7 +5,6 @@
       homedir = "${config.xdg.dataHome}/gnupg";
       settings = {
         use-agent = true;
-        pinentry-mode =  "loopback";
       };
     };
   };
@@ -29,10 +28,7 @@
       maxCacheTtl = 54000;
       extraConfig = ''
         allow-preset-passphrase
-        allow-loopback-pinentry
       '';
     };
   };
-
-  systemd.user.services.spotifyd.Unit.WantedBy = [ "sops-nix.service" ];
 }

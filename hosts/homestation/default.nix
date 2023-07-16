@@ -1,27 +1,33 @@
-{
-  config,
-  pkgs,
-  lib,
-  self,
-  self',
-  inputs',
-  ...
+{ config
+, pkgs
+, lib
+, self
+, self'
+, inputs'
+, ...
 } @ args: {
-  imports = [./hardware-configuration.nix];
+  imports = [ ./hardware-configuration.nix ];
 
   boot = {
     initrd = {
       systemd.enable = true;
-      supportedFilesystems = ["ext4"];
+      supportedFilesystems = [ "ext4" ];
+      verbose = false;
     };
 
+    # make it shut up
+    consoleLogLevel = 0;
+
     # load modules on boot
-    kernelModules = ["acpi_call"];
+    kernelModules = [ "acpi_call" ];
 
     # use latest kernel
     kernelPackages = pkgs.linuxPackages_xanmod_latest;
 
-    kernelParams = ["amd_pstate=active"];
+    kernelParams = [
+      "amd_pstate=active"
+      "quiet"
+    ];
 
     lanzaboote = {
       enable = true;
@@ -31,6 +37,7 @@
     loader = {
       # systemd-boot on UEFI
       efi.canTouchEfiVariables = true;
+      timeout = 0;
       # Lanzaboote currently replaces the systemd-boot module.
       # This setting is usually set to true in configuration.nix
       # generated at installation time. So we force it to false
@@ -40,8 +47,9 @@
 
     plymouth = {
       enable = true;
-      themePackages = [self'.packages.catppuccin-plymouth];
+      themePackages = [ pkgs.catppuccin-plymouth ];
       theme = "catppuccin-mocha";
+
     };
   };
 
@@ -58,13 +66,6 @@
     enableRedistributableFirmware = true;
 
     xpadneo.enable = true;
-  };
-
-  programs = {
-    # enable hyprland and required options
-    hyprland.enable = true;
-    steam.enable = true;
-    sway.enable = true;
   };
 
   security.tpm2 = {
@@ -111,8 +112,8 @@
   networking = {
     hostName = "homestation";
     firewall = {
-      allowedTCPPorts = [42355];
-      allowedUDPPorts = [5353];
+      allowedTCPPorts = [ 42355 ];
+      allowedUDPPorts = [ 5353 ];
     };
   };
   users.mutableUsers = false;
@@ -120,6 +121,6 @@
     isNormalUser = true;
     shell = pkgs.zsh;
     passwordFile = "${self.outPath}/secrets/hashes/mikilio.txt";
-    extraGroups = ["adbusers" "input" "libvirtd" "networkmanager" "plugdev" "keys" "transmission" "video" "wheel"];
+    extraGroups = [ "adbusers" "input" "libvirtd" "networkmanager" "plugdev" "keys" "transmission" "video" "wheel" ];
   };
 }

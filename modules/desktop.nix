@@ -138,29 +138,35 @@
     udev.packages = with pkgs; [gnome.gnome-settings-daemon];
   };
 
+  # allow wayland lockers to unlock the screen
   security = {
-    # allow wayland lockers to unlock the screen
-    pam = {
-      services = let
-        defaults = {
-          gnupg = {
-            enable = true;
-            noAutostart = true;
-            storeOnly = true;
-          };
-        };
-      in {
-        login = defaults;
-        swaylock = defaults // {text = "auth include login";};
-      };
+    pam.services.swaylock = {
+      text = ''
+        auth include login
+        auth optional ${pkgs.pam_gnupg}/lib/security/pam_gnupg.so
+      '';
     };
 
     # userland niceness
     rtkit.enable = true;
   };
 
+  programs = {
+    # enable hyprland and required options
+    hyprland.enable = true;
+    steam.enable = true;
+    sway.enable = true;
+  };
+
+  #start only the correct portals
+  systemd.user.services = {
+    xdg-desktop-portal-wlr.unitConfig.ConditionEnvironment = "XDG_CURRENT_DESKTOP=Sway";
+    xdg-desktop-portal-hyprland.unitConfig.ConditionEnvironment = "XDG_CURRENT_DESKTOP=Hyprland";
+  };
+
   xdg.portal = {
     enable = true;
+    xdgOpenUsePortal = true;
     extraPortals = [pkgs.xdg-desktop-portal-gtk];
   };
 }

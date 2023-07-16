@@ -25,7 +25,8 @@ in {
       config.allowUnfreePredicate = pkg: builtins.elem  [] (
         map (re: builtins.match re (lib.getName pkg)) [
           "spotify"
-          "vivaldi"
+          "vivaldi*"
+          "widevine-cdm"
           "steam.*"
           "discord-canary"
           "waveform"
@@ -101,6 +102,11 @@ in {
             discord-canary = prev.discord-canary.override {
               nss = prev.nss_latest;
               withOpenASAR = true;
+            };
+
+            vivaldi = prev.vivaldi.override {
+              /* proprietaryCodecs = true; */
+              enableWidevine = true;
             };
           }
         )

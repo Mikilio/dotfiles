@@ -4,10 +4,11 @@
   lib,
   ...
 }:
-with lib; let
+with lib; with builtins; let
   cfg = config.home.applications;
+  browser = if (isNull cfg) then null else cfg.browser;
 in {
-  config = mkIf (cfg != null && cfg.browser == "vivaldi") {
+  config = mkIf (browser == "vivaldi") {
 
     home.sessionVariables.BROWSER = "vivaldi";
 
@@ -21,7 +22,7 @@ in {
         "--ignore-gpu-blocklist"
         "--ozone-platform=wayland"
         "--ozone-platform-hint=auto"
-        "--enable-features=WaylandWindowDecorations,CanvasOopRasterization,Vulkan,UseSkiaRenderer,WebContentsForceDark"
+        "--enable-features=WaylandWindowDecorations,CanvasOopRasterization,Vulkan,UseSkiaRenderer"
       ];
       extensions = [
         {id = "fdjamakpfbbddfjaooikfcpapjohcfmg";}

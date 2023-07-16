@@ -36,11 +36,15 @@ in {
       gnupg.home = "${config.xdg.dataHome}/gnupg";
       # or which file contains the encrypted secrets
       defaultSopsFile = "${flakePath}/secrets/groups/mikilio.yaml";
-      defaultSymlinkPath = "$XDG_RUNTIME_DIR/secrets";
-      defaultSecretsMountPoint = "$XDG_RUNTIME_DIR/secrets.d";
+      /* defaultSymlinkPath = "$XDG_RUNTIME_DIR/secrets"; */
+      /* defaultSecretsMountPoint = "$XDG_RUNTIME_DIR/secrets.d"; */
       secrets = {
         google-git = { };
+        spotify_pwd.key  = "spotify/pwd";
+        spotify_usr.key = "spotify/usr";
+
       };
     };
+    systemd.user.services.sops-nix.Install.WantedBy = lib.mkForce ["graphical-session.target"];
   };
 }

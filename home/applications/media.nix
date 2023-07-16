@@ -63,9 +63,9 @@ in {
           cache_path = "${config.xdg.cacheHome}/spotifyd";
           device_type = "computer";
           initial_volume = "100";
-          password_cmd = "sops -d --extract '[\"spotify\"][\"pwd\"]' ${flakePath}/secrets/groups/mikilio.yaml";
+          password_cmd = "cat ${config.sops.secrets.spotify_pwd.path}";
           use_mpris = true;
-          username_cmd = "sops -d --extract '[\"spotify\"][\"usr\"]' ${flakePath}/secrets/groups/mikilio.yaml";
+          username_cmd = "cat ${config.sops.secrets.spotify_usr.path}";
           volume_normalisation = false;
         };
       };

@@ -63,7 +63,7 @@
       credential."smtp://smtp.gmail.com:587".helper = ''
         !f() { echo username=official.mikilio@gmail.com; echo "password=$(cat ${config.sops.secrets.google-git.path})"; }; f 2> /dev/null
       '';
-      credential.helper = "store";
+      credential.helper = "";
       advice = {
         detachedHead = false;
         skippedCherryPicks = false;

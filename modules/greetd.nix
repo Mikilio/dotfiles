@@ -51,10 +51,10 @@ in {
     };
   };
 
-  services.greetd.settings.default_session.command =
-    "${config.programs.sway.package}/bin/sway --config ${greetdSwayConfig}"
-    + (lib.optionalString (config.networking.hostName == "rog") " --unsupported-gpu");
-
+  services.greetd.settings.default_session = {
+    enable = true;
+    command = "${config.programs.sway.package}/bin/sway --config ${greetdSwayConfig}";
+  };
   # unlock GPG keyring on login
   security.pam.services.greetd.gnupg.enable = true;
 }
