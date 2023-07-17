@@ -1,9 +1,7 @@
 let
   packageList = [
     ./repl
-    ./catppuccin-plymouth
     ./gdb-frontend
-    ./howdy
     ./linux-enable-ir-emitter
     ./waveform
   ];

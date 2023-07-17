@@ -42,6 +42,11 @@ in {
           self.nixosModules.desktop
           self.nixosModules.gamemode
           inputs.lanzaboote.nixosModules.lanzaboote
+          inputs.nixos-hardware.nixosModules.common-cpu-amd
+          inputs.nixos-hardware.nixosModules.common-cpu-amd-pstate
+          inputs.nixos-hardware.nixosModules.common-gpu-amd
+          inputs.nixos-hardware.nixosModules.common-pc
+          inputs.nixos-hardware.nixosModules.common-pc-ssd
         ]
         ++ sharedModules
         ++ desktopModules;

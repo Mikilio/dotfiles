@@ -18,7 +18,7 @@ in {
     }
   ];
 
-  perSystem = {system, pkgs, packageList, ...}: {
+  perSystem = {system, inputs', pkgs, packageList, ...}: {
     _module.args.pkgs= import inputs.nixpkgs {
       inherit system;
       # allow spotify to be installed if you don't have unfree enabled already
@@ -68,7 +68,10 @@ in {
                   xorg.libXinerama
                   xorg.libXScrnSaver
                 ];
-              extraProfile = "export GDK_SCALE=2";
+              extraProfile = ''
+                export GDK_SCALE=2
+                export STEAM_EXTRA_COMPAT_TOOLS_PATHS='${inputs'.nix-gaming.packages.proton-ge}'
+              '';
             };
 
             greetd =

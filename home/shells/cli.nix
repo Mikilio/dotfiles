@@ -16,7 +16,6 @@
 
     # file managers
     joshuto
-    ranger
   ];
 
   programs = {

@@ -18,14 +18,11 @@
     # make it shut up
     consoleLogLevel = 0;
 
-    # load modules on boot
-    kernelModules = [ "acpi_call" ];
-
     # use latest kernel
     kernelPackages = pkgs.linuxPackages_xanmod_latest;
 
     kernelParams = [
-      "amd_pstate=active"
+      "quiet"
     ];
 
     lanzaboote = {
@@ -56,9 +53,8 @@
 
     plymouth = {
       enable = true;
-      themePackages = [ pkgs.catppuccin-plymouth ];
+      themePackages = [ (pkgs.catppuccin-plymouth.override {variant = "mocha";}) ];
       theme = "catppuccin-mocha";
-
     };
   };
 
@@ -70,10 +66,6 @@
     # smooth backlight control
     brillo.enable = true;
 
-    cpu.amd.updateMicrocode = true;
-
-    enableRedistributableFirmware = true;
-
     xpadneo.enable = true;
   };
 
@@ -83,8 +75,6 @@
   };
 
   services = {
-    # for SSD/NVME
-    fstrim.enable = true;
 
     # keyboard remapping (commented out because of chroot issues)
     kmonad = {
