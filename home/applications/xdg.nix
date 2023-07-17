@@ -55,6 +55,7 @@ in {
       extraConfig = {
         XDG_DEV_DIR = "${homeDir}/dev";
         XDG_GAMES_DIR = "${homeDir}/games";
+        XDG_PRIVATE_DIR = "${homeDir}/etc/private";
         XDG_SCREENSHOTS_DIR = "${homeDir}/media/pics/screenshots";
       };
     };

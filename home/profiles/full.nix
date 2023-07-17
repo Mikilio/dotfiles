@@ -37,7 +37,7 @@ in {
       # or which file contains the encrypted secrets
       defaultSopsFile = "${flakePath}/secrets/groups/mikilio.yaml";
       secrets = builtins.mapAttrs (name: value:
-        value // {path = "$XDG_RUNTIME_DIR/secrets/${name}";}
+        value // {path = "${config.xdg.userDirs.extraConfig.XDG_PRIVATE_DIR}/secrets/${name}";}
       ) {
         google-git = { };
         spotify_pwd.key  = "spotify/pwd";

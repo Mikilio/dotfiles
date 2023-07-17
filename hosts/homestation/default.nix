@@ -26,7 +26,6 @@
 
     kernelParams = [
       "amd_pstate=active"
-      "quiet"
     ];
 
     lanzaboote = {
