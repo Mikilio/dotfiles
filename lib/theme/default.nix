@@ -21,7 +21,7 @@
 
   wallpaper = builtins.fetchurl rec {
     name = "wallpaper-${sha256}.png";
-    url = "https://images.unsplash.com/photo-1529840882932-55f06ab2c681";
-    sha256 = "1xngx610skv1vqzx1c7j2zv5cg3gld3hkcxki8jd30rssjjx98p2";
+    url = "https://w.wallhaven.cc/full/p9/wallhaven-p9yp3e.jpg";
+    sha256 = "1vg35hwa4yvwa3pmb9ahh0x8v9p4zw785s57gjbis7h7cwwfb60l";
   };
 }

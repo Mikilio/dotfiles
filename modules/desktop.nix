@@ -101,8 +101,6 @@
   # make HM-managed GTK stuff work
   programs = {
     dconf.enable = true;
-
-    seahorse.enable = true;
   };
 
   services = {
@@ -117,8 +115,6 @@
       };
     };
     ddccontrol.enable = true;
-
-    gnome.gnome-keyring.enable = true;
 
     pipewire = {
       enable = true;

@@ -8,7 +8,9 @@
 # greetd display manager
 let
   greetdSwayConfig = pkgs.writeText "greetd-sway-config" ''
-    exec "dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP"
+
+    output * background ${default.wallpaper} fill
+
     input "type:touchpad" {
       tap enabled
     }
@@ -23,6 +25,7 @@ let
 
     exec "${lib.getExe config.programs.regreet.package} -l debug; swaymsg exit"
   '';
+
 in {
   environment.systemPackages = with pkgs; [
     # theme packages
@@ -53,8 +56,19 @@ in {
 
   services.greetd.settings.default_session = {
     enable = true;
-    command = "${config.programs.sway.package}/bin/sway --config ${greetdSwayConfig}";
+    command = "${pkgs.dbus}/bin/dbus-run-session ${config.programs.sway.package}/bin/sway --config ${greetdSwayConfig}";
   };
+
+
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+  };
+
   # unlock GPG keyring on login
-  security.pam.services.greetd.gnupg.enable = true;
+  security.pam.services.greetd.gnupg = {
+    enable = true;
+    storeOnly = true;
+    noAutostart = true;
+  };
 }

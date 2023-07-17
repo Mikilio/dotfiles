@@ -34,8 +34,6 @@
       settings = {
         #currently breaks system
         /* password = "$__file{${config.sops.secrets.boot_pwd.path}}"; */
-        splash_bmp_load = "YES";
-        splash_pcx_load = "YES";
       };
     };
 
