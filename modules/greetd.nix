@@ -59,12 +59,6 @@ in {
     command = "${pkgs.dbus}/bin/dbus-run-session ${config.programs.sway.package}/bin/sway --config ${greetdSwayConfig}";
   };
 
-
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-  };
-
   # unlock GPG keyring on login
   security.pam.services.greetd.gnupg = {
     enable = true;

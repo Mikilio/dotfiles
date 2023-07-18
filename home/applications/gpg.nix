@@ -11,6 +11,7 @@
 
   #integration with pam services (unlock gpg after login)
   home.file.".pam-gnupg".text = ''
+    ${config.programs.gpg.homedir}
     947AD9A76E3CC264849444CC4A2A650F9E76B5FF
     BAF2341BD88A9E24A39A102122D699162F301F57
     962C29E85C5026E104466143BA6CE4D7F95B81A9
