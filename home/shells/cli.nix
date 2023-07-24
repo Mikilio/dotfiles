@@ -11,11 +11,10 @@
     du-dust
     duf
     fd
+    bat
     ripgrep
     xdg-utils
 
-    # file managers
-    joshuto
   ];
 
   programs = {
@@ -46,5 +45,24 @@
         "--exact"
       ];
     };
+  };
+
+  home.shellAliases = {
+    df = "duf";
+    g = "git";
+    grep = "rg";
+    cat = "bat";
+    ip = "ip --color";
+    l = "exa --icons --git";
+    la = "l -la";
+    lf = "joshuto";
+    ll = "l -l";
+    ls = "l";
+    md = "mkdir -p";
+    x = "xargs";
+    "..." = "cd ../..";
+    us = "systemctl --user";
+    rs = "sudo systemctl";
+    hm = "f () { [ -d $HOME/dotfiles ] && nix run $HOME/dotfiles \"$@\" || echo \"Please place dotfiles in $HOME\"; }; f";
   };
 }

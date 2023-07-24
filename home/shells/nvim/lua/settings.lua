@@ -68,9 +68,6 @@ local options  = {
   spelloptions = 'camel'
 }
 
--- Keybinds
-require("keymaps")
-
 for k, v in pairs(options) do
 	vim.opt[k] = v
 end

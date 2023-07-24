@@ -23,9 +23,6 @@
     ];
   };
 
-  # graphics drivers / HW accel
-  hardware.opengl.enable = true;
-
   # pickup pkgs from flake export
   nixpkgs.pkgs = self.legacyPackages.${config.nixpkgs.system};
 
@@ -43,6 +40,10 @@
         highlighters = ["main" "brackets" "pattern"];
       };
     };
+  };
+
+  services = {
+    dbus.implementation = "broker";
   };
 
   # don't ask for password for wheel group

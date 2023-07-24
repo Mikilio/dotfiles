@@ -16,10 +16,14 @@
       noto-fonts-cjk
       noto-fonts-emoji
       roboto
+      mscore-ttf
 
       # nerdfonts
       (nerdfonts.override {fonts = ["FiraCode" "JetBrainsMono"];})
     ];
+
+    # make fonts accesible to wrapped applications
+    fontDir.enable = true;
 
     # use fonts specified by user rather than default ones
     enableDefaultFonts = false;
@@ -35,8 +39,10 @@
     };
   };
 
-  # use Wayland where possible (electron)
-  environment.variables.NIXOS_OZONE_WL = "1";
+  qt = {
+    enable = true;
+    platformTheme = "qt5ct";
+  };
 
   hardware.opengl = {
     extraPackages = with pkgs; [
@@ -98,11 +104,6 @@
     };
   };
 
-  # make HM-managed GTK stuff work
-  programs = {
-    dconf.enable = true;
-  };
-
   services = {
     # use Ambient Light Sensors for auto brightness adjustment
     clight = {
@@ -114,7 +115,6 @@
         screen.disabled = true;
       };
     };
-    ddccontrol.enable = true;
 
     pipewire = {
       enable = true;
@@ -131,6 +131,7 @@
 
     # needed for GNOME services outside of GNOME Desktop
     dbus.packages = [pkgs.gcr];
+    gvfs.enable = true;
     udev.packages = with pkgs; [gnome.gnome-settings-daemon];
   };
 
@@ -148,17 +149,23 @@
   };
 
   programs = {
+
     # enable hyprland and required options
-    hyprland.enable = true;
+    hyprland = {
+      enable = true;
+      package = inputs'.hyprland.packages.hyprland;
+    };
     steam.enable = true;
-    sway.enable = true;
+    # we need a way to set separate session.conf
+    # for dbus otherwise dektop-portal-wlr messes up hyprland
+    /* sway.enable = true; */
   };
 
-  #start only the correct portals
-  systemd.user.services = {
-    xdg-desktop-portal-wlr.unitConfig.ConditionEnvironment = "XDG_CURRENT_DESKTOP=Sway";
-    xdg-desktop-portal-hyprland.unitConfig.ConditionEnvironment = "XDG_CURRENT_DESKTOP=Hyprland";
-  };
+  #start only the correct portals (this is sufficient for systemd but dbus will still look for wlr because of well known names)
+  /* systemd.user.services = { */
+  /*   xdg-desktop-portal-wlr.unitConfig.ConditionEnvironment = "XDG_CURRENT_DESKTOP=Sway"; */
+  /*   xdg-desktop-portal-hyprland.unitConfig.ConditionEnvironment = "XDG_CURRENT_DESKTOP=Hyprland"; */
+  /* }; */
 
   xdg.portal = {
     enable = true;

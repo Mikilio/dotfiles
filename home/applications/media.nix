@@ -17,12 +17,10 @@ in {
   config = mkIf (cfg != null && cfg.media) {
     home.packages = with pkgs;
       [
+        #reading, writing and editing meta information
+        exiftool
         # audio control
         pavucontrol
-        playerctl
-        pulsemixer
-        # images
-        imv
         # torrents
         transmission-remote-gtk
 
@@ -39,6 +37,8 @@ in {
         defaultProfiles = ["gpu-hq"];
         scripts = [pkgs.mpvScripts.mpris];
       };
+
+      imv.enable = true;
 
       obs-studio = {
         enable = true;

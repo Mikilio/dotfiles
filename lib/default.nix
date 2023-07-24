@@ -25,6 +25,8 @@ in {
       config.allowUnfreePredicate = pkg: builtins.elem  [] (
         map (re: builtins.match re (lib.getName pkg)) [
           "spotify"
+          "wpsoffice"
+          "obsidian"
           "vivaldi*"
           "widevine-cdm"
           "steam.*"

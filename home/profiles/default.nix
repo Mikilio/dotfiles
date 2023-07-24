@@ -33,6 +33,7 @@
         home.shells = {
           zsh = true;
           starship = true;
+          joshuto = true;
         };
         programs.nix-index-database.comma.enable = true;
 

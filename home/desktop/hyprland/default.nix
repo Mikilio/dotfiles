@@ -6,7 +6,9 @@
   ...
 }:
 with lib; let
+
   cfg = config.home.desktop;
+
 in {
   imports = [
     ./config.nix
@@ -30,6 +32,8 @@ in {
     };
     # start swayidle as part of hyprland, not sway
     systemd.user.services.swayidle.Install.WantedBy = lib.mkForce ["hyprland-session.target"];
+
+    xdg.configFile."Hyprland-xdg-terminals.list".text = "";
 
     # enable hyprland
     wayland.windowManager.hyprland.enable = true;

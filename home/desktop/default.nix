@@ -17,11 +17,11 @@ in {
   } @ fp: let
     # use OCR and copy to clipboard
     ocrScript = let
-      inherit (pkgs) grim libnotify slurp tesseract5 wl-clipboard;
+      inherit (pkgs) wayshot libnotify slurp tesseract5 wl-clipboard;
       _ = lib.getExe;
     in
       pkgs.writeShellScriptBin "wl-ocr" ''
-        ${_ grim} -g "$(${_ slurp})" -t ppm - | ${_ tesseract5} - - | ${wl-clipboard}/bin/wl-copy
+        ${_ wayshot} -g "$(${_ slurp})" -t ppm - | ${_ tesseract5} - - | ${wl-clipboard}/bin/wl-copy
         ${_ libnotify} "$(${wl-clipboard}/bin/wl-paste)"
       '';
 
@@ -35,7 +35,6 @@ in {
         cfg = config.home;
 
         listOfDesktops = [
-          "sway"
           "hyprland"
         ];
       in {
@@ -48,6 +47,7 @@ in {
           ./swaylock.nix
           eww_module
           hyprland_module
+          ./dunst.nix
           ./hyprland
           ./sway.nix
         ];
@@ -65,20 +65,22 @@ in {
         config = {
           home.packages = with pkgs; [
             # screenshot
-            grim
+            wayshot
             slurp
 
             # idle/lock
-            swaybg
+            swaybg #TODO replace with hyprpaper
             swaylock-effects
 
             # utils
             libnotify
             ocrScript
-            wf-recorder
+            wl-screenrec
+            cliphist
             wl-clipboard
             wlogout
             wlr-randr
+            hyprpicker
           ];
 
           # make stuff work on wayland

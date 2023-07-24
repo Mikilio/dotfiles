@@ -9,6 +9,8 @@
 let
   greetdSwayConfig = pkgs.writeText "greetd-sway-config" ''
 
+    exec systemctl --user import-environment
+
     output * background ${default.wallpaper} fill
 
     input "type:touchpad" {
@@ -56,7 +58,7 @@ in {
 
   services.greetd.settings.default_session = {
     enable = true;
-    command = "${pkgs.dbus}/bin/dbus-run-session ${config.programs.sway.package}/bin/sway --config ${greetdSwayConfig}";
+    command = "${config.programs.sway.package}/bin/sway --config ${greetdSwayConfig}";
   };
 
   # unlock GPG keyring on login

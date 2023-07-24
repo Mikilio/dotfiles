@@ -35,6 +35,14 @@
               '';
             };
 
+            joshuto = mkOption {
+              type = types.bool;
+              default = false;
+              description = ''
+                This enables a terminal file manager called joshuto
+              '';
+            };
+
             editor = mkOption {
               type = types.str;
               default = "nvim";
@@ -51,6 +59,7 @@
           ./starship.nix
           ./nushell
           ./transient-services.nix
+          ./joshuto
           ./git.nix
           ./nix.nix
           ./cli.nix
@@ -60,10 +69,8 @@
 
         options = {
           home.shells = mkOption {
-            type = types.nullOr shellsModule;
-            default = {
-              zsh = true;
-            };
+            type = shellsModule;
+            default = {};
             description = ''
               Shell configuration. Here all shell related configurations will
               be placed

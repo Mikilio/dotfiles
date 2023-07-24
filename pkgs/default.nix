@@ -4,6 +4,7 @@ let
     ./gdb-frontend
     ./linux-enable-ir-emitter
     ./waveform
+    ./mscore-ttf
   ];
 in {
   systems = ["x86_64-linux"];

@@ -1,6 +1,7 @@
 {
   config,
   default,
+  pkgs,
   ...
 }: let
   inherit (default) colors;
@@ -14,6 +15,9 @@ in {
     env = _JAVA_AWT_WM_NONREPARENTING,1
     env = QT_WAYLAND_DISABLE_WINDOWDECORATION,1
 
+    #update systemd user session environment
+    exec-once = ${pkgs.dbus}/bin/dbus-update-activation-environment --systemd --all
+
     # scale apps
     exec-once = xprop -root -f _XWAYLAND_GLOBAL_OUTPUT_SCALE 32c -set _XWAYLAND_GLOBAL_OUTPUT_SCALE 2
 
@@ -22,6 +26,10 @@ in {
 
     exec-once = systemctl --user start clight
     exec-once = eww open bar
+
+    #cliphist
+    exec-once = wl-paste --type text --watch cliphist store #Stores only text data
+    exec-once = wl-paste --type image --watch cliphist store #Stores only image data
 
     #monitor setups:
     #homestation
@@ -40,8 +48,6 @@ in {
       animate_mouse_windowdragging = false
       # enable variable refresh rate (effective depending on hardware)
       vrr = 1
-      #we have already handled this adequately
-      suppress_portal_warnings = true
     }
 
     general {
@@ -185,6 +191,10 @@ in {
     bindle = , XF86MonBrightnessDown, exec, brillo -q -u 300000 -U 5
     binde = , XF86MonBrightnessDown, exec, ${homeDir}/.config/eww/scripts/brightness osd
 
+    #color-picker
+    bind = $mod, C, exec, hyprpicker -a
+
+
     # screenshot
     # stop animations while screenshotting; makes black border go away
     $screenshotarea = hyprctl keyword animation "fadeOut,0,0,default"; grimblast --notify copysave area; hyprctl keyword animation "fadeOut,1,4,default"
@@ -212,15 +222,8 @@ in {
       )
       10)}
 
-    # special workspace
-    bind = $mod SHIFT, grave, movetoworkspace, special
-    bind = $mod, grave, togglespecialworkspace, eDP-1
-
     # cycle workspaces
     bind = $mod, bracketleft, workspace, m-1
     bind = $mod, bracketright, workspace, m+1
-    # cycle monitors
-    bind = $mod SHIFT, braceleft, focusmonitor, l
-    bind = $mod SHIFT, braceright, focusmonitor, r
   '';
 }

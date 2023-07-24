@@ -6,7 +6,6 @@
 }:
 with lib; let
   cfg = config.home.shells;
-  cmd = "nvim -i NONE";
   texmagic = pkgs.vimUtils.buildVimPluginFrom2Nix {
     name = "texmagic-nvim";
     src = pkgs.fetchFromGitHub {
@@ -27,19 +26,13 @@ with lib; let
   };
 in {
   config = mkIf (cfg.editor == "nvim") {
-    home.file.".config/nvim/lua".source = ./lua;
-    home.sessionVariables.EDITOR = "nvim";
-
-    programs.bash.shellAliases = {
-      vi = cmd;
-      vim = cmd;
-      nvim = cmd;
-    };
 
     programs.neovim = {
       enable = true;
+      defaultEditor = true;
       vimAlias = true;
       viAlias = true;
+      vimdiffAlias = true;
       withNodeJs = true;
       withPython3 = true;
       extraPackages = with pkgs; [
@@ -48,6 +41,7 @@ in {
         ccls
         pyright
         zk
+        lua-language-server
         nodePackages.bash-language-server
         rust-analyzer
         texlab
@@ -64,22 +58,21 @@ in {
         with lua; [
           plenary-nvim
           luautf8
-          lua-lsp
         ];
 
-      plugins = with pkgs.vimPlugins; [
+      plugins = with pkgs.vimPlugins; with builtins;[
         # ----------------------------------------------
         # ------------Styling---------------------------
         # ----------------------------------------------
         nvim-web-devicons
         {
           plugin = catppuccin-nvim;
-          config = "require('plugins.catppuccin')";
+          config = readFile ./lua/plugins/catppuccin.lua;
           type = "lua";
         }
         {
           plugin = indent-blankline-nvim;
-          config = "require('plugins.indent-blankline')";
+          config = readFile ./lua/plugins/indent-blankline.lua;
           type = "lua";
         }
         nvim-ts-rainbow
@@ -89,22 +82,22 @@ in {
         #-----------------------------------------------
         {
           plugin = bufferline-nvim;
-          config = "require('plugins.bufferline')";
+          config = readFile ./lua/plugins/bufferline.lua;
           type = "lua";
         }
         {
           plugin = lualine-nvim;
-          config = "require('plugins.lualine')";
+          config = readFile ./lua/plugins/lualine.lua;
           type = "lua";
         }
         {
           plugin = gitsigns-nvim;
-          config = "require('plugins.gitsigns')";
+          config = readFile ./lua/plugins/gitsigns.lua;
           type = "lua";
         }
         {
           plugin = alpha-nvim;
-          config = "require('plugins.alpha')";
+          config = readFile ./lua/plugins/alpha.lua;
           type = "lua";
         }
 
@@ -112,27 +105,23 @@ in {
         undotree
         {
           plugin = knap;
-          config = "require('plugins.knap')";
+          config = readFile ./lua/plugins/knap.lua;
           type = "lua";
         }
         {
           plugin = diffview-nvim;
-          config = "require('plugins.diffview')";
+          config = readFile ./lua/plugins/diffview.lua;
           type = "lua";
         }
         {
           plugin = nvim-dap-ui;
-          config = "require('plugins.dapui')";
+          config = readFile ./lua/plugins/dapui.lua;
           type = "lua";
         }
-        {
-          plugin = toggleterm-nvim;
-          config = "require('plugins.toggleterm')";
-          type = "lua";
-        }
+
         {
           plugin = lspsaga-nvim;
-          config = "require('plugins.lspsaga')";
+          config = readFile ./lua/plugins/lspsaga.lua;
           type = "lua";
         }
 
@@ -142,7 +131,7 @@ in {
         null-ls-nvim
         {
           plugin = nvim-lspconfig;
-          config = "require('plugins.lsp')";
+          config = readFile ./lua/plugins/lsp.lua;
           type = "lua";
         }
 
@@ -158,7 +147,7 @@ in {
         cmp-spell
         {
           plugin = nvim-cmp;
-          config = "require('plugins.cmp')";
+          config = readFile ./lua/plugins/cmp.lua;
           type = "lua";
         }
 
@@ -175,7 +164,7 @@ in {
         git-worktree-nvim
         {
           plugin = telescope-nvim;
-          config = "require('plugins.telescope')";
+          config = readFile ./lua/plugins/telescope.lua;
           type = "lua";
         }
 
@@ -186,7 +175,7 @@ in {
         nvim-ts-context-commentstring
         {
           plugin = comment-nvim;
-          config = "require('plugins.comment')";
+          config = readFile ./lua/plugins/comment.lua;
           type = "lua";
         }
         {
@@ -196,12 +185,12 @@ in {
         }
         {
           plugin = nvim-autopairs;
-          config = "require('plugins.autopairs')";
+          config = readFile ./lua/plugins/autopairs.lua;
           type = "lua";
         }
         {
           plugin = hop-nvim;
-          config = "require('plugins.hop')";
+          config = readFile ./lua/plugins/hop.lua;
           type = "lua";
         }
 
@@ -228,7 +217,7 @@ in {
         #Tree-Sitter
         {
           plugin = nvim-treesitter.withAllGrammars;
-          config = "require('plugins.treesitter')";
+          config = readFile ./lua/plugins/treesitter.lua;
           type = "lua";
         }
 
@@ -245,13 +234,22 @@ in {
         vim-startuptime
         {
           plugin = impatient-nvim;
-          config = "require('plugins.impatient')";
+          config = readFile ./lua/plugins/impatient.lua;
           type = "lua";
         }
       ];
-      extraConfig = ''
-        luafile ~/.config/nvim/lua/settings.lua
-      '';
+      extraLuaConfig = let
+	  luaRequire = module:
+	    builtins.readFile (builtins.toString
+	      ./lua
+	      + "/${module}.lua");
+	  luaConfig = builtins.concatStringsSep "\n" (map luaRequire [
+	    "settings"
+	    "keymaps"
+	  ]);
+	in ''
+	  ${luaConfig}
+	'';
     };
   };
 }

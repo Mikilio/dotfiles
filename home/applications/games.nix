@@ -15,7 +15,7 @@ in {
       inputs'.nix-gaming.packages.osu-lazer-bin
       inputs'.nix-gaming.packages.wine-discord-ipc-bridge
       inputs'.nix-gaming.packages.wine-ge
-      # (lutris.override {extraPkgs = p: [p.libnghttp2];})
+      (lutris.override {extraPkgs = p: [p.libnghttp2];})
       gamescope
       winetricks
     ];

@@ -133,6 +133,7 @@
           ./foot.nix
           ./kitty.nix
           ./wezterm.nix
+          ./productivity.nix
         ];
 
         options = {

@@ -64,7 +64,7 @@
     # smooth backlight control
     brillo.enable = true;
 
-    xpadneo.enable = true;
+    logitech.wireless.enable = true;
   };
 
   security.tpm2 = {

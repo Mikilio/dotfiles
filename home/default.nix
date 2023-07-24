@@ -29,7 +29,7 @@ with lib;
       ./profiles
       ./applications
       ./shells
-      ./wayland
+      ./desktop
       ./bootstrap.nix
     ];
   }

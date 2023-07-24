@@ -65,18 +65,7 @@ in {
         }
       '';
 
-      shellAliases = {
-        grep = "grep --color";
-        ip = "ip --color";
-        l = "exa -l";
-        la = "exa -la";
-        md = "mkdir -p";
-        pf = "powerprofilesctl launch -p performance";
 
-        us = "systemctl --user";
-        rs = "sudo systemctl";
-      };
-      shellGlobalAliases = {exa = "exa --icons --git";};
     };
   };
 }
