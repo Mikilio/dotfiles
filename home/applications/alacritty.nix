@@ -14,7 +14,7 @@ with lib;
   in {
     config = mkIf (cfg != null && cfg.terminal == "alacritty") {
 
-      home.sessionVariables.TERMINAL = "${pkgs.alacritty.outPath}/bin/alacritty";
+      home.sessionVariables.TERM = "alacritty";
 
       programs.alacritty = {
         enable = true;

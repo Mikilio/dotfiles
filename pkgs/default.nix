@@ -5,6 +5,7 @@ let
     ./linux-enable-ir-emitter
     ./waveform
     ./mscore-ttf
+    ./xdg-terminal-exec
   ];
 in {
   systems = ["x86_64-linux"];

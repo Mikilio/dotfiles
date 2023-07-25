@@ -39,11 +39,6 @@
     };
   };
 
-  qt = {
-    enable = true;
-    platformTheme = "qt5ct";
-  };
-
   hardware.opengl = {
     extraPackages = with pkgs; [
       vaapiVdpau
@@ -156,9 +151,8 @@
       package = inputs'.hyprland.packages.hyprland;
     };
     steam.enable = true;
-    # we need a way to set separate session.conf
-    # for dbus otherwise dektop-portal-wlr messes up hyprland
-    /* sway.enable = true; */
+    #necessary for some programs that rely on gsettings
+    dconf.enable = true;
   };
 
   #start only the correct portals (this is sufficient for systemd but dbus will still look for wlr because of well known names)
