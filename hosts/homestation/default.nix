@@ -21,6 +21,11 @@
     # use latest kernel
     kernelPackages = pkgs.linuxPackages_xanmod_latest;
 
+    extraModulePackages = with config.boot.kernelPackages; [
+      /* ddcci-driver */
+      v4l2loopback
+    ];
+
     kernelParams = [
       "quiet"
     ];

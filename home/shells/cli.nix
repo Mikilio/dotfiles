@@ -48,10 +48,11 @@
   };
 
   home.shellAliases = {
+    "..." = "cd ../..";
     df = "duf";
+    cat = "bat";
     g = "git";
     grep = "rg";
-    cat = "bat";
     ip = "ip --color";
     l = "exa --icons --git";
     la = "l -la";
@@ -59,10 +60,18 @@
     ll = "l -l";
     ls = "l";
     md = "mkdir -p";
-    x = "xargs";
-    "..." = "cd ../..";
     us = "systemctl --user";
     rs = "sudo systemctl";
-    hm = "f () { [ -d $HOME/dotfiles ] && nix run $HOME/dotfiles \"$@\" || echo \"Please place dotfiles in $HOME\"; }; f";
+    hm = ''
+      f () { \
+        [ -d $HOME/dotfiles ] && [ -e $HOME/dotfiles/flake.nix ] \
+        || (echo "Please place dotfiles in $HOME" && return 1); \
+        nix run $HOME/dotfiles \"$@\" \
+      }; \
+      f
+    '';
+    hms = "hm switch";
+    x = "xargs";
+    xo = "xdg-open";
   };
 }
