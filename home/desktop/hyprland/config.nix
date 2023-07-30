@@ -8,6 +8,12 @@
 
   pointer = config.home.pointerCursor;
   homeDir = config.home.homeDirectory;
+  trayd = pkgs.writeShellApplication {
+    name = "trayd";
+    runtimeInputs = [ pkgs.socat ];
+    text = builtins.readFile ./scripts/minimize.sh;
+  };
+
 in {
   wayland.windowManager.hyprland.extraConfig = ''
     $mod = SUPER
@@ -61,6 +67,12 @@ in {
       col.group_border = rgb(${colors.surface0})
     }
 
+    input {
+      numlock_by_default = true
+      accel_profile = "flat"
+      follow_mouse = 2
+    }
+
     decoration {
       rounding = 16
       blur_size = 3
@@ -96,10 +108,6 @@ in {
     windowrulev2 = float, title:^(Picture-in-Picture)$
     windowrulev2 = pin, title:^(Picture-in-Picture)$
 
-    # throw sharing indicators away
-    windowrulev2 = workspace special silent, title:^(Firefox — Sharing Indicator)$
-    windowrulev2 = workspace special silent, title:^(.*is sharing (your screen|a window)\.)$
-
     # start spotify tiled in ws9
     windowrulev2 = tile, title:^(Spotify)$
     windowrulev2 = workspace 9 silent, title:^(Spotify)$
@@ -109,15 +117,12 @@ in {
 
     # idle inhibit while watching videos
     windowrulev2 = idleinhibit focus, class:^(mpv|.+exe)$
-    windowrulev2 = idleinhibit focus, class:^(firefox)$, title:^(.*YouTube.*)$
-    windowrulev2 = idleinhibit fullscreen, class:^(firefox)$
-
-    windowrulev2 = dimaround, class:^(gcr-prompter)$
+    windowrulev2 = idleinhibit focus, class:^(vivaldi-stable)$, title:^(.*YouTube.*)$
+    windowrulev2 = idleinhibit fullscreen, class:^(vivaldi-stable)$
 
     # fix xwayland apps
     windowrulev2 = rounding 0, xwayland:1, floating:1
-    windowrulev2 = center, class:^(.*jetbrains.*)$, title:^(Confirm Exit|Open Project|win424|win201|splash)$
-    windowrulev2 = size 640 400, class:^(.*jetbrains.*)$, title:^(splash)$
+    windowrulev2 = fullscreen, forceinput, xwayland:1, class:^(league of legends.exe)$
 
     layerrule = blur, ^(gtk-layer-shell|anyrun)$
     layerrule = ignorezero, ^(gtk-layer-shell|anyrun)$
@@ -225,5 +230,9 @@ in {
     # cycle workspaces
     bind = $mod, bracketleft, workspace, m-1
     bind = $mod, bracketright, workspace, m+1
+
+    # special workspace for minimized windows
+    workspace = special:tray
+    exec-once = ${trayd}/bin/trayd
   '';
 }

@@ -105,6 +105,14 @@
               '';
             };
 
+            passwords = mkOption {
+              type = types.bool;
+              default = true;
+              description = ''
+                Setup KeepassXC
+              '';
+            };
+
             misc = mkOption {
               type = types.listOf types.str;
               default = [];
@@ -134,6 +142,7 @@
           ./kitty.nix
           ./wezterm.nix
           ./productivity.nix
+          ./keepassxc.nix
         ];
 
         options = {

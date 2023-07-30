@@ -5,7 +5,7 @@
   ...
 }: {
   fonts = {
-    fonts = with pkgs; [
+    packages = with pkgs; [
       # icon fonts
       material-symbols
 
@@ -26,7 +26,7 @@
     fontDir.enable = true;
 
     # use fonts specified by user rather than default ones
-    enableDefaultFonts = false;
+    enableDefaultPackages = false;
 
     # user defined fonts
     # the reason there's Noto Color Emoji everywhere is to override DejaVu's
@@ -55,31 +55,35 @@
 
   networking = {
     firewall = {
-      # for Rocket League
+      allowedTCPPorts = [
+        80 # HTTP
+        443 # HTTPS
+        57621 # Spotify track sync with other devices
+        2099 # League of Legends PVP.Net
+        8088 # LoL Spectator
+      ];
       allowedTCPPortRanges = [
         {
-          from = 27015;
-          to = 27030;
+          #League of Legends PVP.NEt
+          from = 5222;
+          to = 5223;
         }
         {
-          from = 27036;
-          to = 27037;
+          # League of Legends Patcher
+          from = 8393;
+          to = 8400;
         }
       ];
-      allowedUDPPorts = [4380 27036 34197];
+      allowedUDPPorts = [
+        8088 # LoL Spectator
+      ];
       allowedUDPPortRanges = [
+        # League of Legends
         {
-          from = 7000;
-          to = 9000;
-        }
-        {
-          from = 27000;
-          to = 27031;
+          from = 5000;
+          to = 5500;
         }
       ];
-
-      # Spotify track sync with other devices
-      allowedTCPPorts = [57621];
     };
   };
 
@@ -111,6 +115,8 @@
       };
     };
 
+    pcscd.enable = true;
+
     pipewire = {
       enable = true;
       alsa.enable = true;
@@ -127,18 +133,14 @@
     # needed for GNOME services outside of GNOME Desktop
     dbus.packages = [pkgs.gcr];
     gvfs.enable = true;
-    udev.packages = with pkgs; [gnome.gnome-settings-daemon];
+    udev.packages = with pkgs; [
+      gnome.gnome-settings-daemon
+      #yubikey support
+      yubikey-personalization
+    ];
   };
 
-  # allow wayland lockers to unlock the screen
   security = {
-    pam.services.swaylock = {
-      text = ''
-        auth include login
-        auth optional ${pkgs.pam_gnupg}/lib/security/pam_gnupg.so
-      '';
-    };
-
     # userland niceness
     rtkit.enable = true;
   };

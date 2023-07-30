@@ -9,12 +9,12 @@
 let
   greetdSwayConfig = pkgs.writeText "greetd-sway-config" ''
 
-    exec systemctl --user import-environment
+    exec ${pkgs.dbus}/bin/dbus-update-activation-environment --systemd --all
 
     output * background ${default.wallpaper} fill
 
-    input "type:touchpad" {
-      tap enabled
+    input * {
+      xkb_numlock enabled
     }
     seat seat0 xcursor_theme Bibata-Modern-Classic 24
     xwayland disable
@@ -62,9 +62,17 @@ in {
   };
 
   # unlock GPG keyring on login
-  security.pam.services.greetd.gnupg = {
-    enable = true;
-    storeOnly = true;
-    noAutostart = true;
+  security.pam = {
+    u2f = {
+      enable = true;
+      cue = true;
+      authFile = config.sops.secrets.u2f_mappings.path;
+    };
+    services = {
+      login.u2fAuth = true;
+      swaylock.text = ''
+        auth include login
+      '';
+    };
   };
 }

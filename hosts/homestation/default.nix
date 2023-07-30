@@ -6,7 +6,7 @@
 , inputs'
 , ...
 } @ args: {
-  imports = [ ./hardware-configuration.nix ];
+  imports = [ ./hardware-configuration.nix ./secrets.nix ];
 
   boot = {
     initrd = {
@@ -68,7 +68,7 @@
   hardware = {
     # smooth backlight control
     brillo.enable = true;
-
+    #logitech wireless support (may not be needed)
     logitech.wireless.enable = true;
   };
 
@@ -107,12 +107,6 @@
     pipewire.lowLatency.enable = true;
 
     printing.enable = true;
-  };
-
-  sops = {
-    age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-    defaultSopsFile = "${self.outPath}/secrets/groups/homestation.yaml";
-    secrets.boot_pwd = {};
   };
 
   networking = {

@@ -7,6 +7,7 @@
     unrar-wrapper
 
     # utils
+    jq
     file
     du-dust
     duf
@@ -66,9 +67,8 @@
       f () { \
         [ -d $HOME/dotfiles ] && [ -e $HOME/dotfiles/flake.nix ] \
         || (echo "Please place dotfiles in $HOME" && return 1); \
-        nix run $HOME/dotfiles \"$@\" \
-      }; \
-      f
+        nix run $HOME/dotfiles "$@"; \
+      }; f \
     '';
     hms = "hm switch";
     x = "xargs";

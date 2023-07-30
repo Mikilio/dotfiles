@@ -13,7 +13,7 @@
       type = "app";
       program = "${pkgs.writeShellScriptBin "hm" ''
         #unlock gnupg-agent
-        echo "test" | gpg2 --sign --batch --no-tty --pinentry-mode ask -o /dev/null
+        #echo "test" | gpg2 --sign --batch --no-tty --pinentry-mode ask -o /dev/null
         #do it
         export PATH=${pkgs.lib.makeBinPath [pkgs.git pkgs.coreutils pkgs.nix pkgs.jq pkgs.unixtools.hostname]}
         declare -A profiles=(["mikilio@homestation"]="full")

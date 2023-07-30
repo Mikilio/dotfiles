@@ -55,6 +55,9 @@ in {
         #all normal overrides
         (
           final : prev: {
+
+            keepasscx = prev.keepassxc.override { withKeePassX11 = false; };
+
             steam = prev.steam.override {
               extraPkgs = pkgs:
                 with pkgs; [

@@ -25,7 +25,7 @@ in {
         "--enable-features=WaylandWindowDecorations,CanvasOopRasterization,Vulkan,UseSkiaRenderer"
       ];
       extensions = [
-        {id = "fdjamakpfbbddfjaooikfcpapjohcfmg";}
+        {id = "oboonakemofpalcgghocfoadofidjkkk";}
         {id = "clngdbkpkpeebahjckkjfobafhncgmne";}
       ];
     };

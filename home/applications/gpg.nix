@@ -1,10 +1,13 @@
-{config, ...}: {
+{config, pkgs, ...}: {
   programs = {
     gpg = {
       enable = true;
       homedir = "${config.xdg.dataHome}/gnupg";
       settings = {
         use-agent = true;
+      };
+      scdaemonSettings = {
+        disable-ccid = true;
       };
     };
   };
@@ -17,7 +20,17 @@
     962C29E85C5026E104466143BA6CE4D7F95B81A9
   '';
 
-  home.sessionVariables.GPG_TTY ="$(tty)";
+  home = {
+    sessionVariables.GPG_TTY ="$(tty)";
+    packages = with pkgs; [
+      yubioath-flutter
+      yubikey-personalization
+      yubikey-manager
+      yubico-piv-tool
+    ];
+  };
+
+  pam.yubico.authorizedYubiKeys.ids = [ "cccccbhkevjb" ];
 
   services = {
     gpg-agent = {

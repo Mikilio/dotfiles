@@ -29,7 +29,11 @@ in {
         DIRENV_LOG_FORMAT = "";
         GDK_SCALE = "2";
       };
+
+      sessionPath = [ "$HOME/.local/bin"];
+
       applications.enable = true;
+
     };
     sops = {
       # or some other source for the decryption key
@@ -42,6 +46,7 @@ in {
         google-git = { };
         spotify_pwd.key  = "spotify/pwd";
         spotify_usr.key = "spotify/usr";
+        keepassxc = { };
 
       };
     };

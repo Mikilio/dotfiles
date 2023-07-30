@@ -19,6 +19,12 @@ category = "scripts"
 command = "source './scripts/prepare-nixos.sh'"
 
 [[commands]]
+name = "regu2f"
+help = "Register a new FIDO2 key handle"
+category = "scripts"
+command = "source './scripts/register_pam_u2f.sh'"
+
+[[commands]]
 category = "programs"
 package = "sops"
 
