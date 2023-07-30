@@ -15,7 +15,6 @@
     bat
     ripgrep
     xdg-utils
-
   ];
 
   programs = {

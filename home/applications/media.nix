@@ -73,6 +73,6 @@ in {
       udiskie.enable = true;
     };
 
-    systemd.user.services.spotifyd.Unit.After = [ "sops-nix.service" ];
+    systemd.user.services.spotifyd.Unit.After = ["sops-nix.service"];
   };
 }

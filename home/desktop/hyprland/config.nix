@@ -10,10 +10,9 @@
   homeDir = config.home.homeDirectory;
   trayd = pkgs.writeShellApplication {
     name = "trayd";
-    runtimeInputs = [ pkgs.socat ];
+    runtimeInputs = [pkgs.socat];
     text = builtins.readFile ./scripts/minimize.sh;
   };
-
 in {
   wayland.windowManager.hyprland.extraConfig = ''
     $mod = SUPER

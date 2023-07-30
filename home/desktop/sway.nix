@@ -5,14 +5,9 @@
   lib,
   ...
 }:
-
-with lib;
-
-let
-  cfg  = config.home.desktop;
-
+with lib; let
+  cfg = config.home.desktop;
 in {
-
   config = mkIf (cfg == "sway") {
     wayland.windowManager.sway = {
       enable = true;
@@ -78,7 +73,6 @@ in {
       '';
 
       wrapperFeatures.gtk = true;
-
     };
   };
 }

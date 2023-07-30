@@ -146,7 +146,6 @@
   };
 
   programs = {
-
     # enable hyprland and required options
     hyprland = {
       enable = true;
@@ -158,10 +157,18 @@
   };
 
   #start only the correct portals (this is sufficient for systemd but dbus will still look for wlr because of well known names)
-  /* systemd.user.services = { */
-  /*   xdg-desktop-portal-wlr.unitConfig.ConditionEnvironment = "XDG_CURRENT_DESKTOP=Sway"; */
-  /*   xdg-desktop-portal-hyprland.unitConfig.ConditionEnvironment = "XDG_CURRENT_DESKTOP=Hyprland"; */
-  /* }; */
+  /*
+  systemd.user.services = {
+  */
+  /*
+  xdg-desktop-portal-wlr.unitConfig.ConditionEnvironment = "XDG_CURRENT_DESKTOP=Sway";
+  */
+  /*
+  xdg-desktop-portal-hyprland.unitConfig.ConditionEnvironment = "XDG_CURRENT_DESKTOP=Hyprland";
+  */
+  /*
+  };
+  */
 
   xdg.portal = {
     enable = true;

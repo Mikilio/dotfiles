@@ -4,12 +4,15 @@
   lib,
   ...
 }:
-with lib; with builtins; let
+with lib;
+with builtins; let
   cfg = config.home.applications;
-  browser = if (isNull cfg) then null else cfg.browser;
+  browser =
+    if (isNull cfg)
+    then null
+    else cfg.browser;
 in {
   config = mkIf (browser == "vivaldi") {
-
     home.sessionVariables.BROWSER = "vivaldi";
 
     programs.vivaldi = {

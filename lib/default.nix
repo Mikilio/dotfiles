@@ -18,21 +18,28 @@ in {
     }
   ];
 
-  perSystem = {system, inputs', pkgs, packageList, ...}: {
-    _module.args.pkgs= import inputs.nixpkgs {
+  perSystem = {
+    system,
+    inputs',
+    pkgs,
+    packageList,
+    ...
+  }: {
+    _module.args.pkgs = import inputs.nixpkgs {
       inherit system;
       # allow spotify to be installed if you don't have unfree enabled already
-      config.allowUnfreePredicate = pkg: builtins.elem  [] (
-        map (re: builtins.match re (lib.getName pkg)) [
-          "spotify"
-          "obsidian"
-          "vivaldi*"
-          "widevine-cdm"
-          "steam.*"
-          "discord-canary"
-          "waveform"
-        ]
-      );
+      config.allowUnfreePredicate = pkg:
+        builtins.elem [] (
+          map (re: builtins.match re (lib.getName pkg)) [
+            "spotify"
+            "obsidian"
+            "vivaldi*"
+            "widevine-cdm"
+            "steam.*"
+            "discord-canary"
+            "waveform"
+          ]
+        );
       overlays = [
         #enable devshell
         inputs.devshell.overlays.default
@@ -41,22 +48,23 @@ in {
         # TODO : this is kinda bad find alternative
         (
           with builtins;
-          final: prev: (
-            listToAttrs (
-              map (p: {
-                name = baseNameOf p;
-                value = prev.callPackage p {};
-                }
-              ) packageList
+            final: prev: (
+              listToAttrs (
+                map (
+                  p: {
+                    name = baseNameOf p;
+                    value = prev.callPackage p {};
+                  }
+                )
+                packageList
+              )
             )
-          )
         )
 
         #all normal overrides
         (
-          final : prev: {
-
-            keepasscx = prev.keepassxc.override { withKeePassX11 = false; };
+          final: prev: {
+            keepasscx = prev.keepassxc.override {withKeePassX11 = false;};
 
             steam = prev.steam.override {
               extraPkgs = pkgs:

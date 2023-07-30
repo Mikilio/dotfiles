@@ -1,5 +1,9 @@
-{ lib, stdenv, cabextract, fetchzip } :
-
+{
+  lib,
+  stdenv,
+  cabextract,
+  fetchzip,
+}:
 stdenv.mkDerivation rec {
   pname = "mscore-ttf";
   version = "final";
@@ -29,7 +33,6 @@ stdenv.mkDerivation rec {
     homepage = "https://learn.microsoft.com/en-us/typography/";
     description = "Microsofts core fonts for the web";
     platforms = lib.platforms.all;
-    maintainers = [ ];
+    maintainers = [];
   };
 }
-

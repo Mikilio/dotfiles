@@ -22,7 +22,7 @@ in
         fi
       ;;
     esac
-  '' //
-  {
-   meta.description = "nix repl with all relevant variables already loaded";
+  ''
+  // {
+    meta.description = "nix repl with all relevant variables already loaded";
   }

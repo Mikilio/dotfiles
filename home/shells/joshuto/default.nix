@@ -4,14 +4,11 @@
   pkgs,
   ...
 }:
-with lib;
-
-let
+with lib; let
   cfg = config.home.shells.joshuto;
-
 in {
   config = mkIf cfg {
-    home.packages = [ pkgs.joshuto ];
+    home.packages = [pkgs.joshuto];
 
     xdg.configFile = {
       "joshuto/joshuto.toml".source = ./joshuto.toml;
@@ -25,18 +22,44 @@ in {
       };
     };
 
-    /* xdg.desktopEntries = { */
-    /*   joshuto = { */
-    /*     name = "Files"; */
-    /*     comment = "Access and organize files"; */
-    /*     exec = "joshuto %u"; */
-    /*     icon = "system-file-manager"; */
-    /*     terminal = true; */
-    /*     type = "Application"; */
-    /*     startupNotify = false; */
-    /*     categories = [ "Utility" "Core" "FileManager" "System" "FileTools" ]; */
-    /*     mimeType= [ "inode/directory" ]; */
-    /*   }; */
-    /* }; */
+    /*
+    xdg.desktopEntries = {
+    */
+    /*
+    joshuto = {
+    */
+    /*
+    name = "Files";
+    */
+    /*
+    comment = "Access and organize files";
+    */
+    /*
+    exec = "joshuto %u";
+    */
+    /*
+    icon = "system-file-manager";
+    */
+    /*
+    terminal = true;
+    */
+    /*
+    type = "Application";
+    */
+    /*
+    startupNotify = false;
+    */
+    /*
+    categories = [ "Utility" "Core" "FileManager" "System" "FileTools" ];
+    */
+    /*
+    mimeType= [ "inode/directory" ];
+    */
+    /*
+    };
+    */
+    /*
+    };
+    */
   };
 }

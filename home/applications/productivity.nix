@@ -4,10 +4,7 @@
   config,
   ...
 }:
-
-with lib;
-
-let
+with lib; let
   cfg = config.home.applications;
 in {
   config = mkIf (cfg != null && cfg.productivity) {

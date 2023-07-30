@@ -27,7 +27,6 @@ let
 
     exec "${lib.getExe config.programs.regreet.package} -l debug; swaymsg exit"
   '';
-
 in {
   environment.systemPackages = with pkgs; [
     # theme packages

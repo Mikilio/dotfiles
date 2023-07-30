@@ -15,7 +15,6 @@ in {
       stateVersion = "23.05";
       extraOutputsToInstall = ["doc" "devdoc"];
       sessionVariables = {
-
         # clean up ~
         LESSHISTFILE = "$XDG_CACHE_HOME/less/history";
         LESSKEY = "$XDG_CONFIG_HOME/less/lesskey";
@@ -30,25 +29,25 @@ in {
         GDK_SCALE = "2";
       };
 
-      sessionPath = [ "$HOME/.local/bin"];
+      sessionPath = ["$HOME/.local/bin"];
 
       applications.enable = true;
-
     };
     sops = {
       # or some other source for the decryption key
       gnupg.home = "${config.xdg.dataHome}/gnupg";
       # or which file contains the encrypted secrets
       defaultSopsFile = "${flakePath}/secrets/groups/mikilio.yaml";
-      secrets = builtins.mapAttrs (name: value:
-        value // {path = "${config.xdg.userDirs.extraConfig.XDG_PRIVATE_DIR}/secrets/${name}";}
-      ) {
-        google-git = { };
-        spotify_pwd.key  = "spotify/pwd";
-        spotify_usr.key = "spotify/usr";
-        keepassxc = { };
-
-      };
+      secrets =
+        builtins.mapAttrs (
+          name: value:
+            value // {path = "${config.xdg.userDirs.extraConfig.XDG_PRIVATE_DIR}/secrets/${name}";}
+        ) {
+          google-git = {};
+          spotify_pwd.key = "spotify/pwd";
+          spotify_usr.key = "spotify/usr";
+          keepassxc = {};
+        };
     };
     systemd.user.services.sops-nix.Install.WantedBy = lib.mkForce ["graphical-session.target"];
   };

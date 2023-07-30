@@ -6,9 +6,7 @@
   ...
 }:
 with lib; let
-
   cfg = config.home.desktop;
-
 in {
   imports = [
     ./config.nix

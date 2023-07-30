@@ -26,7 +26,6 @@ with lib; let
   };
 in {
   config = mkIf (cfg.editor == "nvim") {
-
     programs.neovim = {
       enable = true;
       defaultEditor = true;
@@ -60,7 +59,8 @@ in {
           luautf8
         ];
 
-      plugins = with pkgs.vimPlugins; with builtins;[
+      plugins = with pkgs.vimPlugins;
+      with builtins; [
         # ----------------------------------------------
         # ------------Styling---------------------------
         # ----------------------------------------------
@@ -239,17 +239,17 @@ in {
         }
       ];
       extraLuaConfig = let
-	  luaRequire = module:
-	    builtins.readFile (builtins.toString
-	      ./lua
-	      + "/${module}.lua");
-	  luaConfig = builtins.concatStringsSep "\n" (map luaRequire [
-	    "settings"
-	    "keymaps"
-	  ]);
-	in ''
-	  ${luaConfig}
-	'';
+        luaRequire = module:
+          builtins.readFile (builtins.toString
+            ./lua
+            + "/${module}.lua");
+        luaConfig = builtins.concatStringsSep "\n" (map luaRequire [
+          "settings"
+          "keymaps"
+        ]);
+      in ''
+        ${luaConfig}
+      '';
     };
   };
 }

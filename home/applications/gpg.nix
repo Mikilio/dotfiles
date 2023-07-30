@@ -1,4 +1,8 @@
-{config, pkgs, ...}: {
+{
+  config,
+  pkgs,
+  ...
+}: {
   programs = {
     gpg = {
       enable = true;
@@ -21,7 +25,7 @@
   '';
 
   home = {
-    sessionVariables.GPG_TTY ="$(tty)";
+    sessionVariables.GPG_TTY = "$(tty)";
     packages = with pkgs; [
       yubioath-flutter
       yubikey-personalization
@@ -30,7 +34,7 @@
     ];
   };
 
-  pam.yubico.authorizedYubiKeys.ids = [ "cccccbhkevjb" ];
+  pam.yubico.authorizedYubiKeys.ids = ["cccccbhkevjb"];
 
   services = {
     gpg-agent = {

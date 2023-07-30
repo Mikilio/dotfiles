@@ -1,25 +1,27 @@
-{ config, lib, pkgs, flakePath, ... }:
-
-with lib;
-
-let
-  cfg =  config.home.applications;
-
+{
+  config,
+  lib,
+  pkgs,
+  flakePath,
+  ...
+}:
+with lib; let
+  cfg = config.home.applications;
 in {
   config = mkIf cfg.passwords {
     assertions = [
       (hm.assertions.assertPlatform "services.keepassxc" pkgs platforms.linux)
     ];
 
-   systemd.user.services.keepassxc = {
+    systemd.user.services.keepassxc = {
       Unit = {
         Description = "keepassxc password manager";
-        Requires = [ "sops-nix.service" ];
-        After = [ "graphical-session-pre.target" ];
-        PartOf = [ "graphical-session.target" ];
+        Requires = ["sops-nix.service"];
+        After = ["graphical-session-pre.target"];
+        PartOf = ["graphical-session.target"];
       };
 
-      Install = { WantedBy = [ "graphical-session.target" ]; };
+      Install = {WantedBy = ["graphical-session.target"];};
 
       Service = {
         Type = "exec";

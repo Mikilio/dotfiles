@@ -1,17 +1,18 @@
-{ config
-, pkgs
-, lib
-, self
-, self'
-, inputs'
-, ...
+{
+  config,
+  pkgs,
+  lib,
+  self,
+  self',
+  inputs',
+  ...
 } @ args: {
-  imports = [ ./hardware-configuration.nix ./secrets.nix ];
+  imports = [./hardware-configuration.nix ./secrets.nix];
 
   boot = {
     initrd = {
       systemd.enable = true;
-      supportedFilesystems = [ "ext4" ];
+      supportedFilesystems = ["ext4"];
       verbose = false;
     };
 
@@ -22,7 +23,9 @@
     kernelPackages = pkgs.linuxPackages_xanmod_latest;
 
     extraModulePackages = with config.boot.kernelPackages; [
-      /* ddcci-driver */
+      /*
+      ddcci-driver
+      */
       v4l2loopback
     ];
 
@@ -33,12 +36,16 @@
     lanzaboote = {
       enable = true;
       #currently breaks system
-      /* enrollKeys = true; */
+      /*
+      enrollKeys = true;
+      */
       configurationLimit = 10;
       pkiBundle = "/etc/secureboot";
       settings = {
         #currently breaks system
-        /* password = "$__file{${config.sops.secrets.boot_pwd.path}}"; */
+        /*
+        password = "$__file{${config.sops.secrets.boot_pwd.path}}";
+        */
       };
     };
 
@@ -56,7 +63,7 @@
 
     plymouth = {
       enable = true;
-      themePackages = [ (pkgs.catppuccin-plymouth.override {variant = "mocha";}) ];
+      themePackages = [(pkgs.catppuccin-plymouth.override {variant = "mocha";})];
       theme = "catppuccin-mocha";
     };
   };
@@ -78,7 +85,6 @@
   };
 
   services = {
-
     # keyboard remapping (commented out because of chroot issues)
     kmonad = {
       enable = true;
@@ -112,8 +118,8 @@
   networking = {
     hostName = "homestation";
     firewall = {
-      allowedTCPPorts = [ 42355 ];
-      allowedUDPPorts = [ 5353 ];
+      allowedTCPPorts = [42355];
+      allowedUDPPorts = [5353];
     };
   };
   users.mutableUsers = false;
@@ -121,6 +127,6 @@
     isNormalUser = true;
     shell = pkgs.zsh;
     passwordFile = "${self.outPath}/secrets/hashes/mikilio.txt";
-    extraGroups = [ "adbusers" "input" "libvirtd" "networkmanager" "plugdev" "keys" "transmission" "video" "wheel" ];
+    extraGroups = ["adbusers" "input" "libvirtd" "networkmanager" "plugdev" "keys" "transmission" "video" "wheel"];
   };
 }

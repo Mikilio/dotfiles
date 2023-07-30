@@ -4,19 +4,19 @@
   config,
   ...
 }:
-with lib;
-
-let
+with lib; let
   browser = ["vivaldi.desktop"];
   homeDir = config.home.homeDirectory;
 
   defaultApps = with pkgs; [
-    imv mpv xfce.thunar
-    xarchiver vivaldi neovim
+    imv
+    mpv
+    xfce.thunar
+    xarchiver
+    vivaldi
+    neovim
   ];
-
 in {
-
   config = {
     xdg = {
       enable = true;
@@ -29,7 +29,7 @@ in {
       dataFile."xdg-terminals".source = "${pkgs."${config.home.sessionVariables.TERM}"}/share/applications";
 
       configFile."xdg-terminals.list".text = with builtins; (
-        concatStringsSep "\n" ( attrNames (
+        concatStringsSep "\n" (attrNames (
           filterAttrs (entry: type: type == "regular") (
             readDir "${pkgs."${config.home.sessionVariables.TERM}"}/share/applications"
           )
@@ -55,7 +55,6 @@ in {
       };
     };
 
-    home.packages = [ pkgs.xdg-terminal-exec ];
-
+    home.packages = [pkgs.xdg-terminal-exec];
   };
 }
