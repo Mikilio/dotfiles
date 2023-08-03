@@ -23,9 +23,13 @@
     kernelPackages = pkgs.linuxPackages_xanmod_latest;
 
     extraModulePackages = with config.boot.kernelPackages; [
-      /*
-      ddcci-driver
-      */
+      (
+        ddcci-driver.overrideAttrs (o: {
+          patches = (o.patches or [ ]) ++ [
+            ./ddcci_semaphore_fix.patch
+          ];
+        })
+      )
       v4l2loopback
     ];
 

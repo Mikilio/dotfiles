@@ -1,0 +1,30 @@
+From 410fd6e962c6760bd5b287f18b8c6bf8c7bbf261 Mon Sep 17 00:00:00 2001
+From: Tj <hacker@iam.tj>
+Date: Tue, 16 May 2023 09:37:31 +0100
+Subject: [PATCH] Compatible with v6.4 changes
+
+DEFINE_SEMAPHORE was changed in 48380368dec14859723 to expose the
+counter value.
+---
+ ddcci/ddcci.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/ddcci/ddcci.c b/ddcci/ddcci.c
+index ea76352..3c75b90 100644
+--- a/ddcci/ddcci.c
++++ b/ddcci/ddcci.c
+@@ -39,7 +39,11 @@ static int autoprobe_addr_count = 5;
+ static dev_t ddcci_cdev_first;
+ static dev_t ddcci_cdev_next;
+ static dev_t ddcci_cdev_end;
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 4, 0)
++static DEFINE_SEMAPHORE(core_lock, 1);
++#else
+ static DEFINE_SEMAPHORE(core_lock);
++#endif
+ 
+ struct bus_type ddcci_bus_type;
+ EXPORT_SYMBOL_GPL(ddcci_bus_type);
+-- 
+GitLab
+
