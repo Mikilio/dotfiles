@@ -113,6 +113,14 @@
               '';
             };
 
+            sync = mkOption {
+              type = types.bool;
+              default = true;
+              description = ''
+                Setup syncthing
+              '';
+            };
+
             misc = mkOption {
               type = types.listOf types.str;
               default = [];
@@ -143,6 +151,7 @@
           ./wezterm.nix
           ./productivity.nix
           ./keepassxc.nix
+          ./syncthing.nix
         ];
 
         options = {

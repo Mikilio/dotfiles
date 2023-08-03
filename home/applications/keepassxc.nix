@@ -26,7 +26,7 @@ in {
       Service = {
         Type = "exec";
         Restart = "no";
-        ExecStart = "/bin/sh -c '${pkgs.keepassxc}/bin/keepassxc --pw-stdin ${flakePath}/secrets/Passwords.kdbx < ${config.sops.secrets.keepassxc.path}'";
+        ExecStart = "/bin/sh -c '${pkgs.keepassxc}/bin/keepassxc --pw-stdin ${config.xdg.userDirs.publicShare}/Passwords.kdbx < ${config.sops.secrets.keepassxc.path}'";
       };
     };
   };

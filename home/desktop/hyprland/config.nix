@@ -100,10 +100,13 @@ in {
     # only allow shadows for floating windows
     windowrulev2 = noshadow, floating:0
 
+    #make keepass windows always floating
+    windowrulev2 = float, class:^(org.keepassxc.KeePassXC)$
+
     # telegram media viewer
     windowrulev2 = float, title:^(Media viewer)$
 
-    # make Firefox PiP window floating and sticky
+    # make PiP window floating and sticky
     windowrulev2 = float, title:^(Picture-in-Picture)$
     windowrulev2 = pin, title:^(Picture-in-Picture)$
 
