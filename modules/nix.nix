@@ -6,7 +6,7 @@
   ...
 }: {
   # we need git for flakes
-  environment.systemPackages = [pkgs.git];
+  environment.systemPackages = with pkgs; [ git cachix ];
 
   nix = {
     # extra builders to offload work onto
