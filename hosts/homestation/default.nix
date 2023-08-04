@@ -33,6 +33,8 @@
       v4l2loopback
     ];
 
+    kernelModules = [ "ddcci" "v4l2loopback" ];
+
     kernelParams = [
       "quiet"
     ];
