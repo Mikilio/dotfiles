@@ -6,7 +6,7 @@
   ...
 }: {
   # we need git for flakes
-  environment.systemPackages = with pkgs; [ git cachix ];
+  environment.systemPackages = [pkgs.git];
 
   nix = {
     # extra builders to offload work onto
@@ -48,11 +48,11 @@
 
       substituters = [
         "https://nix-community.cachix.org"
-        "https://helix.cachix.org"
+        "https://mikilio.cachix.org"
       ];
       trusted-public-keys = [
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-        "helix.cachix.org-1:ejp9KQpR1FBI2onstMQ34yogDm4OgU2ru6lIwPvuCVs="
+        "mikilio.cachix.org-1:nYplhDMbu04QkMOJlCfSsEuFYFHp9VMKbChfL2nMKio="
       ];
 
       trusted-users = ["root" "@wheel"];

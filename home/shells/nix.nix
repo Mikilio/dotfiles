@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   self',
   ...
@@ -9,7 +10,10 @@
     alejandra
     deadnix
     statix
+    cachix
   ];
+
+  sops.secrets.cachix.path = "${config.xdg.configHome}/cachix/cachix.dhall";
 
   programs.direnv = {
     enable = true;
