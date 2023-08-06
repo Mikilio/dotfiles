@@ -15,9 +15,6 @@ in {
       #collection of utilities for indexing and searching Maildirs
       mu
 
-      #conversion between markup formats
-      pandoc
-
       #svg and png editing
       inkscape
 
@@ -43,5 +40,16 @@ in {
       xfce.tumbler
       xarchiver
     ];
+
+    programs = {
+      pandoc = {
+        enable = true;
+        defaults = {
+          metadata = {
+            author = "Mikilio";
+          };
+        };
+      };
+    };
   };
 }

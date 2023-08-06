@@ -14,9 +14,16 @@ _G.makefilecheck = function()
       vim.b.knap_settings = knapsettings
   end
 end
+
 vim.api.nvim_create_autocmd(
   {'LspAttach'},
   {pattern = {'*.tex'}, group = group, callback = makefilecheck})
+vim.api.nvim_create_autocmd(
+  {'BufUnload'},
+  {
+    group = group,
+    callback = ( function() if (vim.b.knap_viewerpid) then os.execute("pkill -f live-server") end end )
+  })
 
 -- processes the document once, and refreshes the view
 kmap('n','<leader>cc', function() knap.process_once() end)

@@ -6,25 +6,9 @@
 }:
 with lib; let
   cfg = config.home.shells;
-  texmagic = pkgs.vimUtils.buildVimPluginFrom2Nix {
-    name = "texmagic-nvim";
-    src = pkgs.fetchFromGitHub {
-      owner = "jakewvincent";
-      repo = "texmagic.nvim";
-      rev = "3c0d3b63c62486f02807663f5c5948e8b237b182";
-      hash = "sha256-+IltvS5R9st+b97PtEdDnflymSP2JFpmqlXOrnzTJqc=";
-    };
-  };
-  knap = pkgs.vimUtils.buildVimPluginFrom2Nix {
-    name = "knap";
-    src = pkgs.fetchFromGitHub {
-      owner = "Mikilio";
-      repo = "knap";
-      rev = "f7d6e0938cfd832279ef2eda623aeb8341a37b7d";
-      hash = "sha256-WN6gmgn6+/ayvTDUFQ2oTUvkqR7taegUroTiLHg7rCs=";
-    };
-  };
-in {
+  customPlugs = config.nur.repos.mikilio.overlays.vimPlugins;
+
+  in {
   config = mkIf (cfg.editor == "nvim") {
     programs.neovim = {
       enable = true;
@@ -32,9 +16,10 @@ in {
       vimAlias = true;
       viAlias = true;
       vimdiffAlias = true;
-      withNodeJs = true;
-      withPython3 = true;
       extraPackages = with pkgs; [
+
+        #---preview- #
+        nodePackages_latest.live-server
         #--- LSP ---#
         rnix-lsp
         ccls
@@ -56,10 +41,11 @@ in {
       extraLuaPackages = lua:
         with lua; [
           plenary-nvim
+          luaposix
           luautf8
         ];
 
-      plugins = with pkgs.vimPlugins;
+      plugins = with (pkgs.vimPlugins.extend customPlugs);
       with builtins; [
         # ----------------------------------------------
         # ------------Styling---------------------------
@@ -209,7 +195,7 @@ in {
 
         #TeXMagic
         {
-          plugin = texmagic;
+          plugin = texmagic-nvim;
           config = "require('texmagic').setup{}";
           type = "lua";
         }

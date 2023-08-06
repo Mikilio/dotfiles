@@ -24,11 +24,12 @@ in {
         # torrents
         transmission-remote-gtk
 
+
+        config.nur.repos.mikilio.xwaylandvideobridge-hypr
         spotify-tui
       ]
       ++ (with self'.packages; [
         discord-canary
-        waveform
       ]);
 
     programs = {

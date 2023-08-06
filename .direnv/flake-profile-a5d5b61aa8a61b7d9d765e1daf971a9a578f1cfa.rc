@@ -45,7 +45,7 @@ if [[ "$SHELL" == "/noshell" || "$SHELL" == "/sbin/nologin" ]]; then
 fi
 
 # Load the environment
-source "/nix/store/m1qfi3k377cmkl21f3cvg31mgchcr9n4-devshell-dir/env.bash"
+source "/nix/store/q8czp8vbpgrkfpi5lnf5y9jgi9imbacy-devshell-dir/env.bash"
 '
 export shellHook
 stdenv='/nix/store/70fs318pfr52ymmf58ra3a2wymy3w4pm-naked-stdenv'

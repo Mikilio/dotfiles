@@ -28,10 +28,6 @@ command = "source './scripts/register_pam_u2f.sh'"
 category = "programs"
 package = "sops"
 
-[[commands]]
-category = "programs"
-package = "repl"
-
 [devshell]
 packages = [
   "gnupg",

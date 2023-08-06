@@ -74,8 +74,12 @@ in {
 
     decoration {
       rounding = 16
-      blur_size = 3
-      blur_passes = 3
+
+      blur {
+        enabled = true
+        size = 3
+        passes = 1
+      }
 
       shadow_offset = 0 5
       shadow_range = 50

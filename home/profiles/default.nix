@@ -8,6 +8,7 @@
   #External homeManagerModules are almost never present in perSystem
   #scoped inputs' so I can't acces them in my homeConfigurations
   #so until these are fixed I'm just adding them here.
+  # TODO: create lib function that exports all inputs into simple attributes
   buggedModules = {
     spicetify-nix_module = inputs.spicetify-nix.homeManagerModule;
     nur_module = inputs.nur.hmModules.nur;

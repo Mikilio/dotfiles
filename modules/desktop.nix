@@ -1,8 +1,8 @@
-{
-  inputs',
-  pkgs,
-  self,
-  ...
+{ config
+, inputs'
+,  pkgs
+,  self
+,  ...
 }: {
   fonts = {
     packages = with pkgs; [
@@ -16,7 +16,7 @@
       noto-fonts-cjk
       noto-fonts-emoji
       roboto
-      mscore-ttf
+      config.nur.repos.mikilio.ttf-ms-fonts
 
       # nerdfonts
       (nerdfonts.override {fonts = ["FiraCode" "JetBrainsMono"];})
@@ -76,6 +76,7 @@
       ];
       allowedUDPPorts = [
         8088 # LoL Spectator
+        8080 # Local-Live-Serve
       ];
       allowedUDPPortRanges = [
         # League of Legends

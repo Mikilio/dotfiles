@@ -5,12 +5,14 @@
     inputs.flake-parts.lib.mkFlake {inherit inputs;} {
       systems = ["x86_64-linux"];
 
+      debug = true;
+
       imports = [
         ./home
         ./hosts
         ./lib
+        ./overlays
         ./modules
-        ./pkgs
       ];
 
       perSystem = {
@@ -18,6 +20,9 @@
         lib,
         ...
       }: {
+        # store pkgs in output to reference it.
+        legacyPackages = pkgs;
+
         devShells.default = pkgs.devshell.mkShell {
           imports = [
             (pkgs.devshell.importTOML ./devshell.toml)

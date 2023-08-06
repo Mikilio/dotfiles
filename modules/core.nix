@@ -2,7 +2,7 @@
   pkgs,
   config,
   lib,
-  self,
+  self',
   ...
 }:
 # configuration shared by all hosts
@@ -24,7 +24,7 @@
   };
 
   # pickup pkgs from flake export
-  nixpkgs.pkgs = self.legacyPackages.${config.nixpkgs.system};
+  nixpkgs.pkgs = self'.legacyPackages;
 
   # enable programs
   programs = {
