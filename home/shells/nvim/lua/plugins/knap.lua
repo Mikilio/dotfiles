@@ -5,7 +5,7 @@ local scan = require'plenary.scandir'
 
 local group = vim.api.nvim_create_augroup('knap_autocmds', {clear = true})
 
-_G.makefilecheck = function()
+_G.makefile_check = function()
   local root_dir = vim.lsp.buf.list_workspace_folders()[1]
   if (root_dir ~= nil and scan.scan_dir(root_dir, { depth = 1, search_pattern = 'Makefile'})) then
       local knapsettings = vim.b.knap_settings or {}
@@ -15,15 +15,18 @@ _G.makefilecheck = function()
   end
 end
 
-local gknapsettings = {
-    mdtohtml = "pandoc -f markdown --standalone -o %outputpath%",
-    mdtohtmlbufferasstdin = true
-}
-vim.g.knap_settings = gknapsettings
+_G.github = function()
+  local knapsettings = vim.b.knap_settings or {}
+  knapsettings["mdtohtml"] = 'pandoc --quiet -f gfm -s %docroot% -o %outputpath%';
+  vim.b.knap_settings = knapsettings
+end
 
 vim.api.nvim_create_autocmd(
   {'LspAttach'},
-  {pattern = {'*.tex'}, group = group, callback = makefilecheck})
+  {pattern = {'*.tex'}, group = group, callback = makefile_check })
+vim.api.nvim_create_autocmd(
+  {'LspAttach'},
+  {pattern = {'*README.md'}, group = group, callback = github })
 vim.api.nvim_create_autocmd(
   {'BufUnload'},
   {

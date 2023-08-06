@@ -22,12 +22,6 @@ api.nvim_create_autocmd(
   }
 )
 
---remove trailing whitespace
-autocmd({ "BufWritePre" }, {
-	pattern = "*",
-	command = "%s/\\s\\+$//e",
-})
-
 -- highlight on yank
 local yank_group = augroup("HighlightYank", {})
 autocmd("TextYankPost", {
