@@ -41,7 +41,7 @@ lsp.rnix.setup{
   flags = lsp_flags,
 }
 
-require'lspconfig'.lua_ls.setup {
+lsp.lua_ls.setup {
   settings = {
     Lua = {
       runtime = {

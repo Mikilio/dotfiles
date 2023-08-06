@@ -1,5 +1,8 @@
 local configs = require("nvim-treesitter.configs")
 configs.setup({
+
+  modules = {}, auto_install = false, sync_install = false, ignore_install = {},
+  ensure_installed = {}, parser_install_dir = nil,
   ------------------------------------------------------
   -- installation of modules is fully handeled by nix --
   ------------------------------------------------------
@@ -23,6 +26,6 @@ configs.setup({
   },
   context_commentstring = {
     enable = true,
-    enable_autocmd = false,
+    enable_autocmd = true,
   },
 })

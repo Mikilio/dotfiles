@@ -15,6 +15,12 @@ _G.makefilecheck = function()
   end
 end
 
+local gknapsettings = {
+    mdtohtml = "pandoc -f markdown --standalone -o %outputpath%",
+    mdtohtmlbufferasstdin = true
+}
+vim.g.knap_settings = gknapsettings
+
 vim.api.nvim_create_autocmd(
   {'LspAttach'},
   {pattern = {'*.tex'}, group = group, callback = makefilecheck})
