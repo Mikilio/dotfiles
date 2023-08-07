@@ -34,7 +34,6 @@
 
     btop.enable = true;
     exa.enable = true;
-    ssh.enable = true;
 
     skim = {
       enable = true;
