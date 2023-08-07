@@ -16,6 +16,8 @@ in {
     home.packages = with pkgs; [
       jaq
       xorg.xprop
+      # to enable ssh Xforwarding
+      xorg.xauth
       inputs'.hyprland-contrib.packages.grimblast
     ];
 

@@ -65,6 +65,7 @@
           ./cli.nix
           ./helix
           ./nvim
+          ./ssh
         ];
 
         options = {
