@@ -1,4 +1,7 @@
-{pkgs, ...}: {
+{ config
+, pkgs
+, ...
+}: {
   home.packages = with pkgs; [
     # archives
     zip
@@ -15,6 +18,7 @@
     bat
     ripgrep
     xdg-utils
+    config.nur.repos.mikilio.xdg-terminal-exec
   ];
 
   programs = {

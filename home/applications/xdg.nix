@@ -11,7 +11,7 @@ with lib; let
   defaultApps = with pkgs; [
     imv
     mpv
-    xfce.thunar
+    xfce.thunar-full
     xarchiver
     vivaldi
     neovim

@@ -10,7 +10,16 @@ in {
     system,
     inputs',
     ...
-  }: {
+  }: 
+  
+  with inputs.nixpkgs.lib;
+
+  let
+    
+    mkPkgs = import inputs.nixpkgs;
+    inherit (extends inputs.nur.overlay mkPkgs { inherit system; }) nur;
+    
+  in {
     _module.args.pkgs = import inputs.nixpkgs {
       inherit system;
       # allow spotify to be installed if you don't have unfree enabled already
@@ -29,6 +38,8 @@ in {
       overlays = [
         #enable devshell
         inputs.devshell.overlays.default
+
+        nur.repos.mikilio.overlays.thunar
 
         #all normal overrides
         (
@@ -87,7 +98,7 @@ in {
               nss = prev.nss_latest;
               withOpenASAR = true;
             };
-
+            
             vivaldi = prev.vivaldi.override {
               proprietaryCodecs = true;
               enableWidevine = true;
