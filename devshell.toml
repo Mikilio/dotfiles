@@ -33,6 +33,7 @@ packages = [
   "gnupg",
   "coreutils",
   "parted",
+  "dosfstools",
   "nixos-install-tools",
   "alejandra",
 ]

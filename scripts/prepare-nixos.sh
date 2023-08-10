@@ -133,11 +133,6 @@ TARGET=$(select_folder)
 # The command nixos-generate-config can generate an initial configuration file for you:
 sudo `which nixos-generate-config` --root /mnt --show-hardware-config > ./hosts/${TARGET}/hardware-configuration.nix
 
-git commit -a --amend
-git push -f
-sudo rm -rf /mnt/etc/nixos
-sudo git clone https://github.com/Mikilio/dotfiles.git /mnt/etc/nixos
-
 echo "More info on https://nixos.org/nixos/manual/index.html#sec-installation-installing "
 echo ""
 echo "To finalize the install run:"
