@@ -14,7 +14,7 @@ in {
       enable = true;
       extraOptions = [];
       tray = {
-        enable = true;
+        enable = false; # TODO make true when you have a system tray
         package = pkgs.syncthing-tray;
       };
     };

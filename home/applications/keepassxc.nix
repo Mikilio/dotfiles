@@ -17,15 +17,14 @@ in {
       Unit = {
         Description = "keepassxc password manager";
         Requires = ["sops-nix.service"];
-        After = ["graphical-session-pre.target"];
-        PartOf = ["graphical-session.target"];
+        After = ["sops-nix.service"];
       };
 
       Install = {WantedBy = ["graphical-session.target"];};
 
       Service = {
         Type = "exec";
-        Restart = "no";
+        Restart = "on-abnormal";
         ExecStart = "/bin/sh -c '${pkgs.keepassxc}/bin/keepassxc --pw-stdin ${config.xdg.userDirs.publicShare}/Passwords.kdbx < ${config.sops.secrets.keepassxc.path}'";
       };
     };
