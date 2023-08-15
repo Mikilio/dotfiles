@@ -1,13 +1,65 @@
+local navic = require("nvim-navic")
+
 require('lualine').setup {
-    options = {
-        theme = "catppuccin"
+  options = {
+    theme = "catppuccin",
+    globalstatus = true,
+    component_separators = '|',
+    section_separators = { left = '', right = '' },
   },
+
+  tabline = {
+    lualine_a = {
+      {
+        function()
+          return vim.fn.fnamemodify(vim.fn.getcwd(),':t')
+        end,
+        icon = '󰛢',
+        color = 'lualine_a_normal',
+        separator = { left = '' },
+        right_padding = 2 ,
+      }
+    },
+    lualine_b = {
+      require("harpoon.tabline").format({
+        tabline_prefix = ' ',
+        tabline_suffix = ' ',
+      })
+    },
+    lualine_c = {},
+    lualine_x = {},
+    lualine_y = {'windows'},
+    lualine_z = {
+      {
+        'tabs',
+        separator = {right = '' },
+        left_padding = 2,
+      },
+    }
+  },
+
+  winbar = {
+    lualine_c = {
+      {
+        function()
+          return navic.get_location()
+        end,
+        cond = function()
+          return navic.is_available()
+        end
+      },
+    }
+  },
+
   sections = {
+    lualine_a = {
+      { 'mode', separator = { left = '' }, right_padding = 2 },
+    },
     lualine_b = {
       'branch',
       {
         "diff",
-        symbols = { added = " ", modified = "柳", removed = " " },
+        symbols = { added = " ", modified = " ", removed = " " },
       },
       {
         "diagnostics",
@@ -47,8 +99,13 @@ require('lualine').setup {
           return msg
         end,
         icon = " LSP:",
-        color = { fg = "#ffffff", gui = "bold" },
+        color = 'Title',
       },
+    },
+    lualine_x = {},
+    lualine_y = { 'filetype', 'progress' },
+    lualine_z = {
+      { 'location', separator = { right = '' }, left_padding = 2 },
     },
   },
   globalstatus = false

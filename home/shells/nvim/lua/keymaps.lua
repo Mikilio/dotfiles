@@ -13,18 +13,21 @@ vim.g.mapleader = " "
 --   term_mode = "t",
 --   command_mode = "c",
 
---   Better Command keymap
-keymap("n", ";", ":", opts)
-
 -- Better window navigation --
-keymap("n", "<C-h>", "<C-w>h", opts)
-keymap("n", "<C-j>", "<C-w>j", opts)
-keymap("n", "<C-k>", "<C-w>k", opts)
-keymap("n", "<C-l>", "<C-w>l", opts)
+keymap("n", "<Leader>wh", "<C-w>h", opts)
+keymap("n", "<Leader>wj", "<C-w>j", opts)
+keymap("n", "<Leader>wk", "<C-w>k", opts)
+keymap("n", "<Leader>wl", "<C-w>l", opts)
 
--- Naviagate buffers --
-keymap("n", "<TAB>", ":bnext<CR>", opts)
-keymap("n", "<S-TAB>", ":bprevious<CR>", opts)
+-- Naviagate tabs --
+keymap("n", "<Leader><TAB>n", ":tabnext<CR>", opts)
+keymap("n", "<Leader><TAB>N", ":tabprevious<CR>", opts)
+keymap("n", "<Leader><TAB>d", ":tabclose<CR>", opts)
+
+-- Naviagate tabs --
+keymap("n", "<Leader>bn", ":bnext<CR>", opts)
+keymap("n", "<Leader>bN", ":bprevious<CR>", opts)
+keymap("n", "<Leader>bd", ":bdelete<CR>", opts)
 
 -- Stay in indent mode --
 keymap("v", "<", "<gv", opts)
@@ -67,25 +70,14 @@ keymap("n", "<Space><CR>", ":nohlsearch<CR>", opts)
 keymap("n", "n", "nzz", opts)
 keymap("n", "N", "Nzz", opts)
 
-keymap("n", "<leader>d", "\"_d", opts)
-keymap("n", "<leader>Y", "\"+Y", opts)
-keymap("n", "<leader>y", "\"+y", opts)
-keymap("v", "<leader>y", "\"+y", opts)
-keymap("x", "<leader>p", "\"_dP", opts)
-keymap("v", "<leader>d", "\"_d", opts)
-
--- Markdown preview --
-keymap("n", "<Leader>mp", ":MarkdownPreview<CR>", opts)
-
--- open nextrw --
-keymap("n", "<Leader>nb", ":ene <BAR> startinsert <CR>", opts)
-
--- open or close trouble.nvim --
-keymap("n", "tr", ":TroubleToggle<CR>", opts)
+keymap("v", "<C-S-c>", '"+y', opts)
+keymap("v", "<C-S-x>", '"+d', opts)
 
 --debug
-keymap("n", "<Leader>db", ":lua require('dapui').toggle()<CR>", opts)
+keymap("n", "<Leader>xdb", ":lua require('dapui').toggle()<CR>", opts)
 keymap("n", "<C-b>", ":lua require'dap'.toggle_breakpoint()<CR>", opts)
+
+
 -- msic --
 -- keymap("n", "K", "5k", opts)
 -- keymap("n", "J", "5j", opts)

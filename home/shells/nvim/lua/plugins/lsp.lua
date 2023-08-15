@@ -1,109 +1,121 @@
-local lsp = require("lspconfig")
+local lsp_zero_ok, lsp_zero = pcall(require, 'lsp-zero')
+local config_ok, config = pcall(require, 'lspconfig')
+local cmp_ok, cmp = pcall(require, 'cmp')
+local lspkind_ok, lspkind = pcall(require, 'lspkind')
+local navic_ok, navic = pcall(require, 'nvim-navic')
+local ltex_ok, ltex = pcall(require, 'ltex_extra')
 
--- Mappings.
--- See `:help vim.diagnostic.*` for documentation on any of the below functions
-local opts = { noremap=true, silent=true }
-vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
-vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
+if (
+  lspkind_ok and cmp_ok and lsp_zero_ok and config_ok and navic_ok and ltex_ok
+) then
 
--- Use an on_attach function to only map the following keys
--- after the language server attaches to the current buffer
-local on_attach = function(client, bufnr)
-  -- Mappings.
-  -- See `:help vim.lsp.*` for documentation on any of the below functions
-  local bufopts = { noremap=true, silent=true, buffer=bufnr }
-  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-  vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-  vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-  vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
-  vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
-  vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
-  vim.keymap.set('n', '<space>wl', function()
-    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-  end, bufopts)
-  vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
-  vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
-  vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
-  vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-  vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
-end
+  local lsp = lsp_zero.preset({})
 
-local lsp_flags = {
-  -- This is the default in Nvim 0.7+
-  debounce_text_changes = 150,
-}
+  -- Use an on_attach function to only map the following keys
+  -- after the language server attaches to the current buffer
+  lsp.on_attach( function(client, bufnr)
+    -- Mappings.
+    -- See `:help vim.lsp.*` for documentation on any of the below functions
+    local opts = {buffer = bufnr, remap = false}
 
-lsp.rnix.setup{
-  on_attach = on_attach,
-  flags = lsp_flags,
-}
+    lsp.default_keymaps({buffer = bufnr})
 
-lsp.lua_ls.setup {
-  settings = {
-    Lua = {
-      runtime = {
-        -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-        version = 'LuaJIT',
-      },
-      diagnostics = {
-        -- Get the language server to recognize the `vim` global
-        globals = {'vim'},
-      },
-      workspace = {
-        -- Make the server aware of Neovim runtime files
-        library = vim.api.nvim_get_runtime_file("", true),
-      },
-      -- Do not send telemetry data containing a randomized but unique identifier
-      telemetry = {
-        enable = false,
+    vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
+    vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
+    vim.keymap.set("n", "<leader>vca", function() vim.lsp.buf.code_action() end, opts)
+    vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
+
+    if client.server_capabilities.documentSymbolProvider then
+        navic.attach(client, bufnr)
+    end
+  end)
+
+  lsp.sign_icons = {
+      error = ' ',
+      warn = ' ',
+      hint = ' ',
+      info = ' '
+  }
+
+  -- -----------------------------------------
+  -- ------------Autocomplete-----------------
+  -- -----------------------------------------
+  lsp.extend_cmp()
+
+  local cmp_action = lsp.cmp_action()
+
+  cmp.setup({
+    preselect = 'item',
+    completion = {
+      completeopt = 'menu,menuone,noinsert',
+      autocomplete = false,
+    },
+
+    sources = {
+      {name = 'nvim_lsp'},
+      {name = 'buffer'},
+      {name = 'luasnip'},
+      {name = 'path'},
+      {name = 'nvim_lua'},
+      {name = 'nvim_lsp_signature_help' },
+    },
+
+    mapping = {
+      -- Ctrl+Space to trigger completion menu
+      ['<C-Space>'] = cmp.mapping.complete(),
+
+      -- Navigate between snippet placeholder
+      ['<C-f>'] = cmp_action.luasnip_jump_forward(),
+      ['<C-b>'] = cmp_action.luasnip_jump_backward(),
+    },
+
+    formatting = {
+      fields = {'abbr', 'kind', 'menu'},
+      format = lspkind.cmp_format({
+        mode = 'symbol', -- show only symbol annotations
+        maxwidth = 50, -- prevent the popup from showing more than provided characters
+        ellipsis_char = '...', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead
+      })
+    },
+
+    window = {
+      completion = cmp.config.window.bordered(),
+      documentation = cmp.config.window.bordered(),
+    }
+  })
+
+  -- Fix Undefined global 'vim'
+  config.lua_ls.setup(lsp.nvim_lua_ls())
+
+  config.ltex.setup {
+    on_attach = function(_, _)
+      -- rest of your on_attach process.
+      ltex.setup {path = vim.fn.stdpath("data") .. '/ltex'}
+    end,
+    settings = {
+      ltex = {
+        disabledRules = {
+          ["en-US"] = { "BACHELOR_ABBR" }
+        },
+        dictionary = {
+          ["en-US"] = { }
+        },
+        additionalRules = {
+          enablePickyRules = true,
+          motherTongue = "en-US",
+        },
       },
     },
-  },
-}
+  }
 
-lsp.ccls.setup {
-  init_options = {
-    compilationDatabaseDirectory = "build";
-    index = {
-      threads = 0;
-    };
-    clang = {
-      excludeArgs = { "-frounding-math"} ;
-    };
-  },
-  on_attach = on_attach,
-  flags = lsp_flags
-}
-
-lsp.pyright.setup{
-    on_attach = on_attach,
-    flags = lsp_flags,
-}
-
-lsp.zk.setup{
-    on_attach = on_attach,
-    flags = lsp_flags,
-}
-
-lsp.bashls.setup{
-    on_attach = on_attach,
-    flags = lsp_flags,
-}
-
-lsp.rust_analyzer.setup{
-    on_attach = on_attach,
-    flags = lsp_flags,
-}
-
-lsp.texlab.setup{
-  on_attach = on_attach,
-  flags = lsp_flags,
-}
-
-lsp.ltex.setup{
-  on_attach = on_attach,
-  flags = lsp_flags,
-}
+  lsp.setup_servers({
+    'lua_ls',
+    'nixd',
+    'ccls',
+    'pyright',
+    'bashls',
+    'rust_analyzer',
+    'texlab',
+    'ltex',
+  })
+end

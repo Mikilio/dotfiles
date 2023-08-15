@@ -37,33 +37,43 @@ autocmd("TextYankPost", {
 
 local options  = {
 	mouse = "a",
-	undofile = true,
-	ignorecase = true,
-	smartcase = true,
-	showmode = false,
-	showtabline = 2,
-	swapfile = false,
-	hidden = true, --default on
-	expandtab = true,
-	cmdheight = 1,
-	shiftwidth = 2, --insert 2 spaces for each indentation
-	tabstop = 2, --insert 2 spaces for a tab
-	cursorline = true, --Highlight the line where the cursor is located
-	cursorcolumn = false,
+
 	number = true,
 	numberwidth = 4,
-	relativenumber = true,
-	textwidth = 0,
-	scrolloff = 8,
-	fileencodings = "utf-8,gbk",
-  updatetime = 50, -- faster completion (4000ms default)
+
+	tabstop = 2, --insert 2 spaces for a tab
+  softtabstop = 2,
+	shiftwidth = 2, --insert 2 spaces for each indentation
+	expandtab = true,
+
+  smartindent = true,
+
+  wrap = false,
+
+	swapfile = false,
+  backup = false,
+  undodir = os.getenv('XDG_CACHE_HOME') .. '/nvim/undodir',
+	undofile = true,
+
+  hlsearch = false,
   incsearch = true,
-	spelllang = 'en_us',
-  spelloptions = 'camel'
+	ignorecase = true,
+
+  termguicolors = true,
+
+	scrolloff = 8,
+  signcolumn = "yes",
+
+	colorcolumn = '80',
+	cursorline = true, --Highlight the line where the cursor is located
+
+  updatetime = 50, -- faster completion (4000ms default)
+
+  spellfile = vim.fn.stdpath("config") .. "/spell/en.utf-8.add"
 }
 
 for k, v in pairs(options) do
 	vim.opt[k] = v
 end
 
-g.netrw_banner = 0
+vim.opt.isfname:append('@-@')

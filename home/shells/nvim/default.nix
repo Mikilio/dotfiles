@@ -19,22 +19,17 @@ in
       extraPackages = with pkgs; [
 
         #--- LSP ---#
-        rnix-lsp
         ccls
+        nixd
         pyright
-        zk
         lua-language-server
         nodePackages.bash-language-server
         rust-analyzer
         texlab
         ltex-ls
-        #--null-ls--#
-        stylua
-        black
-        alejandra
-        rustfmt
-        beautysh
-        nodePackages.prettier
+        #---misc----#
+        cmark-gfm
+        nodePackages.live-server
       ];
       extraLuaPackages = lua:
         with lua; [
@@ -65,11 +60,6 @@ in
           # ------------User Interface--------------------
           #-----------------------------------------------
           {
-            plugin = bufferline-nvim;
-            config = readFile ./lua/plugins/bufferline.lua;
-            type = "lua";
-          }
-          {
             plugin = lualine-nvim;
             config = readFile ./lua/plugins/lualine.lua;
             type = "lua";
@@ -84,17 +74,10 @@ in
             config = readFile ./lua/plugins/alpha.lua;
             type = "lua";
           }
-
           # ----------Apps-----------
-          undotree
           {
             plugin = knap;
             config = readFile ./lua/plugins/knap.lua;
-            type = "lua";
-          }
-          {
-            plugin = diffview-nvim;
-            config = readFile ./lua/plugins/diffview.lua;
             type = "lua";
           }
           {
@@ -102,17 +85,13 @@ in
             config = readFile ./lua/plugins/dapui.lua;
             type = "lua";
           }
-
-          {
-            plugin = lspsaga-nvim;
-            config = readFile ./lua/plugins/lspsaga.lua;
-            type = "lua";
-          }
-
           #-----------------------------------------------
           # ------------Language Server Protocol----------
           #-----------------------------------------------
-          null-ls-nvim
+          lsp-zero-nvim
+          lspkind-nvim
+          nvim-navic
+          ltex_extra-nvim
           {
             plugin = nvim-lspconfig;
             config = readFile ./lua/plugins/lsp.lua;
@@ -120,31 +99,25 @@ in
           }
 
           # ------Auto-Completion----
+          nvim-cmp
           cmp-buffer
           cmp-path
           cmp_luasnip
           cmp-nvim-lsp
           cmp-nvim-lsp-signature-help
           cmp-nvim-lua
-          cmp-omni
-          cmp-rg
-          cmp-spell
-          {
-            plugin = nvim-cmp;
-            config = readFile ./lua/plugins/cmp.lua;
-            type = "lua";
-          }
-
+          
           # ------Snippets-----------
           luasnip
-          friendly-snippets
 
           #-----------------------------------------------
           # ------------Search and Find-------------------
           #-----------------------------------------------
           telescope-media-files-nvim
           telescope-project-nvim
+          telescope-zoxide
           telescope-fzy-native-nvim
+          telescope-undo-nvim
           git-worktree-nvim
           {
             plugin = telescope-nvim;
@@ -157,6 +130,11 @@ in
           #-----------------------------------------------
           targets-vim
           nvim-ts-context-commentstring
+          {
+            plugin = harpoon;
+            config = readFile ./lua/plugins/harpoon.lua;
+            type = "lua";
+          }
           {
             plugin = comment-nvim;
             config = readFile ./lua/plugins/comment.lua;
@@ -181,12 +159,6 @@ in
           #-----------------------------------------------
           # ------------Integration-----------------------
           #-----------------------------------------------
-          #Zettelkasten
-          {
-            plugin = zk-nvim;
-            config = "require('zk').setup()";
-            type = "lua";
-          }
 
           #Debug Adapter Protocol
           nvim-dap
@@ -208,19 +180,32 @@ in
           # Pop-up API from vim
           popup-nvim
 
-          # git-worktrees
+          # Git
           git-worktree-nvim
+          {
+            plugin = vim-fugitive;
+            config = readFile ./lua/plugins/fugitive.lua;
+            type = "lua";
+          }
+
+          # Zoxide
+          zoxide-vim
 
           #-----------------------------------------------
           # ------------Miscellaneous----------------------
           #-----------------------------------------------
-          neomake
-          vim-startuptime
+
+          {
+            plugin = netrw-nvim;
+            config = "require('netrw').setup{}";
+            type = "lua";
+          }
           {
             plugin = impatient-nvim;
             config = readFile ./lua/plugins/impatient.lua;
             type = "lua";
           }
+
         ];
       extraLuaConfig =
         let

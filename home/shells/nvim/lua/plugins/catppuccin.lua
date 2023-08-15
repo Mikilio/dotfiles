@@ -2,10 +2,10 @@ require("catppuccin").setup({
   transparent_background = true,
   integrations = {
     cmp = true,
+    alpha = true,
     gitsigns = true,
     harpoon = true,
     hop = true,
-    lsp_saga = true,
     lsp_trouble = true,
     markdown = true,
     telescope = true,

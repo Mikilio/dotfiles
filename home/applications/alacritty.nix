@@ -21,6 +21,7 @@ with lib;
           window = {
             decorations = "none";
             dynamic_padding = true;
+            opacity = opacity;
             padding = {
               x = 5;
               y = 5;
@@ -56,8 +57,19 @@ with lib;
                 black = xcolors.base;
                 white = xcolors.rosewater;
               };
+            key_bindings = [
+              {
+                key = "C";
+                mods = "Control|Shift";
+                chars = "\\x1b[99;5u";
+              }
+              {
+                key = "X";
+                mods = "Control|Shift";
+                chars = "\\x1b[120;5u";
+              }
+            ];
           };
-          window.opacity = opacity;
         };
       };
     };

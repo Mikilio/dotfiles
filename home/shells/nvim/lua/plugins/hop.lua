@@ -39,4 +39,4 @@ vim.keymap.set('', 'T',
   end,
   {remap=true}
 )
-vim.keymap.set('', 'gt', hop.hint_char2, {remap=true})
+vim.keymap.set('', 'gf', hop.hint_char1, {remap=true})
