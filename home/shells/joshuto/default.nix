@@ -5,7 +5,7 @@
   ...
 }:
 with lib; let
-  cfg = config.home.shells.joshuto;
+  cfg = config.preferences.cli.joshuto;
 in {
   config = mkIf cfg {
     home.packages = [pkgs.joshuto];

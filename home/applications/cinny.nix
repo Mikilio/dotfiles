@@ -5,7 +5,7 @@
   ...
 }:
 with lib; let
-  cfg = config.home.applications;
+  cfg = config.preferences.apps;
 in {
   # use Cinny Matrix client
   # create systemd service that serves it on localhost:9999

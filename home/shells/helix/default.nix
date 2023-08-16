@@ -6,11 +6,11 @@
   ...
 }:
 with lib; let
-  cfg = config.home.shells;
+  cfg = config.preferences.cli.editor;
 in {
   imports = [./languages.nix];
 
-  config = mkIf (cfg.editor == "helix") {
+  config = mkIf (cfg == "helix") {
     programs.helix = {
       enable = true;
       package = inputs'helix.packages.default.overrideAttrs (self: {

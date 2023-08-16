@@ -31,11 +31,6 @@
       ];
 
       config = {
-        home.shells = {
-          zsh = true;
-          starship = true;
-          joshuto = true;
-        };
         programs.nix-index-database.comma.enable = true;
 
         # let HM manage itself when in standalone mode

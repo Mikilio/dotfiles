@@ -4,7 +4,10 @@
   config,
   ...
 }:
-with lib; let
+
+with lib;
+
+let
   browser = ["vivaldi.desktop"];
   homeDir = config.home.homeDirectory;
 
@@ -16,8 +19,10 @@ with lib; let
     vivaldi
     neovim
   ];
+  cfg = config.preferences.apps.terminal;
+
 in {
-  config = {
+  config = mkIf (!isNull cfg) {
     xdg = {
       enable = true;
 

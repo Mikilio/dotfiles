@@ -10,7 +10,7 @@ with lib;
   let
     inherit (default.terminal) font size opacity;
     inherit (default) xcolors;
-    cfg = config.home.applications;
+    cfg = config.preferences.apps;
   in {
     config = mkIf (cfg != null && cfg.terminal == "kitty") {
       programs.kitty = {

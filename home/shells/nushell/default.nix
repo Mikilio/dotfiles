@@ -5,9 +5,9 @@
   ...
 }:
 with lib; let
-  cfg = config.home.shells.nushell;
+  cfg = config.preferences.cli.shell;
 in {
-  config = mkIf cfg {
+  config = mkIf (cfg == "nushell") {
     programs.nushell = {
       enable = true;
       configFile.source = ./config.nu;

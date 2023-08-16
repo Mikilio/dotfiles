@@ -6,7 +6,7 @@
 }:
 with lib;
 with builtins; let
-  cfg = config.home.applications;
+  cfg = config.preferences.apps;
   browser =
     if (isNull cfg)
     then null

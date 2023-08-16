@@ -69,9 +69,7 @@ in {
     };
     services = {
       login.u2fAuth = true;
-      swaylock.text = ''
-        auth include login
-      '';
+      swaylock = {};
     };
   };
 }

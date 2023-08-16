@@ -1,9 +1,18 @@
 {
   pkgs,
   config,
+  lib,
   ...
-}: {
-  config = {
+}:
+
+with lib;
+
+let
+
+  cfg = config.preferences.cli.shell;
+
+in {
+  config = mkIf (!isNull cfg) {
 
     home.packages = [
       pkgs.git-crypt
@@ -40,7 +49,7 @@
           colorMoved = true;
         };
         merge = {
-          tool = config.home.shells.editor;
+          tool = "vimdiff";
           conflictStyle = "zdiff3";
         };
         push = {

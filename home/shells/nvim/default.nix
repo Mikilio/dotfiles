@@ -4,12 +4,12 @@
 , ...
 }:
 with lib; let
-  cfg = config.home.shells;
+  cfg = config.preferences.cli.editor;
   customPlugs = config.nur.repos.mikilio.overlays.vimPlugins;
 
 in
 {
-  config = mkIf (cfg.editor == "nvim") {
+  config = mkIf (cfg == "neovim") {
     programs.neovim = {
       enable = true;
       defaultEditor = true;

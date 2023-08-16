@@ -10,9 +10,9 @@ with lib;
   let
     inherit (default.terminal) font size opacity;
     inherit (default) xcolors;
-    cfg = config.home.applications;
+    cfg = config.preferences.apps.terminal;
   in {
-    config = mkIf (cfg != null && cfg.terminal == "wezterm") {
+    config = mkIf (cfg == "wezterm") {
       programs.wezterm = {
         enable = true;
         extraConfig = ''
@@ -40,5 +40,7 @@ with lib;
           }
         '';
       };
+
+      home.sessionVariables.TERM = "wezterm";
     };
   }

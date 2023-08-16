@@ -6,7 +6,7 @@
   ...
 }:
 with lib; let
-  cfg = config.home.desktop;
+  cfg = config.preferences.desktop;
 in {
   config = mkIf (cfg == "sway") {
     wayland.windowManager.sway = {

@@ -42,11 +42,10 @@
 
         appsModule = types.submodule {
           options = {
-            enable = mkEnableOption "applications";
 
             media = mkOption {
               type = types.bool;
-              default = true;
+              default = false;
               description = ''
                 this enables all media related things including themed spotify.
                 it also includes any form of soundcontrol.
@@ -56,7 +55,7 @@
 
             gui = mkOption {
               type = types.bool;
-              default = true;
+              default = false;
               description = ''
                 this option enables all things related to gui. this includes qt
                 and gtk options.
@@ -65,31 +64,31 @@
 
             games = mkOption {
               type = types.bool;
-              default = true;
+              default = false;
               description = ''
                 this option enables all gaming related things.
               '';
             };
 
             browser = mkOption {
-              type = types.str;
-              default = "vivaldi";
+              type = types.nullOr types.str;
+              default = null;
               description = ''
                 this option is to choose which browser to use.
               '';
             };
 
             terminal = mkOption {
-              type = types.str;
-              default = "alacritty";
+              type = types.nullOr types.str;
+              default = null;
               description = ''
                 This option is to choose which terminal to use.
               '';
             };
 
             reader = mkOption {
-              type = types.str;
-              default = "sioyek";
+              type = types.nullOr types.str;
+              default = null;
               description = ''
                 this option is to choose which pdf-reader to use. please add
                 them first to listofreaders.
@@ -98,7 +97,7 @@
 
             productivity = mkOption {
               type = types.bool;
-              default = true;
+              default = false;
               description = ''
                 this enables a set of productivity tools like obsidian and
                 onlyoffice.
@@ -107,7 +106,7 @@
 
             passwords = mkOption {
               type = types.bool;
-              default = true;
+              default = false;
               description = ''
                 Setup KeepassXC
               '';
@@ -115,7 +114,7 @@
 
             sync = mkOption {
               type = types.bool;
-              default = true;
+              default = false;
               description = ''
                 Setup syncthing
               '';
@@ -155,9 +154,9 @@
         ];
 
         options = {
-          home.applications = mkOption {
-            type = types.nullOr appsModule;
-            default = null;
+          preferences.apps = mkOption {
+            type = appsModule;
+            default = {};
             description = ''
               Applications configuration. Here all graphical application related configurations will
               be placed

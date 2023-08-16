@@ -7,23 +7,15 @@
       ...
     } @ hm:
       with lib; let
-        cfg = config.home.shells;
 
-        shellsModule = types.submodule {
+        cliModule = types.submodule {
           options = {
-            zsh = mkOption {
-              type = types.bool;
-              default = false;
-              description = ''
-                This enables zsh as configured by my ./home/shells/zsh.nix
-              '';
-            };
 
-            nushell = mkOption {
-              type = types.bool;
-              default = false;
+            shell = mkOption {
+              type = types.nullOr types.str;
+              default = null;
               description = ''
-                This enables nushell as configured by my ./home/shells/nushell.nix
+                Choose your shell (By default nixos always includes bash)
               '';
             };
 
@@ -44,8 +36,8 @@
             };
 
             editor = mkOption {
-              type = types.str;
-              default = "nvim";
+              type = types.nullOr types.str;
+              default = null;
               description = ''
                 Choose your editor
               '';
@@ -58,7 +50,6 @@
           ./zsh.nix
           ./starship.nix
           ./nushell
-          ./transient-services.nix
           ./joshuto
           ./git.nix
           ./nix.nix
@@ -69,8 +60,8 @@
         ];
 
         options = {
-          home.shells = mkOption {
-            type = shellsModule;
+          preferences.cli = mkOption {
+            type = cliModule;
             default = {};
             description = ''
               Shell configuration. Here all shell related configurations will

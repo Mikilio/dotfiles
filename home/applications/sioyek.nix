@@ -5,7 +5,7 @@
   ...
 }:
 with lib; let
-  cfg = config.home.applications;
+  cfg = config.preferences.apps;
 in {
   config = mkIf (cfg != null && cfg.reader == "sioyek") {
     programs.sioyek = {

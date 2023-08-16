@@ -5,9 +5,12 @@
   ...
 }:
 with lib; let
-  cfg = config.home.shells.zsh;
+
+  cfg = config.preferences.cli.shell;
+
 in {
-  config = mkIf cfg {
+
+  config = mkIf (cfg == "zsh") {
     programs = {
       zsh = {
         enable = true;

@@ -7,7 +7,7 @@
   ...
 }:
 with lib; let
-  cfg = config.home.applications;
+  cfg = config.preferences.apps;
   # media - control and enjoy audio/video
 in {
   imports = [

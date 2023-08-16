@@ -5,7 +5,7 @@
   ...
 }:
 with lib; let
-  cfg = config.home.shells.starship;
+  cfg = config.preferences.cli.starship;
 in {
   config = mkIf cfg {
     home.sessionVariables.STARSHIP_CACHE = "${config.xdg.cacheHome}/starship";

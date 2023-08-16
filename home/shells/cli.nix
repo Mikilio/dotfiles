@@ -1,7 +1,16 @@
 { config
 , pkgs
+, lib
 , ...
-}: {
+}:
+
+with lib;
+
+let
+
+  cfg = config.preferences.cli.shell;
+
+in mkIf (!isNull cfg) {
   home.packages = with pkgs; [
     # archives
     zip

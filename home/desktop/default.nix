@@ -32,7 +32,7 @@ in {
       ...
     } @ hm:
       with lib; let
-        cfg = config.home;
+        cfg = config.preferences;
 
         listOfDesktops = [
           "hyprland"
@@ -53,16 +53,16 @@ in {
         ];
 
         options = {
-          home.desktop = mkOption {
-            type = types.str;
-            default = "hyprland";
+          preferences.desktop = mkOption {
+            type = types.nullOr types.str;
+            default = null;
             description = ''
               Choose your desktop environment!
             '';
           };
         };
 
-        config = {
+        config = mkIf (!isNull cfg.desktop) {
           home.packages = with pkgs; [
             # screenshot
             wayshot

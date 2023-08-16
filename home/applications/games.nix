@@ -6,7 +6,7 @@
   ...
 }:
 with lib; let
-  cfg = config.home.applications;
+  cfg = config.preferences.apps;
   steam_compat_path = ".steam/root/compatibilitytools.d";
   # games
 in {

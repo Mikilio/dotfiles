@@ -30,9 +30,29 @@ in {
       };
 
       sessionPath = ["$HOME/.local/bin"];
-
-      applications.enable = true;
     };
+
+    preferences = {
+      cli = {
+        shell = "zsh";
+        starship = true;
+        joshuto = true;
+        editor = "neovim";
+      };
+      apps = {
+        terminal = "alacritty";
+        media = true;
+        gui = true;
+        games = true;
+        browser = "vivaldi";
+        reader = "sioyek";
+        productivity = true;
+        passwords = true;
+        sync = true;
+      };
+      desktop = "hyprland";
+    };
+
     sops = {
       # or some other source for the decryption key
       gnupg.home = "${config.xdg.dataHome}/gnupg";
