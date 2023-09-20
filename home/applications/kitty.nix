@@ -1,5 +1,5 @@
 {
-  default,
+  theme,
   pkgs,
   config,
   lib,
@@ -8,8 +8,8 @@
 with lib;
 # terminals
   let
-    inherit (default.terminal) font size opacity;
-    inherit (default) xcolors;
+    inherit (theme.terminal) font size opacity;
+    inherit (theme) xcolors;
     cfg = config.preferences.apps;
   in {
     config = mkIf (cfg != null && cfg.terminal == "kitty") {
@@ -34,7 +34,7 @@ with lib;
           selection_background = "none";
 
           # colors
-          background_opacity = toString default.terminal.opacity;
+          background_opacity = toString theme.terminal.opacity;
           foreground = xcolors.fg;
           background = xcolors.crust;
           # black

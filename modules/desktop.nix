@@ -5,7 +5,7 @@
 ,  ...
 }: {
   fonts = {
-    fonts = with pkgs; [
+    packages = with pkgs; [
       # icon fonts
       material-symbols
 
@@ -26,7 +26,7 @@
     fontDir.enable = true;
 
     # use fonts specified by user rather than default ones
-    enableDefaultFonts = false;
+    enableDefaultPackages = false;
 
     # user defined fonts
     # the reason there's Noto Color Emoji everywhere is to override DejaVu's
@@ -39,19 +39,21 @@
     };
   };
 
-  hardware.opengl = {
-    extraPackages = with pkgs; [
-      vaapiVdpau
-      libvdpau-va-gl
-    ];
-    extraPackages32 = with pkgs.pkgsi686Linux; [
-      vaapiVdpau
-      libvdpau-va-gl
-    ];
-  };
+  hardware = {
+    #backlight control
+    brillo.enable = true;
 
-  # enable location service
-  location.provider = "geoclue2";
+    opengl = {
+      extraPackages = with pkgs; [
+        vaapiVdpau
+          libvdpau-va-gl
+      ];
+      extraPackages32 = with pkgs.pkgsi686Linux; [
+        vaapiVdpau
+          libvdpau-va-gl
+      ];
+    };
+  };
 
   networking = {
     firewall = {
@@ -89,27 +91,19 @@
   };
 
   services = {
-    # use Ambient Light Sensors for auto brightness adjustment
-    clight = {
-      enable = true;
-      settings = {
-        verbose = true;
-        dpms.timeouts = [900 300];
-        dimmer.timeouts = [870 270];
-        screen.disabled = true;
-      };
-    };
-
+    # smart card deamon
     pcscd.enable = true;
 
     pipewire = {
       enable = true;
+      wireplumber.enable = true;
       alsa.enable = true;
       alsa.support32Bit = true;
       jack.enable = true;
       pulse.enable = true;
     };
 
+    # broeser profile sync TODO: move this to home configuration at some point
     psd = {
       enable = true;
       resyncTimer = "10m";
@@ -140,20 +134,6 @@
     #necessary for some programs that rely on gsettings
     dconf.enable = true;
   };
-
-  #start only the correct portals (this is sufficient for systemd but dbus will still look for wlr because of well known names)
-  /*
-  systemd.user.services = {
-  */
-  /*
-  xdg-desktop-portal-wlr.unitConfig.ConditionEnvironment = "XDG_CURRENT_DESKTOP=Sway";
-  */
-  /*
-  xdg-desktop-portal-hyprland.unitConfig.ConditionEnvironment = "XDG_CURRENT_DESKTOP=Hyprland";
-  */
-  /*
-  };
-  */
 
   xdg.portal = {
     enable = true;

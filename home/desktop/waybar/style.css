@@ -1,0 +1,174 @@
+* {
+  font-family: CartographCF Nerd Font,FontAwesome, Roboto, Helvetica, Arial, sans-serif;
+  font-size: 13px;
+}
+
+window#waybar {
+  background-color: rgba(48, 36, 48, 0.8); /* Adjust color and opacity as needed */
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.7); /* Creating a shadow for the concave effect */
+}
+
+#workspaces{
+  background-color: transparent;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-right: 10px;
+  margin-left: 25px;
+}
+#workspaces button{
+  box-shadow: rgba(0, 0, 0, 0.116) 2 2 5 2px;
+  background-color: #fff ;
+  border-radius: 15px;
+  margin-right: 10px;
+  padding-top: 4px;
+  padding-bottom: 2px;
+  padding-right: 10px;
+  padding-left: 10px;
+  font-weight: bolder;
+  color: 	#cba6f7 ;
+  min-width: 40px;
+}
+
+#workspaces button.active{
+  padding-right: 25px;
+  box-shadow: rgba(0, 0, 0, 0.288) 2 2 5 2px;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.377);
+  padding-left: 25px;
+  padding-bottom: 3px;
+  background: rgb(202,158,230);
+  background: linear-gradient(45deg, rgba(202,158,230,1) 0%, rgba(245,194,231,1) 43%, rgba(180,190,254,1) 80%, rgba(137,180,250,1) 100%); 
+  background-size: 300% 300%;
+  animation: gradient 10s ease infinite;
+  color: #fff;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+#clock,
+#battery,
+#cpu,
+#memory,
+#disk,
+#temperature,
+#backlight,
+#network,
+#backlight,
+#wireplumber,
+#custom-media,
+#tray,
+#mode,
+#idle_inhibitor,
+#mpris {
+  padding: 0 10px;
+  border-radius: 15px;
+  background: linear-gradient(45deg, rgba(137,160,177,1) 0%, rgba(180,190,205,1) 30%, rgba(197,158,200,1) 60%, rgba(147,113,159,1) 100%);
+  background-size: 300% 300%;
+  animation: gradient 12s ease infinite;box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.7);
+  color: #6E5570;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-right: 10px;
+  min-width: 50px;
+}
+
+@keyframes blink {
+to {
+  background-color: #f9e2af;
+  color:#96804e;
+}
+}
+
+label:focus {
+
+}
+
+#mpris {
+  background: linear-gradient(45deg, rgba(147,113,159,1) 0%, rgba(197,158,200,1) 43%, rgba(180,190,205,1) 80%, rgba(137,160,177,1) 100%);
+  background-size: 300% 300%;
+  animation: gradient 10s ease infinite, rotate 20s linear infinite; /* Adding a rotation animation */
+  color:#5E3E1A;
+}
+
+/* Adjust the background position for each widget */
+#tray {
+  animation-delay: -2s; /* Start animation 2 seconds earlier */
+}
+#cpu {
+  animation-delay: -6s; /* Start animation 6 seconds earlier */
+}
+#memory {
+  animation-delay: -4s; /* Start animation 4 seconds earlier */
+}
+#backlight {
+  animation-delay: -8s; /* Start animation 8 seconds earlier */
+}
+#wireplumber {
+  animation-delay: -10s; /* Start animation 10 seconds earlier */
+}
+#clock {
+  animation-delay: -12s; /* Start animation 12 seconds earlier */
+}
+
+#network.disabled{
+  background-color: #45475a;
+}
+
+#network.disconnected{
+  background: rgb(243,139,168);
+  background: linear-gradient(45deg, rgba(243,139,168,1) 0%, rgba(250,179,135,1) 100%); 
+  color: #fff;
+  font-weight: bolder;
+  padding-top: 3px;
+  padding-right: 11px;
+}
+
+#network.linked, #network.wifi{
+  background-color: #a6e3a1 ;
+}
+
+#network.ethernet{
+  background-color:#f9e2af ;
+}
+
+#wireplumber.muted {
+  background: linear-gradient(52deg, rgba(204,143,143,1) 0%, rgba(214, 141, 123,1) 32%, rgba(181,120,106,1) 72%, rgba(203,144,130,1) 100%); 
+}
+
+#temperature.critical {
+  background-color: #f38ba8 ;
+  color:#bf5673;
+}
+
+#tray > .passive {
+  -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+  -gtk-icon-effect: highlight;
+  background-color: #eb4d4b;
+}
+
+#idle_inhibitor {
+  background-color: #2d3436;
+}
+
+#idle_inhibitor.activated {
+  background-color: #ecf0f1;
+  color: #2d3436;
+}
+
+
+#keyboard-state > label.locked {
+  background: rgba(0, 0, 0, 0.2);
+}

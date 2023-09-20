@@ -1,7 +1,7 @@
 {
   self,
   inputs,
-  default,
+  theme,
   ...
 }: let
 in {

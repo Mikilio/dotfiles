@@ -1,6 +1,6 @@
 {
   pkgs,
-  default,
+  theme,
   ...
 }: {
   # notification daemon
@@ -39,19 +39,19 @@
       fullscreen_delay_everything = {fullscreen = "delay";};
 
       urgency_critical = {
-        background = default.xcolors.bg;
-        foreground = default.xcolors.fg;
-        frame_color = default.xcolors.red;
+        background = theme.xcolors.bg;
+        foreground = theme.xcolors.fg;
+        frame_color = theme.xcolors.red;
       };
       urgency_low = {
-        background = default.xcolors.bg;
-        foreground = default.xcolors.fg;
-        frame_color = default.xcolors.blue;
+        background = theme.xcolors.bg;
+        foreground = theme.xcolors.fg;
+        frame_color = theme.xcolors.blue;
       };
       urgency_normal = {
-        background = default.xcolors.bg;
-        foreground = default.xcolors.fg;
-        frame_color = default.xcolors.green;
+        background = theme.xcolors.bg;
+        foreground = theme.xcolors.fg;
+        frame_color = theme.xcolors.green;
       };
     };
   };

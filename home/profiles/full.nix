@@ -26,7 +26,6 @@ in {
 
         MANPAGER = "sh -c 'col -bx | bat -l man -p'";
         DIRENV_LOG_FORMAT = "";
-        GDK_SCALE = "2";
       };
 
       sessionPath = ["$HOME/.local/bin"];
@@ -50,7 +49,10 @@ in {
         passwords = true;
         sync = true;
       };
-      desktop = "hyprland";
+      desktop = {
+        compositor = "hyprland";
+        statusbar = "waybar";
+      };
     };
 
     sops = {
@@ -69,6 +71,5 @@ in {
           keepassxc = {};
         };
     };
-    systemd.user.services.sops-nix.Install.WantedBy = lib.mkForce ["graphical-session.target"];
   };
 }

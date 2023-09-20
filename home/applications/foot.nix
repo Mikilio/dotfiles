@@ -1,5 +1,5 @@
 {
-  default,
+  theme,
   pkgs,
   config,
   lib,
@@ -8,8 +8,8 @@
 with lib;
 # terminals
   let
-    inherit (default.terminal) font size opacity;
-    inherit (default) xcolors;
+    inherit (theme.terminal) font size opacity;
+    inherit (theme) xcolors;
     cfg = config.preferences.apps;
   in {
     config = mkIf (cfg != null && cfg.terminal == "foot") {
@@ -64,7 +64,7 @@ with lib;
             bright6 = "94e2d5"; # teal
             bright7 = "a6adc8"; # Subtext 0
 
-            alpha = default.terminal.opacity;
+            alpha = theme.terminal.opacity;
           };
         };
       };

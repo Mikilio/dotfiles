@@ -1,5 +1,5 @@
 {
-  default,
+  theme,
   pkgs,
   config,
   lib,
@@ -8,8 +8,8 @@
 with lib;
 # terminals
   let
-    inherit (default.terminal) font size opacity;
-    inherit (default) xcolors;
+    inherit (theme.terminal) font size opacity;
+    inherit (theme) xcolors;
     cfg = config.preferences.apps.terminal;
   in {
     config = mkIf (cfg == "wezterm") {
@@ -20,12 +20,12 @@ with lib;
 
           return {
             font = wezterm.font_with_fallback {
-              "${default.terminal.font}",
+              "${theme.terminal.font}",
               "Material Symbols Outlined"
             },
-            font_size = ${toString default.terminal.size},
+            font_size = ${toString theme.terminal.size},
             color_scheme = "Catppuccin Mocha",
-            window_background_opacity = ${toString default.terminal.opacity},
+            window_background_opacity = ${toString theme.terminal.opacity},
             enable_scroll_bar = false,
             enable_tab_bar = false,
             scrollback_lines = 10000,

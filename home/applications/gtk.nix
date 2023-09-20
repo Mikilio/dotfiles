@@ -40,5 +40,11 @@ in {
         };
       };
     };
+    systemd.user.sessionVariables = {
+      GTK_THEME = "Catppuccin-Mocha-Compact-Mauve-dark";
+      XCURSOR_THEME = "Bibata-Modern-Classic";
+      XCURSOR_SIZE = 24;
+      GTK2_RC_FILES = "${config.xdg.configHome}/gtk-2.0/gtkrc";
+    };
   };
 }

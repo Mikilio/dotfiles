@@ -59,19 +59,7 @@
       inputs.rust-overlay.follows = "rust-overlay";
     };
 
-    fufexan = {
-      url = "github:fufexan/dotfiles";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.gross.follows = "gross";
-    };
-
     fu.url = "github:numtide/flake-utils";
-
-    gross = {
-      url = "github:fufexan/gross";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-parts.follows = "flake-parts";
-    };
 
     helix = {
       url = "github:SoraTenshi/helix/new-daily-driver";

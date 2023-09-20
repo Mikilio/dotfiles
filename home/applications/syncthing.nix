@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  flakePath,
   ...
 }:
 with lib; let
@@ -13,10 +12,10 @@ in {
     services.syncthing = {
       enable = true;
       extraOptions = [];
-      tray = {
-        enable = false; # TODO make true when you have a system tray
-        package = pkgs.syncthing-tray;
-      };
     };
+    
+    home.packages = [
+      pkgs.syncthingtray
+    ];
   };
 }

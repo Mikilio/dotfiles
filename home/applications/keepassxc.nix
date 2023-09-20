@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  flakePath,
   ...
 }:
 with lib; let
@@ -16,11 +15,12 @@ in {
     systemd.user.services.keepassxc = {
       Unit = {
         Description = "keepassxc password manager";
-        Requires = ["sops-nix.service"];
-        After = ["sops-nix.service"];
+        Requires = [ "sops-nix.service" "tray.target" ];
+        After = [ "sops-nix.service" "tray.target" ];
+        PartOf = [ "graphical-session.target" ];
       };
 
-      Install = {WantedBy = ["graphical-session.target"];};
+      Install.WantedBy = ["xdg-desktop-autostart.target"];
 
       Service = {
         Type = "exec";

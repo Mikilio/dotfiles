@@ -61,5 +61,6 @@ in {
     };
 
     home.packages = [ config.nur.repos.mikilio.xdg-terminal-exec ];
+
   };
 }

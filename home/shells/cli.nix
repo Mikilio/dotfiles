@@ -19,7 +19,7 @@ in mkIf (!isNull cfg) {
     unrar-wrapper
 
     # utils
-    jq
+    jaq
     file
     du-dust
     duf
@@ -68,6 +68,7 @@ in mkIf (!isNull cfg) {
     g = "git";
     grep = "rg";
     ip = "ip --color";
+    jq = "jaq";
     l = "exa --icons --git";
     la = "l -la";
     lf = "joshuto";

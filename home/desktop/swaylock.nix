@@ -1,5 +1,5 @@
 {
-  default,
+  theme,
   pkgs,
   ...
 }: {
@@ -7,11 +7,11 @@
     enable = true;
     package = pkgs.swaylock-effects;
     settings = let
-      inherit (default) xcolors;
+      inherit (theme) xcolors;
     in {
       clock = true;
       font = "Jost *";
-      image = default.wallpaper;
+      image = theme.wallpaper;
       indicator = true;
 
       bs-hl-color = xcolors.red;

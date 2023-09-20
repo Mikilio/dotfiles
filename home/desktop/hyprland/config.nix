@@ -1,40 +1,45 @@
 {
   config,
-  default,
+  theme,
   pkgs,
   ...
 }: let
-  inherit (default) colors;
+  inherit (theme) colors;
 
   pointer = config.home.pointerCursor;
-  homeDir = config.home.homeDirectory;
-  trayd = pkgs.writeShellApplication {
-    name = "trayd";
+  home = config.home.homeDirectory;
+  terminal = config.home.sessionVariables.TERM;
+  launcher = "anyrun";
+  eventd = pkgs.writeShellApplication {
+    name = "eventd";
     runtimeInputs = [pkgs.socat];
-    text = builtins.readFile ./scripts/minimize.sh;
+    text = builtins.readFile ./scripts/event.sh;
   };
+  drun = pkgs.writeShellScriptBin "drun" ''
+    exec ${pkgs.systemd}/bin/systemd-run \
+      --slice=app-manual.slice \
+      --property=ExitType=cgroup \
+      --user \
+      --wait \
+      bash -lc "exec $@"
+  '';
 in {
   wayland.windowManager.hyprland.extraConfig = ''
     $mod = SUPER
 
-    env = _JAVA_AWT_WM_NONREPARENTING,1
-    env = QT_WAYLAND_DISABLE_WINDOWDECORATION,1
-
-    #update systemd user session environment
-    exec-once = ${pkgs.dbus}/bin/dbus-update-activation-environment --systemd --all
-
-    # scale apps
-    exec-once = xprop -root -f _XWAYLAND_GLOBAL_OUTPUT_SCALE 32c -set _XWAYLAND_GLOBAL_OUTPUT_SCALE 2
+    # start hyprpaper
+    exec-once = hyprpaper
 
     # set cursor for HL itself
     exec-once = hyprctl setcursor ${pointer.name} ${toString pointer.size}
 
-    exec-once = systemctl --user start clight
-    exec-once = eww open bar
-
     #cliphist
     exec-once = wl-paste --type text --watch cliphist store #Stores only text data
     exec-once = wl-paste --type image --watch cliphist store #Stores only image data
+
+    # special workspace for minimized windows
+    workspace = special:tray
+    exec-once = ${drun} ${eventd}/bin/eventd
 
     #monitor setups:
     #homestation
@@ -107,19 +112,36 @@ in {
     #make keepass windows always floating
     windowrulev2 = float, class:^(org.keepassxc.KeePassXC)$
 
-    # telegram media viewer
-    windowrulev2 = float, title:^(Media viewer)$
+    # xwaylandvideobridge
+    windowrulev2 = opacity 0.0 override 0.0 override,class:^(xwaylandvideobridge)$
+    windowrulev2 = noanim,class:^(xwaylandvideobridge)$
+    windowrulev2 = nofocus,class:^(xwaylandvideobridge)$
+    windowrulev2 = noinitialfocus,class:^(xwaylandvideobridge)$
+
+    # special workspace work obs preview
+    windowrulev2 = workspace name:󰹑  silent, title:^(Windowed Projector \(Preview\))$
+    windowrulev2 = fullscreen, title:^(Windowed Projector \(Preview\))$
 
     # make PiP window floating and sticky
     windowrulev2 = float, title:^(Picture-in-Picture)$
     windowrulev2 = pin, title:^(Picture-in-Picture)$
 
+    # start vivaldi in ws2
+    windowrulev2 = workspace 2 silent, class:^(vivaldi-stable)$
+    windowrulev2 = monitor DP-2, class:^(vivaldi-stable)$
+
+    # start termina in ws2
+    windowrulev2 = workspace 1 silent, class:^(Alacritty)$
+    windowrulev2 = monitor DP-1, class:^(Alacritty)$
+
     # start spotify tiled in ws9
     windowrulev2 = tile, title:^(Spotify)$
     windowrulev2 = workspace 9 silent, title:^(Spotify)$
+    windowrulev2 = monitor DP-2, title:^(Spotify)$
 
     # start Discord/WebCord in ws0
-    windowrulev2 = workspace 10, title:^(.*(Disc|WebC)ord.*)$
+    windowrulev2 = workspace 10 silent, title:^(.*(Disc|WebC)ord.*)$
+    windowrulev2 = monitor DP-2, title:^(.*(Disc|WebC)ord.*)$
 
     # idle inhibit while watching videos
     windowrulev2 = idleinhibit focus, class:^(mpv|.+exe)$
@@ -128,7 +150,10 @@ in {
 
     # fix xwayland apps
     windowrulev2 = rounding 0, xwayland:1, floating:1
-    windowrulev2 = fullscreen, forceinput, xwayland:1, class:^(league of legends.exe)$
+    windowrulev2 = fullscreen, class:^(league of legends.exe)$
+    windowrulev2 = forceinput, class:^(league of legends.exe)$
+    windowrulev2 = float, class:^(leagueclientux.exe)$
+    windowrulev2 = center, class:^(leagueclientux.exe)$
 
     layerrule = blur, ^(gtk-layer-shell|anyrun)$
     layerrule = ignorezero, ^(gtk-layer-shell|anyrun)$
@@ -155,15 +180,15 @@ in {
 
     # utility
     # launcher
-    bindr = $mod, Space, exec, pkill .${default.launcher}-wrapped || run-as-service ${default.launcher}
+    bindr = $mod, Space, exec, pkill ${launcher} || ${launcher}
     # terminal
-    bind = $mod, Return, exec, run-as-service ${default.terminal.name}
+    bind = $mod, Return, exec, ${terminal}
     # logout menu
     bind = $mod, Escape, exec, wlogout -p layer-shell
     # lock screen
     bind = $mod, L, exec, loginctl lock-session
     # select area to perform OCR on
-    bind = $mod, O, exec, run-as-service wl-ocr
+    bind = $mod, O, exec, wl-ocr
 
     # move focus
     bind = $mod, left, movefocus, l
@@ -188,19 +213,19 @@ in {
     bindl = , XF86AudioNext, exec, playerctl next
 
     # volume
-    bindle = , XF86AudioRaiseVolume, exec, wpctl set-volume -l "1.0" @DEFAULT_AUDIO_SINK@ 6%+
-    binde = , XF86AudioRaiseVolume, exec, ${homeDir}/.config/eww/scripts/volume osd
-    bindle = , XF86AudioLowerVolume, exec, wpctl set-volume -l "1.0" @DEFAULT_AUDIO_SINK@ 6%-
-    binde = , XF86AudioLowerVolume, exec, ${homeDir}/.config/eww/scripts/volume osd
+    bindle = , XF86AudioRaiseVolume, exec, wpctl set-volume -l "1.0" @DEFAULT_AUDIO_SINK@ 5%+
+    binde = , XF86AudioRaiseVolume, exec, ${home}/.config/eww/scripts/volume osd
+    bindle = , XF86AudioLowerVolume, exec, wpctl set-volume -l "1.0" @DEFAULT_AUDIO_SINK@ 5%-
+    binde = , XF86AudioLowerVolume, exec, ${home}/.config/eww/scripts/volume osd
     bindl = , XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
-    bind = , XF86AudioMute, exec, ${homeDir}/.config/eww/scripts/volume osd
+    bind = , XF86AudioMute, exec, ${home}/.config/eww/scripts/volume osd
     bindl = , XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
 
     # backlight
     bindle = , XF86MonBrightnessUp, exec, brillo -q -u 300000 -A 5
-    binde = , XF86MonBrightnessUp, exec, ${homeDir}/.config/eww/scripts/brightness osd
+    binde = , XF86MonBrightnessUp, exec, ${home}/.config/eww/scripts/brightness osd
     bindle = , XF86MonBrightnessDown, exec, brillo -q -u 300000 -U 5
-    binde = , XF86MonBrightnessDown, exec, ${homeDir}/.config/eww/scripts/brightness osd
+    binde = , XF86MonBrightnessDown, exec, ${home}/.config/eww/scripts/brightness osd
 
     #color-picker
     bind = $mod, C, exec, hyprpicker -a
@@ -236,9 +261,5 @@ in {
     # cycle workspaces
     bind = $mod, bracketleft, workspace, m-1
     bind = $mod, bracketright, workspace, m+1
-
-    # special workspace for minimized windows
-    workspace = special:tray
-    exec-once = ${trayd}/bin/trayd
   '';
 }

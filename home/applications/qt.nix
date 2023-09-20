@@ -13,19 +13,6 @@ in {
     qt.platformTheme = "qtct";
     qt.style.name = "kvantum";
 
-    systemd.user.sessionVariables = let
-      cfg = config.qt;
-    in
-      filterAttrs (n: v: v != null) {
-        QT_QPA_PLATFORMTHEME =
-          if cfg.platformTheme == "gtk"
-          then "gtk2"
-          else if cfg.platformTheme == "qtct"
-          then "qt5ct"
-          else cfg.platformTheme;
-        QT_STYLE_OVERRIDE = cfg.style.name;
-      };
-
     home.packages = with pkgs; [
       (catppuccin-kvantum.override {
         accent = "Mauve";

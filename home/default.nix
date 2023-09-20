@@ -1,35 +1,35 @@
-{
-  inputs,
-  self,
-  lib,
-  config,
-  ...
+{ moduleWithSystem
+, flake-parts-lib
+, inputs
+, self
+, lib
+, config
+, ...
 }:
 with lib;
-  inputs.flake-parts.lib.mkTransposedPerSystemModule {
-    name = "homeManagerModules";
-    option = mkOption {
-      type = types.lazyAttrsOf types.unspecified;
-      default = {};
-      apply = mapAttrs (k: v: {
-        _file = "${toString self.outPath}/flake.nix#homeManagerModules.${k}";
-        imports = [v];
-      });
-      description = ''
-        A module for home-manager configurations.
 
-        You may use this for reusable pieces of configuration, service modules,
-        etc.
-      '';
+let
+
+  inherit (flake-parts-lib) importApply;
+  modules = builtins.map (mod:
+    importApply mod { inherit inputs moduleWithSystem;}
+  ) [
+    ./applications
+    ./shells
+    ./desktop
+  ];
+
+
+in {
+
+  imports = [
+    ./profiles
+    ./bootstrap.nix
+  ];
+
+  flake.homeManagerModules = {
+    preferences = hm_modules: {
+      imports = modules;
     };
-    file = ./default.nix;
-  }
-  // {
-    imports = [
-      ./profiles
-      ./applications
-      ./shells
-      ./desktop
-      ./bootstrap.nix
-    ];
-  }
+  };
+}

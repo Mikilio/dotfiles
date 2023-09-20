@@ -1,8 +1,12 @@
+{ config
+, pkgs
+, lib
+, ...
+}: 
+
+with lib;
+
 {
-  config,
-  pkgs,
-  ...
-}: {
   programs = {
     gpg = {
       enable = true;

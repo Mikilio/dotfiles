@@ -1,5 +1,5 @@
 {
-  default,
+  theme,
   inputs,
   lib,
   self,
@@ -32,7 +32,7 @@ in {
       inherit system;
 
       specialArgs = {
-        inherit self inputs self' inputs' default;
+        inherit self inputs self' inputs' theme;
       };
 
       modules =

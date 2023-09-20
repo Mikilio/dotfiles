@@ -2,19 +2,13 @@
   pkgs,
   lib,
   config,
-  self',
-  flakePath,
   ...
 }:
 with lib; let
-  cfg = config.preferences.apps;
+  cfg = config.preferences.apps.media;
   # media - control and enjoy audio/video
 in {
-  imports = [
-    ./spicetify.nix
-  ];
-
-  config = mkIf (cfg != null && cfg.media) {
+  config = mkIf cfg {
     home.packages = with pkgs;
       [
         #reading, writing and editing meta information
@@ -24,13 +18,14 @@ in {
         # torrents
         transmission-remote-gtk
 
+        #mpris
+        playerctl
+
 
         config.nur.repos.mikilio.xwaylandvideobridge-hypr
         spotify-tui
-      ]
-      ++ (with self'.packages; [
-        discord-canary
-      ]);
+        webcord-vencord
+      ];
 
     programs = {
       mpv = {
@@ -46,7 +41,6 @@ in {
         plugins = with pkgs.obs-studio-plugins; [
           wlrobs
           obs-pipewire-audio-capture
-          input-overlay
         ];
       };
     };
@@ -74,10 +68,7 @@ in {
           volume_normalisation = false;
         };
       };
-
       udiskie.enable = true;
     };
-
-    systemd.user.services.spotifyd.Unit.After = ["sops-nix.service"];
   };
 }

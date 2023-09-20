@@ -1,19 +1,15 @@
-{
-  config,
+{ inputs' }:
+{ config,
   pkgs,
   lib,
-  inputs',
-  spicetify-nix_module,
   ...
 }:
 with lib; let
   spicePkgs = inputs'.spicetify-nix.packages.default;
-  cfg = config.home.applications;
+  cfg = config.preferences.apps.media;
 in {
   # import the flake's module for your system
-  imports = [spicetify-nix_module];
-
-  config = mkIf (cfg != null && cfg.media) {
+  config = mkIf cfg {
     # configure spicetify :)
     programs.spicetify = {
       enable = true;

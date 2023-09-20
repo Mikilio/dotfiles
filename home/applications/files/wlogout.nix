@@ -1,5 +1,5 @@
 {
-  default,
+  theme,
   pkgs,
   ...
 }: let
@@ -17,7 +17,7 @@ in {
       background: unset;
       border-radius: 16px;
     	border: 1px solid #28283d;
-      color: ${default.xcolors.text};
+      color: ${theme.xcolors.text};
       margin: 1rem;
     	background-repeat: no-repeat;
     	background-position: center;
@@ -25,8 +25,8 @@ in {
     }
 
     button:focus, button:active, button:hover {
-      background-color: ${default.xcolors.blue};
-      color: ${default.xcolors.base};
+      background-color: ${theme.xcolors.blue};
+      color: ${theme.xcolors.base};
     	outline-style: none;
     }
 

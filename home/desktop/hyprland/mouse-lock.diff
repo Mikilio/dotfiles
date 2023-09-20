@@ -1,0 +1,22 @@
+diff --git a/src/managers/input/InputManager.cpp b/src/managers/input/InputManager.cpp
+index bda2e5ee..4a4c4cb5 100644
+--- a/src/managers/input/InputManager.cpp
++++ b/src/managers/input/InputManager.cpp
+@@ -146,7 +146,7 @@ void CInputManager::mouseMoveUnified(uint32_t time, bool refocus) {
+                 // we restrict the cursor to the confined region
+                 if (!pixman_region32_contains_point(&PCONSTRAINT->constraint->region, mouseCoords.x - CONSTRAINTPOS.x, mouseCoords.y - CONSTRAINTPOS.y, nullptr)) {
+                     if (g_pCompositor->m_sSeat.mouse->constraintActive) {
+-                        wlr_cursor_warp_closest(g_pCompositor->m_sWLRCursor, NULL, mouseCoords.x, mouseCoords.y);
++                        wlr_cursor_warp_closest(g_pCompositor->m_sWLRCursor, g_pCompositor->m_sSeat.mouse->mouse, mouseCoords.x, mouseCoords.y);
+                         mouseCoords = getMouseCoordsInternal();
+                     }
+                 } else {
+@@ -1538,7 +1538,7 @@ void CInputManager::setCursorIconOnBorder(CWindow* w) {
+     wlr_box              box              = {w->m_vRealPosition.vec().x, w->m_vRealPosition.vec().y, w->m_vRealSize.vec().x, w->m_vRealSize.vec().y};
+     eBorderIconDirection direction        = BORDERICON_NONE;
+     wlr_box              boxFullGrabInput = {box.x - *PEXTENDBORDERGRAB - BORDERSIZE, box.y - *PEXTENDBORDERGRAB - BORDERSIZE, box.width + 2 * (*PEXTENDBORDERGRAB + BORDERSIZE),
+-                                             box.height + 2 * (*PEXTENDBORDERGRAB + BORDERSIZE)};
++                                box.height + 2 * (*PEXTENDBORDERGRAB + BORDERSIZE)};
+ 
+     if (!wlr_box_contains_point(&boxFullGrabInput, mouseCoords.x, mouseCoords.y) || (!m_lCurrentlyHeldButtons.empty() && !currentlyDraggedWindow)) {
+         direction = BORDERICON_NONE;

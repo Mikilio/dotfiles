@@ -2,31 +2,41 @@
   lib,
   pkgs,
   config,
-  default,
+  theme,
   ...
 }:
 # greetd display manager
 let
-  greetdSwayConfig = pkgs.writeText "greetd-sway-config" ''
-
-    exec ${pkgs.dbus}/bin/dbus-update-activation-environment --systemd --all
-
-    output * background ${default.wallpaper} fill
-
-    input * {
-      xkb_numlock enabled
-    }
-    seat seat0 xcursor_theme Bibata-Modern-Classic 24
-    xwayland disable
-
-    bindsym Mod4+shift+e exec swaynag \
-      -t warning \
-      -m 'What do you want to do?' \
-      -b 'Poweroff' 'systemctl poweroff' \
-      -b 'Reboot' 'systemctl reboot'
-
-    exec "${lib.getExe config.programs.regreet.package} -l debug; swaymsg exit"
+  greeter = pkgs.writeShellScript "greeter.sh" ''
+    ${lib.getExe' pkgs.imv "imv"} -s crop ${theme.wallpaper} &
+    ${lib.getExe config.programs.regreet.package}
+    kill $(jobs -p)
   '';
+  westonConfig = ''
+    [core]
+    shell=kiosk
+    xwayland=false
+    backend=drm
+
+    [shell]
+    cursor-theme=Bibata-Modern-Classic
+
+    [output]
+    name=DP-1
+    app-ids=apps.regreet
+
+    [output]
+    name=DP-2
+    app-ids=imv
+
+    [keyboard]
+    numlock-on=true
+
+    [autolaunch]
+    path=${greeter}
+    watch=true;
+  '';
+
 in {
   environment.systemPackages = with pkgs; [
     # theme packages
@@ -39,11 +49,13 @@ in {
     papirus-icon-theme
   ];
 
+  environment.etc."xdg/weston/weston.ini".text = westonConfig;
+
   programs.regreet = {
     enable = true;
     settings = {
       background = {
-        path = default.wallpaper;
+        path = theme.wallpaper;
         fit = "Cover";
       };
       GTK = {
@@ -57,7 +69,7 @@ in {
 
   services.greetd.settings.default_session = {
     enable = true;
-    command = "${config.programs.sway.package}/bin/sway --config ${greetdSwayConfig}";
+    command = "${lib.getExe' pkgs.weston "weston"} > /dev/null 2>&1";
   };
 
   # unlock GPG keyring on login

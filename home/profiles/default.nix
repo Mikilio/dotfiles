@@ -1,45 +1,30 @@
 {
   self,
   inputs,
-  default,
+  theme,
   withSystem,
   ...
 } @ top: let
-  #External homeManagerModules are almost never present in perSystem
-  #scoped inputs' so I can't acces them in my homeConfigurations
-  #so until these are fixed I'm just adding them here.
-  # TODO: create lib function that exports all inputs into simple attributes
-  buggedModules = {
-    spicetify-nix_module = inputs.spicetify-nix.homeManagerModule;
-    nur_module = inputs.nur.hmModules.nur;
-    nix-index-db_module = inputs.nix-index-db.hmModules.nix-index;
-  };
 
   flakePath = self.outPath;
 
-  sharedModules = withSystem "x86_64-linux" (
-    {
-      inputs',
-      self',
-      ...
-    }: {
-      imports = [
-        self'.homeManagerModules.shells
-        buggedModules.nur_module
-        buggedModules.nix-index-db_module
-        inputs.sops-nix.homeManagerModule
-      ];
+  sharedModule = hm: {
+    imports = [
+      self.homeManagerModules.preferences
+      inputs.nur.hmModules.nur
+      inputs.nix-index-db.hmModules.nix-index
+      inputs.sops-nix.homeManagerModule
+    ];
 
-      config = {
-        programs.nix-index-database.comma.enable = true;
+    config = {
+      programs.nix-index-database.comma.enable = true;
 
-        # let HM manage itself when in standalone mode
-        programs.home-manager.enable = true;
+      # let HM manage itself when in standalone mode
+      programs.home-manager.enable = true;
 
-        home.stateVersion = "23.05";
-      };
-    }
-  );
+      home.stateVersion = "23.05";
+    };
+  };
 
   inherit (inputs.hm.lib) homeManagerConfiguration;
 in {
@@ -51,24 +36,21 @@ in {
       ...
     }: let
       extraSpecialArgs = {
-        inherit inputs' self' default flakePath;
-        inherit (buggedModules) spicetify-nix_module eww_module;
+        inherit flakePath theme;
       };
     in {
       full = homeManagerConfiguration {
         inherit pkgs extraSpecialArgs;
         modules = [
-          self'.homeManagerModules.applications
-          self'.homeManagerModules.desktop
           ./full.nix
-          sharedModules
+          sharedModule
         ];
       };
 
       minimal = homeManagerConfiguration {
         inherit pkgs extraSpecialArgs;
         modules = [
-          sharedModules
+          sharedModule
         ];
       };
     });
