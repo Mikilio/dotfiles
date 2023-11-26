@@ -17,6 +17,7 @@ with lib; let
     SDL_VIDEODRIVER = "wayland";
     CLUTTER_BACKEND = "wayland";
     NIXOS_OZONE_WL = 1;
+    XAUTHORITY = "$XDG_RUNTIME_DIR/Xauthority";
 
     XDG_CURRENT_DESKTOP = "Hyprland";
     XDG_SESSION_TYPE = "wayland";
@@ -43,14 +44,19 @@ in {
       ];
     };
 
-    xdg.configFile = {
+    xdg.configFile = let
+      wallpapers = "${config.xdg.userDirs.pictures}/wallpapers";
+      portrait = "${wallpapers}/portrait";
+      landscape = "${wallpapers}/landscape";
+    in {
       "Hyprland-xdg-terminals.list".text = "";
       "hypr/hyprpaper.conf".text = ''
-        preload = ${theme.wallpaper}
+        preload = ${portrait}/default.jpg
+        preload = ${landscape}/default.jpg
 
-        wallpaper = DP-1,${theme.wallpaper}
+        wallpaper = DP-1, ${landscape}/default.jpg
 
-        wallpaper = DP-2,${theme.wallpaper}
+        wallpaper = DP-2, ${portrait}/default.jpg
       '';
     };
 

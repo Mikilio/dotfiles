@@ -1,6 +1,9 @@
 local g = vim.g
 local api = vim.api
 
+-- experimental better startup
+vim.loader.enable()
+
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
 
@@ -39,6 +42,7 @@ local options  = {
 	mouse = "a",
 
 	number = true,
+  relativenumber = true,
 	numberwidth = 4,
 
 	tabstop = 2, --insert 2 spaces for a tab

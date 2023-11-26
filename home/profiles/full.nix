@@ -14,19 +14,6 @@ in {
       homeDirectory = "/home/mikilio";
       stateVersion = "23.05";
       extraOutputsToInstall = ["doc" "devdoc"];
-      sessionVariables = {
-        # clean up ~
-        LESSHISTFILE = "$XDG_CACHE_HOME/less/history";
-        LESSKEY = "$XDG_CONFIG_HOME/less/lesskey";
-        WINEPREFIX = "$XDG_DATA_HOME/wine";
-        XAUTHORITY = "$XDG_RUNTIME_DIR/Xauthority";
-
-        # enable scrolling in git diff
-        DELTA_PAGER = "less -R";
-
-        MANPAGER = "sh -c 'col -bx | bat -l man -p'";
-        DIRENV_LOG_FORMAT = "";
-      };
 
       sessionPath = ["$HOME/.local/bin"];
     };
@@ -39,7 +26,7 @@ in {
         editor = "neovim";
       };
       apps = {
-        terminal = "alacritty";
+        terminal = "wezterm";
         media = true;
         gui = true;
         games = true;
@@ -51,7 +38,7 @@ in {
       };
       desktop = {
         compositor = "hyprland";
-        statusbar = "waybar";
+        statusbar = "gBar";
       };
     };
 

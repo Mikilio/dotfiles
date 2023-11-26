@@ -18,7 +18,7 @@ in mkIf (!isNull cfg) {
     matchBlocks = {
       uni = {
         hostname = "lxhalle.in.tum.de";
-        user = "ga8etet";
+        user = "mio";
         forwardX11 = true;
       };
     };

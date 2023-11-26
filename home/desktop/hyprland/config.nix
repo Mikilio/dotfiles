@@ -43,8 +43,8 @@ in {
 
     #monitor setups:
     #homestation
-    monitor=DP-1, 1920x1080, 0x0, 1
-    monitor=DP-2, 1920x1080, 1920x0, 1
+    monitor=DP-1, 2560x1440, 0x0, 1
+    monitor=DP-2, 1920x1080, -1080x0, 1, transform, 1
 
     # use this instead of hidpi patches
     xwayland {
@@ -65,10 +65,11 @@ in {
       border_size = 2
       col.active_border = rgb(${colors.blue}) rgb(${colors.mauve}) 270deg
       col.inactive_border = rgb(${colors.crust}) rgb(${colors.lavender}) 270deg
-
+    }
+    
+    group {
       # group borders
-      col.group_border_active = rgb(${colors.pink})
-      col.group_border = rgb(${colors.surface0})
+      col.border_active = rgb(${colors.pink})
     }
 
     input {
@@ -120,28 +121,39 @@ in {
 
     # special workspace work obs preview
     windowrulev2 = workspace name:󰹑  silent, title:^(Windowed Projector \(Preview\))$
-    windowrulev2 = fullscreen, title:^(Windowed Projector \(Preview\))$
+    windowrulev2 = monitor DP-1, title:^(Windowed Projector \(Preview\))$
+    windowrulev2 = float, title:^(Windowed Projector \(Preview\))$
+    windowrulev2 = size 1920 1080, title:^(Windowed Projector \(Preview\))$
 
     # make PiP window floating and sticky
     windowrulev2 = float, title:^(Picture-in-Picture)$
     windowrulev2 = pin, title:^(Picture-in-Picture)$
 
-    # start vivaldi in ws2
-    windowrulev2 = workspace 2 silent, class:^(vivaldi-stable)$
-    windowrulev2 = monitor DP-2, class:^(vivaldi-stable)$
+    # start terminal in ws1
+    windowrulev2 = workspace 1 silent, class:^(Alacritty|org.wezfurlong.wezterm)$
+    windowrulev2 = monitor DP-1, class:^(Alacritty|org.wezfurlong.wezterm)$
 
-    # start termina in ws2
-    windowrulev2 = workspace 1 silent, class:^(Alacritty)$
-    windowrulev2 = monitor DP-1, class:^(Alacritty)$
-
-    # start spotify tiled in ws9
+    # start spotify tiled in ws2
     windowrulev2 = tile, title:^(Spotify)$
-    windowrulev2 = workspace 9 silent, title:^(Spotify)$
+    windowrulev2 = workspace 2 silent, title:^(Spotify)$
     windowrulev2 = monitor DP-2, title:^(Spotify)$
 
-    # start Discord/WebCord in ws0
-    windowrulev2 = workspace 10 silent, title:^(.*(Disc|WebC)ord.*)$
-    windowrulev2 = monitor DP-2, title:^(.*(Disc|WebC)ord.*)$
+    # start vivaldi in ws3
+    windowrulev2 = workspace 3 silent, class:^(vivaldi-stable)$
+    windowrulev2 = monitor DP-1, class:^(vivaldi-stable)$
+
+    # start telegram in ws4
+    windowrulev2 = workspace 4 silent, class:^org.telegram.desktop$
+    windowrulev2 = monitor DP-2, class:^org.telegram.desktop$
+
+    # start steam in ws5
+    # windowrulev2 = workspace 5, class:^steam$
+    # windowrulev2 = monitor DP-1, class:^steam$
+    # windowrulev2 = fullscreen, class:^steam$
+
+    # start Discord/WebCord in ws6
+    windowrulev2 = workspace 6 silent, title:^(.*(Discord|Vesktop).*)$
+    windowrulev2 = monitor DP-2, title:^(.*(Discord|Vesktop).*)$
 
     # idle inhibit while watching videos
     windowrulev2 = idleinhibit focus, class:^(mpv|.+exe)$
@@ -150,10 +162,6 @@ in {
 
     # fix xwayland apps
     windowrulev2 = rounding 0, xwayland:1, floating:1
-    windowrulev2 = fullscreen, class:^(league of legends.exe)$
-    windowrulev2 = forceinput, class:^(league of legends.exe)$
-    windowrulev2 = float, class:^(leagueclientux.exe)$
-    windowrulev2 = center, class:^(leagueclientux.exe)$
 
     layerrule = blur, ^(gtk-layer-shell|anyrun)$
     layerrule = ignorezero, ^(gtk-layer-shell|anyrun)$

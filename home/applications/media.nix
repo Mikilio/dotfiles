@@ -17,6 +17,8 @@ in {
         pavucontrol
         # torrents
         transmission-remote-gtk
+        #bluetooth
+        bluez
 
         #mpris
         playerctl
@@ -24,7 +26,6 @@ in {
 
         config.nur.repos.mikilio.xwaylandvideobridge-hypr
         spotify-tui
-        webcord-vencord
       ];
 
     programs = {

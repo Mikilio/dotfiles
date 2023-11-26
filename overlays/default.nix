@@ -33,6 +33,7 @@ in {
             "steam.*"
             "discord-canary"
             "waveform"
+            ".*amd.*"
           ]
         );
       overlays = [
@@ -69,6 +70,7 @@ in {
             discord-canary = prev.discord-canary.override {
               nss = prev.nss_latest;
               withOpenASAR = true;
+              withVencord = true;
             };
 
             # temp rollback until https://github.com/rharish101/ReGreet/issues/32 is solved
@@ -87,12 +89,12 @@ in {
                 });
               });
             };
-            
+
+            wezterm = prev.callPackage ./wezterm {}; 
+          
             vivaldi = prev.vivaldi.override {
               proprietaryCodecs = true;
               enableWidevine = true;
-              vivaldi-ffmpeg-codecs = final.vivaldi-ffmpeg-codecs;
-              widevine-cdm = final.widevine-cdm;
             };
           }
         )

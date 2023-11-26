@@ -41,15 +41,20 @@ in mkIf (!isNull cfg) {
         theme = "Catppuccin-mocha";
       };
       themes = {
-        Catppuccin-mocha = builtins.readFile (pkgs.fetchurl {
-          url = "https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-mocha.tmTheme";
-          hash = "sha256-qMQNJGZImmjrqzy7IiEkY5IhvPAMZpq0W6skLLsng/w=";
-        });
+        Catppuccin-mocha = {
+          src = pkgs.fetchFromGitHub {
+            owner = "catppuccin";
+            repo = "bat"; # Bat uses sublime syntax for its themes
+            rev = "ba4d16880d63e656acced2b7d4e034e4a93f74b1";
+            sha256 = "6WVKQErGdaqb++oaXnY3i6/GuH2FhTgK0v4TN4Y0Wbw=";
+          };
+          file = "Catppuccin-mocha.tmTheme";
+        };
       };
     };
 
     btop.enable = true;
-    exa.enable = true;
+    eza.enable = true;
 
     skim = {
       enable = true;
@@ -61,7 +66,8 @@ in mkIf (!isNull cfg) {
     };
   };
 
-  home.shellAliases = {
+  home = {
+    shellAliases = {
     "..." = "cd ../..";
     df = "duf";
     cat = "bat";
@@ -87,5 +93,16 @@ in mkIf (!isNull cfg) {
     hms = "hm switch";
     x = "xargs";
     xo = "xdg-open";
+  };
+    sessionVariables = {
+      LESSHISTFILE = "$XDG_CACHE_HOME/less/history";
+      LESSKEY = "$XDG_CONFIG_HOME/less/lesskey";
+
+      # enable scrolling in git diff
+      DELTA_PAGER = "less -R";
+
+      MANPAGER = "sh -c 'col -bx | bat -l man -p'";
+      DIRENV_LOG_FORMAT = "";
+    };
   };
 }

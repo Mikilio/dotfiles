@@ -8,9 +8,8 @@
 # greetd display manager
 let
   greeter = pkgs.writeShellScript "greeter.sh" ''
-    ${lib.getExe' pkgs.imv "imv"} -s crop ${theme.wallpaper} &
+    ${lib.getExe' pkgs.wlr-randr "wlr-randr"} --output DP-2 --pos -810,0 --transform 90 --scale 1.33334
     ${lib.getExe config.programs.regreet.package}
-    kill $(jobs -p)
   '';
   westonConfig = ''
     [core]
@@ -62,14 +61,15 @@ in {
         cursor_theme_name = "Bibata-Modern-Classic";
         font_name = "Lexend 12";
         icon_theme_name = "Papirus-Dark";
-        theme_name = "Catppuccin-Mocha-Compact-Mauve-dark";
+        theme_name = "Catppuccin-Mocha-Compact-Mauve-Dark";
       };
     };
   };
 
   services.greetd.settings.default_session = {
     enable = true;
-    command = "${lib.getExe' pkgs.weston "weston"} > /dev/null 2>&1";
+    # command = "${lib.getExe' pkgs.weston "weston"} > /dev/null 2>&1";
+    command = "${lib.getExe pkgs.cage} -s -- ${greeter}";
   };
 
   # unlock GPG keyring on login

@@ -19,7 +19,8 @@ with lib; let
   desktopModules = with inputs; [
     hyprland.nixosModules.default
     kmonad.nixosModules.default
-    nix-gaming.nixosModules.default
+    nix-gaming.nixosModules.steamCompat
+    nix-gaming.nixosModules.pipewireLowLatency
   ];
 in {
   flake.nixosConfigurations = withSystem "x86_64-linux" ({

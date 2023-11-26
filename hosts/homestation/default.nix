@@ -23,13 +23,7 @@
     kernelPackages = pkgs.linuxPackages_xanmod_latest;
 
     extraModulePackages = with config.boot.kernelPackages; [
-      (
-        ddcci-driver.overrideAttrs (o: {
-          patches = (o.patches or [ ]) ++ [
-            ./ddcci_semaphore_fix.patch
-          ];
-        })
-      )
+      ddcci-driver
       v4l2loopback
     ];
 
@@ -38,6 +32,12 @@
     kernelParams = [
       "quiet"
     ];
+
+    # NixOS configuration for Star Citizen requirements
+    kernel.sysctl = {
+      "vm.max_map_count" = 16777216;
+      "fs.file-max" = 524288;
+    };
 
     lanzaboote = {
       enable = true;
@@ -76,6 +76,7 @@
 
   environment.systemPackages = [
     pkgs.sbctl
+    pkgs.linuxKernel.packages.linux_xanmod_latest.amdgpu-pro
   ];
 
   hardware = {
@@ -83,6 +84,8 @@
     brillo.enable = true;
     #logitech wireless support (may not be needed)
     logitech.wireless.enable = true;
+    #bluetooth
+    bluetooth.enable = true;
   };
 
   security.tpm2 = {
@@ -92,21 +95,21 @@
 
   services = {
     # keyboard remapping (commented out because of chroot issues)
-    kmonad = {
-      enable = true;
-      package = inputs'.kmonad.packages.default;
-      keyboards = {
-        logitech = {
-          device = "/dev/input/by-id/usb-Logitech_G512_RGB_MECHANICAL_GAMING_KEYBOARD_186130623937-event-kbd";
-          defcfg = {
-            enable = true;
-            fallthrough = true;
-            allowCommands = false;
-          };
-          config = builtins.readFile "${self}/modules/logitech.kbd";
-        };
-      };
-    };
+   #kmonad = {
+   #  enable = true;
+   #  package = inputs'.kmonad.packages.default;
+   #  keyboards = {
+   #    logitech = {
+   #      device = "/dev/input/by-id/usb-Logitech_G512_RGB_MECHANICAL_GAMING_KEYBOARD_186130623937-event-kbd";
+   #      defcfg = {
+   #        enable = true;
+   #        fallthrough = true;
+   #        allowCommands = false;
+   #      };
+   #      config = builtins.readFile "${self}/modules/logitech.kbd";
+   #    };
+   #  };
+   #};
 
     #Proper disk mounting
     udisks2.enable = true;
@@ -132,7 +135,7 @@
   users.users.mikilio = {
     isNormalUser = true;
     shell = pkgs.zsh;
-    passwordFile = "${self.outPath}/secrets/hashes/mikilio.txt";
+    hashedPasswordFile = "${self.outPath}/secrets/hashes/mikilio.txt";
     extraGroups = ["adbusers" "input" "libvirtd" "networkmanager" "plugdev" "keys" "transmission" "video" "wheel"];
   };
 }

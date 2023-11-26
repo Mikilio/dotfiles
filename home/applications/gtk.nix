@@ -32,7 +32,7 @@ in {
       };
 
       theme = {
-        name = "Catppuccin-Mocha-Compact-Mauve-dark";
+        name = "Catppuccin-Mocha-Compact-Mauve-Dark";
         package = pkgs.catppuccin-gtk.override {
           accents = ["mauve"];
           size = "compact";
@@ -41,7 +41,7 @@ in {
       };
     };
     systemd.user.sessionVariables = {
-      GTK_THEME = "Catppuccin-Mocha-Compact-Mauve-dark";
+      GTK_THEME = "Catppuccin-Mocha-Compact-Mauve-Dark";
       XCURSOR_THEME = "Bibata-Modern-Classic";
       XCURSOR_SIZE = 24;
       GTK2_RC_FILES = "${config.xdg.configHome}/gtk-2.0/gtkrc";

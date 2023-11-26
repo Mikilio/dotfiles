@@ -33,6 +33,16 @@ in {
 
       xfce.thunar-full
       xarchiver
+
+      #vpn
+      openvpn
+
+      #durov <3
+      telegram-desktop
+
+      #discord
+      vesktop
+      wezterm
     ];
   };
 }

@@ -138,7 +138,7 @@ in {
     ./alacritty.nix
     ./foot.nix
     ./kitty.nix
-    ./wezterm.nix
+    ./wezterm
     ./productivity.nix
     ./keepassxc.nix
     ./syncthing.nix

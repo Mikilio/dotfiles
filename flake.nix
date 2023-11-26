@@ -61,6 +61,11 @@
 
     fu.url = "github:numtide/flake-utils";
 
+    gBar = {
+      url = "github:Mikilio/gBar/xdg-paths";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     helix = {
       url = "github:SoraTenshi/helix/new-daily-driver";
       inputs.parts.follows = "flake-parts";

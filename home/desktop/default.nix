@@ -11,22 +11,13 @@ with lib;
 let
   cfg = config.preferences;
 
-  # use OCR and copy to clipboard
-  ocrScript = let
-    inherit (pkgs) wayshot libnotify slurp tesseract5 wl-clipboard;
-    _ = lib.getExe;
-  in
-    pkgs.writeShellScriptBin "wl-ocr" ''
-      ${_ wayshot} -g "$(${_ slurp})" -t ppm - | ${_ tesseract5} - - | ${wl-clipboard}/bin/wl-copy
-      ${_ libnotify} "$(${wl-clipboard}/bin/wl-paste)"
-    '';
-
   listOfCompositor = [
     "hyprland"
   ];
 
   listOfBars = [
     "waybar"
+    "gBar"
   ];
 
   desktopModule = types.submodule {
@@ -55,11 +46,13 @@ in {
   #import all common configurations
   imports = [
     inputs.anyrun.homeManagerModules.default
+    inputs.hyprland.homeManagerModules.default
+    inputs.gBar.homeManagerModules.x86_64-linux.default
     (import ./anyrun.nix {inherit inputs';})
     ./swayidle.nix
     ./swaylock.nix
     ./waybar
-    inputs.hyprland.homeManagerModules.default
+    ./gbar.nix
     ./wireplumber
     ./dunst.nix
     (import ./hyprland {inherit inputs';})
@@ -86,7 +79,6 @@ in {
 
       # utils
       libnotify
-      ocrScript
       wl-screenrec
       cliphist
       wl-clipboard
