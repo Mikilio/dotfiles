@@ -16,7 +16,6 @@ in {
 
     programs.gBar = {
       enable = true;
-      extraCSS = "";
     };
 
     systemd.user.targets.tray = {

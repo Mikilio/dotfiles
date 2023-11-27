@@ -19,7 +19,7 @@ in
       extraPackages = with pkgs; [
 
         #--- LSP ---#
-        ccls
+        clang-tools
         nixd
         pyright
         lua-language-server

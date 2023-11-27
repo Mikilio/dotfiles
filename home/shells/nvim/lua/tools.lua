@@ -81,7 +81,7 @@ local function harpoon_setup ()
   local mark = require('harpoon.mark')
   local ui = require('harpoon.ui')
 
-  keymap('n', '<leader>jn', mark.add_file)
+  keymap('n', prefix .. 'n', mark.add_file)
 
   keymap('n', prefix .. 'a', function() ui.nav_file(1) end)
   keymap('n', prefix .. 's', function() ui.nav_file(2) end)

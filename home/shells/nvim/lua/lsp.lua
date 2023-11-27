@@ -106,9 +106,9 @@ local function lsp_setup ()
   }
 
   lsp.setup_servers({
+    'clangd',
     'lua_ls',
     'nixd',
-    'ccls',
     'pyright',
     'bashls',
     'rust_analyzer',

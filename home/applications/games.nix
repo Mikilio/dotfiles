@@ -16,6 +16,7 @@ in {
       # inputs'.nix-gaming.packages.star-citizen
       inputs'.nix-gaming.packages.wine-discord-ipc-bridge
       inputs'.nix-gaming.packages.proton-ge
+      lutris
       gamescope
       winetricks
     ];
