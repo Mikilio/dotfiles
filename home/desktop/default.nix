@@ -17,6 +17,7 @@ let
 
   listOfBars = [
     "waybar"
+    "eww"
     "gBar"
   ];
 
@@ -52,6 +53,7 @@ in {
     ./swayidle.nix
     ./swaylock.nix
     ./waybar
+    ./eww
     ./gbar.nix
     ./wireplumber
     ./dunst.nix

@@ -11,30 +11,6 @@ let
     ${lib.getExe' pkgs.wlr-randr "wlr-randr"} --output DP-2 --pos -810,0 --transform 90 --scale 1.33334
     ${lib.getExe config.programs.regreet.package}
   '';
-  westonConfig = ''
-    [core]
-    shell=kiosk
-    xwayland=false
-    backend=drm
-
-    [shell]
-    cursor-theme=Bibata-Modern-Classic
-
-    [output]
-    name=DP-1
-    app-ids=apps.regreet
-
-    [output]
-    name=DP-2
-    app-ids=imv
-
-    [keyboard]
-    numlock-on=true
-
-    [autolaunch]
-    path=${greeter}
-    watch=true;
-  '';
 
 in {
   environment.systemPackages = with pkgs; [
@@ -47,8 +23,6 @@ in {
     bibata-cursors
     papirus-icon-theme
   ];
-
-  environment.etc."xdg/weston/weston.ini".text = westonConfig;
 
   programs.regreet = {
     enable = true;
@@ -68,7 +42,6 @@ in {
 
   services.greetd.settings.default_session = {
     enable = true;
-    # command = "${lib.getExe' pkgs.weston "weston"} > /dev/null 2>&1";
     command = "${lib.getExe pkgs.cage} -s -- ${greeter}";
   };
 
@@ -81,7 +54,6 @@ in {
     };
     services = {
       login.u2fAuth = true;
-      swaylock = {};
     };
   };
 }

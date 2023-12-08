@@ -15,7 +15,8 @@ in {
     systemd.user.services.keepassxc = {
       Unit = {
         Description = "keepassxc password manager";
-        Requires = [ "sops-nix.service" "tray.target" ];
+        Wants = [ "tray.target" ];
+        Requires = [ "sops-nix.service" ];
         After = [ "sops-nix.service" "tray.target" ];
         PartOf = [ "graphical-session.target" ];
       };

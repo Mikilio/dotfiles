@@ -13,9 +13,8 @@ local function lualine_setup ()
       lualine_a = {
         {
           function()
-            return vim.fn.fnamemodify(vim.fn.getcwd(),':t')
+            return vim.fn.fnamemodify(vim.fn.getcwd(),':t') .. ' 󰛢 '
           end,
-          icon = '󰛢',
           color = 'lualine_a_normal',
           separator = { left = '' },
           right_padding = 2 ,

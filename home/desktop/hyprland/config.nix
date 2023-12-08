@@ -37,6 +37,9 @@ in {
     exec-once = wl-paste --type text --watch cliphist store #Stores only text data
     exec-once = wl-paste --type image --watch cliphist store #Stores only image data
 
+    #gBar
+    exec-once = sh -c 'gBar bar 1 2> /home/mikilio/gbar-hypr.log'
+
     # special workspace for minimized windows
     workspace = special:tray
     exec-once = ${drun} ${eventd}/bin/eventd
@@ -162,6 +165,7 @@ in {
 
     # fix xwayland apps
     windowrulev2 = rounding 0, xwayland:1, floating:1
+    windowrulev2 = fullscreen, forceinput, xwayland:1, class:^(league of legends.exe)$
 
     layerrule = blur, ^(gtk-layer-shell|anyrun)$
     layerrule = ignorezero, ^(gtk-layer-shell|anyrun)$

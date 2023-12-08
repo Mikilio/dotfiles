@@ -18,6 +18,10 @@ in mkIf (!isNull cfg) {
     unar
     unrar-wrapper
 
+    #TUI
+    calcurse
+    calcure
+
     # utils
     jaq
     file

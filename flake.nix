@@ -54,7 +54,7 @@
     devshell.url = "github:numtide/devshell";
 
     eww = {
-      url = "github:elkowar/eww";
+      url = "github:hylophile/eww/dynamic-icons";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.rust-overlay.follows = "rust-overlay";
     };
@@ -67,8 +67,8 @@
     };
 
     helix = {
-      url = "github:SoraTenshi/helix/new-daily-driver";
-      inputs.parts.follows = "flake-parts";
+      url = "github:/helix-editor/helix";
+      inputs.flake-utils.follows = "fu";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.rust-overlay.follows = "rust-overlay";
     };

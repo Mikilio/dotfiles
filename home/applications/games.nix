@@ -16,8 +16,9 @@ in {
       # inputs'.nix-gaming.packages.star-citizen
       inputs'.nix-gaming.packages.wine-discord-ipc-bridge
       inputs'.nix-gaming.packages.proton-ge
-      lutris
+      # (lutris.override {extraPkgs = p: [p.libnghttp2 p.jansson ];})
       gamescope
+      wine
       winetricks
     ];
   };

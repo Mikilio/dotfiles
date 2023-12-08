@@ -38,7 +38,7 @@ in {
       };
       desktop = {
         compositor = "hyprland";
-        statusbar = "gBar";
+        statusbar = "eww";
       };
     };
 

@@ -29,6 +29,12 @@ local function comment_setup ()
   })
 end
 
+local function surround_setup ()
+    require("nvim-surround").setup({
+        -- Configuration here, or leave empty to use defaults
+    })
+end
+
 local function hop_setup ()
   local hop = require('hop')
   hop.setup()
@@ -100,5 +106,6 @@ end
 
 xpcall(autopairs_setup, function () print("Setup of autopairs failed!") end)
 xpcall(comment_setup, function () print("Setup of comments failed!") end)
+xpcall(surround_setup, function () print("Setup of surround failed!") end)
 xpcall(hop_setup, function () print("Setup of hop failed!") end)
 xpcall(harpoon_setup, function () print("Setup of harpoon failed!") end)

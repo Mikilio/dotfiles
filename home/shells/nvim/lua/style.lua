@@ -51,6 +51,10 @@ local function netrw_setup ()
 end
 
 local function treesitter_setup ()
+
+  require('ts_context_commentstring').setup {}
+  vim.g.skip_ts_commentstring_module = true
+
   local configs = require("nvim-treesitter.configs")
   configs.setup({
 
@@ -76,10 +80,6 @@ local function treesitter_setup ()
       max_file_lines = nil, -- Do not enable for files with more than n lines, int
       -- colors = {}, -- table of hex strings
       -- termcolors = {} -- table of color name strings
-    },
-    context_commentstring = {
-      enable = true,
-      enable_autocmd = true,
     },
   })
 end

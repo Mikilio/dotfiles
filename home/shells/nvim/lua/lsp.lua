@@ -25,6 +25,8 @@ local function lsp_setup ()
     if client.server_capabilities.documentSymbolProvider then
         navic.attach(client, bufnr)
     end
+
+    lsp.buffer_autoformat()
   end)
 
   lsp.sign_icons = {
