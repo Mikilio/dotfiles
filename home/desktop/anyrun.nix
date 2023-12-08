@@ -1,9 +1,16 @@
-{ inputs' }:
-{
+{ inputs',
+  inputs,
+  ...
+}@fp: {
   config,
   pkgs,
   ...
 }: {
+
+  imports = [
+    inputs.anyrun.homeManagerModules.default
+  ];
+
   config.programs.anyrun = {
     enable = true;
 

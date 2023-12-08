@@ -40,8 +40,6 @@
   };
 
   hardware = {
-    #backlight control
-    brillo.enable = true;
 
     opengl = {
       extraPackages = with pkgs; [

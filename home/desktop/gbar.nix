@@ -1,4 +1,4 @@
-
+{ inputs, ... }@fp:
 { config
 , lib
 , pkgs
@@ -11,6 +11,11 @@ let
   cfg = config.preferences.desktop;
 
 in {
+
+  imports = [
+    inputs.gBar.homeManagerModules.x86_64-linux.default
+  ];
+
   config = mkIf (cfg.statusbar == "gBar") {
     
 

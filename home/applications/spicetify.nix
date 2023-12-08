@@ -1,5 +1,7 @@
-{ inputs' }:
-{ config,
+{ inputs',
+  ... 
+}@fp: { 
+  config,
   pkgs,
   lib,
   ...

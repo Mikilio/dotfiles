@@ -124,7 +124,7 @@ in {
   #import all common configurations
   imports = [
     inputs.spicetify-nix.homeManagerModule
-    (import ./spicetify.nix {inherit inputs';})
+    (import ./spicetify.nix {inherit inputs' inputs;})
     ./media.nix
     ./qt.nix
     ./xdg.nix

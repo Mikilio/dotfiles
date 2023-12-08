@@ -1,4 +1,4 @@
-{...}: {
+{...}:{...}: {
   config = {
     systemd.user.targets.sound = {
       Install.WantedBy = [ "graphical-session.target"];

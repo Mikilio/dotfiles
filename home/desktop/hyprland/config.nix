@@ -27,18 +27,12 @@ in {
   wayland.windowManager.hyprland.extraConfig = ''
     $mod = SUPER
 
-    # start hyprpaper
-    exec-once = hyprpaper
-
     # set cursor for HL itself
     exec-once = hyprctl setcursor ${pointer.name} ${toString pointer.size}
 
     #cliphist
     exec-once = wl-paste --type text --watch cliphist store #Stores only text data
     exec-once = wl-paste --type image --watch cliphist store #Stores only image data
-
-    #gBar
-    exec-once = sh -c 'gBar bar 1 2> /home/mikilio/gbar-hypr.log'
 
     # special workspace for minimized windows
     workspace = special:tray

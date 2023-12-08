@@ -46,6 +46,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    ags = {
+      url = "github:Aylur/ags";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     anyrun = {
       url = "github:Kirottu/anyrun";
       inputs.nixpkgs.follows = "nixpkgs";

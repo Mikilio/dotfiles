@@ -45,19 +45,14 @@ let
   };
 in {
   #import all common configurations
-  imports = [
-    inputs.anyrun.homeManagerModules.default
-    inputs.hyprland.homeManagerModules.default
-    inputs.gBar.homeManagerModules.x86_64-linux.default
-    (import ./anyrun.nix {inherit inputs';})
-    ./swayidle.nix
-    ./swaylock.nix
+  imports = builtins.map (mod: import mod {inherit inputs' inputs;}) [
+    ./anyrun.nix
+    ./ags
     ./waybar
-    ./eww
     ./gbar.nix
     ./wireplumber
     ./dunst.nix
-    (import ./hyprland {inherit inputs';})
+    ./hyprland
   ];
 
   options = {

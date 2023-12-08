@@ -1,4 +1,4 @@
-{ config
+{ ... }@fp: { config
 , lib
 , pkgs
 , ...
