@@ -1,40 +1,10 @@
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
-import Battery from 'resource:///com/github/Aylur/ags/service/battery.js';
 import icons from '../../icons.js';
 import PowerMenu from '../../services/powermenu.js';
 import Lockscreen from '../../services/lockscreen.js';
 import Avatar from '../../misc/Avatar.js';
 import { uptime } from '../../variables.js';
 import options from '../../options.js';
-
-export const BatteryProgress = () => Widget.Box({
-    class_name: 'battery-progress',
-    vexpand: true,
-    binds: [['visible', Battery, 'available']],
-    connections: [[Battery, w => {
-        w.toggleClassName('charging', Battery.charging || Battery.charged);
-        w.toggleClassName('medium', Battery.percent < options.battery.medium.value);
-        w.toggleClassName('low', Battery.percent < options.battery.low.value);
-        w.toggleClassName('half', Battery.percent < 48);
-    }]],
-    child: Widget.Overlay({
-        vexpand: true,
-        child: Widget.ProgressBar({
-            hexpand: true,
-            vexpand: true,
-            connections: [[Battery, progress => {
-                progress.fraction = Battery.percent / 100;
-            }]],
-        }),
-        overlays: [Widget.Label({
-            connections: [[Battery, l => {
-                l.label = Battery.charging || Battery.charged
-                    ? icons.battery.charging
-                    : `${Battery.percent}%`;
-            }]],
-        })],
-    }),
-});
 
 export default () => Widget.Box({
     class_name: 'header horizontal',
@@ -67,7 +37,6 @@ export default () => Widget.Box({
                         }),
                     ],
                 }),
-                BatteryProgress(),
             ],
         }),
     ],

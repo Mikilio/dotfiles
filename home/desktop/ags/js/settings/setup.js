@@ -4,7 +4,7 @@ import Notifications from 'resource:///com/github/Aylur/ags/service/notification
 import options from '../options.js';
 import icons from '../icons.js';
 import { reloadScss, scssWatcher } from './scss.js';
-import { wallpaper } from './wallpaper.js';
+import { initWallpaper } from './wallpaper.js';
 import { hyprlandInit, setupHyprland } from './hyprland.js';
 import { globals } from './globals.js';
 import { showAbout } from '../about/about.js';
@@ -12,19 +12,21 @@ import Gtk from 'gi://Gtk';
 
 export function init() {
     notificationBlacklist();
-    warnOnLowBattery();
+    // warnOnLowBattery();
     globals();
-    tmux();
+    // tmux();
     gsettigsColorScheme();
     gtkFontSettings();
     scssWatcher();
     dependandOptions();
+    console.log("style init");
 
     reloadScss();
     hyprlandInit();
     setupHyprland();
-    wallpaper();
-    showAbout();
+    console.log("hypr init");
+    initWallpaper();
+    console.log("ended init");
 }
 
 function dependandOptions() {
@@ -34,6 +36,7 @@ function dependandOptions() {
     });
 }
 
+// TODO: change to work with wezterm
 function tmux() {
     if (!Utils.exec('which tmux'))
         return;

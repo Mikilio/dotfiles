@@ -49,10 +49,8 @@ in {
     ./anyrun.nix
     ./ags
     ./waybar
-    ./gbar.nix
     ./wireplumber
-    ./dunst.nix
-    ./hyprland
+    ./hyprland.nix
   ];
 
   options = {
@@ -75,7 +73,6 @@ in {
       swaylock-effects
 
       # utils
-      libnotify
       wl-screenrec
       cliphist
       wl-clipboard

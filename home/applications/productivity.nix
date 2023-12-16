@@ -25,9 +25,6 @@ in {
       # office
       libreoffice-still
 
-      # productivity
-      obsidian
-
       # 3d modelling
       blender
 

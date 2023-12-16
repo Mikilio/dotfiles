@@ -4,9 +4,9 @@ import { dependencies } from '../utils.js';
 
 export function initWallpaper() {
     if (dependencies(['hyprpaper'])) {
-        exec('hyprpaper');
+        exec('hyprctl dispatch exec hyprpaper');
 
-        options.desktop.wallpaper.img.connect('changed', wallpaper);
+        // options.desktop.wallpaper.img.connect('changed', wallpaper);
     }
 }
 
