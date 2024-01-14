@@ -6,27 +6,23 @@ import icons from '../icons.js';
 import { reloadScss, scssWatcher } from './scss.js';
 import { initWallpaper } from './wallpaper.js';
 import { hyprlandInit, setupHyprland } from './hyprland.js';
-import { globals } from './globals.js';
 import { showAbout } from '../about/about.js';
 import Gtk from 'gi://Gtk';
+import System from 'system';
 
 export function init() {
     notificationBlacklist();
     // warnOnLowBattery();
-    globals();
     // tmux();
     gsettigsColorScheme();
     gtkFontSettings();
     scssWatcher();
     dependandOptions();
-    console.log("style init");
 
     reloadScss();
     hyprlandInit();
     setupHyprland();
-    console.log("hypr init");
     initWallpaper();
-    console.log("ended init");
 }
 
 function dependandOptions() {

@@ -37,9 +37,11 @@ in {
       #durov <3
       telegram-desktop
 
+      #matrix
+      element-desktop-wayland
+
       #discord
-      vesktop
-      wezterm
+      discord-canary
     ];
   };
 }

@@ -31,8 +31,6 @@ in {
             "widevine-cdm"
             "steam.*"
             "discord-canary"
-            "waveform"
-            ".*amd.*"
           ]
         );
       overlays = [
@@ -73,36 +71,6 @@ in {
               nss = prev.nss_latest;
               withOpenASAR = true;
               withVencord = true;
-            };
-
-            #waiting for bump tp obs 30 for awesome WebRTC and improved vaapi
-            obs-studio = prev.obs-studio.overrideAttrs ( o: rec {
-              version = "30.0.2";
-              src = prev.fetchFromGitHub {
-                owner = "obsproject";
-                repo = "obs-studio";
-                rev = version;
-                sha256 = "sha256-8pX1kqibrtDIaE1+/Pey1A5bu6MwFTXLrBOah4rsF+4=";
-                fetchSubmodules = true;
-              };
-              # qrcodegen does not yet support cpp
-              buildInputs = (final.lib.lists.remove prev.ffmpeg_4 o.buildInputs)
-                ++ (with final; [ qrcodegen libdatachannel ffmpeg]);
-              # can't build websocket support because of qrcodegen
-              # should not build qsv11 because using amd and missing intel libs
-              cmakeFlags = [
-                "-DOBS_VERSION_OVERRIDE=${version}"
-                "-Wno-dev" # kill dev warnings that are useless for packaging
-                "-DENABLE_WEBSOCKET=OFF"
-                "-DCEF_ROOT_DIR=../../cef"
-                "-DENABLE_QSV11=OFF"
-              ];
-            });
-
-            obs-studio-plugins = prev.obs-studio-plugins // {
-              obs-pipewire-audio-capture = prev.obs-studio-plugins.obs-pipewire-audio-capture.overrideAttrs (o: {
-                preConfigure = "";
-              });
             };
 
             #waiting for bump from 20230712-072601-f4abf8fd

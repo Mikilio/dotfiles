@@ -1,6 +1,5 @@
-local function catppuccin_setup ()
+local function catppuccin_setup()
   require("catppuccin").setup({
-    transparent_background = true,
     integrations = {
       cmp = true,
       alpha = true,
@@ -44,22 +43,25 @@ local function catppuccin_setup ()
   vim.cmd.colorscheme "catppuccin"
 end
 
-local function netrw_setup ()
-  require'netrw'.setup ({
+local function netrw_setup()
+  require 'netrw'.setup({
 
   })
 end
 
-local function treesitter_setup ()
-
+local function treesitter_setup()
   require('ts_context_commentstring').setup {}
   vim.g.skip_ts_commentstring_module = true
 
   local configs = require("nvim-treesitter.configs")
   configs.setup({
 
-    modules = {}, auto_install = false, sync_install = false, ignore_install = {},
-    ensure_installed = {}, parser_install_dir = nil,
+    modules = {},
+    auto_install = false,
+    sync_install = false,
+    ignore_install = {},
+    ensure_installed = {},
+    parser_install_dir = nil,
     ------------------------------------------------------
     -- installation of modules is fully handeled by nix --
     ------------------------------------------------------
@@ -68,7 +70,7 @@ local function treesitter_setup ()
       enable = true,
     },
     highlight = {
-      enable = true, -- false will disable the whole extension
+      enable = true,    -- false will disable the whole extension
       disable = { "" }, -- list of language that will be disabled
       additional_vim_regex_highlighting = true,
     },
@@ -83,7 +85,12 @@ local function treesitter_setup ()
     },
   })
 end
-  
-xpcall(catppuccin_setup, function () print("Setup of Catppuccin failed!") end)
-xpcall(netrw_setup, function () print("Setup of netrw failed!") end)
-xpcall(treesitter_setup, function () print("Setup of treesitter failed!") end)
+
+local function shade_setup()
+  require("sunglasses").setup()
+end
+
+xpcall(catppuccin_setup, function() print("Setup of Catppuccin failed!") end)
+xpcall(netrw_setup, function() print("Setup of netrw failed!") end)
+xpcall(treesitter_setup, function() print("Setup of treesitter failed!") end)
+xpcall(shade_setup, function() print("Setup of tint failed!") end)

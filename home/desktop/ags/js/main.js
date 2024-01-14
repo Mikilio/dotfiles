@@ -2,6 +2,7 @@ import Applauncher from './applauncher/Applauncher.js';
 import Dashboard from './dashboard/Dashboard.js';
 import Desktop from './desktop/Desktop.js';
 import Lockscreen from './lockscreen/Lockscreen.js';
+import FloatingDock from './dock/FloatingDock.js';
 import Notifications from './notifications/Notifications.js';
 import OSD from './osd/OSD.js';
 import Overview from './overview/Overview.js';
@@ -21,6 +22,7 @@ const windows = () => [
     forMonitors(OSD),
     forMonitors(ScreenCorners),
     TopBar(1),
+    FloatingDock(1),
     Applauncher(),
     Dashboard(),
     Overview(),

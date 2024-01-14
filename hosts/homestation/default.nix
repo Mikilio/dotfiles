@@ -76,7 +76,6 @@
 
   environment.systemPackages = [
     pkgs.sbctl
-    pkgs.linuxKernel.packages.linux_xanmod_latest.amdgpu-pro
   ];
 
   hardware = {

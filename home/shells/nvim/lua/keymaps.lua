@@ -13,11 +13,18 @@ vim.g.mapleader = " "
 --   term_mode = "t",
 --   command_mode = "c",
 
--- Better window navigation --
-keymap("n", "<Leader>wh", "<C-w>h", opts)
-keymap("n", "<Leader>wj", "<C-w>j", opts)
-keymap("n", "<Leader>wk", "<C-w>k", opts)
-keymap("n", "<Leader>wl", "<C-w>l", opts)
+-- Better window control --
+vim.keymap.set('n', '<A-Left>', require('smart-splits').resize_left)
+vim.keymap.set('n', '<A-Down>', require('smart-splits').resize_down)
+vim.keymap.set('n', '<A-Up>', require('smart-splits').resize_up)
+vim.keymap.set('n', '<A-Right>', require('smart-splits').resize_right)
+
+-- moving between splits
+vim.keymap.set('n', '<C-Left>', require('smart-splits').move_cursor_left)
+vim.keymap.set('n', '<C-Down>', require('smart-splits').move_cursor_down)
+vim.keymap.set('n', '<C-Up>', require('smart-splits').move_cursor_up)
+vim.keymap.set('n', '<C-Right>', require('smart-splits').move_cursor_right)
+
 
 -- Naviagate tabs --
 keymap("n", "<Leader><TAB>n", ":tabnext<CR>", opts)
@@ -34,44 +41,33 @@ keymap("v", "<", "<gv", opts)
 keymap("v", ">", ">gv", opts)
 
 -- Move text up and down --
-keymap("x", "J", ":move '>+1<CR>gv=gv", opts)
-keymap("x", "K", ":move '<-2<CR>gv=gv", opts)
-keymap("v", "J", ":move '>+1<CR>gv=gv", opts)
-keymap("v", "K", ":move '<-2<CR>gv=gv", opts)
+keymap("x", '<S-Down>', ":move '>+1<CR>gv=gv", opts)
+keymap("x", '<S-Up>', ":move '<-2<CR>gv=gv", opts)
+keymap("v", '<S-Left>', ":move '>+1<CR>gv=gv", opts)
+keymap("v", '<S-Right>', ":move '<-2<CR>gv=gv", opts)
 
 -- Better split screen --
 keymap("", "s", "<Nop>", opts)
-keymap("n", "sl", ":set splitright<CR>:vsplit<CR>", opts)
-keymap("n", "sh", ":set nosplitright<CR>:vsplit<CR>", opts)
-keymap("n", "sk", ":set nosplitbelow<CR>:split<CR>", opts)
-keymap("n", "sj", ":set splitbelow<CR>:split<CR>", opts)
+keymap("n", 's<Down>', ":set nosplitbelow<CR>:split<CR>", opts)
+keymap("n", 's<Up>', ":set splitbelow<CR>:split<CR>", opts)
+keymap("n", 's<Left>', ":set splitright<CR>:vsplit<CR>", opts)
+keymap("n", 's<Right>', ":set nosplitright<CR>:vsplit<CR>", opts)
 
 --  Average adjustment window --
 keymap("n", "<C-=>", "<C-w>=", opts)
 
--- Swap and move windows --
-keymap("n", "<C-w>h", "<C-w>H", opts)
-keymap("n", "<C-w>j", "<C-w>J", opts)
-keymap("n", "<C-w>k", "<C-w>K", opts)
-keymap("n", "<C-w>l", "<C-w>L", opts)
-
 -- Adjust the direction of the split screen --
 keymap("n", ",", "<C-w>t<C-w>K", opts)
 keymap("n", ".", "<C-w>t<C-w>H", opts)
-
--- Resize the window --
-keymap("n", "<C-Down>", ":resize -2<CR>", opts)
-keymap("n", "<C-Up>", ":resize +2<CR>", opts)
-keymap("n", "<C-Left>", ":vertical resize -2<CR>", opts)
-keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
 
 -- Better viewing of search results --
 keymap("n", "<Space><CR>", ":nohlsearch<CR>", opts)
 keymap("n", "n", "nzz", opts)
 keymap("n", "N", "Nzz", opts)
 
-keymap("v", "<C-S-c>", '"+y', opts)
-keymap("v", "<C-S-x>", '"+d', opts)
+-- System clipboard
+keymap("v", "<C-S-C>", '"+y', opts)
+keymap("v", "<C-S-X>", '"+d', opts)
 
 --debug
 keymap("n", "<Leader>xdb", ":lua require('dapui').toggle()<CR>", opts)

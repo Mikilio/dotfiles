@@ -119,8 +119,6 @@ in {
         };
 
         input = {
-          numlock_by_default = true;
-          kb_model = "logitech_base";
           accel_profile = "flat";
           float_switch_override_focus = 2;
         };
@@ -149,10 +147,10 @@ in {
               mpv "$(wl-paste)"
           '';
         in [
-          "CTRL ALT, R,  ${e} quit; ags -b hypr"
-          "SUPER, Space,       ${e} -t applauncher"
+          "CTRL ALT, R,   ${e} quit; ags -b hypr"
+          "SUPER, Space,  ${e} -t applauncher"
           "SUPER, Escape, ${e} -t powermenu"
-          "SUPER, Tab,     ${e} -t overview"
+          "SUPER, Tab,    ${e} -t overview"
 
           # youtube
           "SUPER, F9,  exec, ${getExe play}"
@@ -163,7 +161,7 @@ in {
           "SUPER, F, togglefloating"
           "SUPER, Z, fullscreen"
           "SUPER, M, fakefullscreen"
-          "SUPER, P, togglesplit"
+          "SUPER, R, layoutmsg, togglesplit"
 
           (mvfocus "k" "u")
           (mvfocus "j" "d")
@@ -173,6 +171,7 @@ in {
           (ws "right" "e+1")
           (ws "B" "name:Web")
           (ws "T" "name:Terminal")
+          (ws "P" "name:Sidepanel")
           (mvtows "left" "e-1")
           (mvtows "right" "e+1")
           (resizeactive "k" "0 -20")
@@ -233,9 +232,9 @@ in {
           "workspace name:Web silent, class:^(vivaldi-stable)$"
           #Tray apps in Sidepane
           "tile, title:^(Spotify)$"
-          "workspace name:Sidepane silent, title:^(Spotify)$"
-          "workspace name:Sidepane silent, class:^org.telegram.desktop$"
-          "workspace name:Sidepane silent, title:^(.*(Discord|Vesktop).*)$"
+          "workspace name:Sidepanel silent, title:^(Spotify)$"
+          "workspace name:Sidepanel silent, class:^org.telegram.desktop$"
+          "workspace name:Sidepanel silent, title:^(.*(Discord|Vesktop).*)$"
         ];
 
         workspace = [

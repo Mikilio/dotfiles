@@ -42,6 +42,7 @@ in {
         plugins = with pkgs.obs-studio-plugins; [
           wlrobs
           obs-pipewire-audio-capture
+          droidcam-obs
         ];
       };
     };

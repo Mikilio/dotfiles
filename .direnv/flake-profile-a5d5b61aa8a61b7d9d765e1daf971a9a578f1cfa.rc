@@ -22,7 +22,7 @@ OSTYPE='linux-gnu'
 PATH='/path-not-set'
 export PATH
 PS4='+ '
-builder='/nix/store/x88ivkf7rmrhd5x3cvyv5vh3zqqdnhsk-bash-interactive-5.2-p15/bin/bash'
+builder='/nix/store/iqmric18ds75hg8v7yjdl2xkydfnahdy-bash-interactive-5.2-p21/bin/bash'
 export builder
 dontAddDisableDepTrack='1'
 export dontAddDisableDepTrack
@@ -41,14 +41,14 @@ unset dontAddDisableDepTrack outputs
 
 # For `nix develop`. We get /noshell on Linux and /sbin/nologin on macOS.
 if [[ "$SHELL" == "/noshell" || "$SHELL" == "/sbin/nologin" ]]; then
-  export SHELL=/nix/store/x88ivkf7rmrhd5x3cvyv5vh3zqqdnhsk-bash-interactive-5.2-p15/bin/bash
+  export SHELL=/nix/store/iqmric18ds75hg8v7yjdl2xkydfnahdy-bash-interactive-5.2-p21/bin/bash
 fi
 
 # Load the environment
-source "/nix/store/q1r6pqvjvn9whzbyprrhscf2v4msbvl9-devshell-dir/env.bash"
+source "/nix/store/pz0g88a0i5y83jh4k59608wlhmv9fbij-devshell-dir/env.bash"
 '
 export shellHook
-stdenv='/nix/store/nnfy4x1dd9f9m446vk502s7v1y5gr80z-naked-stdenv'
+stdenv='/nix/store/5jfw92swzy902miz1lb641bipix15bjg-naked-stdenv'
 export stdenv
 system='x86_64-linux'
 export system

@@ -93,7 +93,7 @@ $button-radius: if($bar-style == 'floating', max(0, $radii - $bar-spacing), $rad
         min-width: 5px;
     }
 
-    .overview {
+    .applauncher {
         label { color: transparentize($accent, 0.2); }
         &:hover label { color: $accent; }
         &:active label, &.active label { color: $accent-fg; }

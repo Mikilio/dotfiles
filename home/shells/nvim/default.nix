@@ -45,10 +45,11 @@ in
         nvim-web-devicons
         catppuccin-nvim
         indent-blankline-nvim
-        nvim-ts-rainbow
+        rainbow-delimiters-nvim
         lualine-nvim
         gitsigns-nvim
         alpha-nvim
+        sunglasses-nvim
         # Apps
         knap
         nvim-dap-ui
@@ -92,6 +93,7 @@ in
         popup-nvim # Pop-up API from vim
         vim-fugitive #Git
         zoxide-vim # Zoxide
+        smart-splits-nvim # better splits
       ];
       extraLuaConfig =
         let

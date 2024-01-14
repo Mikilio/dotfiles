@@ -20,7 +20,6 @@ in mkIf (!isNull cfg) {
 
     #TUI
     calcurse
-    calcure
 
     # utils
     jaq
