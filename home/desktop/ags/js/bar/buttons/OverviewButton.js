@@ -5,12 +5,12 @@ import { distroIcon } from '../../variables.js';
 import options from '../../options.js';
 
 export default () => PanelButton({
-    class_name: 'applauncher',
-    window: 'applauncher',
-    on_clicked: () => App.toggleWindow('applauncher'),
+    class_name: 'overview',
+    window: 'overview',
+    on_clicked: () => App.toggleWindow('overview'),
     content: FontIcon({
-        binds: [['icon', options.bar.icon, 'value', v => {
+        label: options.bar.icon.bind('value').transform(v => {
             return v === 'distro-icon' ? distroIcon : v;
-        }]],
+        }),
     }),
 });

@@ -74,8 +74,9 @@
     };
   };
 
-  environment.systemPackages = [
-    pkgs.sbctl
+  environment.systemPackages = with pkgs; [
+    sbctl
+    pcscliteWithPolkit.out
   ];
 
   hardware = {

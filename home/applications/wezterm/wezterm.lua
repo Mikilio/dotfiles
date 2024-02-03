@@ -54,18 +54,18 @@ config.inactive_pane_hsb = {
 }
 
 -- Keys
-config.leader = { key = "b", mods = "CTRL", timeout_milliseconds = 1000 }
+config.leader = { key = "raw:201", timeout_milliseconds = 1000 }
 config.keys = {
 
   -- Send C-b when pressing C-b twice
-  { key = "b", mods = "LEADER|CTRL",  action = act { SendString = "\x02" } },
+  { key = "raw:201", mods = "LEADER",       action = act { SendString = "\x02" } },
 
   -- Workspaces
-  { key = "s", mods = "LEADER",       action = act.ShowLauncherArgs { flags = "FUZZY|WORKSPACES" } },
-  { key = "(", mods = "LEADER|SHIFT", action = act.SwitchWorkspaceRelative(-1) },
-  { key = ")", mods = "LEADER|SHIFT", action = act.SwitchWorkspaceRelative(1) },
-  { key = "l", mods = "LEADER",       action = act.ActivateLastTab },
-  { key = 'd', mods = 'LEADER',       action = act.DetachDomain 'CurrentPaneDomain', },
+  { key = "s",       mods = "LEADER",       action = act.ShowLauncherArgs { flags = "FUZZY|WORKSPACES" } },
+  { key = "(",       mods = "LEADER|SHIFT", action = act.SwitchWorkspaceRelative(-1) },
+  { key = ")",       mods = "LEADER|SHIFT", action = act.SwitchWorkspaceRelative(1) },
+  { key = "l",       mods = "LEADER",       action = act.ActivateLastTab },
+  { key = 'd',       mods = 'LEADER',       action = act.DetachDomain 'CurrentPaneDomain', },
   {
     key = "$",
     mods = "LEADER|SHIFT",
@@ -109,7 +109,9 @@ config.keys = {
 
   -- Pane keybindings
   { key = "\"", mods = "LEADER|SHIFT", action = act.SplitVertical { domain = "CurrentPaneDomain" } },
+  { key = "=",  mods = "LEADER",       action = act.SplitVertical { domain = "CurrentPaneDomain" } },
   { key = "%",  mods = "LEADER|SHIFT", action = act.SplitHorizontal { domain = "CurrentPaneDomain" } },
+  { key = "\\", mods = "LEADER",       action = act.SplitHorizontal { domain = "CurrentPaneDomain" } },
   { key = "z",  mods = "LEADER",       action = act.TogglePaneZoomState },
   { key = "q",  mods = "LEADER",       action = act.PaneSelect },
   -- move between split panes

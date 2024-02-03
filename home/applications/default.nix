@@ -13,6 +13,7 @@ let
   listOfBrowsers = [
     "vivaldi"
     "brave"
+    "firefox"
   ];
 
   listOfTerminals = [
@@ -130,6 +131,7 @@ in {
     ./xdg.nix
     ./sioyek.nix
     ./vivaldi.nix
+    ./firefox
     ./gpg.nix
     (import ./games.nix {inherit inputs';})
     ./gtk.nix

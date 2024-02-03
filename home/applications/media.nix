@@ -41,7 +41,6 @@ in {
         enable = true;
         plugins = with pkgs.obs-studio-plugins; [
           wlrobs
-          obs-pipewire-audio-capture
           droidcam-obs
         ];
       };
@@ -54,23 +53,66 @@ in {
         enable = true;
       };
 
-      spotifyd = {
-        enable = true;
-        package = pkgs.spotifyd.override {withMpris = true;};
-        settings.global = {
-          autoplay = true;
-          backend = "pulseaudio";
-          bitrate = 320;
-          cache_path = "${config.xdg.cacheHome}/spotifyd";
-          device_type = "computer";
-          initial_volume = "100";
-          password_cmd = "cat ${config.sops.secrets.spotify_pwd.path}";
-          use_mpris = true;
-          username_cmd = "cat ${config.sops.secrets.spotify_usr.path}";
-          volume_normalisation = false;
-        };
-      };
       udiskie.enable = true;
+    };
+
+    #OBS Pipewire nodes
+    xdg.configFile = {
+      "pipewire/pipewire.conf.d/10-obs.conf".text = ''
+        context.objects = [
+          {
+            factory = adapter
+            args = {
+              factory.name     = support.null-audio-sink
+              node.name        = "obs_out"
+              node.description = "OBS Monitor"
+              media.class      = Audio/Duplex
+              object.linger    = true
+              audio.position   = [ FL FR ]
+            }
+          }
+          {
+            factory = adapter
+            args = {
+              factory.name     = support.null-audio-sink
+              node.name        = "stream"
+              node.description = "To Stream"
+              media.class      = Audio/Sink
+              object.linger    = true
+              audio.position   = [ FL FR ]
+            }
+          }
+        ]
+        context.modules = [
+          {
+            name = libpipewire-module-combine-stream
+            args = {
+              combine.mode = sink
+              node.name = "stream_out_combo"
+              node.description = "Copy to Stream"
+              combine.latency-compensate = false   # if true, match latencies by adding delays
+              combine.props = {
+                audio.position = [ FL FR ]
+              }
+              stream.props = {
+              }
+              stream.rules = [
+                {
+                  matches = [
+                    {
+                      node.name = "stream"
+                    }
+                    {
+                      node.name = "easyeffects_sink"
+                    }
+                  ]
+                  actions = { create-stream = { } }
+                }
+              ]
+            }
+          }
+        ]
+      '';
     };
   };
 }

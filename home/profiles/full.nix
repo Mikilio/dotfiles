@@ -30,7 +30,7 @@ in {
         media = true;
         gui = true;
         games = true;
-        browser = "vivaldi";
+        browser = "firefox";
         reader = "sioyek";
         productivity = true;
         passwords = true;

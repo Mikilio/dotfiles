@@ -37,6 +37,9 @@ in {
       #durov <3
       telegram-desktop
 
+      #tor <3
+      tor-browser
+
       #matrix
       element-desktop-wayland
 

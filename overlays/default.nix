@@ -27,10 +27,9 @@ in {
         builtins.elem [] (
           map (re: builtins.match re (lib.getName pkg)) [
             "spotify"
-            "vivaldi*"
-            "widevine-cdm"
             "steam.*"
             "discord-canary"
+            "languagetool*"
           ]
         );
       overlays = [

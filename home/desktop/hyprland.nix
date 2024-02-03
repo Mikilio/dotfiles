@@ -153,7 +153,7 @@ in {
           "SUPER, Tab,    ${e} -t overview"
 
           # youtube
-          "SUPER, F9,  exec, ${getExe play}"
+          ", F9,  exec, ${getExe play}"
 
           "ALT, Tab, focuscurrentorlast"
           "CTRL ALT, Delete, exit"
@@ -163,25 +163,27 @@ in {
           "SUPER, M, fakefullscreen"
           "SUPER, R, layoutmsg, togglesplit"
 
-          (mvfocus "k" "u")
-          (mvfocus "j" "d")
-          (mvfocus "l" "r")
-          (mvfocus "h" "l")
-          (ws "left" "e-1")
-          (ws "right" "e+1")
-          (ws "B" "name:Web")
-          (ws "T" "name:Terminal")
-          (ws "P" "name:Sidepanel")
-          (mvtows "left" "e-1")
-          (mvtows "right" "e+1")
-          (resizeactive "k" "0 -20")
-          (resizeactive "j" "0 20")
-          (resizeactive "l" "20 0")
-          (resizeactive "h" "-20 0")
-          (mvactive "k" "0 -20")
-          (mvactive "j" "0 20")
-          (mvactive "l" "20 0")
-          (mvactive "h" "-20 0")
+          (mvfocus "up" "u")
+          (mvfocus "down" "d")
+          (mvfocus "right" "r")
+          (mvfocus "left" "l")
+          (ws "bracketleft" "e-1")
+          (ws "bracketright" "e+1")
+          ", code:195, workspace, e+1"
+          ", code:194, workspace, name:Web"
+          ", code:193, workspace, name:Terminal"
+          ", code:192, workspace, name:Sidepanel"
+          ", code:191, workspace, e-1"
+          (mvtows "bracketleft" "e-1")
+          (mvtows "bracketright" "e+1")
+          (resizeactive "up" "0 -20")
+          (resizeactive "down" "0 20")
+          (resizeactive "right" "20 0")
+          (resizeactive "left" "-20 0")
+          (mvactive "up" "0 -20")
+          (mvactive "down" "0 20")
+          (mvactive "right" "20 0")
+          (mvactive "left" "-20 0")
         ]
         ++ (map (i: ws (toString i) (toString i)) arr)
         ++ (map (i: mvtows (toString i) (toString i)) arr);
@@ -229,7 +231,7 @@ in {
           #don't touch: "fullscreen, forceinput, xwayland:1, class:^(league of legends.exe)$"
           #main apps
           "workspace name:Terminal silent, class:^(Alacritty|org.wezfurlong.wezterm)$"
-          "workspace name:Web silent, class:^(vivaldi-stable)$"
+          "workspace name:Web silent, class:^(vivaldi-stable|firefox)$"
           #Tray apps in Sidepane
           "tile, title:^(Spotify)$"
           "workspace name:Sidepanel silent, title:^(Spotify)$"
