@@ -3,11 +3,27 @@
   options,
   lib,
   pkgs,
-  flakePath,
+  localModules,
   ...
 }:
 with lib; let
+
+apps = with localModules.applications; [
+    spicetify media qt xdg
+    sioyek firefox gpg games gtk
+    wezterm productivity keepassxc
+  ];
+shell = with localModules.shell; [
+    starship nushell git cli nvim
+  ];
+desktop = with localModules.desktop; [
+    ags hyprland swayidle pipewire
+  ];
+
 in {
+
+  imports = apps ++ shell ++ desktop;
+
   config = {
     home = {
       username = "mikilio";
@@ -18,35 +34,17 @@ in {
       sessionPath = ["$HOME/.local/bin"];
     };
 
-    preferences = {
-      cli = {
-        shell = "zsh";
-        starship = true;
-        joshuto = true;
-        editor = "neovim";
-      };
-      apps = {
-        terminal = "wezterm";
-        media = true;
-        gui = true;
-        games = true;
-        browser = "firefox";
-        reader = "sioyek";
-        productivity = true;
-        passwords = true;
-        sync = true;
-      };
-      desktop = {
-        compositor = "hyprland";
-        statusbar = "eww";
-      };
+    home.sessionVariables.TERM = "wezterm";
+
+    xdg.configFile = {
+      "autostart/org.wezfurlong.wezterm.desktop".source = "${config.programs.wezterm.package}/share/applications/org.wezfurlong.wezterm.desktop";
     };
 
     sops = {
       # or some other source for the decryption key
       gnupg.home = "${config.xdg.dataHome}/gnupg";
       # or which file contains the encrypted secrets
-      defaultSopsFile = "${flakePath}/secrets/groups/mikilio.yaml";
+      defaultSopsFile = ../../secrets/groups/mikilio.yaml;
       secrets =
         builtins.mapAttrs (
           name: value:

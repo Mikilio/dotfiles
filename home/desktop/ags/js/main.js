@@ -16,6 +16,12 @@ import { forMonitors } from './utils.js';
 import options from './options.js';
 
 const windows = () => [
+    Applauncher(),
+    Dashboard(),
+    Overview(),
+    PowerMenu(),
+    QuickSettings(),
+    Verification(),
     forMonitors(Desktop),
     forMonitors(Lockscreen),
     forMonitors(Notifications),
@@ -23,19 +29,11 @@ const windows = () => [
     forMonitors(ScreenCorners),
     TopBar(1),
     FloatingDock(1),
-    Applauncher(),
-    Dashboard(),
-    Overview(),
-    PowerMenu(),
-    QuickSettings(),
-    Verification(),
 ];
 
 export default {
     onConfigParsed: init,
     windows: windows().flat(1),
-    maxStreamVolume: 1.05,
-    cacheNotificationActions: true,
     closeWindowDelay: {
         'quicksettings': options.transition.value,
         'dashboard': options.transition.value,

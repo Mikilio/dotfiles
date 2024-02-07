@@ -1,13 +1,15 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
+{inputs, moduleWithSystem} : moduleWithSystem (
+perSystem@{ inputs' }:
+{ config
+, lib
+, pkgs
+, ...
 }:
+
 with lib; let
-  cfg = config.preferences.apps;
+
 in {
-  config = mkIf (cfg != null && cfg.reader == "sioyek") {
+  config = {
     programs.sioyek = {
       enable = true;
       config = {
@@ -289,4 +291,4 @@ in {
       };
     };
   };
-}
+})

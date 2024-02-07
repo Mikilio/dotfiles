@@ -1,16 +1,15 @@
-{ inputs'}:
-{
-  pkgs,
-  config,
-  lib,
-  ...
+{inputs, moduleWithSystem} : moduleWithSystem (
+perSystem@{ inputs' }:
+{ config
+, lib
+, pkgs
+, ...
 }:
+
 with lib; let
 
-  cfg = config.preferences.apps;
-
 in {
-  config = mkIf (cfg != null && cfg.games) {
+  config = {
     home.packages = with pkgs; [
       # inputs'.nix-gaming.packages.osu-lazer-bin
       # inputs'.nix-gaming.packages.star-citizen
@@ -22,4 +21,4 @@ in {
       winetricks
     ];
   };
-}
+})

@@ -1,5 +1,11 @@
-{ inputs, ... }@fp:
-{ pkgs, ... }:
+{inputs, moduleWithSystem} : moduleWithSystem (
+perSystem@{ inputs' }:
+{ config
+, lib
+, pkgs
+, ...
+}:
+
 {
   imports = [ inputs.ags.homeManagerModules.default ];
 
@@ -23,4 +29,4 @@
       "sh -c 'ags -b hypr 2>&1 | tee ./output.txt'"
     ];
   };
-}
+})

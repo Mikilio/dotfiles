@@ -1,18 +1,17 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
+{inputs, moduleWithSystem} : moduleWithSystem (
+perSystem@{ inputs' }:
+{ config
+, lib
+, pkgs
+, ...
 }:
+
 with lib;
-with builtins; let
-  cfg = config.preferences.apps;
-  browser =
-    if (isNull cfg)
-    then null
-    else cfg.browser;
+
+let
+
 in {
-  config = mkIf (browser == "vivaldi") {
+  config = {
     home.sessionVariables.BROWSER = "vivaldi";
 
     programs.vivaldi = {
@@ -33,4 +32,4 @@ in {
       ];
     };
   };
-}
+})

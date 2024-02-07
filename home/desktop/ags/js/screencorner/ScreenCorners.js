@@ -2,6 +2,8 @@ import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import Gtk from 'gi://Gtk';
 import options from '../options.js';
 
+//TODO: broken redraw
+
 /** @param {'topleft' | 'topright' | 'bottomleft' | 'bottomright'} place  */
 const Corner = place => Widget.DrawingArea({
     class_name: 'corner',
@@ -44,7 +46,7 @@ const Corner = place => Widget.DrawingArea({
             cr.closePath();
             cr.setSourceRGBA(c.red, c.green, c.blue, c.alpha);
             cr.fill();
-        }),
+        })
 });
 
 /** @type {Array<'topleft' | 'topright' | 'bottomleft' | 'bottomright'>} */
@@ -58,4 +60,5 @@ export default monitor => places.map(place => Widget.Window({
     anchor: [place.includes('top') ? 'top' : 'bottom', place.includes('right') ? 'right' : 'left'],
     visible: options.desktop.screen_corners.bind('value'),
     child: Corner(place),
+    setup: self => self
 }));

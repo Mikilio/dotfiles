@@ -1,13 +1,15 @@
-{
-  pkgs,
-  config,
-  lib,
-  ...
+{inputs, moduleWithSystem} : moduleWithSystem (
+perSystem@{ inputs' }:
+{ config
+, lib
+, pkgs
+, ...
 }:
+
 with lib; let
-  cfg = config.preferences.apps;
+
 in {
-  config = /* mkIf (cfg != null && cfg.browser == "firefox") */ {
+  config = {
     programs.firefox = {
       enable = true;
       profiles.Default = {
@@ -30,4 +32,4 @@ in {
       source = ./includes;
     };
   };
-}
+})

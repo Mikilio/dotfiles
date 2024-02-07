@@ -1,13 +1,15 @@
-{
-  pkgs,
-  config,
-  lib,
-  ...
+{inputs, moduleWithSystem} : moduleWithSystem (
+perSystem@{ inputs' }:
+{ config
+, lib
+, pkgs
+, ...
 }:
+
 with lib; let
-  cfg = config.preferences.apps;
+
 in {
-  config = mkIf (cfg != null && cfg.gui) {
+  config = {
     home.pointerCursor = {
       package = pkgs.bibata-cursors;
       name = "Bibata-Modern-Classic";
@@ -47,4 +49,4 @@ in {
       GTK2_RC_FILES = "${config.xdg.configHome}/gtk-2.0/gtkrc";
     };
   };
-}
+})

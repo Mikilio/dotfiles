@@ -1,15 +1,12 @@
-{ inputs',
-  inputs,
-  ... 
-}@fp: {
-  lib,
-  pkgs,
-  config,
-  theme,
-  ...
+{inputs, moduleWithSystem} : moduleWithSystem (
+perSystem@{ inputs' }:
+{ config
+, lib
+, pkgs
+, ...
 }:
+
 with lib; let
-  cfg = config.preferences.desktop.compositor;
   environment = {
     GDK_BACKEND="wayland,x11";
     QT_QPA_PLATFORM = "wayland;xcb";
@@ -27,7 +24,7 @@ with lib; let
   };
 in {
 
-  config = mkIf (cfg == "hyprland") {
+  config = {
     home =  {
       sessionVariables = environment;
 
@@ -124,7 +121,6 @@ in {
         };
 
         misc = {
-          layers_hog_keyboard_focus = false;
           disable_autoreload = true;
           vrr = 1;
         };
@@ -154,6 +150,7 @@ in {
 
           # youtube
           ", F9,  exec, ${getExe play}"
+          ", F1, ${e} -r 'color.pick()'"
 
           "ALT, Tab, focuscurrentorlast"
           "CTRL ALT, Delete, exit"
@@ -280,4 +277,4 @@ in {
       };
     };
   };
-}
+})

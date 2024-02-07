@@ -1,16 +1,18 @@
-{
+
+{inputs, moduleWithSystem} : moduleWithSystem (
+perSystem@{ inputs' }:
+hm@{
   config,
-  pkgs,
   lib,
+  pkgs,
   ...
 }:
-with lib; let
 
-  cfg = config.preferences.cli.shell;
+with lib; let
 
 in {
 
-  config = mkIf (cfg == "zsh") {
+  config = {
     programs = {
       zsh = {
         enable = true;
@@ -71,6 +73,8 @@ in {
       };
       zoxide.enableZshIntegration = true;
       skim.enableZshIntegration = true;
+      wezterm. enableZshIntegration = true;
+      direnv.enableZshIntegration = true;
     };
   };
-}
+})

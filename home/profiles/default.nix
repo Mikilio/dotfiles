@@ -6,11 +6,10 @@
   ...
 } @ top: let
 
-  flakePath = self.outPath;
+  localModules = self.homeManagerModules;
 
   sharedModule = hm: {
     imports = [
-      self.homeManagerModules.preferences
       inputs.nur.hmModules.nur
       inputs.nix-index-db.hmModules.nix-index
       inputs.sops-nix.homeManagerModule
@@ -31,12 +30,11 @@ in {
   flake = {
     homeConfigurations = withSystem "x86_64-linux" ({
       pkgs,
-      self',
       inputs',
       ...
     }: let
       extraSpecialArgs = {
-        inherit flakePath theme;
+        inherit theme localModules;
       };
     in {
       full = homeManagerConfiguration {

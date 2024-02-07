@@ -82,6 +82,7 @@
   hardware = {
     # smooth backlight control
     brillo.enable = true;
+    i2c.enable = true;
     #logitech wireless support (may not be needed)
     logitech.wireless.enable = true;
     #bluetooth
@@ -131,11 +132,15 @@
       allowedUDPPorts = [5353];
     };
   };
+
+  # virtualisation
+  virtualisation.libvirtd.enable = true;
+  programs.virt-manager.enable = true;
+
   users.mutableUsers = false;
   users.users.mikilio = {
     isNormalUser = true;
-    shell = pkgs.zsh;
     hashedPasswordFile = "${self.outPath}/secrets/hashes/mikilio.txt";
-    extraGroups = ["adbusers" "input" "libvirtd" "networkmanager" "plugdev" "keys" "transmission" "video" "wheel"];
+    extraGroups = ["adbusers" "input" "libvirtd" "networkmanager" "plugdev" "keys" "transmission" "video" "i2c" "wheel"];
   };
 }

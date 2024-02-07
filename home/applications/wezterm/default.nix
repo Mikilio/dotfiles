@@ -1,23 +1,21 @@
-{
-  theme,
-  pkgs,
-  config,
-  lib,
-  ...
+{inputs, moduleWithSystem} : moduleWithSystem (
+perSystem@{ inputs' }:
+{ config
+, lib
+, pkgs
+, ...
 }:
+
 with lib;
 # terminals
-  let
-    cfg = config.preferences.apps.terminal;
-  in {
-    config = mkIf (cfg == "wezterm") {
-      programs.wezterm = {
-        enable = true;
-        enableZshIntegration = true;
-        extraConfig = builtins.readFile ./wezterm.lua;
-      };
+let
 
-      home.sessionVariables.TERM = "wezterm";
-      xdg.configFile."autostart/org.wezfurlong.wezterm.desktop".source = "${config.programs.wezterm.package}/share/applications/org.wezfurlong.wezterm.desktop";
+in {
+  config = {
+    programs.wezterm = {
+      enable = true;
+      package = inputs.wezterm.packages.${pkgs.system}.default;
+      extraConfig = builtins.readFile ./wezterm.lua;
     };
-  }
+  };
+})

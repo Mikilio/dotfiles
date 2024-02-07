@@ -1,7 +1,9 @@
-{
-  pkgs,
+{inputs, moduleWithSystem} : moduleWithSystem (
+perSystem@{ inputs' }:
+hm@{
   config,
   lib,
+  pkgs,
   ...
 }:
 
@@ -9,10 +11,8 @@ with lib;
 
 let
 
-  cfg = config.preferences.cli.shell;
-
 in {
-  config = mkIf (!isNull cfg) {
+  config = {
 
     home.packages = [
       pkgs.git-crypt
@@ -105,4 +105,4 @@ in {
       };
     };
   };
-}
+})

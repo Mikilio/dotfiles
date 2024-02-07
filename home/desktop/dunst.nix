@@ -1,8 +1,13 @@
-{ ... }@fp : {
-  pkgs,
-  theme,
-  ...
-}: {
+{inputs, moduleWithSystem} : moduleWithSystem (
+perSystem@{ inputs' }:
+{ config
+, lib
+, pkgs
+, theme
+, ...
+}:
+
+{
   # notification daemon
   services.dunst = {
     enable = true;
@@ -55,4 +60,4 @@
       };
     };
   };
-}
+})

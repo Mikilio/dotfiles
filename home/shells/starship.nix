@@ -1,13 +1,16 @@
-{
+{inputs, moduleWithSystem} : moduleWithSystem (
+perSystem@{ inputs' }:
+hm@{
   config,
   lib,
   pkgs,
   ...
 }:
+
 with lib; let
-  cfg = config.preferences.cli.starship;
+
 in {
-  config = mkIf cfg {
+  config = {
     home.sessionVariables.STARSHIP_CACHE = "${config.xdg.cacheHome}/starship";
 
     programs.starship = {
@@ -32,4 +35,4 @@ in {
       };
     };
   };
-}
+})

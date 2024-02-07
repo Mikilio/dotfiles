@@ -30,13 +30,13 @@ export default {
     }),
 
     color: {
-        red: Option('#e55f86', { 'scss': 'red' }),
-        green: Option('#00D787', { 'scss': 'green' }),
-        yellow: Option('#EBFF71', { 'scss': 'yellow' }),
-        blue: Option('#51a4e7', { 'scss': 'blue' }),
-        magenta: Option('#9077e7', { 'scss': 'magenta' }),
-        teal: Option('#51e6e6', { 'scss': 'teal' }),
-        orange: Option('#E79E64', { 'scss': 'orange' }),
+        red: Option('#F38BA8', { 'scss': 'red' }),
+        green: Option('#A6E3A1', { 'scss': 'green' }),
+        yellow: Option('#F9E2AF', { 'scss': 'yellow' }),
+        blue: Option('#89B4FA', { 'scss': 'blue' }),
+        magenta: Option('#F5C2E7', { 'scss': 'magenta' }),
+        teal: Option('#94E2D5', { 'scss': 'teal' }),
+        orange: Option('#FAB387', { 'scss': 'orange' }),
     },
 
     theme: {
@@ -57,22 +57,22 @@ export default {
             'title': 'Color Scheme',
             'scss': 'color-scheme',
         }),
-        bg: Option('#171717', {
+        bg: Option('#1E1E2E', {
             'title': 'Background Color',
             'scss': 'bg-color',
         }),
-        fg: Option('#eeeeee', {
+        fg: Option('#FEFEFE', {
             'title': 'Foreground Color',
             'scss': 'fg-color',
         }),
 
         accent: {
-            accent: Option('$blue', {
+            accent: Option('#B4BEFE', {
                 'category': 'Theme',
                 'title': 'Accent Color',
                 'scss': 'accent',
             }),
-            fg: Option('#141414', {
+            fg: Option('#11111B', {
                 'category': 'Theme',
                 'title': 'Accent Foreground Color',
                 'scss': 'accent-fg',
@@ -157,6 +157,7 @@ export default {
     applauncher: {
         width: Option(500),
         height: Option(500),
+        anchor: Option(['top']),
         icon_size: Option(52),
     },
 
@@ -217,16 +218,8 @@ export default {
             pinned_apps: Option([
                 'firefox',
                 'org.wezfurlong.wezterm',
-                'org.gnome.Nautilus',
-                'org.gnome.Calendar',
-                'obsidian',
-                'transmission-gtk',
-                'caprine',
-                'teams-for-linux',
                 'discord',
                 'spotify',
-                'com.usebottles.bottles',
-                'org.gnome.Software',
             ], { 'scss': 'exclude' }),
         },
     },
@@ -266,25 +259,16 @@ export default {
     systemFetchInterval: 5000,
     brilloKBD: 'asus::kbd_backlight',
     substitutions: {
-        icons: [
-            ['transmission-gtk', 'transmission'],
-            ['blueberry.py', 'bluetooth'],
-            ['Caprine', 'facebook-messenger'],
-            ['', 'preferences-desktop-display'],
-        ],
+        icons: [ ],
         titles: [
             ['com.github.Aylur.ags', 'AGS'],
-            ['transmission-gtk', 'Transmission'],
+            ['org.telegram.desktop', 'Telegram'],
             ['com.obsproject.Studio', 'OBS'],
-            ['com.usebottles.bottles', 'Bottles'],
             ['com.github.wwmm.easyeffects', 'Easy Effects'],
-            ['org.gnome.TextEditor', 'Text Editor'],
-            ['org.gnome.design.IconLibrary', 'Icon Library'],
-            ['blueberry.py', 'Blueberry'],
             ['org.wezfurlong.wezterm', 'Wezterm'],
             ['com.raggesilver.BlackBox', 'BlackBox'],
             ['firefox', 'Firefox'],
-            ['org.gnome.Nautilus', 'Files'],
+            ['thunar', 'Files'],
             ['libreoffice-writer', 'Writer'],
             ['', 'Desktop'],
         ],

@@ -1,16 +1,17 @@
-{ inputs' }:
-{
+{inputs, moduleWithSystem} : moduleWithSystem (
+perSystem@{ inputs' }:
+hm@{
   config,
   lib,
   pkgs,
   ...
 }:
 with lib; let
-  cfg = config.preferences.cli.editor;
+
 in {
   imports = [./languages.nix];
 
-  config = mkIf (cfg == "helix") {
+  config = {
     programs.helix = {
       enable = true;
       package = inputs'helix.packages.default.overrideAttrs (self: {
@@ -65,4 +66,4 @@ in {
       };
     };
   };
-}
+})

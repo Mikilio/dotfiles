@@ -72,9 +72,6 @@ in {
               withVencord = true;
             };
 
-            #waiting for bump from 20230712-072601-f4abf8fd
-            wezterm = prev.callPackage ./wezterm {};
-          
             vivaldi = prev.vivaldi.override {
               proprietaryCodecs = true;
               enableWidevine = true;

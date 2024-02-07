@@ -1,12 +1,13 @@
-{ inputs',
-  inputs,
-  ...
-}@fp: {
-  config,
-  pkgs,
-  ...
-}: {
+{inputs, moduleWithSystem} : moduleWithSystem (
+perSystem@{ inputs' }:
+{ config
+, lib
+, pkgs
+, ...
+}:
 
+
+{
   imports = [
     inputs.anyrun.homeManagerModules.default
   ];
@@ -72,4 +73,4 @@
       )
     '';
   };
-}
+})

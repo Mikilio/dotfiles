@@ -1,13 +1,15 @@
-{
-  pkgs,
-  config,
-  lib,
-  ...
+{inputs, moduleWithSystem} : moduleWithSystem (
+perSystem@{ inputs' }:
+{ config
+, lib
+, pkgs
+, ...
 }:
+
 with lib; let
-  cfg = config.preferences.apps;
+
 in {
-  config = mkIf (cfg != null && cfg.browser == "brave") {
+  config = {
     programs.brave = {
       enable = true;
       #            commandLineArgs = ["--enable-features=UseOzonePlatform" "--ozone-platform=wayland"];
@@ -20,4 +22,4 @@ in {
       ];
     };
   };
-}
+})

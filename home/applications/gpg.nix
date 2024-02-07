@@ -1,8 +1,10 @@
+{inputs, moduleWithSystem} : moduleWithSystem (
+perSystem@{ inputs' }:
 { config
-, pkgs
 , lib
+, pkgs
 , ...
-}: 
+}:
 
 with lib;
 
@@ -50,4 +52,4 @@ with lib;
       maxCacheTtl = 54000;
     };
   };
-}
+})

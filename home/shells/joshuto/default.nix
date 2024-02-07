@@ -1,13 +1,15 @@
-{
+{inputs, moduleWithSystem} : moduleWithSystem (
+perSystem@{ inputs' }:
+hm@{
   config,
   lib,
   pkgs,
   ...
 }:
 with lib; let
-  cfg = config.preferences.cli.joshuto;
+
 in {
-  config = mkIf cfg {
+  config = {
     home.packages = [pkgs.joshuto];
 
     xdg.configFile = {
@@ -62,4 +64,4 @@ in {
     };
     */
   };
-}
+})

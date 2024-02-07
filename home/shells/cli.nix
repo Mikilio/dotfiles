@@ -1,16 +1,18 @@
-{ config
-, pkgs
-, lib
-, ...
+{inputs, moduleWithSystem} : moduleWithSystem (
+perSystem@{ inputs' }:
+hm@{
+  config,
+  lib,
+  pkgs,
+  ...
 }:
 
 with lib;
 
 let
 
-  cfg = config.preferences.cli.shell;
 
-in mkIf (!isNull cfg) {
+in {
   home.packages = with pkgs; [
     # archives
     zip
@@ -31,11 +33,23 @@ in mkIf (!isNull cfg) {
     ripgrep
     xdg-utils
     config.nur.repos.mikilio.xdg-terminal-exec
+
+    #nix
+    alejandra
+    deadnix
+    statix
+    cachix
   ];
 
   programs = {
 
     zoxide.enable = true;
+
+    direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+    };
+
 
     bat = {
       enable = true;
@@ -68,6 +82,8 @@ in mkIf (!isNull cfg) {
       ];
     };
   };
+
+  sops.secrets.cachix.path = "${config.xdg.configHome}/cachix/cachix.dhall";
 
   home = {
     shellAliases = {
@@ -108,4 +124,4 @@ in mkIf (!isNull cfg) {
       DIRENV_LOG_FORMAT = "";
     };
   };
-}
+})

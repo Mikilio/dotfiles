@@ -1,8 +1,10 @@
-{
-  lib,
-  pkgs,
-  config,
-  ...
+
+{inputs, moduleWithSystem} : moduleWithSystem (
+perSystem@{ inputs' }:
+{ config
+, lib
+, pkgs
+, ...
 }:
 
 with lib;
@@ -10,10 +12,8 @@ with lib;
 let
   homeDir = config.home.homeDirectory;
 
-  cfg = config.preferences.apps.terminal;
-
 in {
-  config = mkIf (!isNull cfg) {
+  config = {
     xdg = {
       enable = true;
 
@@ -49,4 +49,4 @@ in {
     home.packages = [ config.nur.repos.mikilio.xdg-terminal-exec ];
 
   };
-}
+})

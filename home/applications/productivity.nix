@@ -1,17 +1,18 @@
-{
-  lib,
-  pkgs,
-  config,
-  ...
+{inputs, moduleWithSystem} : moduleWithSystem (
+perSystem@{ inputs' }:
+{ config
+, lib
+, pkgs
+, ...
 }:
-with lib;
+
 let
-  cfg = config.preferences.apps;
+
 in {
 
   imports = [ ./pandoc ];
 
-  config = mkIf (cfg != null && cfg.productivity) {
+  config = {
     home.packages = with pkgs; [
       #ms-office to text conversion tool
       catdoc
@@ -41,10 +42,16 @@ in {
       tor-browser
 
       #matrix
-      element-desktop-wayland
+      element-desktop
 
       #discord
       discord-canary
     ];
+    dconf.settings = {
+      "org/virt-manager/virt-manager/connections" = {
+        autoconnect = ["qemu:///system"];
+        uris = ["qemu:///system"];
+      };
+    };
   };
-}
+})

@@ -1,4 +1,6 @@
-{ ... }@fp: { config
+{inputs, moduleWithSystem} : moduleWithSystem (
+perSystem@{ inputs' }:
+{ config
 , lib
 , pkgs
 , ...
@@ -7,10 +9,9 @@
 with lib;
 
 let
-  cfg = config.preferences.desktop;
 
 in {
-  config = mkIf (cfg.statusbar == "waybar") {
+  config = {
     
 
     programs.waybar = {
@@ -49,5 +50,4 @@ in {
       };
     };
   };
-}
-
+})

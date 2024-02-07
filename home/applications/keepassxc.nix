@@ -1,13 +1,17 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
+{inputs, moduleWithSystem} : moduleWithSystem (
+perSystem@{ inputs' }:
+{ config
+, lib
+, pkgs
+, ...
 }:
-with lib; let
-  cfg = config.preferences.apps;
+
+with lib;
+
+let
+
 in {
-  config = mkIf cfg.passwords {
+  config = {
     assertions = [
       (hm.assertions.assertPlatform "services.keepassxc" pkgs platforms.linux)
     ];
@@ -15,6 +19,7 @@ in {
     systemd.user.services.keepassxc = {
       Unit = {
         Description = "keepassxc password manager";
+        BusName= "org.freedesktop.secrets";
         Wants = [ "tray.target" ];
         Requires = [ "sops-nix.service" ];
         After = [ "sops-nix.service" "tray.target" ];
@@ -30,4 +35,4 @@ in {
       };
     };
   };
-}
+})

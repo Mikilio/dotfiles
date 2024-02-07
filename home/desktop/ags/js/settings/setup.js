@@ -7,19 +7,16 @@ import { reloadScss, scssWatcher } from './scss.js';
 import { initWallpaper } from './wallpaper.js';
 import { hyprlandInit, setupHyprland } from './hyprland.js';
 import { globals } from './globals.js';
-import { showAbout } from '../about/about.js';
 import Gtk from 'gi://Gtk';
 
 export function init() {
+    scssWatcher();
     notificationBlacklist();
     warnOnLowBattery();
     globals();
     tmux();
-    gsettigsColorScheme();
     gtkFontSettings();
-    scssWatcher();
     dependandOptions();
-
     reloadScss();
     hyprlandInit();
     setupHyprland();
@@ -33,7 +30,6 @@ function dependandOptions() {
     });
 }
 
-// TODO: change to work with wezterm
 function tmux() {
     if (!Utils.exec('which tmux'))
         return;
@@ -52,17 +48,6 @@ function tmux() {
     options.theme.accent.accent.connect('changed', ({ value }) => Utils
         .execAsync(`tmux set @main_accent ${getColor(value)}`)
         .catch(err => console.error(err.message)));
-}
-
-function gsettigsColorScheme() {
-    if (!Utils.exec('which gsettings'))
-        return;
-
-    options.theme.scheme.connect('changed', ({ value }) => {
-        const gsettings = 'gsettings set org.gnome.desktop.interface color-scheme';
-        Utils.execAsync(`${gsettings} "prefer-${value}"`)
-            .catch(err => console.error(err.message));
-    });
 }
 
 function gtkFontSettings() {

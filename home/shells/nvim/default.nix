@@ -1,15 +1,17 @@
-{ config
-, lib
-, pkgs
-, ...
+{inputs, moduleWithSystem} : moduleWithSystem (
+perSystem@{ inputs' }:
+hm@{
+  config,
+  lib,
+  pkgs,
+  ...
 }:
 with lib; let
-  cfg = config.preferences.cli.editor;
   customPlugs = config.nur.repos.mikilio.overlays.vimPlugins;
 
 in
 {
-  config = mkIf (cfg == "neovim") {
+  config = {
     programs.neovim = {
       enable = true;
       defaultEditor = true;
@@ -118,4 +120,4 @@ in
         '';
     };
   };
-}
+})

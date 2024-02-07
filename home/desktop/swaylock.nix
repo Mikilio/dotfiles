@@ -1,8 +1,13 @@
+{inputs, moduleWithSystem} : moduleWithSystem (
+perSystem@{ inputs' }:
+{ config
+, lib
+, pkgs
+, theme
+, ...
+}:
+
 {
-  theme,
-  pkgs,
-  ...
-}: {
   programs.swaylock = {
     enable = true;
     package = pkgs.swaylock-effects;
@@ -36,4 +41,4 @@
       ring-wrong-color = xcolors.base;
     };
   };
-}
+})

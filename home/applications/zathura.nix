@@ -1,13 +1,14 @@
-{
-  pkgs,
-  config,
-  lib,
-  ...
+{inputs, moduleWithSystem} : moduleWithSystem (
+perSystem@{ inputs' }:
+{ config
+, lib
+, pkgs
+, ...
 }:
-with lib; let
-  cfg = config.preferences.apps;
+let
+ 
 in {
-  config = mkIf (cfg != null && cfg.reader == "zathura") {
+  config = {
     programs.zathura = {
       enable = true;
       options = {
@@ -34,4 +35,4 @@ in {
       hash = "sha256-/HXecio3My2eXTpY7JoYiN9mnXsps4PAThDPs4OCsAk=";
     };
   };
-}
+})

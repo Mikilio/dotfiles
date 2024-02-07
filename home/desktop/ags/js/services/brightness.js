@@ -26,7 +26,7 @@ class Brightness extends Service {
         if (percent > 1)
             percent = 1;
 
-        Utils.execAsync(`brillo -q -u 300000 -S ${percent * 100}% `)
+        Utils.execAsync(`brillo -e -q -u 300000 -S ${percent * 100}% `)
             .then(() => {
                 this.#screen = percent;
                 this.changed('screen');

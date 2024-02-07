@@ -1,14 +1,15 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
+{inputs, moduleWithSystem} : moduleWithSystem (
+perSystem@{ inputs' }:
+{ config
+, lib
+, pkgs
+, ...
 }:
 with lib; let
-  cfg = config.preferences.apps;
+
 in {
   # Qt theming with Kvantum
-  config = mkIf (cfg != null && cfg.gui) {
+  config = {
     qt.enable = true;
     qt.platformTheme = "qtct";
     qt.style.name = "kvantum";
@@ -24,4 +25,4 @@ in {
       General.theme = "Catppuccin-Mocha-Mauve";
     };
   };
-}
+})
