@@ -51,6 +51,7 @@ in {
       ./shells/cli.nix
       ./shells/helix
       ./shells/nvim
+      ./shells/bash.nix
     ];
     desktop = importModules [
       ./desktop/ags

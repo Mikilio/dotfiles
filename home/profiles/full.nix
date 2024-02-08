@@ -14,7 +14,7 @@ apps = with localModules.applications; [
     wezterm productivity keepassxc
   ];
 shell = with localModules.shell; [
-    starship nushell git cli nvim
+    starship nushell git cli nvim bash
   ];
 desktop = with localModules.desktop; [
     ags hyprland swayidle pipewire
