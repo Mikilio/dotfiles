@@ -43,13 +43,10 @@ in {
 
   programs = {
 
-    zoxide.enable = true;
-
-    direnv = {
+    bash = {
       enable = true;
-      nix-direnv.enable = true;
+      enableCompletion = false;
     };
-
 
     bat = {
       enable = true;
@@ -69,10 +66,23 @@ in {
         };
       };
     };
-
     btop.enable = true;
-    eza.enable = true;
-
+    broot.enable = true;
+    carapace.enable = true;
+    direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+    };
+    eza = {
+      enable = true;
+      enableAliases = true;
+      git = true;
+      icons = true;
+    };
+    atuin = {
+      enable = true;
+      flags = [  "--disable-up-arrow" ];
+    };
     skim = {
       enable = true;
       defaultCommand = "rg --files --hidden";
@@ -81,37 +91,69 @@ in {
         "--exact"
       ];
     };
+    zoxide.enable = true;
   };
 
   sops.secrets.cachix.path = "${config.xdg.configHome}/cachix/cachix.dhall";
 
   home = {
     shellAliases = {
-    "..." = "cd ../..";
-    df = "duf";
-    cat = "bat";
-    g = "git";
-    grep = "rg";
-    ip = "ip --color";
-    jq = "jaq";
-    l = "exa --icons --git";
-    la = "l -la";
-    lf = "joshuto";
-    ll = "l -l";
-    ls = "l";
-    md = "mkdir -p";
-    us = "systemctl --user";
-    rs = "sudo systemctl";
-    hm = ''
-      f () { \
-        [ -d $HOME/dotfiles ] && [ -e $HOME/dotfiles/flake.nix ] \
-        || (echo "Please place dotfiles in $HOME" && return 1); \
-        nix run $HOME/dotfiles "$@"; \
-      }; f \
-    '';
-    hms = "hm switch";
-    x = "xargs";
-    xo = "xdg-open";
+      
+      # Alias's to modified commands
+      cp = "cp -i";
+      mv = "mv -i";
+      rm = "rm -iv";
+      grep = "rg";
+      cat = "bat";
+      mkdir = "mkdir -p";
+      ping = "ping -c 10";
+      less = "less -R";
+      x = "xargs";
+      g = "git";
+      cls = "clear";
+      multitail = "multitail --no-repeat -c";
+      
+      # Change directory aliases
+      ".." = "cd ..";
+      "..." = "cd ../..";
+      
+      # cd into the old directory
+      bd = "cd \"$OLDPWD\"";
+      
+      # Remove a directory and all files
+      rmd = "/bin/rm  --recursive --force --verbose ";
+      
+      # alias chmod commands
+      mx = "chmod a+x";
+      m000 = "chmod -R 000";
+      m644 = "chmod -R 644";
+      m666 = "chmod -R 666";
+      m755 = "chmod -R 755";
+      m777 = "chmod -R 777";
+      
+      # Show open ports
+      openports = "netstat -nape --inet";
+      
+      # Alias's for archives
+      mktar = "tar -cvf";
+      mkbz2 = "tar -cvjf";
+      mkgz = "tar -cvzf";
+      untar = "tar -xvf";
+      unbz2 = "tar -xvjf";
+      ungz = "tar -xvzf";
+
+      # Alias's for systemcontrol
+      us = "systemctl --user";
+      rs = "sudo systemctl";
+      hm = ''
+        func () { \
+          [ -d $HOME/dotfiles ] && [ -e $HOME/dotfiles/flake.nix ] \
+          || (echo "Please place dotfiles in $HOME" && return 1); \
+          nix run $HOME/dotfiles "$@"; \
+        }; func \
+      '';
+      hms = "hm switch";
+      xo = "xdg-open";
   };
     sessionVariables = {
       LESSHISTFILE = "$XDG_CACHE_HOME/less/history";
@@ -122,6 +164,7 @@ in {
 
       MANPAGER = "sh -c 'col -bx | bat -l man -p'";
       DIRENV_LOG_FORMAT = "";
+      CARAPACE_BRIDGES = "zsh,fish,bash,inshellisenscse";
     };
   };
 })

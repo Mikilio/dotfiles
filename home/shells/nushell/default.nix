@@ -13,8 +13,12 @@ in {
   config = {
     programs.nushell = {
       enable = true;
-      configFile.source = ./config.nu;
-      envFile.source = ./env.nu;
+      shellAliases = config.home.shellAliases // {
+        eza = mkForce "ls";
+        lt = mkForce "br -s";
+        mkdir = mkForce "mkdir";
+        hm = mkForce "echo";
+      };
     };
   };
 })

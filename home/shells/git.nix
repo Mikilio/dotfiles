@@ -93,9 +93,7 @@ in {
         update = "!git pull && git submodule update --init --recursive";
         comma = "commit --amend";
         uncommit = "reset --soft HEAD^";
-        pr = ''
-          !"pr() { git fetch origin pull/$1/head:pr-$1; git checkout pr-$1; }; pr"
-        '';
+        pr = "!\"pr() { git fetch origin pull/$1/head:pr-$1; git checkout pr-$1; }; pr\"";
         backport = "cherry-pick -x";
         reset-pr = "reset --hard FETCH_HEAD";
         force-push = "push --force-with-lease";
