@@ -46,6 +46,23 @@ in {
     bash = {
       enable = true;
       enableCompletion = false;
+      historyControl = [ "ignoredups" "ignorespace" "erasedups" ];
+      historyIgnore = [  "&" "ls" "[bf]g" "exit" "reset" "clear" "cd*"];
+      shellOptions = [
+        "autocd" "cdspell" "dirspell" "extglob"
+        "no_empty_cmd_completion" "checkwinsize" "checkhash"
+        "histverify" "histappend" "histreedit" "cmdhist"
+      ];
+      bashrcExtra= ''
+        set -o notify           # notify of completed background jobs immediately
+        set -o noclobber        # don\'t overwrite files by accident
+        ulimit -S -c 0          # disable core dumps
+        stty -ctlecho           # turn off control character echoing
+
+        if [[ $TERM = linux ]]; then
+          setterm -regtabs 2    # set tab width of 4 (only works on TTY)
+        fi
+      '';
     };
 
     bat = {
@@ -83,6 +100,44 @@ in {
       enable = true;
       flags = [  "--disable-up-arrow" ];
     };
+    less = {
+      enable = true;
+      keys = ''
+        #env
+        LESS = --quit-if-one-screen --ignore-case --status-column --LONG-PROMPT --RAW-CONTROL-CHARS --HILITE-UNREAD --tabs=4 --no-init --window=-4
+        LESS_TERMCAP_mb = [01;31m
+        LESS_TERMCAP_md = [01;36m
+        LESS_TERMCAP_me = [0m
+        LESS_TERMCAP_se = [0m
+        LESS_TERMCAP_so = [1;44;33m
+        LESS_TERMCAP_ue = [0m
+        LESS_TERMCAP_us = [01;32m
+      '';
+    };
+    lesspipe.enable = true;
+    readline = {
+      enable = true;
+      bindings = {
+        "\\e[6~" = "menu-complete";
+        "\\e[5~" = "menu-complete-backward";
+      };
+      variables = {
+        editing-mode = "vi";
+        vi-ins-mode-string = "\\1\\e[6 q\\2";
+        vi-cmd-mode-string = "\\1\\e[2 q\\2";
+        show-mode-in-prompt = true;
+        revert-all-at-newline = true;
+        colored-stats = true;
+        colored-completion-prefix = true;
+        completion-ignore-case = true;
+        completion-prefix-display-length = 3;
+        mark-symlinked-directories = true;
+        show-all-if-ambiguous = true;
+        show-all-if-unmodified = true;
+        skip-completed = true;
+        visible-stats = true;
+      };
+    };
     skim = {
       enable = true;
       defaultCommand = "rg --files --hidden";
@@ -107,7 +162,6 @@ in {
       cat = "bat";
       mkdir = "mkdir -p";
       ping = "ping -c 10";
-      less = "less -R";
       x = "xargs";
       g = "git";
       cls = "clear";
@@ -156,15 +210,10 @@ in {
       xo = "xdg-open";
   };
     sessionVariables = {
-      LESSHISTFILE = "$XDG_CACHE_HOME/less/history";
-      LESSKEY = "$XDG_CONFIG_HOME/less/lesskey";
 
-      # enable scrolling in git diff
-      DELTA_PAGER = "less -R";
+      CARAPACE_BRIDGES = "zsh,fish,bash,inshellisense";
 
-      MANPAGER = "sh -c 'col -bx | bat -l man -p'";
       DIRENV_LOG_FORMAT = "";
-      CARAPACE_BRIDGES = "zsh,fish,bash,inshellisenscse";
     };
   };
 })

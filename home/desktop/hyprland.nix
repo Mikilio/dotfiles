@@ -10,7 +10,7 @@ with lib; let
   environment = {
     GDK_BACKEND="wayland,x11";
     QT_QPA_PLATFORM = "wayland;xcb";
-    SDL_VIDEODRIVER = "wayland";
+    # SDL_VIDEODRIVER = "wayland";
     CLUTTER_BACKEND = "wayland";
     NIXOS_OZONE_WL = 1;
     XAUTHORITY = "$XDG_RUNTIME_DIR/Xauthority";
