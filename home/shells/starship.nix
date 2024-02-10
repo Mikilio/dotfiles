@@ -19,35 +19,16 @@ in {
       enable = true;
       settings = {
 
-        format = ''
-          [](mauve)\\
-          $os\\
-          $username\\
-          [](bg:flamingo fg:mauve)\\
-          $directory\\
-          [](fg:flamingo bg:pink)\\
-          $git_branch\\
-          $git_status\\
-          [](fg:pink bg:lavender)\\
-          $c\\
-          $rust\\
-          $golang\\
-          $nodejs\\
-          $php\\
-          $java\\
-          $kotlin\\
-          $haskell\\
-          $python\\
-          [](fg:lavender bg:overlay0)\\
-          $docker_context\\
-          $nix_shell\\
-          [](fg:overlay0 bg:surface0)\\
-          $time\\
-          [ ](fg:surface0)\\
-          $character\\
-          $line_break\\
-          $shell
-        '';
+        format = concatStrings [
+          "[](mauve)$os$username"
+          "[](bg:flamingo fg:mauve)$directory"
+          "[](fg:flamingo bg:pink)$git_branch"
+          "$git_status[](fg:pink bg:lavender)"
+          "$c$rust$golang$nodejs$php$java$kotlin"
+          "$haskell$python[](fg:lavender bg:overlay0)"
+          "$docker_context$nix_shell[](fg:overlay0 bg:surface0)"
+          "$time[ ](fg:surface0)$character$line_break$shell"
+        ];
 
         palette = "catppuccin_${flavour}";
 
@@ -97,11 +78,11 @@ in {
         };
 
         directory.substitutions = {
-          "Documents" = "󰈙 ";
-          "Downloads" = " ";
-          "Music" = "󰝚 ";
-          "Pictures" = " ";
-          "Developer" = "󰲋 ";
+          "docs" = "󰈙 ";
+          "etc/download" = " ";
+          "media/music" = "󰝚 ";
+          "media/pic" = " ";
+          "dev" = "󰲋 ";
         };
 
         git_branch = {
@@ -116,7 +97,7 @@ in {
           conflicted = "󰞇 ";
           ahead = "󰚧 " ;
           behind = "󰚰 ";
-          diverged = " ";
+          diverged = "󰃻 ";
           up_to_date ="";
           untracked = " ";
           stashed =	" ";
@@ -211,6 +192,7 @@ in {
         shell = {
           disabled = false;
           bash_indicator = "[ ❯](bold green)";
+          nu_indicator = "[󰟆 ❯](bold green)";
         };
 
         character = {
