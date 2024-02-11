@@ -22,8 +22,8 @@ in {
         format = concatStrings [
           "[](mauve)$os$username"
           "[](bg:flamingo fg:mauve)$directory"
-          "[](fg:flamingo bg:pink)$git_branch"
-          "$git_status[](fg:pink bg:lavender)"
+          "[](fg:flamingo bg:pink)$git_branch$git_commit"
+          "$git_state$git_status[](fg:pink bg:lavender)"
           "$c$rust$golang$nodejs$php$java$kotlin"
           "$haskell$python[](fg:lavender bg:overlay0)"
           "$docker_context$nix_shell[](fg:overlay0 bg:surface0)"
@@ -89,6 +89,16 @@ in {
           symbol = "";
           style = "bg:pink";
           format = "[[ $symbol $branch ](fg:base bg:pink)]($style)";
+        };
+
+        git_commit = {
+          style = "fg:base bg:pink";
+          format = "[ $hash $tag]($style)";
+        };
+
+        git_state = {
+          style = "fg:base bg:pink";
+          format = "[\\($state( $progress_current of $progress_total)\\) ]($style)";
         };
 
         git_status = {
