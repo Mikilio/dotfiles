@@ -1,4 +1,3 @@
-local g = vim.g
 local api = vim.api
 
 -- experimental better startup
@@ -17,8 +16,8 @@ api.nvim_create_autocmd(
     group = cursorGrp
   })
 api.nvim_create_autocmd(
-	{ "InsertEnter", "WinLeave" },
-	{
+  { "InsertEnter", "WinLeave" },
+  {
     pattern = "*",
     command = "set nocursorline",
     group = cursorGrp
@@ -28,56 +27,56 @@ api.nvim_create_autocmd(
 -- highlight on yank
 local yank_group = augroup("HighlightYank", {})
 autocmd("TextYankPost", {
-	group = yank_group,
-	pattern = "*",
-	callback = function()
-		vim.highlight.on_yank({
-			higroup = "IncSearch",
-			timeout = 40,
-		})
-	end,
+  group = yank_group,
+  pattern = "*",
+  callback = function()
+    vim.highlight.on_yank({
+      higroup = "IncSearch",
+      timeout = 40,
+    })
+  end,
 })
 
-local options  = {
-	mouse = "a",
+local options = {
+  mouse = "a",
 
-	number = true,
+  number = true,
   relativenumber = true,
-	numberwidth = 4,
+  numberwidth = 4,
 
-	tabstop = 2, --insert 2 spaces for a tab
+  tabstop = 2,   --insert 2 spaces for a tab
   softtabstop = 2,
-	shiftwidth = 2, --insert 2 spaces for each indentation
-	expandtab = true,
+  shiftwidth = 2, --insert 2 spaces for each indentation
+  expandtab = true,
 
   smartindent = true,
 
   wrap = false,
 
-	swapfile = false,
+  swapfile = false,
   backup = false,
   undodir = os.getenv('XDG_CACHE_HOME') .. '/nvim/undodir',
-	undofile = true,
+  undofile = true,
 
   hlsearch = false,
   incsearch = true,
-	ignorecase = true,
+  ignorecase = true,
 
   termguicolors = true,
 
-	scrolloff = 8,
+  scrolloff = 8,
   signcolumn = "yes",
 
-	colorcolumn = '80',
-	cursorline = true, --Highlight the line where the cursor is located
+  colorcolumn = '80',
+  cursorline = true, --Highlight the line where the cursor is located
 
-  updatetime = 50, -- faster completion (4000ms default)
+  updatetime = 50,  -- faster completion (4000ms default)
 
   spellfile = vim.fn.stdpath("config") .. "/spell/en.utf-8.add"
 }
 
 for k, v in pairs(options) do
-	vim.opt[k] = v
+  vim.opt[k] = v
 end
 
 vim.opt.isfname:append('@-@')

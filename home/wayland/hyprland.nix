@@ -32,6 +32,7 @@ in {
         xorg.xprop # get properties from XWayland
         xorg.xauth # to enable ssh Xforwarding
         hyprpaper
+        wl-clipboard
         inputs'.hyprland-contrib.packages.grimblast
       ];
     };

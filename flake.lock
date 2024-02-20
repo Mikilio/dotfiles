@@ -273,6 +273,24 @@
         "type": "github"
       }
     },
+    "flake-utils_5": {
+      "inputs": {
+        "systems": "systems_7"
+      },
+      "locked": {
+        "lastModified": 1694529238,
+        "narHash": "sha256-zsNZZGTGnMOf9YpHKJqMSsa0dXbfmxeoJ7xHlrt+xmY=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "ff7b65b44d01cf9ba6a71320833626af21126384",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
     "freetype2": {
       "flake": false,
       "locked": {
@@ -796,7 +814,8 @@
         "rust-overlay": "rust-overlay_2",
         "sops-nix": "sops-nix",
         "spicetify-nix": "spicetify-nix",
-        "wezterm": "wezterm"
+        "wezterm": "wezterm",
+        "yazi": "yazi"
       }
     },
     "rust-overlay": {
@@ -864,6 +883,31 @@
         "owner": "oxalica",
         "repo": "rust-overlay",
         "rev": "a854609265af0e9f48c92e497679edf8fab9e690",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "type": "github"
+      }
+    },
+    "rust-overlay_4": {
+      "inputs": {
+        "flake-utils": [
+          "yazi",
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "yazi",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1701224160,
+        "narHash": "sha256-qnMmxNMKmd6Soel0cfauyMJ+LzuZbvmiDQPSIuTbQ+M=",
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "rev": "4a080e26d55eaedb95ab1bf8eeaeb84149c10f12",
         "type": "github"
       },
       "original": {
@@ -1004,6 +1048,21 @@
         "type": "github"
       }
     },
+    "systems_7": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
     "wezterm": {
       "inputs": {
         "flake-utils": "flake-utils_4",
@@ -1078,6 +1137,28 @@
       "original": {
         "owner": "hyprwm",
         "repo": "xdg-desktop-portal-hyprland",
+        "type": "github"
+      }
+    },
+    "yazi": {
+      "inputs": {
+        "flake-utils": "flake-utils_5",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "rust-overlay": "rust-overlay_4"
+      },
+      "locked": {
+        "lastModified": 1708270088,
+        "narHash": "sha256-ovV7r/f1soOGLv9FseD0m82m5k+KMsAvcNub+vzrosc=",
+        "owner": "sxyazi",
+        "repo": "yazi",
+        "rev": "3f27532c576365bf5da4a82ee89c48a677ec498f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "sxyazi",
+        "repo": "yazi",
         "type": "github"
       }
     },

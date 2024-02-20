@@ -66,8 +66,8 @@ keymap("n", "n", "nzz", opts)
 keymap("n", "N", "Nzz", opts)
 
 -- System clipboard
-keymap("v", "<C-S-C>", '"+y', opts)
-keymap("v", "<C-S-X>", '"+d', opts)
+keymap("v", "<C-S-C>", '"*y', opts)
+keymap("v", "<C-S-X>", '"*d', opts)
 
 --debug
 keymap("n", "<Leader>xdb", ":lua require('dapui').toggle()<CR>", opts)

@@ -18,7 +18,6 @@ in {
     zip
     unzip
     unar
-    unrar-wrapper
 
     #TUI
     calcurse
@@ -58,10 +57,10 @@ in {
         set -o noclobber        # don\'t overwrite files by accident
         ulimit -S -c 0          # disable core dumps
         stty -ctlecho           # turn off control character echoing
-
-        if [[ $TERM = linux ]]; then
-          setterm -regtabs 2    # set tab width of 4 (only works on TTY)
-        fi
+      '';
+      initExtra = ''
+        source "${getExe pkgs.complete-alias}"
+        complete -F _complete_alias "''${!BASH_ALIASES[@]}"
       '';
     };
 
@@ -199,21 +198,15 @@ in {
       # Alias's for systemcontrol
       us = "systemctl --user";
       rs = "sudo systemctl";
-      hm = ''
-        func () { \
-          [ -d $HOME/dotfiles ] && [ -e $HOME/dotfiles/flake.nix ] \
-          || (echo "Please place dotfiles in $HOME" && return 1); \
-          nix run $HOME/dotfiles "$@"; \
-        }; func \
-      '';
-      hms = "hm switch";
       xo = "xdg-open";
-  };
+      hm = "home-manager";
+    };
     sessionVariables = {
 
       CARAPACE_BRIDGES = "zsh,fish,bash,inshellisense";
 
       DIRENV_LOG_FORMAT = "";
     };
+    sessionPath = ["$HOME/.local/share/bin"];
   };
 })

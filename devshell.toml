@@ -13,6 +13,12 @@ category = "scripts"
 command = "source './scripts/importGPGKeys.sh'"
 
 [[commands]]
+name = "hms"
+help = "Switch to this configuration"
+category = "scripts"
+command = "nix run . -- switch"
+
+[[commands]]
 name = "preinstall"
 help = "Install nixos to available drives"
 category = "scripts"

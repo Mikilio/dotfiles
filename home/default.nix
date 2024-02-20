@@ -42,26 +42,27 @@ in {
       ./applications/productivity.nix
       ./applications/keepassxc.nix
     ]; 
-    shell = importModules [
-      ./shells/zsh.nix
-      ./shells/starship.nix
-      ./shells/nushell
-      ./shells/joshuto
-      ./shells/git.nix
-      ./shells/cli.nix
-      ./shells/helix
-      ./shells/nvim
+    terminal = importModules [
+      ./terminal/zsh.nix
+      ./terminal/starship.nix
+      ./terminal/nushell
+      ./terminal/joshuto
+      ./terminal/git.nix
+      ./terminal/cli.nix
+      ./terminal/helix
+      ./terminal/nvim
+      ./terminal/yazi.nix
     ];
-    desktop = importModules [
-      ./desktop/ags
-      ./desktop/waybar
-      ./desktop/anyrun.nix
-      ./desktop/dunst.nix
-      ./desktop/hyprland.nix
-      ./desktop/gbar.nix
-      ./desktop/swayidle.nix
-      ./desktop/swaylock.nix
-      ./desktop/pipewire
+    wayland = importModules [
+      ./wayland/ags
+      ./wayland/waybar
+      ./wayland/anyrun.nix
+      ./wayland/dunst.nix
+      ./wayland/hyprland.nix
+      ./wayland/gbar.nix
+      ./wayland/swayidle.nix
+      ./wayland/swaylock.nix
+      ./wayland/pipewire
     ];
   };
 }

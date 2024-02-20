@@ -13,16 +13,16 @@ apps = with localModules.applications; [
     sioyek firefox gpg games gtk
     wezterm productivity keepassxc
   ];
-shell = with localModules.shell; [
-    starship nushell git cli nvim
+terminal = with localModules.terminal; [
+    starship nushell git cli nvim yazi
   ];
-desktop = with localModules.desktop; [
+wayland = with localModules.wayland; [
     ags hyprland swayidle pipewire
   ];
 
 in {
 
-  imports = apps ++ shell ++ desktop;
+  imports = apps ++ terminal ++ wayland;
 
   config = {
     home = {
@@ -30,8 +30,6 @@ in {
       homeDirectory = "/home/mikilio";
       stateVersion = "23.05";
       extraOutputsToInstall = ["doc" "devdoc"];
-
-      sessionPath = ["$HOME/.local/bin"];
     };
 
     home.sessionVariables.TERM = "wezterm";
