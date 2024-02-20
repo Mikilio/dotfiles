@@ -1,21 +1,19 @@
-{ moduleWithSystem
-, inputs
-, self
-, lib
-, config
-, ...
+{
+  moduleWithSystem,
+  inputs,
+  self,
+  lib,
+  config,
+  ...
 }:
-with lib;
-
-let
-
-  importModules = builtins.foldl' ( mods: mod:
-    { 
+with lib; let
+  importModules = builtins.foldl' (mods: mod:
+    {
       "${lib.removeSuffix ".nix" (builtins.baseNameOf mod)}" =
-        import mod { inherit inputs moduleWithSystem;};
-    } // mods ) {};
+        import mod {inherit inputs moduleWithSystem;};
+    }
+    // mods) {};
 in {
-
   imports = [
     ./profiles
     ./bootstrap.nix
@@ -41,7 +39,7 @@ in {
       ./applications/wezterm
       ./applications/productivity.nix
       ./applications/keepassxc.nix
-    ]; 
+    ];
     terminal = importModules [
       ./terminal/zsh.nix
       ./terminal/starship.nix

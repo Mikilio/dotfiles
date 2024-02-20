@@ -28,7 +28,7 @@ dontAddDisableDepTrack='1'
 export dontAddDisableDepTrack
 name='devshell-env'
 export name
-out='/home/mikilio/dotfiles/outputs/out'
+out='/home/mikilio/dev/dotfiles/outputs/out'
 export out
 outputs='out'
 shellHook='# Remove all the unnecessary noise that is set by the build env

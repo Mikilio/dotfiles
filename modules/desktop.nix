@@ -1,8 +1,9 @@
-{ config
-, inputs'
-,  pkgs
-,  self
-,  ...
+{
+  config,
+  inputs',
+  pkgs,
+  self,
+  ...
 }: {
   fonts = {
     packages = with pkgs; [
@@ -40,15 +41,14 @@
   };
 
   hardware = {
-
     opengl = {
       extraPackages = with pkgs; [
         vaapiVdpau
-          libvdpau-va-gl
+        libvdpau-va-gl
       ];
       extraPackages32 = with pkgs.pkgsi686Linux; [
         vaapiVdpau
-          libvdpau-va-gl
+        libvdpau-va-gl
       ];
     };
   };

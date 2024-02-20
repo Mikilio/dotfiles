@@ -5,7 +5,6 @@
   withSystem,
   ...
 } @ top: let
-
   localModules = self.homeManagerModules;
 
   sharedModule = hm: {

@@ -1,52 +1,55 @@
-{inputs, moduleWithSystem} : moduleWithSystem (
-perSystem@{ inputs' }:
-{ config
-, lib
-, pkgs
-, ...
+{
+  inputs,
+  moduleWithSystem,
 }:
+moduleWithSystem (
+  perSystem @ {inputs'}: {
+    config,
+    lib,
+    pkgs,
+    ...
+  }:
+    with lib; let
+    in {
+      config = {
+        home.pointerCursor = {
+          package = pkgs.bibata-cursors;
+          name = "Bibata-Modern-Classic";
+          size = 24;
+          gtk.enable = true;
+          x11.enable = true;
+        };
 
-with lib; let
+        gtk = {
+          enable = true;
 
-in {
-  config = {
-    home.pointerCursor = {
-      package = pkgs.bibata-cursors;
-      name = "Bibata-Modern-Classic";
-      size = 24;
-      gtk.enable = true;
-      x11.enable = true;
-    };
+          font = {
+            name = "Roboto";
+            package = pkgs.roboto;
+          };
 
-    gtk = {
-      enable = true;
+          gtk2.configLocation = "${config.xdg.configHome}/gtk-2.0/gtkrc";
 
-      font = {
-        name = "Roboto";
-        package = pkgs.roboto;
-      };
+          iconTheme = {
+            name = "Papirus-Dark";
+            package = pkgs.papirus-icon-theme;
+          };
 
-      gtk2.configLocation = "${config.xdg.configHome}/gtk-2.0/gtkrc";
-
-      iconTheme = {
-        name = "Papirus-Dark";
-        package = pkgs.papirus-icon-theme;
-      };
-
-      theme = {
-        name = "Catppuccin-Mocha-Compact-Mauve-Dark";
-        package = pkgs.catppuccin-gtk.override {
-          accents = ["mauve"];
-          size = "compact";
-          variant = "mocha";
+          theme = {
+            name = "Catppuccin-Mocha-Compact-Mauve-Dark";
+            package = pkgs.catppuccin-gtk.override {
+              accents = ["mauve"];
+              size = "compact";
+              variant = "mocha";
+            };
+          };
+        };
+        systemd.user.sessionVariables = {
+          GTK_THEME = "Catppuccin-Mocha-Compact-Mauve-Dark";
+          XCURSOR_THEME = "Bibata-Modern-Classic";
+          XCURSOR_SIZE = 24;
+          GTK2_RC_FILES = "${config.xdg.configHome}/gtk-2.0/gtkrc";
         };
       };
-    };
-    systemd.user.sessionVariables = {
-      GTK_THEME = "Catppuccin-Mocha-Compact-Mauve-Dark";
-      XCURSOR_THEME = "Bibata-Modern-Classic";
-      XCURSOR_SIZE = 24;
-      GTK2_RC_FILES = "${config.xdg.configHome}/gtk-2.0/gtkrc";
-    };
-  };
-})
+    }
+)

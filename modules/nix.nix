@@ -9,7 +9,6 @@
   environment.systemPackages = [pkgs.git];
 
   nix = {
-
     distributedBuilds = true;
 
     # auto garbage collect

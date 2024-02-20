@@ -1,57 +1,58 @@
-{inputs, moduleWithSystem} : moduleWithSystem (
-perSystem@{ inputs' }:
-{ config
-, lib
-, pkgs
-, ...
+{
+  inputs,
+  moduleWithSystem,
 }:
+moduleWithSystem (
+  perSystem @ {inputs'}: {
+    config,
+    lib,
+    pkgs,
+    ...
+  }: let
+  in {
+    imports = [./pandoc];
 
-let
+    config = {
+      home.packages = with pkgs; [
+        #ms-office to text conversion tool
+        catdoc
 
-in {
+        #collection of utilities for indexing and searching Maildirs
+        mu
 
-  imports = [ ./pandoc ];
+        #svg and png editing
+        inkscape
 
-  config = {
-    home.packages = with pkgs; [
-      #ms-office to text conversion tool
-      catdoc
+        # office
+        libreoffice-still
 
-      #collection of utilities for indexing and searching Maildirs
-      mu
+        # 3d modelling
+        blender
 
-      #svg and png editing
-      inkscape
+        xfce.thunar-full
+        xarchiver
 
-      # office
-      libreoffice-still
+        #vpn
+        openvpn
 
-      # 3d modelling
-      blender
+        #durov <3
+        telegram-desktop
 
-      xfce.thunar-full
-      xarchiver
+        #tor <3
+        tor-browser
 
-      #vpn
-      openvpn
+        #matrix
+        element-desktop
 
-      #durov <3
-      telegram-desktop
-
-      #tor <3
-      tor-browser
-
-      #matrix
-      element-desktop
-
-      #discord
-      discord-canary
-    ];
-    dconf.settings = {
-      "org/virt-manager/virt-manager/connections" = {
-        autoconnect = ["qemu:///system"];
-        uris = ["qemu:///system"];
+        #discord
+        discord-canary
+      ];
+      dconf.settings = {
+        "org/virt-manager/virt-manager/connections" = {
+          autoconnect = ["qemu:///system"];
+          uris = ["qemu:///system"];
+        };
       };
     };
-  };
-})
+  }
+)

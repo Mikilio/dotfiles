@@ -11,7 +11,6 @@ let
     ${lib.getExe' pkgs.wlr-randr "wlr-randr"} --output DP-2 --pos -810,0 --transform 90 --scale 1.33334
     ${lib.getExe config.programs.regreet.package}
   '';
-
 in {
   environment.systemPackages = with pkgs; [
     # theme packages

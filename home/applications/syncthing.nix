@@ -1,22 +1,24 @@
-{inputs, moduleWithSystem} : moduleWithSystem (
-perSystem@{ inputs' }:
-{ config
-, lib
-, pkgs
-, ...
+{
+  inputs,
+  moduleWithSystem,
 }:
-let
+moduleWithSystem (
+  perSystem @ {inputs'}: {
+    config,
+    lib,
+    pkgs,
+    ...
+  }: let
+  in {
+    config = {
+      services.syncthing = {
+        enable = true;
+        extraOptions = [];
+      };
 
-in {
-  config = {
-
-    services.syncthing = {
-      enable = true;
-      extraOptions = [];
+      home.packages = [
+        pkgs.syncthingtray
+      ];
     };
-    
-    home.packages = [
-      pkgs.syncthingtray
-    ];
-  };
-})
+  }
+)

@@ -26,7 +26,6 @@
       "45.90.30.0#193dfc.dns.nextdns.io"
       "2a07:a8c1::#193dfc.dns.nextdns.io"
     ];
-
   };
 
   services = {

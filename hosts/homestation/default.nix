@@ -27,7 +27,7 @@
       v4l2loopback
     ];
 
-    kernelModules = [ "ddcci" "v4l2loopback" ];
+    kernelModules = ["ddcci" "v4l2loopback"];
 
     kernelParams = [
       "quiet"
@@ -96,21 +96,21 @@
 
   services = {
     # keyboard remapping (commented out because of chroot issues)
-   #kmonad = {
-   #  enable = true;
-   #  package = inputs'.kmonad.packages.default;
-   #  keyboards = {
-   #    logitech = {
-   #      device = "/dev/input/by-id/usb-Logitech_G512_RGB_MECHANICAL_GAMING_KEYBOARD_186130623937-event-kbd";
-   #      defcfg = {
-   #        enable = true;
-   #        fallthrough = true;
-   #        allowCommands = false;
-   #      };
-   #      config = builtins.readFile "${self}/modules/logitech.kbd";
-   #    };
-   #  };
-   #};
+    #kmonad = {
+    #  enable = true;
+    #  package = inputs'.kmonad.packages.default;
+    #  keyboards = {
+    #    logitech = {
+    #      device = "/dev/input/by-id/usb-Logitech_G512_RGB_MECHANICAL_GAMING_KEYBOARD_186130623937-event-kbd";
+    #      defcfg = {
+    #        enable = true;
+    #        fallthrough = true;
+    #        allowCommands = false;
+    #      };
+    #      config = builtins.readFile "${self}/modules/logitech.kbd";
+    #    };
+    #  };
+    #};
 
     #Proper disk mounting
     udisks2.enable = true;

@@ -7,21 +7,35 @@
   ...
 }:
 with lib; let
-
-apps = with localModules.applications; [
-    spicetify media qt xdg
-    sioyek firefox gpg games gtk
-    wezterm productivity keepassxc
+  apps = with localModules.applications; [
+    spicetify
+    media
+    qt
+    xdg
+    sioyek
+    firefox
+    gpg
+    games
+    gtk
+    wezterm
+    productivity
+    keepassxc
   ];
-terminal = with localModules.terminal; [
-    starship nushell git cli nvim yazi
+  terminal = with localModules.terminal; [
+    starship
+    nushell
+    git
+    cli
+    nvim
+    yazi
   ];
-wayland = with localModules.wayland; [
-    ags hyprland swayidle pipewire
+  wayland = with localModules.wayland; [
+    ags
+    hyprland
+    swayidle
+    pipewire
   ];
-
 in {
-
   imports = apps ++ terminal ++ wayland;
 
   config = {
