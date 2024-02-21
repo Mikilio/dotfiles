@@ -11,6 +11,7 @@ moduleWithSystem (
   }:
     with lib; let
     in {
+      home.packages = with pkgs; [dragon];
       # yazi file manager
       programs.yazi = {
         enable = true;
@@ -20,6 +21,26 @@ moduleWithSystem (
         enableBashIntegration = config.programs.bash.enable;
         enableZshIntegration = config.programs.zsh.enable;
         enableNushellIntegration = config.programs.nushell.enable;
+
+        keymap = {
+          manager.prepend_keymap = [
+            {
+              on = ["<C-n>"];
+              exec = ''
+                shell 'dragon -x -i -T "$1"' --confirm
+              '';
+            }
+            {
+              on = ["y"];
+              exec = [
+                "yank"
+                ''
+                  shell --confirm 'echo "$@" | xclip -i -selection clipboard -t text/uri-list'
+                ''
+              ];
+            }
+          ];
+        };
 
         #catpuccin theme
         theme = {

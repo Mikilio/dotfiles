@@ -44,6 +44,7 @@ moduleWithSystem (
             plugins = with pkgs.obs-studio-plugins; [
               wlrobs
               droidcam-obs
+              obs-source-clone
             ];
           };
         };

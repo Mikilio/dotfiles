@@ -10,6 +10,10 @@ moduleWithSystem (
     ...
   }:
     with lib; let
+      preview = pkgs.writeShellScript "preview.sh" (builtins.readFile (builtins.fetchurl {
+        url = "https://raw.githubusercontent.com/lotabout/skim.vim/4145f53f3d343c389ff974b1f1a68eeb39fba18b/bin/preview.sh";
+        sha256 = "1ilfqcxvaxw906sdy4aqk9lyw3i1qwi00dvj3vhvygi90ja3qhhw";
+      }));
     in {
       home.packages = with pkgs; [
         # archives
@@ -144,7 +148,8 @@ moduleWithSystem (
         };
         skim = {
           enable = true;
-          defaultCommand = "rg --files --hidden";
+          defaultCommand = "rg --color=always --line-number '{}'";
+          defaultOptions = ["--ansi" "--preview '${preview} {}'"];
           changeDirWidgetOptions = [
             "--preview 'exa --icons --git --color always -T -L 3 {} | head -200'"
             "--exact"
@@ -161,7 +166,6 @@ moduleWithSystem (
           cp = "cp -i";
           mv = "mv -i";
           rm = "rm -iv";
-          grep = "rg";
           cat = "bat";
           mkdir = "mkdir -p";
           ping = "ping -c 10";

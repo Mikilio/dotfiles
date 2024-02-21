@@ -40,7 +40,8 @@ moduleWithSystem (
               luautf8
             ];
 
-          plugins = with (pkgs.vimPlugins.extend customPlugs); with builtins; [
+          plugins = with (pkgs.vimPlugins.extend customPlugs);
+          with builtins; [
             #Aesthetics
             netrw-nvim
             nvim-web-devicons

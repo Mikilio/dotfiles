@@ -288,6 +288,9 @@ user_pref("security.ssl.require_safe_negotiation", true);
 // PREF: disable telemetry of what default browser you use [WINDOWS]
 user_pref("default-browser-agent.enabled", false);
 
+// PREF: allow extensions on mozilla sites
+user_pref("extensions.webextensions.restrictedDomains", "");
+
 /****************************************************************************
  * SECTION: SMOOTHFOX                                                       *
 ****************************************************************************/

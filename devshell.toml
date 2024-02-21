@@ -14,7 +14,7 @@ command = "source './scripts/importGPGKeys.sh'"
 
 [[commands]]
 name = "hms"
-help = "Switch to this configuration"
+help = "Switch to this home-manager configuration"
 category = "scripts"
 command = "nix run . -- switch"
 
