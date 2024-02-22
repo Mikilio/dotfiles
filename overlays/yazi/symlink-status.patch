@@ -1,0 +1,13 @@
+--- a/yazi-plugin/preset/components/status.lua
++++ b/yazi-plugin/preset/components/status.lua
+@@ -42,7 +42,11 @@ function Status:name()
+ 		return ui.Span("")
+ 	end
+
+-	return ui.Span(" " .. h.name)
++	local linked = ""
++	if h.link_to ~= nil then
++		linked = " -> " .. tostring(h.link_to)
++	end
++	return ui.Span(" " .. h.name .. linked)
+ end

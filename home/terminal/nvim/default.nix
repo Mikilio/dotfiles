@@ -88,6 +88,7 @@ moduleWithSystem (
             nvim-surround
             nvim-autopairs
             hop-nvim
+            which-key-nvim
             #Integration
             nvim-dap #Debug Adapter Protocol
             texmagic-nvim #TeXMagic

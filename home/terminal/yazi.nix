@@ -15,12 +15,13 @@ moduleWithSystem (
       # yazi file manager
       programs.yazi = {
         enable = true;
-
-        package = inputs'.yazi.packages.default;
-
         enableBashIntegration = config.programs.bash.enable;
         enableZshIntegration = config.programs.zsh.enable;
         enableNushellIntegration = config.programs.nushell.enable;
+
+        settings = {
+          manager.show_symlink = false;
+        };
 
         keymap = {
           manager.prepend_keymap = [
@@ -35,9 +36,14 @@ moduleWithSystem (
               exec = [
                 "yank"
                 ''
-                  shell --confirm 'echo "$@" | xclip -i -selection clipboard -t text/uri-list'
+                  shell --confirm 'for path in "$@"; do echo "file://$path"; done | wl-copy -t text/uri-list'
                 ''
               ];
+            }
+            {
+              on   = [ "<C-s>" ];
+              exec = "shell '$SHELL' --block --confirm";
+              desc = "Open shell here";
             }
           ];
         };
@@ -46,6 +52,16 @@ moduleWithSystem (
         theme = {
           filetype = {
             rules = [
+	            {
+                name = "*";
+                is = "link";
+                fg = "#a6e3a1";
+              }
+	            {
+                name = "*";
+                is = "orphan";
+                fg = "#f38ba8";
+              }
               {
                 fg = "#94e2d5";
                 mime = "image/*";

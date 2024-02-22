@@ -28,7 +28,7 @@ moduleWithSystem (
 
     wayland.windowManager.hyprland.settings = {
       exec-once = [
-        "sh -c 'ags -b hypr 2>&1 | tee ./output.txt'"
+        "sh -c 'ags -b hypr 2>&1 | tee ./.cache/ags.log'"
       ];
     };
   }

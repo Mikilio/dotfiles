@@ -71,6 +71,12 @@ in {
                 proprietaryCodecs = true;
                 enableWidevine = true;
               };
+              
+              yazi = inputs'.yazi.packages.default.overrideAttrs (o: {
+                patches = (o.patches or [ ]) ++ [
+                  ./yazi/symlink-status.patch
+                ];
+              });
             }
           )
         ];

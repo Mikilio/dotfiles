@@ -1,82 +1,94 @@
-local opts = { noremap = true, silent = true }
-local keymap = vim.api.nvim_set_keymap
+local function wk_setup()
+  local wk = require("which-key")
+  wk.setup({
+    plugins = {
+      presets = {
+        operators = true,    -- adds help for operators like d, y, ...
+        motions = false,     -- adds help for motions
+        text_objects = true, -- help for text objects triggered after entering an operator
+        windows = true,      -- default bindings on <c-w>
+        nav = true,          -- misc bindings to work with windows
+        z = true,            -- bindings for folds, spelling and others prefixed with z
+        g = true,            -- bindings for prefixed with g
+      },
+    },
+  })
+  wk.register({
+    -- Better window control --
+    ['<A-Left>'] = { require('smart-splits').resize_left, "which_key_ignore" },
+    ['<A-Down>'] = { require('smart-splits').resize_down, "which_key_ignore" },
+    ['<A-Up>'] = { require('smart-splits').resize_up, "which_key_ignore" },
+    ['<A-Right>'] = { require('smart-splits').resize_right, "which_key_ignore" },
 
--- Remap space as leader key
-keymap("", "<Space>", "<Nop>", opts)
-vim.g.mapleader = " "
+    -- moving between splits
+    ['<C-Left>'] = { require('smart-splits').move_cursor_left, "which_key_ignore" },
+    ['<C-Down>'] = { require('smart-splits').move_cursor_down, "which_key_ignore" },
+    ['<C-Up>'] = { require('smart-splits').move_cursor_up, "which_key_ignore" },
+    ['<C-Right>'] = { require('smart-splits').move_cursor_right, "which_key_ignore" },
 
--- Modes
---   normal_mode = "n",
---   insert_mode = "i",
---   visual_mode = "v",
---   visual_block_mode = "x",
---   term_mode = "t",
---   command_mode = "c",
+    -- moving between splits
+    ['<C-S-Left>'] = { '<C-W>H', "which_key_ignore" },
+    ['<C-S-Down>'] = { '<C-W>J', "which_key_ignore" },
+    ['<C-S-Up>'] = { '<C-W>K', "which_key_ignore" },
+    ['<C-S-Right>'] = { '<C-W>L', "which_key_ignore" },
 
--- Better window control --
-vim.keymap.set('n', '<A-Left>', require('smart-splits').resize_left)
-vim.keymap.set('n', '<A-Down>', require('smart-splits').resize_down)
-vim.keymap.set('n', '<A-Up>', require('smart-splits').resize_up)
-vim.keymap.set('n', '<A-Right>', require('smart-splits').resize_right)
+    -- splitting windows
+    s = {
+      name = "split",
+      ['<Down>'] = { ":set splitbelow<CR>:split<CR>", "New Window down" },
+      ['<Up>'] = { ":set nosplitbelow<CR>:split<CR>", "New Window up" },
+      ['<Left>'] = { ":set nosplitright<CR>:vsplit<CR>", "New Window left" },
+      ['<Right>'] = { ":set splitright<CR>:vsplit<CR>", "New Window right" },
+      ['='] = { "<C-w>=", "Adjust window size" },
+      x = { ":close<CR>", "Close current window" }
+    },
 
--- moving between splits
-vim.keymap.set('n', '<C-Left>', require('smart-splits').move_cursor_left)
-vim.keymap.set('n', '<C-Down>', require('smart-splits').move_cursor_down)
-vim.keymap.set('n', '<C-Up>', require('smart-splits').move_cursor_up)
-vim.keymap.set('n', '<C-Right>', require('smart-splits').move_cursor_right)
+    -- Better viewing of search results --
+    n = { "nzz", "which_key_ignore" },
+    N = { "Nzz", "which_key_ignore" },
 
+    -- missing descriptions
+    ['<C-L>'] = "clear and redraw the screen",
+    ['&'] = 'Repeat previous ":s"',
+    Y = "which_key_ignore",
+    f = "which_key_ignore",
+    F = "which_key_ignore",
+    t = "which_key_ignore",
+    T = "which_key_ignore",
+  })
 
--- Naviagate tabs --
-keymap("n", "<Leader><TAB>n", ":tabnext<CR>", opts)
-keymap("n", "<Leader><TAB>N", ":tabprevious<CR>", opts)
-keymap("n", "<Leader><TAB>d", ":tabclose<CR>", opts)
+  wk.register({
+    -- Stay in indent mode --
+    ['<'] = { "<gv", "Move selected line a shiftwidth left" },
+    ['>'] = { ">gv", "Move selected line a shiftwidth right" },
 
--- Naviagate tabs --
-keymap("n", "<Leader>bn", ":bnext<CR>", opts)
-keymap("n", "<Leader>bN", ":bprevious<CR>", opts)
-keymap("n", "<Leader>bd", ":bdelete<CR>", opts)
+    -- System clipboard
+    ['<C-S-C>'] = { '"*y', "which_key_ignore" },
+    ['<C-S-X'] = { '"*d', "which_key_ignore" },
 
--- Stay in indent mode --
-keymap("v", "<", "<gv", opts)
-keymap("v", ">", ">gv", opts)
+    -- Move text up and down --
+    ['<S-Up>'] = { ":move '>+1<CR>gv=gv", "Move text up" },
+    ['<S-Down>'] = { ":move '<-2<CR>gv=gv", " Move text down" },
 
--- Move text up and down --
-keymap("x", '<S-Down>', ":move '>+1<CR>gv=gv", opts)
-keymap("x", '<S-Up>', ":move '<-2<CR>gv=gv", opts)
-keymap("v", '<S-Left>', ":move '>+1<CR>gv=gv", opts)
-keymap("v", '<S-Right>', ":move '<-2<CR>gv=gv", opts)
+    -- missing descriptions
+    Q = "Repeat last recording on each line",
+    ['@'] = "Repeat macro on each line",
+    ['*'] = "Search forward",
+    ['#'] = "Search backward",
 
--- Better split screen --
-keymap("", "s", "<Nop>", opts)
-keymap("n", 's<Down>', ":set nosplitbelow<CR>:split<CR>", opts)
-keymap("n", 's<Up>', ":set splitbelow<CR>:split<CR>", opts)
-keymap("n", 's<Left>', ":set splitright<CR>:vsplit<CR>", opts)
-keymap("n", 's<Right>', ":set nosplitright<CR>:vsplit<CR>", opts)
+  }, { mode = "v" })
 
---  Average adjustment window --
-keymap("n", "<C-=>", "<C-w>=", opts)
+  wk.register({
+    -- Move text up and down --
+    ['<S-Up>'] = { ":move '>+1<CR>gv=gv", "Move text up" },
+    ['<S-Down>'] = { ":move '<-2<CR>gv=gv", " Move text down" },
+  }, { mode = "x" })
 
--- Adjust the direction of the split screen --
-keymap("n", ",", "<C-w>t<C-w>K", opts)
-keymap("n", ".", "<C-w>t<C-w>H", opts)
+  wk.register({
+    -- missing descriptions
+    ['<C-U>'] = "Delete left of cursor",
+    ['<C-W>'] = "Delete last word",
+  }, { mode = "i" })
+end
 
--- Better viewing of search results --
-keymap("n", "<Space><CR>", ":nohlsearch<CR>", opts)
-keymap("n", "n", "nzz", opts)
-keymap("n", "N", "Nzz", opts)
-
--- System clipboard
-keymap("v", "<C-S-C>", '"*y', opts)
-keymap("v", "<C-S-X>", '"*d', opts)
-
---debug
-keymap("n", "<Leader>xdb", ":lua require('dapui').toggle()<CR>", opts)
-keymap("n", "<C-b>", ":lua require'dap'.toggle_breakpoint()<CR>", opts)
-
-
--- msic --
--- keymap("n", "K", "5k", opts)
--- keymap("n", "J", "5j", opts)
--- keymap("n", "H", "7h", opts)
--- keymap("n", "L", "7l", opts)
--- keymap("v", "p", '"_dP', opts)
+xpcall(wk_setup, function() print("Setup of which-key failed!") end)
