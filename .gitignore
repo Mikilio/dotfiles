@@ -1,4 +1,4 @@
 .ccls
 *luarc.json
-
+.direnv/
 .ccls-cache/

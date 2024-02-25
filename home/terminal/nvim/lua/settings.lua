@@ -37,6 +37,14 @@ autocmd("TextYankPost", {
   end,
 })
 
+local session = require('session_manager')
+
+session.setup({
+  autoload_mode = 'Disabled',              -- Define what to do when Neovim is started without arguments. Possible values: Disabled, CurrentDir, LastSession
+  autosave_ignore_dirs = { '~', '~/dev' }, -- A list of directories where the session will not be autosaved.
+  autosave_only_in_session = true,         -- Always autosaves session. If true, only autosaves after a session is active.
+})
+
 local options = {
   mouse = "a",
 
@@ -44,7 +52,7 @@ local options = {
   relativenumber = true,
   numberwidth = 4,
 
-  tabstop = 2,   --insert 2 spaces for a tab
+  tabstop = 2,    --insert 2 spaces for a tab
   softtabstop = 2,
   shiftwidth = 2, --insert 2 spaces for each indentation
   expandtab = true,
@@ -70,7 +78,9 @@ local options = {
   colorcolumn = '80',
   cursorline = true, --Highlight the line where the cursor is located
 
-  updatetime = 50,  -- faster completion (4000ms default)
+  updatetime = 50,   -- faster completion (4000ms default)
+
+  sessionoptions = "tabpages,folds,globals,curdir,blank",
 
   spellfile = vim.fn.stdpath("config") .. "/spell/en.utf-8.add"
 }

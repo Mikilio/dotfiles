@@ -101,7 +101,8 @@
       pulse.enable = true;
     };
 
-    # broeser profile sync TODO: move this to home configuration at some point
+    #TODO: move this to home configuration at some point
+    # broeser profile sync
     psd = {
       enable = true;
       resyncTimer = "10m";

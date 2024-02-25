@@ -1,47 +1,51 @@
-local function lsp_setup ()
+local has_words_before = function()
+  unpack = unpack or table.unpack
+  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+end
+
+local function lsp_setup()
   local lsp_zero = require("lsp-zero")
   local config = require('lspconfig')
   local cmp = require('cmp')
   local lspkind = require('lspkind')
+  local luasnip = require("luasnip")
   local navic = require('nvim-navic')
-  local ltex = require ('ltex_extra')
+  local ltex = require('ltex_extra')
+  local wk = require('which-key')
 
   local lsp = lsp_zero.preset({})
 
   -- Use an on_attach function to only map the following keys
   -- after the language server attaches to the current buffer
-  lsp.on_attach( function(client, bufnr)
+  lsp.on_attach(function(client, bufnr)
     -- Mappings.
     -- See `:help vim.lsp.*` for documentation on any of the below functions
-    local opts = {buffer = bufnr, remap = false}
 
-    lsp.default_keymaps({buffer = bufnr})
+    lsp.default_keymaps({ buffer = bufnr })
 
-    vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
-    vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
-    vim.keymap.set("n", "<leader>vca", function() vim.lsp.buf.code_action() end, opts)
-    vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
+    wk.register({
+      --  TODO: add labels
+    })
 
     if client.server_capabilities.documentSymbolProvider then
-        navic.attach(client, bufnr)
+      navic.attach(client, bufnr)
     end
 
     lsp.buffer_autoformat()
   end)
 
   lsp.sign_icons = {
-      error = ' ',
-      warn = ' ',
-      hint = ' ',
-      info = ' '
+    error = ' ',
+    warn = ' ',
+    hint = ' ',
+    info = ' '
   }
 
   -- -----------------------------------------
   -- ------------Autocomplete-----------------
   -- -----------------------------------------
   lsp.extend_cmp()
-
-  local cmp_action = lsp.cmp_action()
 
   cmp.setup({
     preselect = 'item',
@@ -51,28 +55,45 @@ local function lsp_setup ()
     },
 
     sources = {
-      {name = 'nvim_lsp'},
-      {name = 'buffer'},
-      {name = 'luasnip'},
-      {name = 'path'},
-      {name = 'nvim_lua'},
-      {name = 'nvim_lsp_signature_help' },
+      { name = 'nvim_lsp' },
+      { name = 'buffer' },
+      { name = 'luasnip' },
+      { name = 'path' },
+      { name = 'nvim_lua' },
+      { name = 'nvim_lsp_signature_help' },
     },
 
     mapping = {
-      -- Ctrl+Space to trigger completion menu
-      ['<C-Space>'] = cmp.mapping.complete(),
+      ["<Tab>"] = cmp.mapping(function(fallback)
+        if cmp.visible() then
+          cmp.select_next_item()
+          -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
+          -- that way you will only jump inside the snippet region
+        elseif luasnip.expand_or_jumpable() then
+          luasnip.expand_or_jump()
+        elseif has_words_before() then
+          cmp.complete()
+        else
+          fallback()
+        end
+      end, { "i", "s" }),
 
-      -- Navigate between snippet placeholder
-      ['<C-f>'] = cmp_action.luasnip_jump_forward(),
-      ['<C-b>'] = cmp_action.luasnip_jump_backward(),
+      ["<S-Tab>"] = cmp.mapping(function(fallback)
+        if cmp.visible() then
+          cmp.select_prev_item()
+        elseif luasnip.jumpable(-1) then
+          luasnip.jump(-1)
+        else
+          fallback()
+        end
+      end, { "i", "s" }),
     },
 
     formatting = {
-      fields = {'abbr', 'kind', 'menu'},
+      fields = { 'abbr', 'kind', 'menu' },
       format = lspkind.cmp_format({
-        mode = 'symbol', -- show only symbol annotations
-        maxwidth = 50, -- prevent the popup from showing more than provided characters
+        mode = 'symbol',       -- show only symbol annotations
+        maxwidth = 50,         -- prevent the popup from showing more than provided characters
         ellipsis_char = '...', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead
       })
     },
@@ -89,7 +110,7 @@ local function lsp_setup ()
   config.ltex.setup {
     on_attach = function(_, _)
       -- rest of your on_attach process.
-      ltex.setup {path = vim.fn.stdpath("data") .. '/ltex'}
+      ltex.setup { path = vim.fn.stdpath("data") .. '/ltex' }
     end,
     settings = {
       ltex = {
@@ -97,7 +118,7 @@ local function lsp_setup ()
           ["en-US"] = { "BACHELOR_ABBR" }
         },
         dictionary = {
-          ["en-US"] = { }
+          ["en-US"] = {}
         },
         additionalRules = {
           enablePickyRules = true,
@@ -119,4 +140,4 @@ local function lsp_setup ()
   })
 end
 
-xpcall(lsp_setup, function () print("Setup of LSP failed!") end)
+xpcall(lsp_setup, function() print("Setup of LSP failed!") end)

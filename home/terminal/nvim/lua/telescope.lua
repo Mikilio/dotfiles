@@ -1,20 +1,20 @@
-local function telescope_setup ()
+local function telescope_setup()
   local telescope = require("telescope")
-
-  local prefix = '<leader>f'
-  local map = vim.keymap.set
-
   local builtin = require("telescope.builtin")
-  map('n',  prefix .. 'f', builtin.find_files, {})
-  map('n',  prefix .. 'g', builtin.git_files, {})
-  map('n',  prefix .. 'b', builtin.buffers, {})
-  map('n',  prefix .. 'h', builtin.help_tags, {})
-  map('n',  prefix .. 'x', builtin.lsp_document_symbols, {})
-  map('n',  prefix .. 't', builtin.live_grep, {})
-  map('n',  prefix .. '?', builtin.keymaps, {})
-  map('n',  prefix .. 'j', telescope.extensions.harpoon.marks, {})
-  map('n',  prefix .. 'z', telescope.extensions.zoxide.list)
-  map('n',  prefix .. 'u', telescope.extensions.undo.undo, {})
+  local wk = require("which-key")
+  local session = require('session_manager')
+
+  wk.register({
+    f = { builtin.find_files, "File" },
+    g = { builtin.git_files, "Git-file" },
+    b = { builtin.buffers, "Buffers" },
+    h = { builtin.help_tags, "Help" },
+    x = { builtin.lsp_document_symbols, "LSP" },
+    t = { builtin.live_grep, "Text" },
+    ['?'] = { builtin.keymaps, "Keymaps" },
+    z = { telescope.extensions.zoxide.list, "Zoxide" },
+    u = { telescope.extensions.undo.undo, "Undotree" },
+  }, { prefix = "<leader>t" })
 
   telescope.setup({
     defaults = {
@@ -45,18 +45,77 @@ local function telescope_setup ()
       },
       project = {
         base_dirs = {
-          {'~/.', max_depth = 2},
-          {'$XDG_DEV_DIR'},
+          { '~/.',         max_depth = 2 },
+          { '$XDG_DEV_DIR' },
         },
+      },
+      zoxide = {
+        mappings = {
+          default = {
+            action = function(selection)
+              session.autosave_session()
+              vim.cmd.cd(selection.path)
+              if vim.env.NVIM_BUILD_PANE_ID then
+                require('wezterm').exec({
+                  'cli', 'send-text',
+                  '--pane-id', vim.env.NVIM_BUILD_PANE_ID,
+                  '--no-paste',
+                  'z ' .. selection.path .. '\n'
+                })
+                require('wezterm').exec({
+                  'cli', 'set-tab-title',
+                  '--pane-id', vim.env.NVIM_BUILD_PANE_ID,
+                  vim.fn.fnamemodify(selection.path, ':t')
+                })
+              end
+              session.load_current_dir_session(true)
+            end,
+          },
+          ["<c-b>"] = {
+            keepinsert = true,
+            action = function(selection)
+              builtin.file_browser({ cwd = selection.path })
+            end
+          },
+          ["<c-f>"] = {
+            keepinsert = true,
+            action = function(selection)
+              builtin.find_files({ cwd = selection.path })
+            end
+          },
+          ["<C-t>"] = {
+            action = function(selection)
+              require('wezterm').exec({
+                'cli', 'spawn',
+                '--cwd', selection.path,
+              }, function(obj)
+                require('wezterm').exec({
+                  'cli', 'split-pane',
+                  '--cwd', selection.path,
+                  '--top',
+                  '--percent', '80',
+                  '--pane-id', string.format('%d', obj.stdout),
+                  '--', 'sh', '-c',
+                  'NVIM_BUILD_PANE_ID=' .. string.format('%d', obj.stdout)
+                  .. ' nvim -c "SessionManager load_current_dir_session"'
+                })
+                require('wezterm').exec({
+                  'cli', 'set-tab-title',
+                  '--pane-id', string.format('%d', obj.stdout),
+                  vim.fn.fnamemodify(selection.path, ':t')
+                })
+              end)
+            end
+          },
+        }
       }
     }
   })
 
   telescope.load_extension("media_files")
   telescope.load_extension("fzy_native")
-  telescope.load_extension('harpoon')
   telescope.load_extension("undo")
   telescope.load_extension('zoxide')
 end
 
-xpcall(telescope_setup, function () print("Setup of telescope failed!") end)
+xpcall(telescope_setup, function() print("Setup of telescope failed!") end)

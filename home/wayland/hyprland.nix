@@ -192,9 +192,8 @@ moduleWithSystem (
             bindle = let
               e = "exec, ags -b hypr -r";
             in [
-              #TODO: uncomment after fixing ags
-              # ",XF86MonBrightnessUp,   ${e} 'brightness.screen += 0.05; indicator.display()'"
-              # ",XF86MonBrightnessDown, ${e} 'brightness.screen -= 0.05; indicator.display()'"
+              ",XF86MonBrightnessUp,   ${e} 'brightness.screen += 0.05; indicator.display()'"
+              ",XF86MonBrightnessDown, ${e} 'brightness.screen -= 0.05; indicator.display()'"
               ",XF86AudioRaiseVolume,  ${e} 'audio.speaker.volume += 0.05; indicator.speaker()'"
               ",XF86AudioLowerVolume,  ${e} 'audio.speaker.volume -= 0.05; indicator.speaker()'"
             ];

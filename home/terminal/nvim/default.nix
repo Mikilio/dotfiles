@@ -52,6 +52,8 @@ moduleWithSystem (
             gitsigns-nvim
             alpha-nvim
             sunglasses-nvim
+            trouble-nvim
+            todo-comments-nvim
             # Apps
             knap
             nvim-dap-ui
@@ -78,12 +80,10 @@ moduleWithSystem (
             telescope-zoxide
             telescope-fzy-native-nvim
             telescope-undo-nvim
-            git-worktree-nvim
             telescope-nvim
             #Editing Features
             targets-vim
             nvim-ts-context-commentstring
-            harpoon
             comment-nvim
             nvim-surround
             nvim-autopairs
@@ -96,6 +96,8 @@ moduleWithSystem (
             popup-nvim # Pop-up API from vim
             vim-fugitive #Git
             zoxide-vim # Zoxide
+            neovim-session-manager #session management
+            wezterm-nvim #wezterm TODO: replace by vim.system on v10
             smart-splits-nvim # better splits
           ];
           extraLuaConfig = let

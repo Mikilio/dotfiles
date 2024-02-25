@@ -90,7 +90,28 @@ local function shade_setup()
   require("sunglasses").setup()
 end
 
+local function trouble_setup()
+  todo = require('todo-comments').setup({
+
+  })
+  require("which-key").register({
+    ['<leader>x'] = {
+      name = "trouble",
+      x = { function() require("trouble").toggle() end, "Main window" },
+      w = { function() require("trouble").toggle("workspace_diagnostics") end, "Workspace" },
+      d = { function() require("trouble").toggle("document_diagnostics") end, "Document" },
+      q = { function() require("trouble").toggle("quickfix") end, "Quickfix" },
+      l = { function() require("trouble").toggle("loclist") end, "Loclist" },
+      t = { function() require("trouble").toggle("todo") end, "Todo" },
+    },
+    gr = { function() require("trouble").toggle("lsp_references") end, "LSP Referces" },
+    [']t'] = { function() require("trouble").next({skip_groups = true, jump = true}) end, "Next trouble item" },
+    ['[t'] = { function() require("trouble").previous({skip_groups = true, jump = true}) end, "Next trouble item" },
+  })
+end
+
 xpcall(catppuccin_setup, function() print("Setup of Catppuccin failed!") end)
 xpcall(netrw_setup, function() print("Setup of netrw failed!") end)
 xpcall(treesitter_setup, function() print("Setup of treesitter failed!") end)
 xpcall(shade_setup, function() print("Setup of tint failed!") end)
+xpcall(trouble_setup, function() print("Setup of trouble failed!") end)

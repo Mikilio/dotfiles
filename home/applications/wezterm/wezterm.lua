@@ -45,13 +45,46 @@ config.color_scheme = "Catppuccin Mocha"
 -- config.window_background_opacity = 0.85
 config.window_close_confirmation = "AlwaysPrompt"
 config.scrollback_lines = 3000
-config.default_workspace = "main"
 
 -- Dim inactive panes
 config.inactive_pane_hsb = {
   saturation = 0.3,
   brightness = 0.2
 }
+
+-- startup
+wezterm.on('gui-startup', function(cmd)
+  -- allow `wezterm start -- something` to affect what we spawn
+  -- in our initial window
+  local args = {}
+  if cmd then
+    args = cmd.args
+  end
+
+  if args ~= nil then
+    mux.spawn_window { args = args, }
+  else
+    -- Set a workspace for coding
+    -- Top pane is for the editor, bottom pane is for the build tool
+    local start_dir = wezterm.home_dir
+    local _, build_pane, _ = mux.spawn_window {
+      workspace = 'dev',
+      cwd = start_dir,
+    }
+    build_pane:split {
+      direction = 'Top',
+      size = 0.8,
+      cwd = start_dir,
+      args = { 'nvim' },
+      set_environment_variables = {
+        NVIM_BUILD_PANE_ID =  tostring(build_pane:pane_id()),
+      },
+    }
+    -- We want to startup in the coding workspace
+    mux.set_active_workspace 'dev'
+  end
+end)
+
 
 -- Keys
 config.leader = { key = "raw:201", timeout_milliseconds = 1000 }

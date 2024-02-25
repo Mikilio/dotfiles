@@ -1,7 +1,7 @@
-local function setup_alpha ()
-
+local function setup_alpha()
   local alpha = require("alpha")
   local dashboard = require("alpha.themes.dashboard")
+
   dashboard.section.header.val = {
     '',
     '⣇⣿⠘⣿⣿⣿⡿⡿⣟⣟⢟⢟⢝⠵⡝⣿⡿⢂⣼⣿⣷⣌⠩⡫⡻⣝⠹⢿⣿⣷',
@@ -21,8 +21,9 @@ local function setup_alpha ()
     '',
   }
   dashboard.section.buttons.val = {
+    dashboard.button("<CR>", "  Restore last session", ':SessionManager load_last_session<CR>'),
     dashboard.button("f", "󰈞  Find file", ":Telescope find_files <CR>"),
-    dashboard.button("e", "󰥨  Explore direcotry", ":Ex <CR>"),
+    dashboard.button("e", "󰥨  Explore", ":Ex <CR>"),
     dashboard.button("z", "󰇐  Jump to directory", ":Telescope zoxide list <CR>"),
     dashboard.button("t", "󱎸  Find text", ":Telescope live_grep <CR>"),
     dashboard.button("r", "󰁯  Recently used files", ":Telescope oldfiles <CR>"),
@@ -30,11 +31,6 @@ local function setup_alpha ()
   }
 
   local function footer()
-    -- NOTE: requires the fortune-mod package to work
-    -- local handle = io.popen("fortune")
-    -- local fortune = handle:read("*a")
-    -- handle:close()
-    -- return fortune
     return "Curiousity beats ambition!"
   end
 
@@ -49,4 +45,4 @@ local function setup_alpha ()
   alpha.setup(dashboard.opts)
 end
 
-xpcall(setup_alpha, function () print("Setup of Alpha failed!") end)
+xpcall(setup_alpha, function() print("Setup of Alpha failed!") end)

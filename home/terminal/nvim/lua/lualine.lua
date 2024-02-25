@@ -1,4 +1,4 @@
-local function lualine_setup ()
+local function lualine_setup()
   local navic = require("nvim-navic")
 
   require('lualine').setup {
@@ -6,36 +6,29 @@ local function lualine_setup ()
       theme = "catppuccin",
       globalstatus = true,
       component_separators = '|',
-      section_separators = { left = '', right = '' },
+      section_separators = { left = '', right = '' },
     },
 
     tabline = {
       lualine_a = {
         {
           function()
-            return vim.fn.fnamemodify(vim.fn.getcwd(),':t') .. ' 󰛢 '
+            return vim.fn.fnamemodify(vim.fn.getcwd(), ':t')
           end,
-          color = 'lualine_a_normal',
-          separator = { left = '' },
-          right_padding = 2 ,
+          separator = { left = '', right = '' },
+          icon = " ",
         }
       },
-      lualine_b = {
-        require("harpoon.tabline").format({
-          tabline_prefix = ' ',
-          tabline_suffix = ' ',
-        })
-      },
+      lualine_b = {},
       lualine_c = {},
       lualine_x = {},
-      lualine_y = {'windows'},
+      lualine_y = {
+        { 'windows', separator = { left = '', right = '' } },
+        { "%=", separator = { right = '' }, color = 'lualine_c_normal' },
+      },
       lualine_z = {
-        {
-          'tabs',
-          separator = {right = '' },
-          left_padding = 2,
-        },
-      }
+        { 'tabs', separator = { left = '', right = '' }, },
+      },
     },
 
     winbar = {
@@ -70,40 +63,36 @@ local function lualine_setup ()
       lualine_c = {
         {
           'filename',
-          color = {gui = "bold"},
-          separator = { right = ''},
+          color = { gui = "bold" },
+          separator = { right = '' },
         },
-        {
-          "%=",
-          separator = { right = ''},
-        },
-        {
-          function()
-            local msg = "No Active Lsp"
-            local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
-            local clients = vim.lsp.get_active_clients()
-            if next(clients) == nil then
-              return msg
-            end
-            local t = { }
-            for _, client in ipairs(clients) do
-              local filetypes = client.config.filetypes
-              if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
-                t[#t+1] = client.name
-              end
-            end
-            if(#t > 0)
-            then
-              return table.concat(t,', ')
-            end
+        "%=", {
+        function()
+          local msg = "No Active Lsp"
+          local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
+          local clients = vim.lsp.get_active_clients()
+          if next(clients) == nil then
             return msg
-          end,
-          icon = " LSP:",
-          color = 'Title',
-        },
+          end
+          local t = {}
+          for _, client in ipairs(clients) do
+            local filetypes = client.config.filetypes
+            if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
+              t[#t + 1] = client.name
+            end
+          end
+          if (#t > 0)
+          then
+            return table.concat(t, ', ')
+          end
+          return msg
+        end,
+        icon = " LSP:",
+        color = { gui = "bold" },
+      },
       },
       lualine_x = {},
-      lualine_y = { 'filetype', 'progress' },
+      lualine_y = { { 'filetype', separator = { left = '' } }, 'progress' },
       lualine_z = {
         { 'location', separator = { right = '' }, left_padding = 2 },
       },
@@ -112,4 +101,4 @@ local function lualine_setup ()
   }
 end
 
-xpcall(lualine_setup, function () print("Setup of lualine failed!") end)
+xpcall(lualine_setup, function() print("Setup of lualine failed!") end)
