@@ -5,16 +5,19 @@ local function telescope_setup()
   local session = require('session_manager')
 
   wk.register({
-    f = { builtin.find_files, "File" },
-    g = { builtin.git_files, "Git-file" },
-    b = { builtin.buffers, "Buffers" },
-    h = { builtin.help_tags, "Help" },
-    x = { builtin.lsp_document_symbols, "LSP" },
-    t = { builtin.live_grep, "Text" },
-    ['?'] = { builtin.keymaps, "Keymaps" },
-    z = { telescope.extensions.zoxide.list, "Zoxide" },
-    u = { telescope.extensions.undo.undo, "Undotree" },
-  }, { prefix = "<leader>t" })
+    ['<leader>t'] = {
+      name = 'telescope',
+      f = { builtin.find_files, "File" },
+      g = { builtin.git_files, "Git-file" },
+      b = { builtin.buffers, "Buffers" },
+      h = { builtin.help_tags, "Help" },
+      x = { builtin.lsp_document_symbols, "LSP" },
+      t = { builtin.live_grep, "Text" },
+      ['?'] = { builtin.keymaps, "Keymaps" },
+      z = { telescope.extensions.zoxide.list, "Zoxide" },
+      u = { telescope.extensions.undo.undo, "Undotree" },
+    },
+  })
 
   telescope.setup({
     defaults = {
