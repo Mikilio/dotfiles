@@ -87,7 +87,7 @@ moduleWithSystem (
             comment-nvim
             nvim-surround
             nvim-autopairs
-            hop-nvim
+            flash-nvim
             which-key-nvim
             #Integration
             nvim-dap #Debug Adapter Protocol

@@ -27,7 +27,7 @@ local function wk_setup()
     ['<C-S-Right>'] = { '<C-W>L', "which_key_ignore" },
 
     -- splitting windows
-    s = {
+    ['<leader>s'] = {
       name = "split",
       ['<Down>'] = { ":set splitbelow<CR>:split<CR>", "New Window down" },
       ['<Up>'] = { ":set nosplitbelow<CR>:split<CR>", "New Window up" },
