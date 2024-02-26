@@ -64,12 +64,28 @@ local function telescope_setup()
                   '--pane-id', vim.env.NVIM_BUILD_PANE_ID,
                   '--no-paste',
                   'z ' .. selection.path .. '\n'
-                })
+                }, function(obj)
+                  if obj.code ~= 0 then
+                    vim.notify(
+                      "Wezterm failed to change cwd",
+                      vim.log.levels.ERROR, { title = "Wezterm", }
+                    )
+                  end
+                end
+                )
                 require('wezterm').exec({
                   'cli', 'set-tab-title',
                   '--pane-id', vim.env.NVIM_BUILD_PANE_ID,
                   vim.fn.fnamemodify(selection.path, ':t')
-                })
+                }, function(obj)
+                  if obj.code ~= 0 then
+                    vim.notify(
+                      "Wezterm failed to set tab-title",
+                      vim.log.levels.ERROR, { title = "Wezterm", }
+                    )
+                  end
+                end
+                )
               end
               session.load_current_dir_session(true)
             end,
@@ -101,12 +117,28 @@ local function telescope_setup()
                   '--', 'sh', '-c',
                   'NVIM_BUILD_PANE_ID=' .. string.format('%d', obj.stdout)
                   .. ' nvim -c "SessionManager load_current_dir_session"'
-                })
+                }, function(objj)
+                  if objj.code ~= 0 then
+                    vim.notify(
+                      "Wezterm failed to set tab-title",
+                      vim.log.levels.ERROR, { title = "Wezterm", }
+                    )
+                  end
+                end
+                )
                 require('wezterm').exec({
                   'cli', 'set-tab-title',
                   '--pane-id', string.format('%d', obj.stdout),
                   vim.fn.fnamemodify(selection.path, ':t')
-                })
+                }, function(objj)
+                  if objj.code ~= 0 then
+                    vim.notify(
+                      "Wezterm failed to set tab-title",
+                      vim.log.levels.ERROR, { title = "Wezterm", }
+                    )
+                  end
+                end
+                )
               end)
             end
           },

@@ -91,7 +91,7 @@ local function shade_setup()
 end
 
 local function trouble_setup()
-  todo = require('todo-comments').setup({
+  require('todo-comments').setup({
 
   })
   require("which-key").register({
@@ -105,8 +105,8 @@ local function trouble_setup()
       t = { function() require("trouble").toggle("todo") end, "Todo" },
     },
     gr = { function() require("trouble").toggle("lsp_references") end, "LSP Referces" },
-    [']t'] = { function() require("trouble").next({skip_groups = true, jump = true}) end, "Next trouble item" },
-    ['[t'] = { function() require("trouble").previous({skip_groups = true, jump = true}) end, "Next trouble item" },
+    [']t'] = { function() require("trouble").next({ skip_groups = true, jump = true }) end, "Next trouble item" },
+    ['[t'] = { function() require("trouble").previous({ skip_groups = true, jump = true }) end, "Next trouble item" },
   })
 end
 

@@ -67,7 +67,7 @@ wezterm.on('gui-startup', function(cmd)
     -- Set a workspace for coding
     -- Top pane is for the editor, bottom pane is for the build tool
     local start_dir = wezterm.home_dir
-    local _, build_pane, _ = mux.spawn_window {
+    local edit_tab, build_pane, dev_window = mux.spawn_window {
       workspace = 'dev',
       cwd = start_dir,
     }
@@ -77,11 +77,21 @@ wezterm.on('gui-startup', function(cmd)
       cwd = start_dir,
       args = { 'nvim' },
       set_environment_variables = {
-        NVIM_BUILD_PANE_ID =  tostring(build_pane:pane_id()),
+        NVIM_BUILD_PANE_ID = tostring(build_pane:pane_id()),
       },
     }
+
+    local yazi, _, _ = dev_window:spawn_tab {
+      args = { 'yazi' }
+    }
+    yazi:set_title 'yazi'
+    local _, _, _ = dev_window:spawn_tab {
+      args = { 'calcurse' }
+    }
+
     -- We want to startup in the coding workspace
     mux.set_active_workspace 'dev'
+    edit_tab:activate()
   end
 end)
 
@@ -226,9 +236,6 @@ wezterm.on('update-right-status', function(window, pane)
   local stat = wezterm.nerdfonts.fae_layers .. "  " .. window:active_workspace()
   table.insert(cells, stat)
 
-  -- The filled in variant of the < symbol
-  local SOLID_LEFT_ARROW = utf8.char(0xe0b2)
-
   -- Color palette for the backgrounds of each cell
   local colors = {
     '#3c1361',
@@ -250,7 +257,7 @@ wezterm.on('update-right-status', function(window, pane)
   local function push(text)
     local cell_no = num_cells + 1
     table.insert(elements, { Foreground = { Color = colors[cell_no] } })
-    table.insert(elements, { Text = SOLID_LEFT_ARROW })
+    table.insert(elements, { Text = '' })
     table.insert(elements, { Foreground = { Color = text_fg } })
     table.insert(elements, { Background = { Color = colors[cell_no] } })
     table.insert(elements, { Text = ' ' .. text .. ' ' })
