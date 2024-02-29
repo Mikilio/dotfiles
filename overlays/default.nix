@@ -35,6 +35,7 @@ in {
           #nur overlays
           nur.repos.mikilio.overlays.thunar
           nur.repos.mikilio.overlays.waybar
+          # nur.repos.mikilio.overlays.ultimateKeys
 
           #all normal overrides
           (

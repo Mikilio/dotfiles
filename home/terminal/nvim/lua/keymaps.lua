@@ -57,8 +57,8 @@ local function wk_setup()
     ['>'] = { ">gv", "Move selected line a shiftwidth right" },
 
     -- System clipboard
-    ['<C-S-C>'] = { '"*y', "which_key_ignore" },
-    ['<C-S-X'] = { '"*d', "which_key_ignore" },
+    ['<C-S-C>'] = { '"+y', "which_key_ignore" },
+    ['<C-S-X'] = { '"+d', "which_key_ignore" },
 
     -- Move text up and down --
     ['<S-Up>'] = { ":move '>+1<CR>gv=gv", "Move text up" },

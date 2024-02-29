@@ -50,13 +50,15 @@ in {
       ./terminal/helix
       ./terminal/nvim
       ./terminal/yazi.nix
+      ./terminal/calendar.nix
+      ./terminal/ssh
     ];
     wayland = importModules [
       ./wayland/ags
       ./wayland/waybar
+      ./wayland/hyprland
       ./wayland/anyrun.nix
       ./wayland/dunst.nix
-      ./wayland/hyprland.nix
       ./wayland/gbar.nix
       ./wayland/swayidle.nix
       ./wayland/swaylock.nix

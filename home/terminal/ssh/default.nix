@@ -1,13 +1,17 @@
 {
-  pkgs,
-  config,
-  lib,
-  ...
+  inputs,
+  moduleWithSystem,
 }:
-with lib; let
-  cfg = config.preferences.cli.shell;
-in
-  mkIf (!isNull cfg) {
+moduleWithSystem (
+  perSystem @ {inputs'}: hm @ {
+    config,
+    lib,
+    pkgs,
+    ...
+  }:
+  with lib; let
+
+  in {
     programs.ssh = {
       enable = true;
       hashKnownHosts = true;
@@ -22,3 +26,4 @@ in
       extraConfig = "XAuthLocation ${pkgs.xorg.xauth}/bin/xauth";
     };
   }
+)

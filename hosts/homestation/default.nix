@@ -119,6 +119,14 @@
       HandlePowerKey=suspend
     '';
 
+    # VPN's
+    openvpn.servers = {
+      uniVPN  = {
+        config = builtins.readFile ./vpn-rbg-2.4-linux.ovpn;
+        autoStart = false;
+      };
+    };
+
     # see https://github.com/fufexan/nix-gaming/#pipewire-low-latency
     pipewire.lowLatency.enable = true;
 

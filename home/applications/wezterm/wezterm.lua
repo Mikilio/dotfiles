@@ -86,7 +86,7 @@ wezterm.on('gui-startup', function(cmd)
     }
     yazi:set_title 'yazi'
     local _, _, _ = dev_window:spawn_tab {
-      args = { 'calcurse' }
+      args = { 'nu' }
     }
 
     -- We want to startup in the coding workspace
