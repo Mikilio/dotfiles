@@ -7,8 +7,8 @@ name = "sopsPGPKeyDirs"
 value = "secrets/keys/hosts secrets/keys/users"
 
 [[commands]]
-name = "getgpg"
-help = "Use admin keys instead of user keyring"
+name = "getadmingpg"
+help = "Use admin keys instead of user keyring (currently broken)"
 category = "scripts"
 command = "source './scripts/importGPGKeys.sh'"
 
@@ -23,12 +23,6 @@ name = "preinstall"
 help = "Install nixos to available drives"
 category = "scripts"
 command = "source './scripts/prepare-nixos.sh'"
-
-[[commands]]
-name = "regu2f"
-help = "Register a new FIDO2 key handle"
-category = "scripts"
-command = "source './scripts/register_pam_u2f.sh'"
 
 [[commands]]
 category = "programs"

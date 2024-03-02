@@ -52,6 +52,7 @@ in {
       ./terminal/yazi.nix
       ./terminal/calendar.nix
       ./terminal/ssh
+      ./terminal/pass.nix
     ];
     wayland = importModules [
       ./wayland/ags

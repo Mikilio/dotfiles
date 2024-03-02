@@ -124,6 +124,7 @@
       uniVPN  = {
         config = builtins.readFile ./vpn-rbg-2.4-linux.ovpn;
         autoStart = false;
+        updateResolvConf = true;
       };
     };
 

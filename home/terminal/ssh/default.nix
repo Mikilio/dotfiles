@@ -20,6 +20,7 @@ moduleWithSystem (
           hostname = "lxhalle.in.tum.de";
           user = "mio";
           forwardX11 = true;
+          forwardAgent = true;
         };
       };
 

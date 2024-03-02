@@ -119,7 +119,7 @@ moduleWithSystem (
             };
 
             input = {
-              kb_file = toString ../../hosts/homestation/eu-custom.xkb;
+              kb_file = toString ./eu-custom.xkb;
               accel_profile = "flat";
               float_switch_override_focus = 2;
             };

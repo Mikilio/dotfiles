@@ -29,11 +29,8 @@ moduleWithSystem (
         # 3d modelling
         blender
 
-        xfce.thunar-full
-        xarchiver
-
         #vpn
-        openvpn
+        eduvpn-client
 
         #durov <3
         telegram-desktop
