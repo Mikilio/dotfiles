@@ -2,11 +2,12 @@
   config,
   pkgs,
   inputs,
+  inputs',
   lib,
   ...
 }: {
   # we need git for flakes
-  environment.systemPackages = [pkgs.git];
+  environment.systemPackages = [pkgs.git inputs'.devenv.packages.default];
 
   nix = {
     distributedBuilds = true;
@@ -35,10 +36,16 @@
       keep-outputs = true;
 
       substituters = [
+        "https://helix.cachix.org"
+        "https://hyprland.cachix.org"
+        "https://devenv.cachix.org"
         "https://nix-community.cachix.org"
         "https://mikilio.cachix.org"
       ];
       trusted-public-keys = [
+        "helix.cachix.org-1:ejp9KQpR1FBI2onstMQ34yogDm4OgU2ru6lIwPvuCVs="
+        "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+        "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         "mikilio.cachix.org-1:nYplhDMbu04QkMOJlCfSsEuFYFHp9VMKbChfL2nMKio="
       ];
