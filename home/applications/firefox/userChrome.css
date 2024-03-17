@@ -1,58 +1,47 @@
-/*==============================================================================================*
-
-  +-----+-----+-----+-----+-----+-----+-----+
-  | █▀▀ | ▄▀█ | █▀▀ | █▀▀ | ▄▀█ | █▀▄ | █▀▀ |
-  | █▄▄ | █▀█ | ▄▄█ | █▄▄ | █▀█ | █▄▀ | ██▄ |
-  +-----+-----+-----+-----+-----+-----+-----+
-
-  Description:    Cascade is a minimalstic and keyboard centered custom theme removing a lot of the
-                  subjective clutter default Firefox comes with. This theme is highly inspired by the
-                  stylistic choices of SimpleFox by Miguel Ávila. 🦊
-                  https://github.com/migueravila/SimpleFox
-
-  Author:         Andreas Grafen
-                  (https://andreas.grafen.info)
-
-  Repository:     https://github.com/andreasgrafen/cascade
-                  Thank you Nick, Abdallah, Benyamin and Wael for all the great suggestions for improvements! ♡
-
-                  Nick:     https://github.com/nicksundermeyer
-                  Abdallah: https://github.com/HeiWiper
-                  Benyamin: https://github.com/benyaminl
-                  Wael:     https://github.com/wael444
-
-                  If you're looking for a **mouse-friendly** clone please check out Waterfall.
-                  https://github.com/crambaud/waterfall
-
-*==============================================================================================*/
-
-
-
-@import 'includes/cascade-config.css';
-@import 'includes/cascade-colours.css';
-
-@import 'includes/cascade-layout.css';
-@import 'includes/cascade-responsive.css';
-@import 'includes/cascade-floating-panel.css';
-
-@import 'includes/cascade-nav-bar.css';
-@import 'includes/cascade-tabs.css';
-
-#TabsToolbar { display: none !important; }
-#nav-bar { width: 100vw !important; }
-
-
-/** Clean up unneeded stuff
- *
- * Hide native tab bar,
- * sidebar title, switcher arrow and splitter, when using SideBery.
- */
-
-#sidebar-box[sidebarcommand="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"] #sidebar-title,
-#sidebar-box[sidebarcommand="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"] #sidebar-switcher-arrow,
-#sidebar-box[sidebarcommand="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"] #sidebar-spacer,
-#sidebar-box[sidebarcommand="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"] #sidebar-throbber,
-#sidebar-box[sidebarcommand="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"] #sidebar-close,
-#sidebar-box[sidebarcommand="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"] + #sidebar-splitter {
+#sidebar-box #sidebar-title,
+#sidebar-box #sidebar-switcher-arrow,
+#sidebar-box #sidebar-spacer,
+#sidebar-box #sidebar-throbber,
+#sidebar-box #sidebar-close,
+#sidebar-box + #sidebar-splitter {
   visibility: collapse;
+}
+
+statuspanel[type="overLink"],
+#statuspanel[type="overLink"] {
+  display: none !important;
+}
+
+#TabsToolbar {
+  visibility: collapse;
+}
+
+:root:not([customizing]) #navigator-toolbox:not(:hover):not(:focus-within) {
+  max-height: 1px;
+  min-height: calc(0px);
+  overflow: hidden;
+}
+
+:root:not([customizing]) #navigator-toolbox:not(:hover):not(:focus-within) #nav-bar {
+  max-height: 0;
+  min-height: 0!important;
+  --tridactyl-auto-show-zone: 10px;
+  margin-bottom: calc(-1 * var(--tridactyl-auto-show-zone));
+  opacity: 0;
+}
+
+#navigator-toolbox::after {
+  display: none !important;
+}
+
+
+
+
+
+#navigator-toolbox:not(:hover):not(:focus-within) #toolbar-menubar > * {
+  background-color: rgb(232, 232, 231);
+}
+
+#main-window[sizemode="maximized"] #content-deck {
+  padding-top: 8px;
 }

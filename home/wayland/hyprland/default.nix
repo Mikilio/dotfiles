@@ -26,6 +26,11 @@ moduleWithSystem (
         _JAVA_AWT_WM_NONREPARENTING = 1;
       };
     in {
+      imports = [
+        inputs.hyprlock.homeManagerModules.default
+        inputs.hypridle.homeManagerModules.default
+      ];
+
       config = {
         home = {
           sessionVariables = environment;
@@ -54,6 +59,9 @@ moduleWithSystem (
             wallpaper = DP-2, ${portrait}/default.jpg
           '';
         };
+
+        programs.hyprlock.enable = true;
+        services.hypridle.enable = true;
 
         # enable hyprland
         wayland.windowManager.hyprland = {

@@ -128,6 +128,12 @@ local function lsp_setup()
     },
   }
 
+  config.rust_analyzer.setup {
+    diagnostics = {
+      enable = false,
+    }
+  }
+
   lsp.setup_servers({
     'clangd',
     'lua_ls',

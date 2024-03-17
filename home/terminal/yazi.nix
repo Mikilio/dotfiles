@@ -11,7 +11,7 @@ moduleWithSystem (
   }:
     with lib; let
     in {
-      home.packages = with pkgs; [dragon];
+      home.packages = with pkgs; [xdragon];
       # yazi file manager
       programs.yazi = {
         enable = true;

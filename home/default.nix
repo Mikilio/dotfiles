@@ -61,8 +61,6 @@ in {
       ./wayland/anyrun.nix
       ./wayland/dunst.nix
       ./wayland/gbar.nix
-      ./wayland/swayidle.nix
-      ./wayland/swaylock.nix
       ./wayland/pipewire
     ];
   };

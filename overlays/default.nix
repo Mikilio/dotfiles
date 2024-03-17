@@ -24,6 +24,8 @@ in {
               "steam.*"
               "discord-canary"
               "languagetool*"
+              "teamspeak.*"
+              "tampermonkey*"
             ]
           );
         overlays = [
@@ -47,6 +49,7 @@ in {
                   with pkgs; [
                     keyutils
                     libkrb5
+                    gamemode
                   ];
                 extraProfile = ''
                   export STEAM_EXTRA_COMPAT_TOOLS_PATHS='${inputs'.nix-gaming.packages.proton-ge}'

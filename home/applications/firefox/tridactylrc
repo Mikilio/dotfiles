@@ -1,0 +1,112 @@
+" Reset
+" This resets all default settings
+sanitize tridactyllocal tridactylsync
+
+"""""""""""""""""""""
+"  General Options  "
+"""""""""""""""""""""
+colourscheme --url https://raw.githubusercontent.com/dracula/tridactyl/main/dracula.css dracula
+
+set newtab www.startpage.com
+set browser firefox-developer-edition
+set allowautofocus false
+set leavegithubalone true
+set editorcmd $HOME/.nix-profile/bin/vi
+set newtabfocus page
+set hintchars tnseriaogmplfuwyqdhcbjvk
+
+""""""""""""
+"  Search  "
+""""""""""""
+
+" Remove old search urls
+jsb Object.keys(tri.config.get("searchurls")).reduce((prev, u) => prev.then(_ => tri.config.set("searchurls", u, null)), Promise.resolve())
+
+set searchengine sp
+
+set searchurls.sp https://www.startpage.com/sp/search?query=%s
+set searchurls.ddg https://duckduckgo.com/?q=%s
+set searchurls.gh https://github.com/search?q=%s
+set searchurls.wb https://web.archive.org/web/*/%s
+
+"""""""""""
+"  Binds  "
+"""""""""""
+"
+" Ctrl-F should use the browser's native 'find' functionality.
+unbind <C-f>
+
+" Remove nonesense
+unbind <AS-ArrowUp><AS-ArrowUp><AS-ArrowDown><AS-ArrowDown><AS-ArrowLeft><AS-ArrowRight><AS-ArrowLeft><AS-ArrowRight>ba
+
+" Better search
+bind / fillcmdline find
+bind ? fillcmdline find -?
+bind n findnext 1
+bind N findnext -1
+
+" Movement on special keyboard
+bind <ArrowLeft> scrollpx -50 
+bind <ArrowUp> scrollline -10
+bind <ArrowDown> scrollline 10
+bind <ArrowRight> scrollpx 50 
+
+bind --mode=visual <ArrowLeft> js document.getSelection().modify("extend","backward","character") 
+bind --mode=visual <ArrowUp> js document.getSelection().modify("extend","backward","line")
+bind --mode=visual <ArrowDown> js document.getSelection().modify("extend","forward","line")
+bind --mode=visual <ArrowRight> js document.getSelection().modify("extend","forward","character") 
+
+" Comment toggler for Reddit, Hacker News and Lobste.rs
+bind ;c hint -Jc [class*="expand"],[class*="togg"],[class="comment_folder"]
+
+" Git{Hub,Lab} git clone via SSH yank
+bind yg composite js "git clone " + document.location.href.replace(/https?:\/\//,"git@").replace("/",":").replace(/$/,".git") | clipboard yank
+
+" I like wikiwand but I don't like the way it changes URLs
+bindurl wikiwand.com yy composite js document.location.href.replace("wikiwand.com/en","wikipedia.org/wiki") | clipboard yank
+
+" Make gu take you back to subreddit from comments
+bindurl reddit.com gu urlparent 4
+
+" Make `gi` on GitHub take you to the search box
+bindurl ^https://github.com gi hint -Vc .AppHeader-searchButton
+
+" Handy multiwindow/multitasking binds
+bind gd tabdetach
+bind gD composite tabduplicate; tabdetach
+
+" Binds for new reader mode
+bind gr reader
+bind gR reader --tab
+
+"
+" Misc settings
+"
+
+" Defaults to 300ms but I'm a 'move fast and close the wrong tabs' kinda chap
+set hintdelay 100
+
+" The following modification allows Tridactyl to function on more pages, e.g. raw GitHub pages.
+" You may not wish to run this. Mozilla strongly feels that you shouldn't.
+" Read https://wiki.mozilla.org/Security/CSP#Goals for more information.
+"
+" Equivalent to `set csp clobber` before it was removed.
+" This weakens your defences against cross-site-scripting attacks
+" and other types of code-injection by reducing the strictness 
+" of Content Security Policy on all sites in a couple of ways.
+" 
+" We remove the sandbox directive
+" https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/sandbox
+" which allows our iframe (and anyone else's) to run on any website.
+"
+" We weaken the style-src directive
+" https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/style-src
+" to allow us to theme our elements.
+" This exposes you to 'cross site styling' attacks
+jsb browser.webRequest.onHeadersReceived.addListener(tri.request.clobberCSP,{urls:["<all_urls>"],types:["main_frame"]},["blocking","responseHeaders"])
+
+
+"
+" URL redirects
+"
+

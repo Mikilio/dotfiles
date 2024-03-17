@@ -290,6 +290,10 @@ user_pref("default-browser-agent.enabled", false);
 
 // PREF: allow extensions on mozilla sites
 user_pref("extensions.webextensions.restrictedDomains", "");
+user_pref("privacy.resistFingerprinting.block_mozAddonManager", true);
+
+// PREF: for better tridacyl 
+user_pref("browser.autofocus", false);
 
 /****************************************************************************
  * SECTION: SMOOTHFOX                                                       *

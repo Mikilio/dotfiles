@@ -38,11 +38,19 @@ moduleWithSystem (
         #tor <3
         tor-browser
 
+        #ts5
+        teamspeak_client
+
         #matrix
         element-desktop
 
         #discord
-        discord-canary
+        (armcord.overrideAttrs (o: {
+          buildInputs = (o.buildInputs or [ ]) ++ [
+            libGL
+          ];
+        }))
+
       ];
       dconf.settings = {
         "org/virt-manager/virt-manager/connections" = {

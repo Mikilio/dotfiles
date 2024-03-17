@@ -53,6 +53,7 @@ in {
     };
     services = {
       login.u2fAuth = true;
+      hyprlock.text = "auth include login";
     };
   };
 }

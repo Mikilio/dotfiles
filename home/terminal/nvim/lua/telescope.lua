@@ -114,13 +114,13 @@ local function telescope_setup()
                   '--top',
                   '--percent', '80',
                   '--pane-id', string.format('%d', obj.stdout),
-                  '--', 'sh', '-c',
+                  '--', 'direnv', 'exec', '.', 'sh', '-c',
                   'NVIM_BUILD_PANE_ID=' .. string.format('%d', obj.stdout)
                   .. ' nvim -c "SessionManager load_current_dir_session"'
                 }, function(objj)
                   if objj.code ~= 0 then
                     vim.notify(
-                      "Wezterm failed to set tab-title",
+                      "Wezterm failed to open nvim",
                       vim.log.levels.ERROR, { title = "Wezterm", }
                     )
                   end

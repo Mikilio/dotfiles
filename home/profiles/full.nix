@@ -35,7 +35,6 @@ with lib; let
   wayland = with localModules.wayland; [
     ags
     hyprland
-    swayidle
     pipewire
   ];
 in {

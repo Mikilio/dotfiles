@@ -46,6 +46,9 @@ local function flash_setup()
       }
     },
     modes = {
+      search = {
+        enabled = false,
+      },
       char = {
         jump_labels = true,
         char_actions = function(motion)
