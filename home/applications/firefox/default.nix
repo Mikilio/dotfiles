@@ -34,6 +34,7 @@ moduleWithSystem (
               unpaywall
               # firemonkey
               tampermonkey
+              wikiwand-wikipedia-modernized
             ];
           };
         };

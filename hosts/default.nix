@@ -11,15 +11,14 @@ with lib; let
   sharedModules = [
     inputs.sops-nix.nixosModules.default
     self.nixosModules.core
-    self.nixosModules.network
     self.nixosModules.nix
     self.nixosModules.security
   ];
 
   desktopModules = with inputs; [
+    self.nixosModules.network
     hyprland.nixosModules.default
     kmonad.nixosModules.default
-    nix-gaming.nixosModules.steamCompat
     nix-gaming.nixosModules.pipewireLowLatency
   ];
 in {
@@ -52,6 +51,25 @@ in {
         ]
         ++ sharedModules
         ++ desktopModules;
+    };
+    homeserver = inputs.nixpkgs.lib.nixosSystem {
+      inherit system;
+
+      specialArgs = {
+        inherit self inputs self' inputs';
+      };
+
+      modules =
+        [
+          ./homeserver
+          inputs.disko.nixosModules.disko
+          inputs.nixos-hardware.nixosModules.common-pc
+          # inputs.nixos-hardware.nixosModules.common-gpu-nvidia
+          inputs.nixos-hardware.nixosModules.common-cpu-intel
+          inputs.nixos-hardware.nixosModules.common-pc-ssd
+          inputs.nur.nixosModules.nur
+        ]
+        ++ sharedModules;
     };
   });
 }

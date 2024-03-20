@@ -20,9 +20,6 @@
     ];
   };
 
-  # pickup pkgs from flake export
-  nixpkgs.pkgs = self'.legacyPackages;
-
   # enable programs
   programs = {
     less.enable = true;
@@ -43,7 +40,7 @@
   security.sudo.wheelNeedsPassword = false;
 
   # don't touch this
-  system.stateVersion = lib.mkDefault "23.05";
+  system.stateVersion = lib.mkForce "23.05";
 
   time.timeZone = lib.mkDefault "Europe/Berlin";
 

@@ -33,6 +33,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/23.11";
 
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
@@ -56,6 +57,11 @@
 
     devshell.url = "github:numtide/devshell";
     devenv.url = "github:cachix/devenv";
+
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     eww = {
       url = "github:hylophile/eww/dynamic-icons";

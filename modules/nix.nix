@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  self',
   inputs,
   inputs',
   lib,
@@ -8,6 +9,9 @@
 }: {
   # we need git for flakes
   environment.systemPackages = [pkgs.git inputs'.devenv.packages.default];
+
+  # pickup pkgs from flake export
+  nixpkgs.pkgs = self'.legacyPackages;
 
   nix = {
     distributedBuilds = true;

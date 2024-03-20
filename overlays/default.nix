@@ -12,9 +12,11 @@ in {
   }:
     with inputs.nixpkgs.lib; let
       mkPkgs = import inputs.nixpkgs;
+      stable = import inputs.nixpkgs-stable {inherit system;};
       inherit (extends inputs.nur.overlay mkPkgs {inherit system;}) nur;
+
     in {
-      _module.args.pkgs = import inputs.nixpkgs {
+      _module.args.pkgs = mkPkgs {
         inherit system;
         # allow spotify to be installed if you don't have unfree enabled already
         config.allowUnfreePredicate = pkg:
@@ -26,8 +28,13 @@ in {
               "languagetool*"
               "teamspeak.*"
               "tampermonkey*"
+              "wikiwand.*"
             ]
           );
+        config.permittedInsecurePackages = [
+          "nix-2.16.2"
+        ];
+
         overlays = [
           #enable devshell
           inputs.devshell.overlays.default
@@ -51,9 +58,6 @@ in {
                     libkrb5
                     gamemode
                   ];
-                extraProfile = ''
-                  export STEAM_EXTRA_COMPAT_TOOLS_PATHS='${inputs'.nix-gaming.packages.proton-ge}'
-                '';
               };
 
               lutris = prev.lutris.override {
@@ -64,6 +68,9 @@ in {
                     libGL
                   ];
               };
+              
+              #NOTE: https://github.com/obsproject/obs-studio/issues/10397
+              obs-studio = stable.obs-studio;
 
               discord-canary = prev.discord-canary.override {
                 nss = prev.nss_latest;

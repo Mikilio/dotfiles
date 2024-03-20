@@ -27,7 +27,6 @@ moduleWithSystem (
           playerctl
 
           config.nur.repos.mikilio.xwaylandvideobridge-hypr
-          spotify-tui
         ];
 
         programs = {

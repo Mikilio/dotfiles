@@ -13,6 +13,7 @@ set allowautofocus false
 set leavegithubalone true
 set editorcmd $HOME/.nix-profile/bin/vi
 set newtabfocus page
+set escapehatchsidebarhack false
 set hintchars tnseriaogmplfuwyqdhcbjvk
 
 """"""""""""

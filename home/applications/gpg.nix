@@ -47,7 +47,7 @@ moduleWithSystem (
         gpg-agent = {
           enable = true;
           enableSshSupport = true;
-          pinentryFlavor = "gnome3";
+          pinentryPackage = pkgs.pinentry-gnome3;
           grabKeyboardAndMouse = true;
           sshKeys = ["962C29E85C5026E104466143BA6CE4D7F95B81A9"];
           defaultCacheTtl = 54000;
