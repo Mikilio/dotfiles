@@ -7,7 +7,7 @@
   inputs',
   ...
 } @ args: {
-  imports = [./hardware-configuration.nix ./disk-config.nix];
+  imports = [./hardware-configuration.nix ./disk-config.nix ./secrets.nix];
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -43,22 +43,19 @@
 	#
   networking = {
     hostName = "homeserver";
-    firewall = {
-      trustedInterfaces = ["tailscale0"];
-      # required to connect to Tailscale exit nodes
-      checkReversePath = "loose";
-      # allow the Tailscale UDP port through the firewall
-      allowedUDPPorts = [config.services.tailscale.port];
-    };
   };
 
   # virtualisation
   virtualisation.libvirtd.enable = true;
 
   services = {
+    openssh.enable = true;
     tailscale = {
       enable = true;
+      openFirewall = true;
+      permitCertUid = "admin";
       extraUpFlags = [ "--ssh"];
+      authKeyFile = config.sops.secrets.tailscale.path;
     };
   };
 
