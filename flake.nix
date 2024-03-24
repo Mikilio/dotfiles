@@ -54,6 +54,15 @@
       url = "github:Kirottu/anyrun";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    
+    cloudflared = {
+      url = "github:cloudflare/cloudflared/2024.3.0";
+      flake = false;
+    };
+    cloudflare-go = {
+      url = "github:cloudflare/go/34129e47042e214121b6bbff0ded4712debed18e";
+      flake = false;
+    };
 
     devshell.url = "github:numtide/devshell";
     devenv.url = "github:cachix/devenv";

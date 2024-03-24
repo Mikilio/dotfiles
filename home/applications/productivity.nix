@@ -38,8 +38,8 @@ moduleWithSystem (
         #tor <3
         tor-browser
 
-        #ts5
-        teamspeak_client
+        #mumble
+        mumble
 
         #matrix
         element-desktop

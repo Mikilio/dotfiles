@@ -36,4 +36,5 @@ packages = [
   "dosfstools",
   "nixos-install-tools",
   "alejandra",
+  "openssl",
 ]
