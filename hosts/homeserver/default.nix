@@ -6,7 +6,36 @@
   self',
   inputs',
   ...
-} @ args: {
+} @ args: let
+  
+#list of users declared inside container
+  container_users = {
+    ssl = 400;
+    cloudflared_murmur = 401;
+    cloudflared_nextcloud = 402;
+    inherit (config.ids.uids) murmur;
+  };
+  container_groups = {
+    ssl = 400;
+    cloudflared_murmur = 401;
+    cloudflared_nextcloud = 402;
+    inherit (config.ids.gids) murmur;
+  };
+
+  get_static_groups = groups: builtins.mapAttrs (name: value: { gid = value;}) (
+    lib.attrsets.filterAttrs (n: v: builtins.elem  n groups) container_groups
+  );
+
+  get_static_users = users: builtins.mapAttrs (name: value: {
+    uid = value;
+    group = name;
+    isSystemUser = true;
+  }) (
+    lib.attrsets.filterAttrs (n: v: builtins.elem  n users) container_users
+  );
+
+
+in {
   imports = [./hardware-configuration.nix ./disk-config.nix ./secrets.nix];
 
   boot.loader.systemd-boot.enable = true;
@@ -79,41 +108,50 @@
       ];
       authKeyFile = config.sops.secrets.tailscale.path;
     };
-    cloudflared = {
-      enable = true;
-      user = "admin";
-      tunnels = {
-        #murmur
-        "91bbb740-87ab-41f2-b890-46365ae1e234" = {
-          default = "tcp://192.168.0.131:2052"; 
-          credentialsFile = config.sops.secrets.cloudflare_murmur.path;
-        };
-        #next
-        "6f3e2a91-a1a6-4dfa-81c1-3a223c61274c" = {
-          default = "http://192.168.0.130:80"; 
-          credentialsFile = config.sops.secrets.cloudflare_next.path;
-        };
-      };
-    };
   };
 
   containers.nextcloud = {
     autoStart = true;
     privateNetwork = false;
     macvlans = [ "enp3s0" ];
+    bindMounts = {
+      tunnel = {
+        isReadOnly = true;
+        hostPath =  config.sops.secrets.cloudflare_next.path;
+        mountPoint = "/run/secrets/tunnel";
+      };
+    };
     config = { config, pkgs, lib, ... }: {
 
-      services.nextcloud = {
-        enable = true;
-        package = pkgs.nextcloud28;
-        https = true;
-        hostName = "next.tlecloud.com";
-        config.adminpassFile = "${pkgs.writeText "adminpass" "test123"}"; # DON'T DO THIS IN PRODUCTION - the password file will be world-readable in the Nix Store!
-        settings = {
-          trusted_domains = [ "192.168.0.130" ];
-          trusted_proxies = [ "6f3e2a91-a1a6-4dfa-81c1-3a223c61274c.cfargotunnel.com" ];
+      services = {
+        nextcloud = {
+          enable = true;
+          package = pkgs.nextcloud28;
+          https = true;
+          hostName = "next.tlecloud.com";
+          config.adminpassFile = "${pkgs.writeText "adminpass" "test123"}"; # DON'T DO THIS IN PRODUCTION - the password file will be world-readable in the Nix Store!
+          settings = {
+            trusted_domains = [ "192.168.0.130" ];
+            trusted_proxies = [ "6f3e2a91-a1a6-4dfa-81c1-3a223c61274c.cfargotunnel.com" ];
+          };
+        };
+        cloudflared = {
+          enable = true;
+          user = "cloudflared_nextcloud";
+          group = "cloudflared_nextcloud";
+          tunnels = {
+            #next
+            "6f3e2a91-a1a6-4dfa-81c1-3a223c61274c" = {
+              default = "http://localhost:80"; 
+              credentialsFile = "/run/secrets/tunnel";
+            };
+          };
         };
       };
+
+
+      users.groups = get_static_groups [ "cloudflared_nextcloud" ];
+      users.users = get_static_users [ "cloudflared_nextcloud" ];
 
       system.stateVersion = "23.11";
 
@@ -157,34 +195,53 @@
     privateNetwork = false;
     macvlans = [ "enp3s0" ];
     bindMounts = {
-      crt = {
+      ssl_crt = {
         isReadOnly = true;
         hostPath = config.sops.secrets.ssl_cert.path;
-        mountPoint = "/etc/ssl/certs/cloudflare.crt";
+        mountPoint = "/run/secrets/ssl_crt";
       };
-      key = {
+      ssl_key = {
         isReadOnly = true;
         hostPath = config.sops.secrets.ssl_key.path;
-        mountPoint = "/etc/ssl/keys/cloudflare.key";
+        mountPoint = "/run/secrets/ssl_key";
+      };
+      tunnel = {
+        isReadOnly = true;
+        hostPath =  config.sops.secrets.cloudflare_murmur.path;
+        mountPoint = "/run/secrets/tunnel";
       };
     };
     config = { config, pkgs, lib, ... }: {
 
-      services.murmur = {
-        inherit port;
-        enable = true;
-        openFirewall = true;
-        bandwidth = 256000;
-        registerName = "TLe";
-        registerHostname = "mumble.tlecloud.com";
-        sslCert = "/etc/ssl/certs/cloudflare.crt";
-        sslKey = "/etc/ssl/keys/cloudflare.key";
+      services = { 
+        murmur = {
+          inherit port;
+          enable = true;
+          openFirewall = true;
+          bandwidth = 256000;
+          registerName = "TLe";
+          registerHostname = "mumble.tlecloud.com";
+          sslCert = "/run/secrets/ssl_crt";
+          sslKey = "/run/secrets/ssl_key";
+        };
+        cloudflared = {
+          enable = true;
+          user = "cloudflared_murmur";
+          group = "cloudflared_murmur";
+          tunnels = {
+            #murmur
+            "91bbb740-87ab-41f2-b890-46365ae1e234" = {
+              default = "tcp://localhost:2052"; 
+              credentialsFile = "/run/secrets/tunnel";
+            };
+          };
+        };
       };
 
-      users.groups.ssl = {
-        gid = 992;
+      users.groups = get_static_groups [ "ssl" "cloudflared_murmur" ];
+      users.users = get_static_users [ "ssl" "cloudflared_murmur" ] // {
+        murmur.extraGroups = [ "ssl" ];
       };
-      users.users.murmur.extraGroups = [ "ssl" ];
 
       system.stateVersion = "23.11";
 
@@ -220,19 +277,17 @@
 
     };
   };
-
-  users.groups.ssl = {
-    gid = 992;
-  };
-
+  
+  users.groups = get_static_groups (builtins.attrNames container_groups);
   users.mutableUsers = false;
-  users.users.admin = {
-    isNormalUser = true;
-    extraGroups = ["libvirtd" "cloudflared" "wheel"];
-    packages = [ pkgs.cloudflared ];
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEeey5GyUUFlBdgghUeSdnUkxsMJad4rg8mOf2QBFmsa cardno:23_674_753"
-    ];
-
+  users.users = get_static_users (builtins.attrNames container_users) // {
+    admin = {
+      isNormalUser = true;
+      extraGroups = ["libvirtd" "cloudflared" "wheel"];
+      packages = [ pkgs.cloudflared ];
+      openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEeey5GyUUFlBdgghUeSdnUkxsMJad4rg8mOf2QBFmsa cardno:23_674_753"
+      ];
+    };
   };
 }
