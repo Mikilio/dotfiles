@@ -97,18 +97,15 @@ end)
 
 
 -- Keys
-config.leader = { key = "raw:201", timeout_milliseconds = 1000 }
+config.leader = { key = "Space", mods = "CTRL", timeout_milliseconds = 1000 }
 config.keys = {
 
-  -- Send C-b when pressing C-b twice
-  { key = "raw:201", mods = "LEADER",       action = act { SendString = "\x02" } },
-
   -- Workspaces
-  { key = "s",       mods = "LEADER",       action = act.ShowLauncherArgs { flags = "FUZZY|WORKSPACES" } },
-  { key = "(",       mods = "LEADER|SHIFT", action = act.SwitchWorkspaceRelative(-1) },
-  { key = ")",       mods = "LEADER|SHIFT", action = act.SwitchWorkspaceRelative(1) },
-  { key = "l",       mods = "LEADER",       action = act.ActivateLastTab },
-  { key = 'd',       mods = 'LEADER',       action = act.DetachDomain 'CurrentPaneDomain', },
+  { key = "s", mods = "LEADER",       action = act.ShowLauncherArgs { flags = "FUZZY|WORKSPACES" } },
+  { key = "(", mods = "LEADER|SHIFT", action = act.SwitchWorkspaceRelative(-1) },
+  { key = ")", mods = "LEADER|SHIFT", action = act.SwitchWorkspaceRelative(1) },
+  { key = "l", mods = "LEADER",       action = act.ActivateLastTab },
+  { key = 'd', mods = 'LEADER',       action = act.DetachDomain 'CurrentPaneDomain', },
   {
     key = "$",
     mods = "LEADER|SHIFT",
