@@ -24,9 +24,7 @@ in {
             map (re: builtins.match re (lib.getName pkg)) [
               "spotify"
               "steam.*"
-              "discord-canary"
               "languagetool*"
-              "teamspeak.*"
               "tampermonkey*"
               "wikiwand.*"
             ]
@@ -49,17 +47,6 @@ in {
           #all normal overrides
           (
             final: prev: {
-
-              cloudflared = prev.cloudflared.overrideAttrs (o: {
-                version = "2024.3.0";
-                src = inputs.cloudflared.outPath;
-                ldflags = [
-                  "-s"
-                  "-w"
-                  "-X main.Version=${version}"
-                  "-X github.com/cloudflare/cloudflared/cmd/cloudflared/updater.BuiltForPackageManager=nixpkgs"
-                ];
-              });
 
               keepasscx = prev.keepassxc.override {withKeePassX11 = false;};
 

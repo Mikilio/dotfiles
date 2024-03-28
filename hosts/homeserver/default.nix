@@ -10,16 +10,12 @@
   
 #list of users declared inside container
   container_users = {
-    ssl = 400;
-    cloudflared_murmur = 401;
-    cloudflared_nextcloud = 402;
-    inherit (config.ids.uids) murmur;
+    nextcloud = 999;
+    inherit (config.ids.uids) murmur nginx;
   };
   container_groups = {
-    ssl = 400;
-    cloudflared_murmur = 401;
-    cloudflared_nextcloud = 402;
-    inherit (config.ids.gids) murmur;
+    nextcloud = 999;
+    inherit (config.ids.gids) murmur nginx;
   };
 
   get_static_groups = groups: builtins.mapAttrs (name: value: { gid = value;}) (
@@ -75,23 +71,26 @@ in {
  #    nvidiaSettings = true;
  #  };
 	#
-  networking = {
-    hostName = "homeserver";
-    useNetworkd = true;
-
-    macvlans.mvlan-host = {
-      interface = "enp3s0";
-      mode = "bridge";
-    };
-    interfaces = {
-      enp3s0.ipv4.addresses = lib.mkForce [];
-      mvlan-host = {
-        ipv4.addresses = [ { address = "192.168.0.128"; prefixLength = 24; } ];
+   systemd.network = {
+    enable = true;
+    # silly fix for the service failing on nixos rebuild
+    wait-online.enable = lib.mkForce false;
+    networks = {
+      "40-enp3s0" = {
+        matchConfig.Name = "enp3s0";
+        networkConfig.DHCP = "yes";
       };
     };
   };
-  systemd.network.wait-online.enable = lib.mkForce false;
-
+  networking = {
+    hostName = "homeserver"; # Define your hostname.
+    networkmanager.enable = false;
+    useNetworkd = true;
+    # nameservers = [
+    #   "1.1.1.1"
+    #   "1.0.0.1"
+    # ];
+  };
   # virtualisation
   virtualisation.libvirtd.enable = true;
 
@@ -104,7 +103,6 @@ in {
       extraUpFlags = [
         "--ssh"
         "--operator=admin"
-        "--advertise-routes=192.168.0.0/24"
       ];
       authKeyFile = config.sops.secrets.tailscale.path;
     };
@@ -115,10 +113,30 @@ in {
     privateNetwork = false;
     macvlans = [ "enp3s0" ];
     bindMounts = {
-      tunnel = {
+      tailscale = {
         isReadOnly = true;
-        hostPath =  config.sops.secrets.cloudflare_next.path;
-        mountPoint = "/run/secrets/tunnel";
+        hostPath =  config.sops.secrets.tailscale.path;
+        mountPoint = "/run/secrets/tailscale";
+      };
+      adminpass = {
+        isReadOnly = false;
+        hostPath =  config.sops.secrets.nextcloud_adminpass.path;
+        mountPoint = "/run/secrets/adminpass";
+      };
+      dbpass = {
+        isReadOnly = false;
+        hostPath =  config.sops.secrets.nextcloud_dbpass.path;
+        mountPoint = "/run/secrets/dbpass";
+      };
+      ssl_crt = {
+        isReadOnly = true;
+        hostPath =  config.sops.secrets.nextcloud_ssl_crt.path;
+        mountPoint = "/run/secrets/ssl_crt";
+      };
+      ssl_key = {
+        isReadOnly = true;
+        hostPath =  config.sops.secrets.nextcloud_ssl_key.path;
+        mountPoint = "/run/secrets/ssl_key";
       };
     };
     config = { config, pkgs, lib, ... }: {
@@ -128,30 +146,62 @@ in {
           enable = true;
           package = pkgs.nextcloud28;
           https = true;
-          hostName = "next.tlecloud.com";
-          config.adminpassFile = "${pkgs.writeText "adminpass" "test123"}"; # DON'T DO THIS IN PRODUCTION - the password file will be world-readable in the Nix Store!
+          hostName = "nextcloud.batfish-vibe.ts.net";
+          configureRedis = true;
+          autoUpdateApps.enable = true;
+          autoUpdateApps.startAt = "04:00:00";
+          config = {
+            # Nextcloud PostegreSQL database configuration, recommended over using SQLite
+            dbtype = "pgsql";
+            dbuser = "nextcloud";
+            dbhost = "/run/postgresql"; # nextcloud will add /.s.PGSQL.5432 by itself
+            dbname = "nextcloud";
+            dbpassFile = "/run/secrets/dbpass";
+            adminpassFile = "/run/secrets/adminpass";
+            adminuser = "admin";
+          };
           settings = {
-            trusted_domains = [ "192.168.0.130" ];
-            trusted_proxies = [ "6f3e2a91-a1a6-4dfa-81c1-3a223c61274c.cfargotunnel.com" ];
+            # Further forces Nextcloud to use HTTPS
+            overwriteProtocol = "https";
+
+            trusted_domains = [ "nextcloud.batfish-vibe.ts.net" ];
           };
         };
-        cloudflared = {
+        nginx.virtualHosts.${config.services.nextcloud.hostName} = {
+          forceSSL = true;
+          sslCertificate = "/run/secrets/ssl_crt";
+          sslCertificateKey = "/run/secrets/ssl_key";
+        };
+        postgresql = {
           enable = true;
-          user = "cloudflared_nextcloud";
-          group = "cloudflared_nextcloud";
-          tunnels = {
-            #next
-            "6f3e2a91-a1a6-4dfa-81c1-3a223c61274c" = {
-              default = "http://localhost:80"; 
-              credentialsFile = "/run/secrets/tunnel";
-            };
-          };
+
+          # Ensure the database, user, and permissions always exist
+          ensureDatabases = [ "nextcloud" ];
+          ensureUsers = [{ 
+              name = "nextcloud";
+              ensureDBOwnership = true;
+              ensureClauses = {
+                createrole = true;
+                createdb = true;
+              };
+          }];
         };
+
+        tailscale = {
+          enable = true;
+          openFirewall = true;
+          interfaceName = "userspace-networking";
+          authKeyFile = "/run/secrets/tailscale";
+        };
+      };
+      systemd.services."nextcloud-setup" = {
+        requires = ["postgresql.service"];
+        after = ["postgresql.service"];
       };
 
 
-      users.groups = get_static_groups [ "cloudflared_nextcloud" ];
-      users.users = get_static_users [ "cloudflared_nextcloud" ];
+      users.groups = lib.mkDefault (get_static_groups [ "nginx" "nextcloud"]);
+      users.users = lib.mkDefault (get_static_users [ "nginx" "nextcloud"]);
 
       system.stateVersion = "23.11";
 
@@ -163,7 +213,7 @@ in {
         # };
         firewall = {
           enable = true;
-          allowedTCPPorts = [ 80 ];
+          allowedTCPPorts = [ 80 443 ];
         };
         # Use systemd-resolved inside the container
         # Workaround for bug https://github.com/NixOS/nixpkgs/issues/162686
@@ -184,64 +234,43 @@ in {
       };
       services.resolved.enable = true;
 
+      environment.systemPackages = [ (pkgs.php.withExtensions ({ enabled, all }:
+        enabled ++ [ all.curl all.soap ]))
+      ];
+
     };
   };
 
-  containers.murmur = let
-    #this port is supported by cloudflare
-    port = 2052;
-  in{
+  containers.murmur = {
     autoStart = true;
     privateNetwork = false;
     macvlans = [ "enp3s0" ];
     bindMounts = {
-      ssl_crt = {
+      tailscale = {
         isReadOnly = true;
-        hostPath = config.sops.secrets.ssl_cert.path;
-        mountPoint = "/run/secrets/ssl_crt";
-      };
-      ssl_key = {
-        isReadOnly = true;
-        hostPath = config.sops.secrets.ssl_key.path;
-        mountPoint = "/run/secrets/ssl_key";
-      };
-      tunnel = {
-        isReadOnly = true;
-        hostPath =  config.sops.secrets.cloudflare_murmur.path;
-        mountPoint = "/run/secrets/tunnel";
+        hostPath =  config.sops.secrets.tailscale.path;
+        mountPoint = "/run/secrets/tailscale";
       };
     };
     config = { config, pkgs, lib, ... }: {
 
       services = { 
         murmur = {
-          inherit port;
+          port = 2052;
           enable = true;
           openFirewall = true;
           bandwidth = 256000;
-          registerName = "TLe";
-          registerHostname = "mumble.tlecloud.com";
-          sslCert = "/run/secrets/ssl_crt";
-          sslKey = "/run/secrets/ssl_key";
         };
-        cloudflared = {
+        tailscale = {
           enable = true;
-          user = "cloudflared_murmur";
-          group = "cloudflared_murmur";
-          tunnels = {
-            #murmur
-            "91bbb740-87ab-41f2-b890-46365ae1e234" = {
-              default = "tcp://localhost:2052"; 
-              credentialsFile = "/run/secrets/tunnel";
-            };
-          };
+          openFirewall = true;
+          interfaceName = "userspace-networking";
+          authKeyFile = "/run/secrets/tailscale";
         };
       };
 
-      users.groups = get_static_groups [ "ssl" "cloudflared_murmur" ];
-      users.users = get_static_users [ "ssl" "cloudflared_murmur" ] // {
-        murmur.extraGroups = [ "ssl" ];
-      };
+      users.groups = lib.mkDefault (get_static_groups [ "murmur" ]);
+      users.users = lib.mkDefault (get_static_users [ "murmur"]);
 
       system.stateVersion = "23.11";
 
@@ -253,7 +282,7 @@ in {
         # };
         firewall = {
           enable = true;
-          allowedTCPPorts = [ port ];
+          allowedTCPPorts = [ config.services.murmur.port ];
         };
         # Use systemd-resolved inside the container
         # Workaround for bug https://github.com/NixOS/nixpkgs/issues/162686
@@ -278,13 +307,13 @@ in {
     };
   };
   
-  users.groups = get_static_groups (builtins.attrNames container_groups);
+  users.groups = (get_static_groups (builtins.attrNames container_groups));
   users.mutableUsers = false;
   users.users = get_static_users (builtins.attrNames container_users) // {
     admin = {
       isNormalUser = true;
       extraGroups = ["libvirtd" "cloudflared" "wheel"];
-      packages = [ pkgs.cloudflared ];
+      packages = [ pkgs.cloudflared pkgs.sops pkgs.vim];
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEeey5GyUUFlBdgghUeSdnUkxsMJad4rg8mOf2QBFmsa cardno:23_674_753"
       ];

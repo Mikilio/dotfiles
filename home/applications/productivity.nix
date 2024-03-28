@@ -44,13 +44,6 @@ moduleWithSystem (
         #matrix
         element-desktop
 
-        #discord
-        (armcord.overrideAttrs (o: {
-          buildInputs = (o.buildInputs or [ ]) ++ [
-            libGL
-          ];
-        }))
-
       ];
       dconf.settings = {
         "org/virt-manager/virt-manager/connections" = {

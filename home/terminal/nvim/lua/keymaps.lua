@@ -49,6 +49,10 @@ local function wk_setup()
     F = "which_key_ignore",
     t = "which_key_ignore",
     T = "which_key_ignore",
+
+    -- netrw
+    ['<leader>ex'] = ":Ex<CR>",
+
   })
 
   wk.register({

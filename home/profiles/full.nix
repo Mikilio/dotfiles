@@ -30,7 +30,7 @@ with lib; let
     yazi
     calendar
     ssh
-    pass
+    # pass
   ];
   wayland = with localModules.wayland; [
     ags
