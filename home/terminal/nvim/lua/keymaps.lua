@@ -51,7 +51,7 @@ local function wk_setup()
     T = "which_key_ignore",
 
     -- netrw
-    ['<leader>ex'] = ":Ex<CR>",
+    ['<leader>ex'] = { ":Explore<CR>", "netrw"},
 
   })
 

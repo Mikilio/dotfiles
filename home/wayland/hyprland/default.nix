@@ -261,13 +261,17 @@ moduleWithSystem (
         };
 
         systemd.user = {
-          sessionVariables =
-            environment
-            // {
+          sessionVariables = config.home.sessionVariables // {
               PATH =
                 "${config.home.homeDirectory}/.nix-profile/bin"
-                + ":${getBin pkgs.coreutils}/bin";
-            };
+                + ":${getBin pkgs.coreutils}/bin"
+                + ":/nix/profile/bin"
+                + ":${config.home.homeDirectory}/.local/state/nix/profile/bin"
+                + ":/etc/profiles/per-user/mikilio/bin"
+                + ":/nix/var/nix/profiles/default/bin"
+                + ":/run/current-system/sw/bin"
+                + ":/home/mikilio/.local/share/bin";
+          };
 
           targets = {
             hyprland-session = {
