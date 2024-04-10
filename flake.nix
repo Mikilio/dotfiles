@@ -93,7 +93,7 @@
     };
 
     hm = {
-      url = "github:nix-community/home-manager";
+      url = "github:Mikilio/home-manager/todoman";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

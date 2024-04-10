@@ -68,9 +68,8 @@ in {
           spotify_pwd.key = "spotify/pwd";
           spotify_usr.key = "spotify/usr";
           keepassxc = {};
-          google-cal_id.key = "google-cal/id";
-          google-cal_secret.key = "google-cal/secret";
-        };
+          nextcloud = {};
+       };
     };
   };
 }

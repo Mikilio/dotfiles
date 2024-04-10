@@ -12,7 +12,10 @@ in {
   }:
     with inputs.nixpkgs.lib; let
       mkPkgs = import inputs.nixpkgs;
-      stable = import inputs.nixpkgs-stable {inherit system;};
+      stable = import inputs.nixpkgs-stable {
+        inherit system;
+        config.allowUnfree = true;
+      };
       inherit (extends inputs.nur.overlay mkPkgs {inherit system;}) nur;
 
     in {
@@ -27,6 +30,7 @@ in {
               "languagetool*"
               "tampermonkey*"
               "wikiwand.*"
+              "morgen.*"
             ]
           );
         config.permittedInsecurePackages = [
@@ -76,6 +80,31 @@ in {
                 withOpenASAR = true;
                 withVencord = true;
               };
+
+              morgen = prev.morgen.overrideAttrs (o: {
+                installPhase = ''
+                  runHook preInstall
+
+                  mv usr $out
+                  mv opt $out
+
+                  asar extract $out/opt/Morgen/resources/app.asar "$TMP/work"
+                  # 1. Fixes path for todesktop-runtime-config.json
+                  # 2. Fixes startup script
+                  substituteInPlace $TMP/work/dist/main.js \
+                    --replace "process.resourcesPath,\"todesktop-runtime-config.json" "\"$out/opt/Morgen/resources/todesktop-runtime-config.json" \
+                    --replace "Exec=\".concat(process.execPath," "Exec=\".concat(\"$out/bin/morgen\","
+                  asar pack --unpack='{*.node,*.ftz,rect-overlay}' "$TMP/work" $out/opt/Morgen/resources/app.asar
+
+                  substituteInPlace $out/share/applications/morgen.desktop \
+                    --replace '/opt/Morgen' $out/bin
+
+                  makeWrapper ${prev.electron}/bin/electron $out/bin/morgen \
+                    --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations,WebRTCPipeWireCapturer}} $out/opt/Morgen/resources/app.asar"
+
+                  runHook postInstall
+                '';
+              });
 
               vivaldi = prev.vivaldi.override {
                 proprietaryCodecs = true;
