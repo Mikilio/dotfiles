@@ -28,7 +28,7 @@ moduleWithSystem (
           config = ''
             date_format = "%d.%m.%Y"
             time_format = "%H:%M"
-            default_list = "tasks"
+            default_list = "private"
             default_due = 48
             humanize = True
           '';
@@ -60,7 +60,7 @@ moduleWithSystem (
 
             vdirsyncer = {
               enable = true;
-              collections = ["private" "contact_birthdays" "tasks"];
+              collections = ["private" "contact_birthdays"];
               conflictResolution = "remote wins";
             };
           };

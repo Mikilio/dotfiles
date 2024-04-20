@@ -31,6 +31,7 @@ in {
               "tampermonkey*"
               "wikiwand.*"
               "morgen.*"
+              "discord.*"
             ]
           );
         config.permittedInsecurePackages = [
@@ -72,9 +73,6 @@ in {
                   ];
               };
               
-              #NOTE: https://github.com/obsproject/obs-studio/issues/10397
-              obs-studio = stable.obs-studio;
-
               discord-canary = prev.discord-canary.override {
                 nss = prev.nss_latest;
                 withOpenASAR = true;
