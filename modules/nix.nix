@@ -8,7 +8,7 @@
   ...
 }: {
   # we need git for flakes
-  environment.systemPackages = [pkgs.git inputs'.devenv.packages.default];
+  environment.systemPackages = [pkgs.git];
 
   # pickup pkgs from flake export
   nixpkgs.pkgs = self'.legacyPackages;

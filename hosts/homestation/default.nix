@@ -20,10 +20,10 @@
     consoleLogLevel = 0;
 
     # use latest kernel
-    kernelPackages = pkgs.linuxPackages_xanmod_latest;
+    kernelPackages = pkgs.linuxPackages_xanmod_stable;
 
     extraModulePackages = with config.boot.kernelPackages; [
-      ddcci-driver
+      # ddcci-driver
       v4l2loopback
     ];
 

@@ -58,6 +58,7 @@ moduleWithSystem (
 
             wallpaper = DP-2, ${portrait}/default.jpg
           '';
+          "xkb/eu.xkb".source = ./eu-custom.xkb;
         };
 
         programs.hyprlock.enable = true;
@@ -127,7 +128,7 @@ moduleWithSystem (
             };
 
             input = {
-              kb_file = toString ./eu-custom.xkb;
+              kb_file = "~/.config/xkb/eu.xkb";
               accel_profile = "flat";
               float_switch_override_focus = 2;
             };
@@ -224,6 +225,9 @@ moduleWithSystem (
             ];
 
             windowrulev2 = [
+              #weird wezterm workaround
+              "float,class:^(org.wezfurlong.wezterm)$"
+              "tile,class:^(org.wezfurlong.wezterm)$"
               #optimization
               "noshadow, floating:0"
               #Keepassxc

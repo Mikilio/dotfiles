@@ -1,3 +1,5 @@
+# https://gitlab.com/jungganz/eurkey-colemak-mod-dh
+
 xkb_keymap {
   xkb_keycodes  { include "evdev" };
   xkb_types     { include "complete"	};

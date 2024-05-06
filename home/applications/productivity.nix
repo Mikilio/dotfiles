@@ -41,6 +41,8 @@ moduleWithSystem (
         #mumble
         mumble
 
+        xterm
+
         discord-canary
         #matrix
         element-desktop

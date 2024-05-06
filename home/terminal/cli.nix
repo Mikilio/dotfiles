@@ -40,6 +40,7 @@ moduleWithSystem (
         deadnix
         statix
         cachix
+        devenv
       ];
 
       programs = {
