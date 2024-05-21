@@ -46,7 +46,6 @@ moduleWithSystem (
         discord-canary
         #matrix
         element-desktop
-
       ];
       dconf.settings = {
         "org/virt-manager/virt-manager/connections" = {

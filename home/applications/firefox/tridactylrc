@@ -108,6 +108,6 @@ set hintdelay 100
 
 
 "
-" URL redirects
+" Blacklist Website
 "
-
+seturl teams.microsoft.com superignore true

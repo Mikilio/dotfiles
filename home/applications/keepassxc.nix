@@ -19,7 +19,6 @@ moduleWithSystem (
         systemd.user.services.keepassxc = {
           Unit = {
             Description = "keepassxc password manager";
-            BusName = "org.freedesktop.secrets";
             Wants = ["tray.target"];
             Requires = ["sops-nix.service"];
             After = ["sops-nix.service" "tray.target"];

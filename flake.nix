@@ -45,16 +45,18 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    ags = {
-      url = "github:Aylur/ags/v1.7.4";
+    asztal = {
+      url = "github:Aylur/dotfiles";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.hyprland.follows = "hyprland";
+      inputs.matugen.follows = "matugen";
     };
 
     anyrun = {
       url = "github:Kirottu/anyrun";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    
+
     cloudflared = {
       url = "github:cloudflare/cloudflared/2024.3.0";
       flake = false;
@@ -108,6 +110,11 @@
 
     kmonad = {
       url = "github:kmonad/kmonad?dir=nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    matugen = {
+      url = "github:/InioX/Matugen/v2.2.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

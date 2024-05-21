@@ -1,0 +1,111 @@
+include "%S/en_US.UTF-8/Compose"
+
+# mathematical notation layer
+<Multi_key> <exclam> : "≠"
+<Multi_key> <asciitilde> : "≈"
+<Multi_key> <equal> : "≝"
+<Multi_key> <greater> : "≥"
+<Multi_key> <less> : "≤"
+<Multi_key> <minus> : "±"
+
+<Multi_key> <i> : "∞"
+<Multi_key> <n> : "ⁿ"
+<Multi_key> <r> : "√"
+<Multi_key> <3> : "∛"
+<Multi_key> <4> : "∜"
+<Multi_key> <percent> : "‰"
+
+<Multi_key> <f> : "ƒ"
+<Multi_key> <S> : "∫"
+
+<Multi_key> <apostrophe> : "′"
+<Multi_key> <quotedbl> : "″"
+<Multi_key> <p> : "∂"
+<Multi_key> <d> : "Δ"
+<Multi_key> <d> : "∇"
+
+<Multi_key> <plus> : "⊕"
+<Multi_key> <asterisk> : "⊗"
+<Multi_key> <asciicircum> : "℘"
+
+<Multi_key> <s> : "∩"
+<Multi_key> <u> : "∪"
+<Multi_key> <U> : "∖"
+<Multi_key> <O> : "∅"
+
+<Multi_key> <g> : "⊂"
+<Multi_key> <G> : "⊃"
+<Multi_key> <h> : "⊄"
+<Multi_key> <H> : "⊅"
+<Multi_key> <b> : "⊆"
+<Multi_key> <B> : "⊇"
+<Multi_key> <m> : "∈"
+<Multi_key> <M> : "∉"
+<Multi_key> <k> : "∋"
+<Multi_key> <K> : "∌"
+
+<Multi_key> <A> : "∀"
+<Multi_key> <E> : "∃"
+<Multi_key> <X> : "∄"
+
+<Multi_key> <ampersand> : "∧"
+<Multi_key> <bar> : "∨"
+
+<Multi_key> <c> : "∝"
+<Multi_key> <period> : "⋅"
+<Multi_key> <o> : "∘"
+<Multi_key> <colon> : "∴"
+<Multi_key> <semicolon> : "∵"
+<Multi_key> <z> : "↯"
+<Multi_key> <F> : "∎"
+
+<Multi_key> <R> : "ℝ"
+<Multi_key> <C> : "ℂ"
+<Multi_key> <N> : "ℕ"
+<Multi_key> <P> : "ℙ"
+<Multi_key> <Q> : "ℚ"
+<Multi_key> <Z> : "ℤ"
+
+<Multi_key> <9> : "∟"
+<Multi_key> <8> : "∠"
+<Multi_key> <7> : "∡"
+<Multi_key> <I> : "∥"
+<Multi_key> <L> : "∦"
+
+# dead notsign notation
+<dead_small_schwa> <s>: "§" section
+<dead_small_schwa> <backslash>: "¬" notsign
+<dead_small_schwa> <1>: "№"
+
+<dead_small_schwa> <2>: "½"
+<dead_small_schwa> <3>: "⅓"
+<dead_small_schwa> <4>: "¼"
+<dead_small_schwa> <5>: "⅔"
+<dead_small_schwa> <6>: "¾"
+
+
+<dead_small_schwa> <c>: "©"
+<dead_small_schwa> <p>: "℗"
+<dead_small_schwa> <r>: "®"
+<dead_small_schwa> <t>: "™"
+<dead_small_schwa> <T>: "℠"
+
+<dead_small_schwa> <n>: "←"
+<dead_small_schwa> <e>: "↓"
+<dead_small_schwa> <i>: "↑"
+<dead_small_schwa> <o>: "→"
+<dead_small_schwa> <u>: "↖"
+<dead_small_schwa> <'>: "↗"
+<dead_small_schwa> <h>: "↙"
+<dead_small_schwa> </>: "↘"
+<dead_small_schwa> <equal>: "↔"
+
+<dead_small_schwa> <N>: "⇐"
+<dead_small_schwa> <E>: "⇓"
+<dead_small_schwa> <I>: "⇑"
+<dead_small_schwa> <O>: "⇒"
+<dead_small_schwa> <L>: "⇖"
+<dead_small_schwa> <">: "⇗"
+<dead_small_schwa> <H>: "⇙"
+<dead_small_schwa> <?>: "⇘"
+<dead_small_schwa> <plus>: "⇔"

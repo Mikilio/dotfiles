@@ -5,7 +5,7 @@ xkb_keymap {
   xkb_types     { include "complete"	};
 	xkb_compat    { include "complete"	};
 	xkb_symbols   { 
-    include "pc+inet(evdev)+eu"
+    include "pc+inet(evdev)+eu(basic)"
 
     key <AD01> { [              q,                 Q,               agrave,               Agrave ] };
     key <AD02> { [              w,                 W,               aacute,               Aacute ] };
@@ -33,8 +33,10 @@ xkb_keymap {
     key <AC03> { [              d,                 D,              dstroke,              Dstroke ] };
     key <AB04> { [              v,                 V,                   oe,                   OE ] };
     key <AB01> { [              z,                 Z,               yacute,               Yacute ] };
-    key <AC08> { [              k,                 K,           dead_greek,           squareroot ] };
+    key <AC08> { [              k,                 K,           dead_greek,            Multi_key ] };
     key <AC06> { [              h,                 H,               oslash,               Oslash ] };
+
+    key <BKSL> { [      backslash,               bar,     dead_small_schwa,            brokenbar ] };
   };
 	xkb_geometry  { include "pc(pc104)"	};
 };

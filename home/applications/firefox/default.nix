@@ -15,10 +15,12 @@ moduleWithSystem (
       config = {
         programs.firefox = {
           enable = true;
-          package = pkgs.firefox.override (old: {  
-            extraPrefsFiles = old.extraPrefsFiles or []
+          package = pkgs.firefox.override (old: {
+            extraPrefsFiles =
+              old.extraPrefsFiles
+              or []
               ++ [(pkgs.writeText "firefox-autoconfig.js" autoConfig)];
-            nativeMessagingHosts = [ pkgs.tridactyl-native ];
+            nativeMessagingHosts = [pkgs.tridactyl-native];
           });
           profiles.Default = {
             extraConfig = builtins.readFile ./user.js;
@@ -38,7 +40,7 @@ moduleWithSystem (
             ];
           };
         };
-        xdg.configFile."tridactyl/tridactylrc".source = ./tridactylrc ;
+        xdg.configFile."tridactyl/tridactylrc".source = ./tridactylrc;
       };
     }
 )

@@ -17,7 +17,6 @@ in {
         config.allowUnfree = true;
       };
       inherit (extends inputs.nur.overlay mkPkgs {inherit system;}) nur;
-
     in {
       _module.args.pkgs = mkPkgs {
         inherit system;
@@ -51,7 +50,6 @@ in {
           #all normal overrides
           (
             final: prev: {
-
               keepasscx = prev.keepassxc.override {withKeePassX11 = false;};
 
               steam = prev.steam.override {
@@ -82,11 +80,13 @@ in {
                 proprietaryCodecs = true;
                 enableWidevine = true;
               };
-              
+
               yazi = inputs'.yazi.packages.default.overrideAttrs (o: {
-                patches = (o.patches or [ ]) ++ [
-                  ./yazi/symlink-status.patch
-                ];
+                patches =
+                  (o.patches or [])
+                  ++ [
+                    ./yazi/symlink-status.patch
+                  ];
               });
             }
           )

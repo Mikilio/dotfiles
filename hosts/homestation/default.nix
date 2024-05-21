@@ -23,7 +23,17 @@
     kernelPackages = pkgs.linuxPackages_xanmod_stable;
 
     extraModulePackages = with config.boot.kernelPackages; [
-      # ddcci-driver
+      (
+        # https://github.com/NixOS/nixpkgs/issues/297312
+        ddcci-driver.overrideAttrs (old: {
+          patches = [
+            (pkgs.fetchpatch {
+              url = "https://gitlab.com/Sweenu/ddcci-driver-linux/-/commit/7f851f5fb8fbcd7b3a93aaedff90b27124e17a7e.patch";
+              hash = "sha256-Y1ktYaJTd9DtT/mwDqtjt/YasW9cVm0wI43wsQhl7Bg=";
+            })
+          ];
+        })
+      )
       v4l2loopback
     ];
 
@@ -80,8 +90,7 @@
   ];
 
   hardware = {
-    # smooth backlight control
-    brillo.enable = true;
+    # enable backlight control
     i2c.enable = true;
     #logitech wireless support (may not be needed)
     logitech.wireless.enable = true;
@@ -121,7 +130,7 @@
 
     # VPN's
     openvpn.servers = {
-      uniVPN  = {
+      uniVPN = {
         config = builtins.readFile ./vpn-rbg-2.4-linux.ovpn;
         autoStart = false;
         updateResolvConf = true;

@@ -41,7 +41,7 @@ moduleWithSystem (
               ];
             }
             {
-              on   = [ "<C-s>" ];
+              on = ["<C-s>"];
               exec = "shell '$SHELL' --block --confirm";
               desc = "Open shell here";
             }
@@ -52,12 +52,12 @@ moduleWithSystem (
         theme = {
           filetype = {
             rules = [
-	            {
+              {
                 name = "*";
                 is = "link";
                 fg = "#a6e3a1";
               }
-	            {
+              {
                 name = "*";
                 is = "orphan";
                 fg = "#f38ba8";

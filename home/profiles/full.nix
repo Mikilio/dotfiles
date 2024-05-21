@@ -69,7 +69,7 @@ in {
           spotify_usr.key = "spotify/usr";
           keepassxc = {};
           nextcloud = {};
-       };
+        };
     };
   };
 }

@@ -38,26 +38,15 @@ moduleWithSystem (
           packages = with pkgs; [
             xorg.xprop # get properties from XWayland
             xorg.xauth # to enable ssh Xforwarding
-            hyprpaper
             wl-clipboard
             inputs'.hyprland-contrib.packages.grimblast
           ];
+
+          file.".XCompose".source = ./XCompose;
         };
 
-        xdg.configFile = let
-          wallpapers = "${config.xdg.userDirs.pictures}/wallpapers";
-          portrait = "${wallpapers}/portrait";
-          landscape = "${wallpapers}/landscape";
-        in {
-          "Hyprland-xdg-terminals.list".text = "";
-          "hypr/hyprpaper.conf".text = ''
-            preload = ${portrait}/default.jpg
-            preload = ${landscape}/default.jpg
-
-            wallpaper = DP-1, ${landscape}/default.jpg
-
-            wallpaper = DP-2, ${portrait}/default.jpg
-          '';
+        xdg.configFile = {
+          "Hyprland-xdg-terminals.list".text = "wezterm";
           "xkb/eu.xkb".source = ./eu-custom.xkb;
         };
 
@@ -128,7 +117,8 @@ moduleWithSystem (
             };
 
             input = {
-              kb_file = "~/.config/xkb/eu.xkb";
+              # kb_file = "~/.config/xkb/eu.xkb";
+              kb_layout = "de";
               accel_profile = "flat";
               float_switch_override_focus = 2;
             };
@@ -149,22 +139,24 @@ moduleWithSystem (
               resizeactive = binding "SUPER CTRL" "resizeactive";
               mvactive = binding "SUPER ALT" "moveactive";
               mvtows = binding "SUPER SHIFT" "movetoworkspace";
-              e = "exec, ags -b hypr";
-              arr = [1 2 3 4 5 6 7 8 9 0];
+              e = "exec, asztal -b hypr";
+              arr = [1 2 3 4 5 6 7 8 9];
               play = pkgs.writeShellScriptBin "play" ''
                 notify-send "Opening video" "$(wl-paste)"
                 mpv "$(wl-paste)"
               '';
             in
               [
-                "CTRL ALT, R,   ${e} quit; ags -b hypr"
-                "SUPER, Space,  ${e} -t applauncher"
+                "CTRL ALT, R,   ${e} quit; asztal -b hypr"
+                "SUPER, Space,  ${e} -t launcher"
                 "SUPER, Escape, ${e} -t powermenu"
                 "SUPER, Tab,    ${e} -t overview"
 
                 # youtube
                 ", F9,  exec, ${getExe play}"
                 ", F1, ${e} -r 'color.pick()'"
+                ",Print,         exec, aszetal -r 'recorder.screenshot()'"
+                "SHIFT,Print,    exec, aszetal -r 'recorder.screenshot(true)'"
 
                 "ALT, Tab, focuscurrentorlast"
                 "CTRL ALT, Delete, exit"
@@ -178,15 +170,15 @@ moduleWithSystem (
                 (mvfocus "down" "d")
                 (mvfocus "right" "r")
                 (mvfocus "left" "l")
-                (ws "bracketleft" "e-1")
-                (ws "bracketright" "e+1")
-                ", code:195, workspace, e+1"
-                ", code:194, workspace, name:Web"
-                ", code:193, workspace, name:Terminal"
-                ", code:192, workspace, name:Sidepanel"
-                ", code:191, workspace, e-1"
-                (mvtows "bracketleft" "e-1")
-                (mvtows "bracketright" "e+1")
+                (ws "bracketleft" "r-1")
+                (ws "bracketright" "r+1")
+                ", code:195, workspace, r+1"
+                ", code:194, changegroupactive, f"
+                ", code:193, togglegroup"
+                ", code:192, changegroupactive, b"
+                ", code:191, workspace, r-1"
+                (mvtows "bracketleft" "r-1")
+                (mvtows "bracketright" "r+1")
                 (resizeactive "up" "0 -20")
                 (resizeactive "down" "0 20")
                 (resizeactive "right" "20 0")
@@ -200,7 +192,7 @@ moduleWithSystem (
               ++ (map (i: mvtows (toString i) (toString i)) arr);
 
             bindle = let
-              e = "exec, ags -b hypr -r";
+              e = "exec, asztal -b hypr -r";
             in [
               ",XF86MonBrightnessUp,   ${e} 'brightness.screen += 0.05; indicator.display()'"
               ",XF86MonBrightnessDown, ${e} 'brightness.screen -= 0.05; indicator.display()'"
@@ -209,7 +201,7 @@ moduleWithSystem (
             ];
 
             bindl = let
-              e = "exec, ags -b hypr -r";
+              e = "exec, asztal -b hypr -r";
             in [
               ",XF86AudioPlay,    ${e} 'mpris?.playPause()'"
               ",XF86AudioStop,    ${e} 'mpris?.stop()'"
@@ -247,8 +239,8 @@ moduleWithSystem (
               "rounding 0, xwayland:1, floating:1"
               #don't touch: "fullscreen, forceinput, xwayland:1, class:^(league of legends.exe)$"
               #main apps
-              "workspace name:Terminal silent, class:^(Alacritty|org.wezfurlong.wezterm)$"
-              "workspace name:Web silent, class:^(vivaldi-stable|firefox)$"
+              "workspace 1 silent, class:^(Alacritty|org.wezfurlong.wezterm)$"
+              "workspace 2 silent, class:^(vivaldi-stable|firefox)$"
               #Tray apps in Sidepane
               "tile, title:^(Spotify)$"
               "workspace name:Sidepanel silent, title:^(Spotify)$"
@@ -256,16 +248,20 @@ moduleWithSystem (
               "workspace name:Sidepanel silent, title:^(.*(Discord|Vesktop).*)$"
             ];
 
-            workspace = [
-              "name:Terminal, rounding:false, decorate:false, border:false, monitor:DP-1, default:true"
-              "name:Sidepanel, monitor:DP-2, default:true"
-              "name:Web, rounding:false, decorate:false, monitor:DP-1"
-            ];
+            workspace = let
+              arr = [1 2 3 4 5 6 7 8 9];
+            in
+              [
+                "name:Sidepanel, monitor:DP-2, default:true"
+              ]
+              ++ (map (i: "${toString i}, monitor:DP-1") arr);
           };
         };
 
         systemd.user = {
-          sessionVariables = config.home.sessionVariables // {
+          sessionVariables =
+            config.home.sessionVariables
+            // {
               PATH =
                 "${config.home.homeDirectory}/.nix-profile/bin"
                 + ":${getBin pkgs.coreutils}/bin"
@@ -275,7 +271,7 @@ moduleWithSystem (
                 + ":/nix/var/nix/profiles/default/bin"
                 + ":/run/current-system/sw/bin"
                 + ":/home/mikilio/.local/share/bin";
-          };
+            };
 
           targets = {
             hyprland-session = {
