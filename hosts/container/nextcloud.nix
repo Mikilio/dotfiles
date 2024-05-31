@@ -3,36 +3,40 @@
   containers.nextcloud = {
     autoStart = true;
     privateNetwork = false;
-    macvlans = [ "enp3s0" ];
+    macvlans = ["enp3s0"];
     bindMounts = {
       tailscale = {
         isReadOnly = true;
-        hostPath =  config.sops.secrets.tailscale.path;
+        hostPath = config.sops.secrets.tailscale.path;
         mountPoint = "/run/secrets/tailscale";
       };
       adminpass = {
         isReadOnly = false;
-        hostPath =  config.sops.secrets.nextcloud_adminpass.path;
+        hostPath = config.sops.secrets.nextcloud_adminpass.path;
         mountPoint = "/run/secrets/adminpass";
       };
       dbpass = {
         isReadOnly = false;
-        hostPath =  config.sops.secrets.nextcloud_dbpass.path;
+        hostPath = config.sops.secrets.nextcloud_dbpass.path;
         mountPoint = "/run/secrets/dbpass";
       };
       ssl_crt = {
         isReadOnly = true;
-        hostPath =  config.sops.secrets.nextcloud_ssl_crt.path;
+        hostPath = config.sops.secrets.nextcloud_ssl_crt.path;
         mountPoint = "/run/secrets/ssl_crt";
       };
       ssl_key = {
         isReadOnly = true;
-        hostPath =  config.sops.secrets.nextcloud_ssl_key.path;
+        hostPath = config.sops.secrets.nextcloud_ssl_key.path;
         mountPoint = "/run/secrets/ssl_key";
       };
     };
-    config = { config, pkgs, lib, ... }: {
-
+    config = {
+      config,
+      pkgs,
+      lib,
+      ...
+    }: {
       services = {
         nextcloud = {
           enable = true;
@@ -57,7 +61,7 @@
             # Further forces Nextcloud to use HTTPS
             overwriteProtocol = "https";
 
-            trusted_domains = [ "nextcloud.batfish-vibe.ts.net" ];
+            trusted_domains = ["nextcloud.batfish-vibe.ts.net"];
           };
         };
         nginx.virtualHosts.${config.services.nextcloud.hostName} = {
@@ -69,15 +73,17 @@
           enable = true;
 
           # Ensure the database, user, and permissions always exist
-          ensureDatabases = [ "nextcloud" ];
-          ensureUsers = [{ 
+          ensureDatabases = ["nextcloud"];
+          ensureUsers = [
+            {
               name = "nextcloud";
               ensureDBOwnership = true;
               ensureClauses = {
                 createrole = true;
                 createdb = true;
               };
-          }];
+            }
+          ];
         };
 
         tailscale = {
@@ -92,9 +98,8 @@
         after = ["postgresql.service"];
       };
 
-
-      users.groups = lib.mkDefault (get_static_groups [ "nginx" "nextcloud"]);
-      users.users = lib.mkDefault (get_static_users [ "nginx" "nextcloud"]);
+      users.groups = lib.mkDefault (get_static_groups ["nginx" "nextcloud"]);
+      users.users = lib.mkDefault (get_static_users ["nginx" "nextcloud"]);
 
       system.stateVersion = "23.11";
 
@@ -106,7 +111,7 @@
         # };
         firewall = {
           enable = true;
-          allowedTCPPorts = [ 80 443 ];
+          allowedTCPPorts = [80 443];
         };
         # Use systemd-resolved inside the container
         # Workaround for bug https://github.com/NixOS/nixpkgs/issues/162686
@@ -127,10 +132,13 @@
       };
       services.resolved.enable = true;
 
-      environment.systemPackages = [ (pkgs.php.withExtensions ({ enabled, all }:
-        enabled ++ [ all.curl all.soap ]))
+      environment.systemPackages = [
+        (pkgs.php.withExtensions ({
+          enabled,
+          all,
+        }:
+          enabled ++ [all.curl all.soap]))
       ];
-
     };
   };
 }

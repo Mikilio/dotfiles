@@ -22,10 +22,8 @@ moduleWithSystem (
               pass-update
               pass-import
             ]);
-          settings = {
-            PASSWORD_STORE_ENABLE_EXTENSIONS = "true";
-          };
         };
+        programs.browserpass.enable = true;
         services.pass-secret-service = {
           enable = true;
         };

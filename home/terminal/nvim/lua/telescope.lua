@@ -63,7 +63,7 @@ local function telescope_setup()
                   'cli', 'send-text',
                   '--pane-id', vim.env.NVIM_BUILD_PANE_ID,
                   '--no-paste',
-                  'z ' .. selection.path .. '\n'
+                  'z ' .. selection.path .. '\n'
                 }, function(obj)
                   if obj.code ~= 0 then
                     vim.notify(
@@ -88,6 +88,7 @@ local function telescope_setup()
                 )
               end
               session.load_current_dir_session(true)
+              vim.cmd [[LspRestart]]
             end,
           },
           ["<c-b>"] = {

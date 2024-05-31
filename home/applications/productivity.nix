@@ -29,6 +29,9 @@ moduleWithSystem (
         # 3d modelling
         blender
 
+        #curcuits
+        kicad
+
         #vpn
         eduvpn-client
 
@@ -41,9 +44,11 @@ moduleWithSystem (
         #mumble
         mumble
 
-        xterm
+        #10xorganization
+        logseq
 
-        discord-canary
+
+        discord
         #matrix
         element-desktop
       ];

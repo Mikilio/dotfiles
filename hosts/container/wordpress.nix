@@ -1,6 +1,5 @@
-# WARNING: This file is generaly not usable as a module yet
 {
-  containers.murmur = {
+  containers.wordpress = {
     autoStart = true;
     privateNetwork = false;
     macvlans = ["enp3s0"];

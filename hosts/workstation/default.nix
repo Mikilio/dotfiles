@@ -3,11 +3,33 @@
   pkgs,
   lib,
   self,
+  inputs,
   self',
   inputs',
   ...
 } @ args: {
-  imports = [./hardware-configuration.nix ./secrets.nix];
+  imports = [
+    ./hardware-configuration.nix
+    ./secrets.nix
+    self.nixosModules.core
+    self.nixosModules.greetd
+    self.nixosModules.desktop
+    self.nixosModules.gamemode
+    self.nixosModules.nix
+    self.nixosModules.security
+    self.nixosModules.network
+    inputs.lanzaboote.nixosModules.lanzaboote
+    inputs.nixos-hardware.nixosModules.common-cpu-amd
+    inputs.nixos-hardware.nixosModules.common-cpu-amd-pstate
+    inputs.nixos-hardware.nixosModules.common-gpu-amd
+    inputs.nixos-hardware.nixosModules.common-pc
+    inputs.nixos-hardware.nixosModules.common-pc-ssd
+    inputs.nur.nixosModules.nur
+    inputs.hyprland.nixosModules.default
+    # inputs.kmonad.nixosModules.default
+    inputs.nix-gaming.nixosModules.pipewireLowLatency
+    inputs.sops-nix.nixosModules.default
+  ];
 
   boot = {
     initrd = {
@@ -51,18 +73,9 @@
 
     lanzaboote = {
       enable = true;
-      #currently breaks system
-      /*
-      enrollKeys = true;
-      */
+      # enrollKeys = true;
       configurationLimit = 10;
       pkiBundle = "/etc/secureboot";
-      settings = {
-        #currently breaks system
-        /*
-        password = "$__file{${config.sops.secrets.boot_pwd.path}}";
-        */
-      };
     };
 
     loader = {
@@ -128,15 +141,6 @@
       HandlePowerKey=suspend
     '';
 
-    # VPN's
-    openvpn.servers = {
-      uniVPN = {
-        config = builtins.readFile ./vpn-rbg-2.4-linux.ovpn;
-        autoStart = false;
-        updateResolvConf = true;
-      };
-    };
-
     # see https://github.com/fufexan/nix-gaming/#pipewire-low-latency
     pipewire.lowLatency.enable = true;
 
@@ -147,18 +151,26 @@
     hostName = "homestation";
     firewall = {
       allowedTCPPorts = [42355];
+      #mDNS
       allowedUDPPorts = [5353];
     };
+    #NOTE: created by: https://github.com/janik-haag/nm2nix
+    networkmanager.ensureProfiles.profiles = import ./nm.nix;
   };
 
   # virtualisation
   virtualisation.libvirtd.enable = true;
   programs.virt-manager.enable = true;
+  virtualisation.docker.enable = true;
+  virtualisation.docker.rootless = {
+    enable = true;
+    setSocketVariable = true;
+  };
 
   users.mutableUsers = false;
   users.users.mikilio = {
     isNormalUser = true;
     hashedPasswordFile = "${self.outPath}/secrets/hashes/mikilio.txt";
-    extraGroups = ["adbusers" "input" "libvirtd" "networkmanager" "plugdev" "keys" "transmission" "video" "i2c" "wheel"];
+    extraGroups = ["adbusers" "input" "libvirtd" "networkmanager" "plugdev" "keys" "transmission" "video" "i2c" "wheel" "docker"];
   };
 }

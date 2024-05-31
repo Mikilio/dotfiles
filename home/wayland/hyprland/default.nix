@@ -10,6 +10,8 @@ moduleWithSystem (
     ...
   }:
     with lib; let
+      #TODO: make this an actual Option that makes sense
+      legacy = true;
       environment = {
         GDK_BACKEND = "wayland,x11";
         QT_QPA_PLATFORM = "wayland;xcb";
@@ -67,9 +69,11 @@ moduleWithSystem (
               "hyprctl setcursor ${pointer.name} ${toString pointer.size}"
             ];
 
-            monitor = [
+            monitor = if legacy then [
               "DP-1, 2560x1440, 0x0, 1"
               "DP-2, 1920x1080, -1080x0, 1, transform, 1"
+            ] else [
+              "eDP-1, highrr, auto, auto"
             ];
 
             xwayland = {
@@ -118,7 +122,7 @@ moduleWithSystem (
 
             input = {
               # kb_file = "~/.config/xkb/eu.xkb";
-              kb_layout = "de";
+              kb_layout = "eu";
               accel_profile = "flat";
               float_switch_override_focus = 2;
             };
@@ -259,19 +263,18 @@ moduleWithSystem (
         };
 
         systemd.user = {
-          sessionVariables =
-            config.home.sessionVariables
-            // {
-              PATH =
-                "${config.home.homeDirectory}/.nix-profile/bin"
-                + ":${getBin pkgs.coreutils}/bin"
-                + ":/nix/profile/bin"
-                + ":${config.home.homeDirectory}/.local/state/nix/profile/bin"
-                + ":/etc/profiles/per-user/mikilio/bin"
-                + ":/nix/var/nix/profiles/default/bin"
-                + ":/run/current-system/sw/bin"
-                + ":/home/mikilio/.local/share/bin";
-            };
+          sessionVariables = config.home.sessionVariables;
+            # // {
+            #   PATH =
+            #     "${config.home.homeDirectory}/.nix-profile/bin"
+            #     + ":${getBin pkgs.coreutils}/bin"
+            #     + ":/nix/profile/bin"
+            #     + ":${config.home.homeDirectory}/.local/state/nix/profile/bin"
+            #     + ":/etc/profiles/per-user/mikilio/bin"
+            #     + ":/nix/var/nix/profiles/default/bin"
+            #     + ":/run/current-system/sw/bin"
+            #     + ":/home/mikilio/.local/share/bin";
+            # };
 
           targets = {
             hyprland-session = {
@@ -280,22 +283,22 @@ moduleWithSystem (
               };
             };
           };
-          services = {
-            xdg-desktop-portal-hyprland = {
-              Unit = {
-                Description = "Portal service (Hyprland implementation)";
-                ConditionEnvironment = "WAYLAND_DISPLAY";
-                PartOf = "graphical-session.target";
-              };
-              Service = {
-                Type = "dbus";
-                BusName = "org.freedesktop.impl.portal.desktop.hyprland";
-                ExecStart = "${pkgs.xdg-desktop-portal-hyprland}/libexec/xdg-desktop-portal-hyprland";
-                Restart = "on-failure";
-                Slice = "session.slice";
-              };
-            };
-          };
+          # services = {
+          #   xdg-desktop-portal-hyprland = {
+          #     Unit = {
+          #       Description = "Portal service (Hyprland implementation)";
+          #       ConditionEnvironment = "WAYLAND_DISPLAY";
+          #       PartOf = "graphical-session.target";
+          #     };
+          #     Service = {
+          #       Type = "dbus";
+          #       BusName = "org.freedesktop.impl.portal.desktop.hyprland";
+          #       ExecStart = "${pkgs.xdg-desktop-portal-hyprland}/libexec/xdg-desktop-portal-hyprland";
+          #       Restart = "on-failure";
+          #       Slice = "session.slice";
+          #     };
+          #   };
+          # };
         };
       };
     }
