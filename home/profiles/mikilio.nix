@@ -8,8 +8,8 @@
   ...
 }: {
   imports = with ezModules; [
-    spicetify media qt xdg sioyek
-    firefox gpg games gtk wezterm
+    spicetify media xdg sioyek
+    firefox gpg games theming wezterm
     productivity starship nushell git cli
     nvim yazi calendar ssh pass
     ags hyprland pipewire
@@ -19,7 +19,6 @@
     home = {
       username = "mikilio";
       homeDirectory = osConfig.users.users.mikilio.home;
-      stateVersion = "23.05";
       extraOutputsToInstall = ["doc" "devdoc"];
     };
 

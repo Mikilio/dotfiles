@@ -6,7 +6,7 @@
   ...
 }: {
   home.packages = with pkgs; [
-    inputs'.asztal.packages.default
+    inputs.asztal.packages.${stdenv.system}.default
   ];
 
   wayland.windowManager.hyprland.settings = {

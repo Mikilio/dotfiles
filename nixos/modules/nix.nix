@@ -22,9 +22,6 @@
     };
   };
 
-  # pickup pkgs from flake export
-  nixpkgs.pkgs = pkgs;
-
   # we need git for flakes
   environment.systemPackages = [pkgs.git];
 

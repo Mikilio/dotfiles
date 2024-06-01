@@ -12,7 +12,7 @@ in {
   config = {
     programs.helix = {
       enable = true;
-      package = inputs'helix.packages.default.overrideAttrs (self: {
+      package = inputs.helix.packages.${pkgs.stdenv.system}.default.overrideAttrs (self: {
         makeWrapperArgs = with pkgs;
           self.makeWrapperArgs
           or []

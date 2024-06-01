@@ -6,7 +6,7 @@
   ...
 }:
 with lib; let
-  spicePkgs = inputs'.spicetify-nix.packages.default;
+  spicePkgs = inputs.spicetify-nix.packages.${pkgs.stdenv.system}.default;
 in {
   imports = [
     inputs.spicetify-nix.homeManagerModule

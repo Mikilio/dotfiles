@@ -27,7 +27,7 @@
     fsType = "vfat";
   };
 
-  fileSystems."/mnt/games" = {
+  fileSystems."/home/mikilio" = {
     device = "/dev/disk/by-uuid/2d308033-73d4-4503-9649-bdb26aa66b3d";
     fsType = "ext4";
   };

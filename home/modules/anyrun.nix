@@ -13,7 +13,7 @@
     enable = true;
 
     config = {
-      plugins = with inputs'.anyrun.packages; [
+      plugins = with inputs.anyrun.${pkgs.stdenv.system}.packages; [
         applications
         randr
         rink
@@ -71,4 +71,3 @@
     '';
   };
 }
-)

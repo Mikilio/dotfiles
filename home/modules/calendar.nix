@@ -21,7 +21,7 @@ in {
       todoman = {
         enable = true;
         glob = "*/*";
-        config = ''
+        extraConfig = ''
           date_format = "%d.%m.%Y"
           time_format = "%H:%M"
           default_list = "private"

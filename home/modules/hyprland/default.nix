@@ -25,8 +25,6 @@ with lib; let
   };
 in {
   imports = [
-    inputs.hyprlock.homeManagerModules.default
-    inputs.hypridle.homeManagerModules.default
   ];
 
   config = {
@@ -37,7 +35,7 @@ in {
         xorg.xprop # get properties from XWayland
         xorg.xauth # to enable ssh Xforwarding
         wl-clipboard
-        inputs'.hyprland-contrib.packages.grimblast
+        inputs.hyprland-contrib.packages.${pkgs.stdenv.system}.grimblast
       ];
 
       file.".XCompose".source = ./XCompose;
@@ -49,7 +47,28 @@ in {
     };
 
     programs.hyprlock.enable = true;
-    services.hypridle.enable = true;
+    services.hypridle = {
+      enable = true;
+      settings = {
+        general = {
+          after_sleep_cmd = "hyprctl dispatch dpms on";
+          ignore_dbus_inhibit = false;
+          lock_cmd = "hyprlock";
+        };
+
+        listener = [
+        {
+          timeout = 900;
+          on-timeout = "hyprlock";
+        }
+        {
+          timeout = 1200;
+          on-timeout = "hyprctl dispatch dpms off";
+          on-resume = "hyprctl dispatch dpms on";
+        }
+        ];
+      };
+    };
 
     # enable hyprland
     wayland.windowManager.hyprland = {

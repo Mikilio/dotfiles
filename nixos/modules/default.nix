@@ -1,4 +1,27 @@
-{ lib, ... }: {
+{ lib, ezModules, ... }: {
+
+  imports = with ezModules; [
+    backlight
+    bluetooth
+    boot
+    dbus
+    fonts
+    fwupd
+    gaming
+    gnome-services
+    greetd
+    home-manager
+    hyprland
+    lanzaboote
+    nix
+    opengl
+    overlays
+    pipewire
+    security
+    spotify
+    tailscale
+  ];
+
   documentation.dev.enable = true;
 
   i18n = {

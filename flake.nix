@@ -7,13 +7,12 @@
 
       imports = [
         ./lib
-        ./overlays
         inputs.ez-configs.flakeModule
       ];
 
       ezConfigs = {
         root = ./.;
-        globalArgs = { inherit inputs; inherit (ezConfigs);};
+        globalArgs = { inherit inputs ezConfigs;};
         home = { 
           configurationsDirectory = "${ezConfigs.root}/home/profiles";
           modulesDirectory = "${ezConfigs.root}/home/modules";
@@ -24,11 +23,12 @@
         };
       };
 
-      perSystem = {
-        pkgs,
-        lib,
-        ...
-      }: {
+      perSystem = { pkgs, lib, system, ... }: {
+        
+        _module.args.pkgs = import inputs.nixpkgs {
+          inherit system;
+        };
+
         devShells.default = pkgs.devshell.mkShell {
           imports = [
             (pkgs.devshell.importTOML ./devshell.toml)
@@ -110,8 +110,6 @@
     };
 
     hyprland.url = "github:hyprwm/Hyprland";
-    hyprlock.url = "github:hyprwm/hyprlock";
-    hypridle.url = "github:hyprwm/hypridle";
 
     hyprland-contrib = {
       url = "github:hyprwm/contrib";
