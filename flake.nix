@@ -2,25 +2,33 @@
   description = "Mikilio's NixOS and Home-Manager flake";
 
   outputs = inputs:
-    inputs.flake-parts.lib.mkFlake {inherit inputs;} {
+    inputs.flake-parts.lib.mkFlake {inherit inputs;} rec {
       systems = ["x86_64-linux"];
 
       imports = [
-        ./home
-        ./hosts
         ./lib
         ./overlays
-        ./modules
+        inputs.ez-configs.flakeModule
       ];
+
+      ezConfigs = {
+        root = ./.;
+        globalArgs = { inherit inputs; inherit (ezConfigs);};
+        home = { 
+          configurationsDirectory = "${ezConfigs.root}/home/profiles";
+          modulesDirectory = "${ezConfigs.root}/home/modules";
+        };
+        nixos = {
+          configurationsDirectory = "${ezConfigs.root}/nixos/hosts";
+          modulesDirectory = "${ezConfigs.root}/nixos/modules";
+        };
+      };
 
       perSystem = {
         pkgs,
         lib,
         ...
       }: {
-        # store pkgs in output to reference it.
-        legacyPackages = pkgs;
-
         devShells.default = pkgs.devshell.mkShell {
           imports = [
             (pkgs.devshell.importTOML ./devshell.toml)
@@ -80,6 +88,8 @@
       inputs.rust-overlay.follows = "rust-overlay";
     };
 
+    ez-configs.url = "github:ehllie/ez-configs";
+
     flake-utils.url = "github:numtide/flake-utils";
 
     gBar = {
@@ -94,7 +104,7 @@
       inputs.rust-overlay.follows = "rust-overlay";
     };
 
-    hm = {
+    home-manager = {
       url = "github:Mikilio/home-manager/todoman";
       inputs.nixpkgs.follows = "nixpkgs";
     };
