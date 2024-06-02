@@ -1,75 +1,35 @@
-{
-  inputs,
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-with lib;
-# terminals
-let
-  inherit (theme.terminal) font size opacity;
-  inherit (theme) xcolors;
-in {
-  config = {
-    # home.sessionVariables.TERM = "alacritty";
-
-    programs.alacritty = {
-      enable = true;
-      settings = {
-        window = {
-          decorations = "none";
-          dynamic_padding = true;
-          opacity = opacity;
-          padding = {
-            x = 5;
-            y = 5;
-          };
-          startup_mode = "Maximized";
+{pkgs, ...}: {
+  programs.alacritty = {
+    enable = true;
+    settings = {
+      window = {
+        decorations = "none";
+        dynamic_padding = true;
+        padding = {
+          x = 5;
+          y = 5;
         };
-
-        scrolling.history = 10000;
-
-        font = {
-          normal.family = font;
-          bold.family = font;
-          italic.family = font;
-          inherit size;
-        };
-
-        draw_bold_text_with_bright_colors = true;
-        colors = rec {
-          primary = {
-            background = xcolors.crust;
-            foreground = xcolors.fg;
-          };
-          normal = {
-            inherit (xcolors) red green yellow blue;
-            black = xcolors.mantle;
-            magenta = xcolors.mauve;
-            cyan = xcolors.sky;
-            white = xcolors.text;
-          };
-          bright =
-            normal
-            // {
-              black = xcolors.base;
-              white = xcolors.rosewater;
-            };
-          key_bindings = [
-            {
-              key = "C";
-              mods = "Control|Shift";
-              chars = "\\x1b[99;5u";
-            }
-            {
-              key = "X";
-              mods = "Control|Shift";
-              chars = "\\x1b[120;5u";
-            }
-          ];
-        };
+        startup_mode = "Maximized";
       };
+
+      scrolling.history = 10000;
+
+      font = {
+        normal.family = "JetBrains Mono";
+        bold.family = "JetBrains Mono";
+        italic.family = "JetBrains Mono";
+        size = 10;
+      };
+
+      draw_bold_text_with_bright_colors = true;
+      window.opacity = 0.9;
+
+      imports = [
+        (pkgs.fetchurl {
+          url = "https://raw.githubusercontent.com/catppuccin/alacritty/3c808cbb4f9c87be43ba5241bc57373c793d2f17/catppuccin-mocha.yml";
+          hash = "sha256-28Tvtf8A/rx40J9PKXH6NL3h/OKfn3TQT1K9G8iWCkM=";
+        })
+      ];
     };
   };
 }
