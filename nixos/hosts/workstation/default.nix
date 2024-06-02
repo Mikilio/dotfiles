@@ -15,7 +15,7 @@
     inputs.nixos-hardware.nixosModules.common-pc-ssd
   ];
 
-  networking.hostName = "homestation";
+  networking.hostName = "workstation";
 
   # virtualisation
   virtualisation.libvirtd.enable = true;
@@ -29,7 +29,7 @@
   users.mutableUsers = false;
   users.users.mikilio = {
     isNormalUser = true;
-    hashedPasswordFile = config.sops.secrets.mikilio_pwd.path;
+    hashedPassword = "$y$j9T$nS7KbcfuhTZV.4glVxbK7.$/ug72ZEnXY1N4t/FK3R87vqvpa.3M68CxvTjNTm3zIA";
     extraGroups = ["adbusers" "input" "libvirtd" "networkmanager" "plugdev" "keys" "transmission" "video" "i2c" "wheel" "docker"];
   };
 }

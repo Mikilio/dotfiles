@@ -1,7 +1,5 @@
-
 {
   inputs,
-  config,
   lib,
   pkgs,
   ...
@@ -73,6 +71,8 @@ in {
             withOpenASAR = true;
             withVencord = true;
           };
+
+          flutter = prev.flutter319;
 
           vivaldi = prev.vivaldi.override {
             proprietaryCodecs = true;

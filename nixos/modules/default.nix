@@ -3,6 +3,7 @@
   imports = with ezModules; [
     bluetooth
     boot
+    client
     dbus
     fonts
     fwupd
@@ -44,6 +45,9 @@
       baseIndex = 1;
     };
   };
+
+  users.mutableUsers = false;
+  users.users.root.hashedPassword = "!";
 
   # don't touch this
   system.stateVersion = lib.mkDefault "23.11";

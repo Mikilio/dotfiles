@@ -4,7 +4,18 @@
   lib,
   pkgs,
   ...
-}: {
+}: let
+
+  hyprlandSessionFile =
+    (pkgs.writeTextDir "share/wayland-sessions/hyprland.desktop" ''
+      [Desktop Entry]
+      Name=Hyprland
+      Comment=A dynamic tiling Wayland compositor that doesn't sacrifice on its looks
+      Exec=${pkgs.hyprland}/bin/Hyprland
+      Type=Application
+    '').overrideAttrs (_: { passthru.providedSessions = [ "hyprland" ]; });
+
+in {
   #everything necessary to have hyprland work properly
   imports = [
     inputs.hyprland.nixosModules.default
@@ -42,4 +53,6 @@
 
     kdeconnect.enable = true;
   };
+
+  services.displayManager.sessionPackages = [ hyprlandSessionFile ];
 }

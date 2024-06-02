@@ -9,7 +9,7 @@
       noto-fonts-cjk
       noto-fonts-emoji
       roboto
-      (google-fonts.override {fonts = ["Inter"];})
+      get-google-fonts
 
       # monospace fonts
       jetbrains-mono

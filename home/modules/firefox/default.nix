@@ -1,11 +1,9 @@
 {
-  inputs,
   config,
-  lib,
   pkgs,
   ...
 }:
-with lib; let
+let
   autoConfig = builtins.readFile ./autoconfig.js;
 in {
   config = {
@@ -20,12 +18,13 @@ in {
       });
       profiles.Default = {
         extraConfig = builtins.readFile ./user.js;
+        userChrome = builtins.readFile ./userChrome.css;
         extensions = with config.nur.repos.rycee.firefox-addons; [
           tridactyl
           ublock-origin
           stylus
           firefox-color
-          keepassxc-browser
+          browserpass
           languagetool
           sidebery
           skip-redirect

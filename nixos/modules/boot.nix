@@ -1,12 +1,7 @@
 {
-  inputs,
-  config,
-  lib,
   pkgs,
   ...
-}:
-with lib; let
-in {
+}: {
   boot = {
     bootspec.enable = true;
 

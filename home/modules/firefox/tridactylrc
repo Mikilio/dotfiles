@@ -15,6 +15,9 @@ set editorcmd $HOME/.nix-profile/bin/vi
 set newtabfocus page
 set escapehatchsidebarhack false
 set hintchars tnseriaogmplfuwyqdhcbjvk
+set profiledir $HOME/.mozilla/firefox/Default
+
+guiset gui none
 
 """"""""""""
 "  Search  "

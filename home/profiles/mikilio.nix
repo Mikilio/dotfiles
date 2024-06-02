@@ -12,7 +12,7 @@
     firefox gpg games theming wezterm
     productivity starship nushell git cli
     nvim yazi calendar ssh pass
-    ags hyprland pipewire
+    ags hyprland pipewire foot
   ];
 
   config = {

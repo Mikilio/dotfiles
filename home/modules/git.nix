@@ -9,7 +9,7 @@ with lib; let
 in {
   config = {
     home.packages = [
-      pkgs.git-crypt
+      pkgs.gh
     ];
 
     programs.git = {

@@ -1,13 +1,11 @@
 {
   inputs,
   config,
+  osConfig,
   lib,
   pkgs,
   ...
-}:
-with lib; let
-  #TODO: make this an actual Option that makes sense
-  legacy = true;
+}: let
   environment = {
     GDK_BACKEND = "wayland,x11";
     QT_QPA_PLATFORM = "wayland;xcb";
@@ -31,10 +29,11 @@ in {
     home = {
       sessionVariables = environment;
 
-      packages = with pkgs; [
+      packages = (with pkgs; [
         xorg.xprop # get properties from XWayland
         xorg.xauth # to enable ssh Xforwarding
         wl-clipboard
+      ]) ++ [
         inputs.hyprland-contrib.packages.${pkgs.stdenv.system}.grimblast
       ];
 
@@ -43,7 +42,7 @@ in {
 
     xdg.configFile = {
       "Hyprland-xdg-terminals.list".text = "wezterm";
-      "xkb/eu.xkb".source = ./eu-custom.xkb;
+      "xkb/eu.xkb".source = ./eu-colemak-hp.xkb;
     };
 
     programs.hyprlock.enable = true;
@@ -73,23 +72,22 @@ in {
     # enable hyprland
     wayland.windowManager.hyprland = {
       enable = true;
+      systemd = {
+        enableXdgAutostart = true;
+        variables = [
+          "--all"
+        ];
+      };
+
 
       settings = let
         pointer = config.home.pointerCursor;
-        home = config.home.homeDirectory;
-        terminal = config.home.sessionVariables.TERM;
-        launcher = "anyrun";
       in {
         exec-once = [
           "hyprctl setcursor ${pointer.name} ${toString pointer.size}"
         ];
 
-        monitor = if legacy then [
-          "DP-1, 2560x1440, 0x0, 1"
-          "DP-2, 1920x1080, -1080x0, 1, transform, 1"
-        ] else [
-          "eDP-1, highrr, auto, auto"
-        ];
+        monitor = [ ", highrr, auto, 1" ];
 
         xwayland = {
           force_zero_scaling = true;
@@ -136,8 +134,7 @@ in {
         };
 
         input = {
-          # kb_file = "~/.config/xkb/eu.xkb";
-          kb_layout = "eu";
+          kb_file = "~/.config/xkb/eu.xkb";
           accel_profile = "flat";
           float_switch_override_focus = 2;
         };
@@ -172,7 +169,7 @@ in {
             "SUPER, Tab,    ${e} -t overview"
 
             # youtube
-            ", F9,  exec, ${getExe play}"
+            ", F9,  exec, ${lib.getExe play}"
             ", F1, ${e} -r 'color.pick()'"
             ",Print,         exec, aszetal -r 'recorder.screenshot()'"
             "SHIFT,Print,    exec, aszetal -r 'recorder.screenshot(true)'"
@@ -210,24 +207,20 @@ in {
           ++ (map (i: ws (toString i) (toString i)) arr)
           ++ (map (i: mvtows (toString i) (toString i)) arr);
 
-        bindle = let
-          e = "exec, asztal -b hypr -r";
-        in [
-          ",XF86MonBrightnessUp,   ${e} 'brightness.screen += 0.05; indicator.display()'"
-          ",XF86MonBrightnessDown, ${e} 'brightness.screen -= 0.05; indicator.display()'"
-          ",XF86AudioRaiseVolume,  ${e} 'audio.speaker.volume += 0.05; indicator.speaker()'"
-          ",XF86AudioLowerVolume,  ${e} 'audio.speaker.volume -= 0.05; indicator.speaker()'"
+        bindle = [
+          ",XF86MonBrightnessUp,   exec, ${ lib.getExe pkgs.brightnessctl} set +5%"
+          ",XF86MonBrightnessDown, exec, ${ lib.getExe pkgs.brightnessctl} set  5%-"
+          ",XF86AudioRaiseVolume,  exec, ${ pkgs.pulseaudio.outPath }/bin/pactl set-sink-volume @DEFAULT_SINK@ +5%"
+          ",XF86AudioLowerVolume,  exec, ${ pkgs.pulseaudio.outPath }/bin/pactl set-sink-volume @DEFAULT_SINK@ -5%"
         ];
 
-        bindl = let
-          e = "exec, asztal -b hypr -r";
-        in [
-          ",XF86AudioPlay,    ${e} 'mpris?.playPause()'"
-          ",XF86AudioStop,    ${e} 'mpris?.stop()'"
-          ",XF86AudioPause,   ${e} 'mpris?.pause()'"
-          ",XF86AudioPrev,    ${e} 'mpris?.previous()'"
-          ",XF86AudioNext,    ${e} 'mpris?.next()'"
-          ",XF86AudioMicMute, ${e} 'audio.microphone.isMuted = !audio.microphone.isMuted'"
+        bindl = [
+          ",XF86AudioPlay,    exec, ${ lib.getExe pkgs.playerctl} play-pause"
+          ",XF86AudioStop,    exec, ${ lib.getExe pkgs.playerctl} pause"
+          ",XF86AudioPause,   exec, ${ lib.getExe pkgs.playerctl} pause"
+          ",XF86AudioPrev,    exec, ${ lib.getExe pkgs.playerctl} previous"
+          ",XF86AudioNext,    exec, ${ lib.getExe pkgs.playerctl} next"
+          ",XF86AudioMicMute, exec, ${ pkgs.pulseaudio.outPath }/bin/pactl set-source-mute @DEFAULT_SOURCE@ toggle"
         ];
 
         bindm = [
@@ -241,79 +234,19 @@ in {
           "tile,class:^(org.wezfurlong.wezterm)$"
           #optimization
           "noshadow, floating:0"
-          #Keepassxc
-          "float, class:^(org.keepassxc.KeePassXC)$"
-          "pin, class:^(org.keepassxc.KeePassXC)$"
           #xwaylandvideobridge
           "opacity 0.0 override 0.0 override,class:^(xwaylandvideobridge)$"
           "noanim,class:^(xwaylandvideobridge)$"
           "nofocus,class:^(xwaylandvideobridge)$"
           "noinitialfocus,class:^(xwaylandvideobridge)$"
-          #OBS preview
-          "workspace name:󰹑  silent, title:^(Windowed Projector \\(Preview\\))$"
-          "monitor DP-1, title:^(Windowed Projector \\(Preview\\))$"
-          "float, title:^(Windowed Projector \\(Preview\\))$"
-          "size 1920 1080, title:^(Windowed Projector \\(Preview\\))$"
           # fix xwayland apps
           "rounding 0, xwayland:1, floating:1"
           #don't touch: "fullscreen, forceinput, xwayland:1, class:^(league of legends.exe)$"
           #main apps
           "workspace 1 silent, class:^(Alacritty|org.wezfurlong.wezterm)$"
           "workspace 2 silent, class:^(vivaldi-stable|firefox)$"
-          #Tray apps in Sidepane
-          "tile, title:^(Spotify)$"
-          "workspace name:Sidepanel silent, title:^(Spotify)$"
-          "workspace name:Sidepanel silent, class:^org.telegram.desktop$"
-          "workspace name:Sidepanel silent, title:^(.*(Discord|Vesktop).*)$"
         ];
-
-        workspace = let
-          arr = [1 2 3 4 5 6 7 8 9];
-        in
-          [
-            "name:Sidepanel, monitor:DP-2, default:true"
-          ]
-          ++ (map (i: "${toString i}, monitor:DP-1") arr);
       };
-    };
-
-    systemd.user = {
-      sessionVariables = config.home.sessionVariables;
-        # // {
-        #   PATH =
-        #     "${config.home.homeDirectory}/.nix-profile/bin"
-        #     + ":${getBin pkgs.coreutils}/bin"
-        #     + ":/nix/profile/bin"
-        #     + ":${config.home.homeDirectory}/.local/state/nix/profile/bin"
-        #     + ":/etc/profiles/per-user/mikilio/bin"
-        #     + ":/nix/var/nix/profiles/default/bin"
-        #     + ":/run/current-system/sw/bin"
-        #     + ":/home/mikilio/.local/share/bin";
-        # };
-
-      targets = {
-        hyprland-session = {
-          Unit = {
-            Wants = ["xdg-desktop-autostart.target"];
-          };
-        };
-      };
-      # services = {
-      #   xdg-desktop-portal-hyprland = {
-      #     Unit = {
-      #       Description = "Portal service (Hyprland implementation)";
-      #       ConditionEnvironment = "WAYLAND_DISPLAY";
-      #       PartOf = "graphical-session.target";
-      #     };
-      #     Service = {
-      #       Type = "dbus";
-      #       BusName = "org.freedesktop.impl.portal.desktop.hyprland";
-      #       ExecStart = "${pkgs.xdg-desktop-portal-hyprland}/libexec/xdg-desktop-portal-hyprland";
-      #       Restart = "on-failure";
-      #       Slice = "session.slice";
-      #     };
-      #   };
-      # };
     };
   };
 }

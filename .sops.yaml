@@ -2,6 +2,8 @@ keys:
   - &mikilio 8DEC84C05F9265106655E6ABA23A2000CCD4604B
   - &workstation age1w2dzk2a9ccrgjk4hxa539xu2mm53yjps4ll9rfdqenytr3a2epjqvwcs60
   - &homeserver age1cf48ggh87r9gy3r03l8mjp5gyd5v8r53c543u59mnuq8lctmlspsvs5uyu
+  - &elitebook age1rr50xgnm3s0w956vgtu5qjjtxf9nke48wmxuh287eamv2ym03v0sla6hhz
+
 creation_rules:
   #----------------Users--------------------------
   - path_regex: secrets/user/mikilio.yaml
@@ -23,6 +25,8 @@ creation_rules:
       - *mikilio
   - path_regex: secrets/hosts/elitebook.yaml
     key_groups:
-    - pgp:
+    - age:
+      - *elitebook
+      pgp:
       - *mikilio
 
