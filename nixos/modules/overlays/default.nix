@@ -37,8 +37,6 @@ in {
     };
 
     overlays = [
-      #enable devshell
-      inputs.devshell.overlays.default
       inputs.rust-overlay.overlays.default
       inputs.sops-nix.overlays.default
 
@@ -80,6 +78,8 @@ in {
             proprietaryCodecs = true;
             enableWidevine = true;
           };
+
+          xdg-desktop-portal-hyprland = stable.xdg-desktop-portal-hyprland;
 
           yazi = inputs.yazi.packages.${pkgs.stdenv.system}.default.overrideAttrs (o: {
             patches =

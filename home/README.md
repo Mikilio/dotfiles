@@ -1,15 +1,44 @@
-# Home config
+Home config
 
 Home-Manager configurations for different hosts.
 
+<!-- TODO: add description -->
 Name            | Description
 --------------- | -----------
-`default.nix`   | Home-Manager specific configuration
-`editors`       | Helix & Neovim
-`programs`      | Programs
-`shell`         | Zsh, Nix options, etc.
-`terminals`     | Terminal configs
-`wayland`       | Wayland-specific options, including Sway and Waybar configs
-
-`profiles` is a special dir where `homeConfigurations` are set up. They're
-basically the entrypoints of the configs.
+`ags`           | 
+`alacritty`     | 
+`anyrun`        | 
+`brave`         | 
+`calendar`      | 
+`cli`           | 
+`dunst`         |
+`firefox        |
+`foot`          |
+`games`         |
+`gbar`          |
+`git`           |
+`gpg`           |
+`helix          |
+`hyprland       |
+`keepassxc`     |
+`kitty`         |
+`media`         |
+`nushell        |
+`nvim           |
+`pandoc         |
+`pass`          |
+`pipewire       |
+`productivity.  |
+`sioyek`        |
+`spicetify`     |
+`ssh            |
+`starship`      |
+`syncthing`     |
+`theming`       |
+`vivaldi`       |
+`waybar         |
+`wezterm        |
+`xdg`           |
+`yazi`          |
+`zathura`       |
+`zsh`           |

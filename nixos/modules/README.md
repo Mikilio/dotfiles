@@ -1,12 +1,38 @@
 # System
 
 Common configuration files shared across hosts.
+<!-- TODO: make description -->
 
-| Name          | Description                                            |
-| ------------- | ------------------------------------------------------ |
-| `default.nix` | Flake-parts module, entry point                        |
-| core          | Core configurations, including boot, security          |
-| hardware      | Controls hardware, such as Bluetooth, video cards, etc |
-| network       | Network-related software configuration                 |
-| programs      | `programs.*` configuration                             |
-| services      | `services.*` configurtaion                             |
+| Name              |Description                                            
+| ----------------- | ------------------------------------------------------ 
+| `backlight`       |
+| `bluetooth`       |
+| `boot`            |
+| `client`          |
+| `dbus`            |
+| `default`         |
+| `fonts`           |
+| `fwupd`           |
+| `gaming`          |
+| `gnome-services`  |
+| `greetd`          |
+| `greetd_fufexan`  |
+| `home-manager`    |
+| `hyprland`        |
+| `lanzaboote`      |
+| `location`        |
+| `nix`             |
+| `opengl`          |
+| `overlays`        |
+| `pipewire`        |
+| `power`           |
+| `security`        |
+| `spotify`         |
+| `syncthing`       |
+| `tailscale`       |
+                     
+ 
+ 
+ 
+
+

@@ -2,7 +2,6 @@
   lib,
   pkgs,
   config,
-  theme,
   ...
 }:
 # greetd display manager
@@ -26,10 +25,10 @@ in {
   programs.regreet = {
     enable = true;
     settings = {
-      background = {
-        path = theme.wallpaper;
-        fit = "Cover";
-      };
+      # background = {
+      #   path = theme.wallpaper;
+      #   fit = "Cover";
+      # };
       GTK = {
         cursor_theme_name = "Bibata-Modern-Classic";
         font_name = "Lexend 12";

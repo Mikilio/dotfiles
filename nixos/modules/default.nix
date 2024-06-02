@@ -1,7 +1,6 @@
 { lib, ezModules, ... }: {
 
   imports = with ezModules; [
-    backlight
     bluetooth
     boot
     dbus

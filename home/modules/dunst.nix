@@ -3,7 +3,6 @@
   config,
   lib,
   pkgs,
-  theme,
   ...
 }: {
   # notification daemon
@@ -41,21 +40,6 @@
 
       fullscreen_delay_everything = {fullscreen = "delay";};
 
-      urgency_critical = {
-        background = theme.xcolors.bg;
-        foreground = theme.xcolors.fg;
-        frame_color = theme.xcolors.red;
-      };
-      urgency_low = {
-        background = theme.xcolors.bg;
-        foreground = theme.xcolors.fg;
-        frame_color = theme.xcolors.blue;
-      };
-      urgency_normal = {
-        background = theme.xcolors.bg;
-        foreground = theme.xcolors.fg;
-        frame_color = theme.xcolors.green;
-      };
     };
   };
 }

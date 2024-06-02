@@ -66,9 +66,13 @@
     defaults.email = "official.mikilio+sec@gmail.com";
   };
 
+  # smart card deamon
+  services.pcscd.enable = true;
+
   environment = {
     systemPackages = [
       inputs.sops-nix.packages.${pkgs.stdenv.system}.default
+      pkgs.pcscliteWithPolkit
     ];
   };
 }

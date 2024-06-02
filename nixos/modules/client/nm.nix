@@ -1,23 +1,4 @@
 {
-  Etehrnet = {
-    connection = {
-      autoconnect-priority = "-999";
-      id = "default";
-      interface-name = "enp5s0";
-      timestamp = "1716561343";
-      type = "ethernet";
-      uuid = "82b60bc5-408a-3e77-9917-1c085cfff5ca";
-    };
-    ethernet = { };
-    ipv4 = {
-      method = "auto";
-    };
-    ipv6 = {
-      addr-gen-mode = "stable-privacy";
-      method = "auto";
-    };
-    proxy = { };
-  };
   TUM = {
     connection = {
       id = "university";

@@ -29,6 +29,7 @@
   users.mutableUsers = false;
   users.users.mikilio = {
     isNormalUser = true;
+    hashedPasswordFile = config.sops.secrets.mikilio_pwd.path;
     extraGroups = ["adbusers" "input" "libvirtd" "networkmanager" "plugdev" "keys" "transmission" "video" "i2c" "wheel" "docker"];
   };
 }

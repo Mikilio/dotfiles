@@ -6,7 +6,6 @@
       systems = ["x86_64-linux"];
 
       imports = [
-        ./lib
         inputs.ez-configs.flakeModule
       ];
 
@@ -27,12 +26,6 @@
         
         _module.args.pkgs = import inputs.nixpkgs {
           inherit system;
-        };
-
-        devShells.default = pkgs.devshell.mkShell {
-          imports = [
-            (pkgs.devshell.importTOML ./devshell.toml)
-          ];
         };
 
         formatter = pkgs.alejandra;
@@ -74,7 +67,6 @@
       flake = false;
     };
 
-    devshell.url = "github:numtide/devshell";
     devenv.url = "github:cachix/devenv";
 
     disko = {
@@ -109,7 +101,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    hyprland.url = "github:hyprwm/Hyprland";
+    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
 
     hyprland-contrib = {
       url = "github:hyprwm/contrib";
