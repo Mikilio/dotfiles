@@ -87,7 +87,7 @@ in {
           "hyprctl setcursor ${pointer.name} ${toString pointer.size}"
         ];
 
-        monitor = [ ", highrr, auto, 1" ];
+        monitor = [ ",preferred, auto, 1" ];
 
         xwayland = {
           force_zero_scaling = true;
@@ -104,20 +104,22 @@ in {
         };
 
         decoration = {
+          drop_shadow = "yes";
           shadow_range = 8;
           shadow_render_power = 2;
           "col.shadow" = "rgba(00000044)";
 
-          inactive_opacity = 0.8;
-          dim_inactive = true;
+          dim_inactive = false;
 
           blur = {
             enabled = true;
             size = 8;
             passes = 3;
+            new_optimizations = "on";
             noise = 0.01;
             contrast = 0.9;
             brightness = 0.8;
+            popups = true;
           };
         };
 
@@ -133,8 +135,11 @@ in {
           ];
         };
 
-        input = {
+        input = (if osConfig.networking.hostName == "elitebook" then {
           kb_file = "~/.config/xkb/eu.xkb";
+        } else {
+          kb_layout = "eu";
+        }) // {
           accel_profile = "flat";
           float_switch_override_focus = 2;
         };
@@ -228,6 +233,23 @@ in {
           "SUPER, mouse:272, movewindow"
         ];
 
+        windowrule = let
+          f = regex: "float, ^(${regex})$";
+        in [
+          (f "org.gnome.Calculator")
+          (f "org.gnome.Nautilus")
+          (f "pavucontrol")
+          (f "nm-connection-editor")
+          (f "blueberry.py")
+          (f "org.gnome.Settings")
+          (f "org.gnome.design.Palette")
+          (f "Color Picker")
+          (f "xdg-desktop-portal")
+          (f "xdg-desktop-portal-gnome")
+          (f "transmission-gtk")
+          (f "com.github.Aylur.ags")
+        ];
+
         windowrulev2 = [
           #weird wezterm workaround
           "float,class:^(org.wezfurlong.wezterm)$"
@@ -245,6 +267,15 @@ in {
           #main apps
           "workspace 1 silent, class:^(Alacritty|org.wezfurlong.wezterm)$"
           "workspace 2 silent, class:^(vivaldi-stable|firefox)$"
+          # make picture in picture a nice pinned window
+          "keepaspectratio,class:^(firefox)$,title:^(Picture-in-Picture)$"
+          "noborder,class:^(firefox)$,title:^(Picture-in-Picture)$"
+          "fakefullscreen,class:^(firefox)$,title:^(Firefox)$"
+          "fakefullscreen,class:^(firefox)$,title:^(Picture-in-Picture)$"
+          "pin,class:^(firefox)$,title:^(Firefox)$"
+          "pin,class:^(firefox)$,title:^(Picture-in-Picture)$"
+          "float,class:^(firefox)$,title:^(Firefox)$"
+          "float,class:^(firefox)$,title:^(Picture-in-Picture)$"
         ];
       };
     };

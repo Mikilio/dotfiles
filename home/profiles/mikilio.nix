@@ -12,7 +12,7 @@
     firefox gpg games theming wezterm
     productivity starship nushell git cli
     nvim yazi calendar ssh pass
-    ags hyprland pipewire foot
+    ags hyprland pipewire foot syncthing
   ];
 
   config = {
@@ -41,6 +41,7 @@
           google-git = {};
           spotify_pwd.key = "spotify/pwd";
           spotify_usr.key = "spotify/usr";
+          syncthing-gui = {};
           keepassxc = {};
           nextcloud = {};
         };

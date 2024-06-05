@@ -6,10 +6,6 @@
   ...
 }: {
 
-  imports = [
-    inputs.nur.nixosModules.nur
-  ];
-
   # nh default flake
   environment.variables.FLAKE = "/home/mihai/Documents/code/dotfiles";
 

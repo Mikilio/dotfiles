@@ -1,6 +1,6 @@
-{ lib, ezModules, ... }: {
+{ lib, inputs, ezModules, ... }: {
 
-  imports = with ezModules; [
+  imports = (with ezModules; [
     bluetooth
     boot
     client
@@ -19,7 +19,10 @@
     pipewire
     security
     spotify
+    syncthing
     tailscale
+  ]) ++ [
+    inputs.nur.nixosModules.nur
   ];
 
   documentation.dev.enable = true;
