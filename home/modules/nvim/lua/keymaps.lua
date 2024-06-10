@@ -8,23 +8,40 @@ local function wk_setup()
     },
   })
   wk.register({
+    ['j'] = { 'h', "hjkl remap" },
+    ['k'] = { 'j', "hjkl remap" },
+    ['l'] = { 'k', "hjkl remap" },
+    ['h'] = { 'l', "hjkl remap" },
+
     -- Better window control --
     ['<A-Left>'] = { require('smart-splits').resize_left, "which_key_ignore" },
     ['<A-Down>'] = { require('smart-splits').resize_down, "which_key_ignore" },
     ['<A-Up>'] = { require('smart-splits').resize_up, "which_key_ignore" },
     ['<A-Right>'] = { require('smart-splits').resize_right, "which_key_ignore" },
+    ['<A-j>'] = { require('smart-splits').resize_left, "which_key_ignore" },
+    ['<A-k>'] = { require('smart-splits').resize_down, "which_key_ignore" },
+    ['<A-l>'] = { require('smart-splits').resize_up, "which_key_ignore" },
+    ['<A-h>'] = { require('smart-splits').resize_right, "which_key_ignore" },
 
     -- moving between splits
     ['<C-Left>'] = { require('smart-splits').move_cursor_left, "which_key_ignore" },
     ['<C-Down>'] = { require('smart-splits').move_cursor_down, "which_key_ignore" },
     ['<C-Up>'] = { require('smart-splits').move_cursor_up, "which_key_ignore" },
     ['<C-Right>'] = { require('smart-splits').move_cursor_right, "which_key_ignore" },
+    ['<C-j>'] = { require('smart-splits').move_cursor_left, "which_key_ignore" },
+    ['<C-k>'] = { require('smart-splits').move_cursor_down, "which_key_ignore" },
+    ['<C-l>'] = { require('smart-splits').move_cursor_up, "which_key_ignore" },
+    ['<C-h>'] = { require('smart-splits').move_cursor_right, "which_key_ignore" },
 
     -- moving between splits
     ['<C-S-Left>'] = { '<C-W>H', "which_key_ignore" },
     ['<C-S-Down>'] = { '<C-W>J', "which_key_ignore" },
     ['<C-S-Up>'] = { '<C-W>K', "which_key_ignore" },
     ['<C-S-Right>'] = { '<C-W>L', "which_key_ignore" },
+    ['<C-S-j>'] = { '<C-W>H', "which_key_ignore" },
+    ['<C-S-k>'] = { '<C-W>J', "which_key_ignore" },
+    ['<C-S-l>'] = { '<C-W>K', "which_key_ignore" },
+    ['<C-S-h>'] = { '<C-W>L', "which_key_ignore" },
 
     -- splitting windows
     s = {
@@ -33,6 +50,10 @@ local function wk_setup()
       ['<Up>'] = { ":set nosplitbelow<CR>:split<CR>", "New Window up" },
       ['<Left>'] = { ":set nosplitright<CR>:vsplit<CR>", "New Window left" },
       ['<Right>'] = { ":set splitright<CR>:vsplit<CR>", "New Window right" },
+      ['k'] = { ":set splitbelow<CR>:split<CR>", "New Window down" },
+      ['l'] = { ":set nosplitbelow<CR>:split<CR>", "New Window up" },
+      ['j'] = { ":set nosplitright<CR>:vsplit<CR>", "New Window left" },
+      ['h'] = { ":set splitright<CR>:vsplit<CR>", "New Window right" },
       ['='] = { "<C-w>=", "Adjust window size" },
       x = { ":close<CR>", "Close current window" }
     },
@@ -51,7 +72,7 @@ local function wk_setup()
     T = "which_key_ignore",
 
     -- netrw
-    ['<leader>ex'] = { ":Explore<CR>", "netrw"},
+    ['<leader>ex'] = { ":Explore<CR>", "netrw" },
 
   })
 

@@ -78,9 +78,6 @@ local function flash_setup()
     return map
   end
 
-  require('which-key').register(get_map { 'l', 'R' }, { mode = 'x' })
-  require('which-key').register(get_map { 'l', 'r', 'R' }, { mode = 'o' })
-  require('which-key').register(get_map { 'l' }, { mode = 'n' })
   require('which-key').register(get_map { '<c-l>' }, { mode = 'c' })
 end
 

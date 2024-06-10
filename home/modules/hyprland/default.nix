@@ -42,7 +42,8 @@ in {
 
     xdg.configFile = {
       "Hyprland-xdg-terminals.list".text = "wezterm";
-      "xkb/eu.xkb".source = ./eu-colemak-hp.xkb;
+      "xkb/eu-iso.xkb".source = ./eu-colemak-iso.xkb;
+      "xkb/eu-ansi.xkb".source = ./eu-colemak-ansi.xkb;
     };
 
     programs.hyprlock  = {
@@ -162,12 +163,18 @@ in {
         };
 
         input = (if osConfig.networking.hostName == "elitebook" then {
-          kb_file = "~/.config/xkb/eu.xkb";
+          kb_file = "~/.config/xkb/eu-iso.xkb";
         } else {
           kb_layout = "eu";
         }) // {
           accel_profile = "flat";
           float_switch_override_focus = 2;
+        };
+
+        device = {
+          name = "semico---usb-gaming-keyboard-";
+          kb_file = "~/.config/xkb/eu-ansi.xkb";
+          resolve_binds_by_sym = 1;
         };
 
         misc = {

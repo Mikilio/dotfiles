@@ -12,6 +12,10 @@ local direction_keys = {
   DownArrow  = 'Down',
   UpArrow    = 'Up',
   RightArrow = 'Right',
+  j          = 'Left',
+  k          = 'Down',
+  l          = 'Up',
+  h          = 'Right',
 }
 
 local function split_nav(resize_or_move, key)
@@ -159,11 +163,19 @@ config.keys = {
   split_nav('move', 'DownArrow'),
   split_nav('move', 'UpArrow'),
   split_nav('move', 'RightArrow'),
+  split_nav('move', 'j'),
+  split_nav('move', 'k'),
+  split_nav('move', 'l'),
+  split_nav('move', 'h'),
   -- resize panes
   split_nav('resize', 'LeftArrow'),
   split_nav('resize', 'DownArrow'),
   split_nav('resize', 'UpArrow'),
   split_nav('resize', 'RightArrow'),
+  split_nav('move', 'j'),
+  split_nav('move', 'k'),
+  split_nav('move', 'l'),
+  split_nav('move', 'h'),
   { key = "x",     mods = "LEADER",                   action = act.CloseCurrentPane { confirm = true } },
   { key = "Space", mods = "LEADER",                   action = act.RotatePanes 'Clockwise' },
 
