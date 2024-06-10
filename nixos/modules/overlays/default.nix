@@ -4,7 +4,7 @@
   pkgs,
   ...
 }:
-with inputs.nixpkgs.lib; let
+let
 
       latest =  import inputs.nixpkgs {
         inherit (pkgs.stdenv) system;
@@ -29,14 +29,18 @@ in {
             "tampermonkey*"
             "wikiwand.*"
             "discord.*"
+            "teams"
           ]
         );
       permittedInsecurePackages = [];
+      allowUnsupportedSystem  = true;
+
     };
 
     overlays = [
       inputs.rust-overlay.overlays.default
       inputs.sops-nix.overlays.default
+      inputs.hyprlock.overlays.default
 
       #nur overlays
       #WARNING:my nur is broken
@@ -58,7 +62,7 @@ in {
           };
 
           lutris = prev.lutris.override {
-            extraPkgs = p: with p; [];
+            extraPkgs = p: [];
             extraLibraries = p:
               with p; [
                 jansson
@@ -66,7 +70,7 @@ in {
               ];
           };
 
-          discord-canary = prev.discord-canary.override {
+          discord = prev.discord-canary.override {
             nss = prev.nss_latest;
             withOpenASAR = true;
             withVencord = true;

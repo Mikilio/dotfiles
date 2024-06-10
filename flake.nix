@@ -102,6 +102,7 @@
     };
 
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+    hyprlock.url = "git+https://github.com/hyprwm/hyprlock";
 
     hyprland-contrib = {
       url = "github:hyprwm/contrib";

@@ -43,8 +43,10 @@ in {
       #10xorganization
       logseq
 
+      #need it for work
+      vesktop
+      teams
 
-      discord
       #matrix
       element-desktop
     ];

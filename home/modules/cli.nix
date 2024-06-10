@@ -32,6 +32,7 @@ in {
     config.nur.repos.mikilio.xdg-terminal-exec
 
     #nix
+    sops
     alejandra
     deadnix
     statix

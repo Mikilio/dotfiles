@@ -22,7 +22,13 @@ in {
       extraOptions = [
         "--gui-apikey=${config.sops.secrets.syncthing-gui.path}"
       ];
-      tray.enable = true;
+    # this service is bad
+    #   tray = {
+    #     enable = true;
+    #     command = "syncthingtray --wait";
+    #   };
     };
+
+    home.packages = [ pkgs.syncthingtray-minimal];
   };
 }

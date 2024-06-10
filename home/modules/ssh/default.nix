@@ -19,6 +19,9 @@ in {
       };
     };
 
-    extraConfig = "XAuthLocation ${pkgs.xorg.xauth}/bin/xauth";
+    extraConfig = ''
+      XAuthLocation ${pkgs.xorg.xauth}/bin/xauth
+      KexAlgorithms curve25519-sha256
+    '';
   };
 }

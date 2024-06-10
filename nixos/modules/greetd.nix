@@ -43,15 +43,31 @@ in {
     command = "${lib.getExe pkgs.cage} -s -- ${greeter}";
   };
 
+  services.udev.extraRules = ''
+      ACTION=="remove",\
+       ENV{ID_BUS}=="usb",\
+       ENV{ID_MODEL_ID}=="0407",\
+       ENV{ID_VENDOR_ID}=="1050",\
+       ENV{ID_VENDOR}=="Yubico",\
+       RUN+="${pkgs.systemd}/bin/loginctl lock-sessions"
+      ACTION=="add",\
+       ENV{ID_BUS}=="usb",\
+       ENV{ID_MODEL_ID}=="0407",\
+       ENV{ID_VENDOR_ID}=="1050",\
+       ENV{ID_VENDOR}=="Yubico",\
+       RUN+="${pkgs.systemd}/bin/loginctl unlock-sessions"
+  '';
+
   # unlock GPG keyring on login
   security.pam = {
     u2f = {
       enable = true;
       cue = true;
-      authFile = config.sops.secrets.u2f_mappings.path;
     };
     services = {
       login.u2fAuth = true;
+      sudo.u2fAuth = true;
+      hyprlock.u2fAuth = true;
     };
   };
 }
