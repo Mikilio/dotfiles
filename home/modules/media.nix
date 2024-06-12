@@ -26,11 +26,11 @@ in {
     ];
 
     programs = {
-      mpv = {
-        enable = true;
-        defaultProfiles = ["gpu-hq"];
-        scripts = [pkgs.mpvScripts.mpris];
-      };
+      # mpv = {
+      #   enable = true;
+      #   defaultProfiles = ["gpu-hq"];
+      #   scripts = [pkgs.mpvScripts.mpris];
+      # };
 
       imv.enable = true;
 

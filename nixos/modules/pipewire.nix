@@ -1,5 +1,11 @@
-{ lib, ... }:
+{ lib, config, ... }:
 {
+  
+  boot.extraModulePackages = with config.boot.kernelPackages; [
+    v4l2loopback.out
+  ];
+  boot.kernelModules = ["v4l2loopback"];
+
   services.pipewire = {
     enable = true;
     alsa.enable = true;
