@@ -1,6 +1,6 @@
-{ lib, ... }:{
-# client networking configuration
-#NOTE: this config really only makes sense for mikilios devices
+{lib, ...}: {
+  # client networking configuration
+  #NOTE: this config really only makes sense for mikilios devices
 
   networking = {
     firewall = {
@@ -16,7 +16,7 @@
       extraStopCommands = ''
         ip46tables -t mangle -D nixos-fw-rpfilter -p udp -m udp --sport 54545 -j RETURN || true
         ip46tables -t mangle -D nixos-fw-rpfilter -p udp -m udp --dport 54545 -j RETURN || true
-      '';      
+      '';
     };
 
     networkmanager = {
@@ -36,6 +36,8 @@
     #NOTE: created by: https://github.com/janik-haag/nm2nix
     networkmanager.ensureProfiles.profiles = import ./nm.nix;
   };
+
+  programs.nm-applet.enable = true;
 
   services = {
     openssh = {

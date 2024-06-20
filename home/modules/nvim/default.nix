@@ -1,11 +1,8 @@
 {
-  inputs,
   config,
-  lib,
   pkgs,
   ...
-}:
-with lib; let
+}: let
   customPlugs = config.nur.repos.mikilio.overlays.vimPlugins;
 in {
   config = {
@@ -22,6 +19,7 @@ in {
         pyright
         lua-language-server
         nodePackages.bash-language-server
+        nodePackages.typescript-language-server
         rust-analyzer
         texlab
         ltex-ls
@@ -36,8 +34,7 @@ in {
           luautf8
         ];
 
-      plugins = with (pkgs.vimPlugins.extend customPlugs);
-      with builtins; [
+      plugins = with (pkgs.vimPlugins.extend customPlugs); [
         #Aesthetics
         netrw-nvim
         nvim-web-devicons

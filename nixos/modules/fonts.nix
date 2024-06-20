@@ -1,16 +1,21 @@
-{ pkgs, config, ... }:{
-
+{
+  pkgs,
+  config,
+  ...
+}: {
   fonts = {
-    packages = ( with pkgs; [
-      # icon fonts
-      material-symbols
+    packages =
+      (with pkgs; [
+        # icon fonts
+        material-symbols
 
-      # All Google fonts
-      google-fonts
+        # All Google fonts
+        google-fonts
 
-      # nerdfonts
-      (nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
-    ]) ++ [ config.nur.repos.mikilio.ttf-ms-fonts ];
+        # nerdfonts
+        (nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
+      ])
+      ++ [config.nur.repos.mikilio.ttf-ms-fonts];
 
     # causes more issues than it solves
     enableDefaultPackages = false;

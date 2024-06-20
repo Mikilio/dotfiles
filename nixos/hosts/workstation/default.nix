@@ -30,6 +30,19 @@
   users.users.mikilio = {
     isNormalUser = true;
     hashedPassword = "$y$j9T$nS7KbcfuhTZV.4glVxbK7.$/ug72ZEnXY1N4t/FK3R87vqvpa.3M68CxvTjNTm3zIA";
-    extraGroups = ["adbusers" "input" "libvirtd" "networkmanager" "plugdev" "keys" "transmission" "video" "i2c" "wheel" "docker"];
+    extraGroups = [
+      "adbusers"
+      "input"
+      "libvirtd"
+      "networkmanager"
+      "plugdev"
+      "keys"
+      "transmission"
+      "video"
+      "i2c"
+      "wheel"
+      "docker"
+      "ydotool"
+    ];
   };
 }

@@ -1,11 +1,8 @@
 {
-  inputs,
   config,
-  lib,
   pkgs,
   ...
-}:
-with lib; let
+}: let
 in {
   config = {
     home.pointerCursor = {
@@ -25,13 +22,16 @@ in {
         accent = "Mauve";
         variant = "Mocha";
       })
+      rose-pine-icon-theme
     ];
 
-    xdg.configFile."Kvantum/kvantum.kvconfig".source = (
-      pkgs.formats.ini {}
-    ).generate "kvantum.kvconfig" {
-      General.theme = "Catppuccin-Mocha-Mauve";
-    };
+    xdg.configFile."Kvantum/kvantum.kvconfig".source =
+      (
+        pkgs.formats.ini {}
+      )
+      .generate "kvantum.kvconfig" {
+        General.theme = "Catppuccin-Mocha-Mauve";
+      };
 
     gtk = {
       enable = true;

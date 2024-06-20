@@ -7,13 +7,13 @@
 }:
 with lib;
 # terminals
-let
-in {
-  config = {
-    programs.wezterm = {
-      enable = true;
-      package = inputs.wezterm.packages.${pkgs.system}.default;
-      extraConfig = builtins.readFile ./wezterm.lua;
+  let
+  in {
+    config = {
+      programs.wezterm = {
+        enable = true;
+        package = inputs.wezterm.packages.${pkgs.system}.default;
+        extraConfig = builtins.readFile ./wezterm.lua;
+      };
     };
-  };
-}
+  }

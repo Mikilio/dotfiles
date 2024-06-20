@@ -1,4 +1,4 @@
-{ ... }: {
+{...}: {
   networking.firewall = {
     allowedUDPPorts = [
       # syncthing QUIC

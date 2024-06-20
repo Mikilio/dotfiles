@@ -1,11 +1,8 @@
 {
   inputs,
-  config,
-  lib,
   pkgs,
   ...
-}:
-with lib; let
+}: let
   spicePkgs = inputs.spicetify-nix.packages.${pkgs.stdenv.system}.default;
 in {
   imports = [
@@ -18,6 +15,7 @@ in {
       enable = true;
       theme = spicePkgs.themes.catppuccin;
       colorScheme = "mocha";
+      windowManagerPatch = true;
 
       enabledExtensions = with spicePkgs.extensions; [
         fullAppDisplay

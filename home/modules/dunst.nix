@@ -39,7 +39,6 @@
       };
 
       fullscreen_delay_everything = {fullscreen = "delay";};
-
     };
   };
 }

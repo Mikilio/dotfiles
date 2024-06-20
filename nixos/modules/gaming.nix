@@ -1,11 +1,11 @@
 {
   inputs,
-    config,
-    lib,
-    pkgs,
-    ...
+  config,
+  lib,
+  pkgs,
+  ...
 }: {
-  programs={
+  programs = {
     steam = {
       enable = true;
 

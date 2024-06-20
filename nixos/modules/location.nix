@@ -1,4 +1,4 @@
-{ ... }: {
+{...}: {
   # enable location service
   location.provider = "geoclue2";
 

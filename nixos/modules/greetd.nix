@@ -24,6 +24,7 @@ in {
 
   programs.regreet = {
     enable = true;
+    cageArgs = ["-s" "-m" "last"];
     settings = {
       # background = {
       #   path = theme.wallpaper;
@@ -38,24 +39,19 @@ in {
     };
   };
 
-  services.greetd.settings.default_session = {
-    enable = true;
-    command = "${lib.getExe pkgs.cage} -s -- ${greeter}";
-  };
-
   services.udev.extraRules = ''
-      ACTION=="remove",\
-       ENV{ID_BUS}=="usb",\
-       ENV{ID_MODEL_ID}=="0407",\
-       ENV{ID_VENDOR_ID}=="1050",\
-       ENV{ID_VENDOR}=="Yubico",\
-       RUN+="${pkgs.systemd}/bin/loginctl lock-sessions"
-      ACTION=="add",\
-       ENV{ID_BUS}=="usb",\
-       ENV{ID_MODEL_ID}=="0407",\
-       ENV{ID_VENDOR_ID}=="1050",\
-       ENV{ID_VENDOR}=="Yubico",\
-       RUN+="${pkgs.systemd}/bin/loginctl unlock-sessions"
+    ACTION=="remove",\
+     ENV{ID_BUS}=="usb",\
+     ENV{ID_MODEL_ID}=="0407",\
+     ENV{ID_VENDOR_ID}=="1050",\
+     ENV{ID_VENDOR}=="Yubico",\
+     RUN+="${pkgs.systemd}/bin/loginctl lock-sessions"
+    ACTION=="add",\
+     ENV{ID_BUS}=="usb",\
+     ENV{ID_MODEL_ID}=="0407",\
+     ENV{ID_VENDOR_ID}=="1050",\
+     ENV{ID_VENDOR}=="Yubico",\
+     RUN+="${pkgs.systemd}/bin/loginctl unlock-sessions"
   '';
 
   # unlock GPG keyring on login

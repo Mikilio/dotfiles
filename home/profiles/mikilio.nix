@@ -8,11 +8,31 @@
   ...
 }: {
   imports = with ezModules; [
-    spicetify media xdg sioyek
-    firefox gpg games theming wezterm
-    productivity starship nushell git cli
-    nvim yazi calendar ssh pass
-    ags hyprland pipewire foot syncthing
+    ags
+    spicetify
+    media
+    xdg
+    sioyek
+    firefox
+    gpg
+    games
+    kanshi
+    theming
+    wezterm
+    productivity
+    starship
+    nushell
+    git
+    cli
+    nvim
+    yazi
+    calendar
+    ssh
+    pass
+    hyprland
+    pipewire
+    foot
+    syncthing
   ];
 
   config = {

@@ -5,7 +5,6 @@
   pkgs,
   ...
 }: {
-
   # nh default flake
   environment.variables.FLAKE = "/home/mihai/Documents/code/dotfiles";
 

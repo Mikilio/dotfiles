@@ -1,29 +1,35 @@
-{ lib, inputs, ezModules, ... }: {
-
-  imports = (with ezModules; [
-    bluetooth
-    boot
-    client
-    dbus
-    fonts
-    fwupd
-    gaming
-    gnome-services
-    greetd
-    home-manager
-    hyprland
-    lanzaboote
-    nix
-    opengl
-    overlays
-    pipewire
-    security
-    spotify
-    syncthing
-    tailscale
-  ]) ++ [
-    inputs.nur.nixosModules.nur
-  ];
+{
+  lib,
+  inputs,
+  ezModules,
+  ...
+}: {
+  imports =
+    (with ezModules; [
+      bluetooth
+      boot
+      client
+      dbus
+      fonts
+      fwupd
+      gaming
+      gnome-services
+      greetd
+      home-manager
+      hyprland
+      lanzaboote
+      nix
+      opengl
+      overlays
+      pipewire
+      security
+      spotify
+      syncthing
+      tailscale
+    ])
+    ++ [
+      inputs.nur.nixosModules.nur
+    ];
 
   documentation.dev.enable = true;
 

@@ -2,8 +2,7 @@
   config,
   pkgs,
   ...
-}:
-let
+}: let
   autoConfig = builtins.readFile ./autoconfig.js;
 in {
   config = {

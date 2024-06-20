@@ -12,7 +12,7 @@
       addr-gen-mode = "stable-privacy";
       method = "auto";
     };
-    proxy = { };
+    proxy = {};
     vpn = {
       ca = "/home/mikilio/.cert/nm-openvpn/vpn-rbg-2.4-linux-ca.pem";
       connection-type = "password";

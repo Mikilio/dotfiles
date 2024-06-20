@@ -11,8 +11,8 @@
 
       ezConfigs = {
         root = ./.;
-        globalArgs = { inherit inputs ezConfigs;};
-        home = { 
+        globalArgs = {inherit inputs ezConfigs;};
+        home = {
           configurationsDirectory = "${ezConfigs.root}/home/profiles";
           modulesDirectory = "${ezConfigs.root}/home/modules";
         };
@@ -22,8 +22,12 @@
         };
       };
 
-      perSystem = { pkgs, lib, system, ... }: {
-        
+      perSystem = {
+        pkgs,
+        lib,
+        system,
+        ...
+      }: {
         _module.args.pkgs = import inputs.nixpkgs {
           inherit system;
         };
@@ -44,13 +48,6 @@
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    asztal = {
-      url = "github:Aylur/dotfiles";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.hyprland.follows = "hyprland";
-      inputs.matugen.follows = "matugen";
     };
 
     anyrun = {
@@ -107,6 +104,15 @@
     hyprland-contrib = {
       url = "github:hyprwm/contrib";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    hyprscratch.url = "github:Mikilio/hyprscratch";
+
+    hyprshell = {
+      url = "github:Mikilio/hyprshell";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.hyprland.follows = "hyprland";
+      inputs.matugen.follows = "matugen";
     };
 
     kmonad = {

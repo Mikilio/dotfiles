@@ -143,6 +143,7 @@ local function lsp_setup()
     'rust_analyzer',
     'texlab',
     'ltex',
+    'tsserver'
   })
 end
 

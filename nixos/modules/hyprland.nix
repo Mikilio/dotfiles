@@ -5,7 +5,6 @@
   pkgs,
   ...
 }: let
-
   hyprlandSessionFile =
     (pkgs.writeTextDir "share/wayland-sessions/hyprland.desktop" ''
       [Desktop Entry]
@@ -13,8 +12,8 @@
       Comment=A dynamic tiling Wayland compositor that doesn't sacrifice on its looks
       Exec=${pkgs.hyprland}/bin/Hyprland
       Type=Application
-    '').overrideAttrs (_: { passthru.providedSessions = [ "hyprland" ]; });
-
+    '')
+    .overrideAttrs (_: {passthru.providedSessions = ["hyprland"];});
 in {
   #everything necessary to have hyprland work properly
   imports = [
@@ -51,8 +50,10 @@ in {
     # make HM-managed GTK stuff work
     dconf.enable = true;
 
+    ydotool.enable = true;
+
     kdeconnect.enable = true;
   };
 
-  services.displayManager.sessionPackages = [ hyprlandSessionFile ];
+  services.displayManager.sessionPackages = [hyprlandSessionFile];
 }

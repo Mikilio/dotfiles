@@ -1,12 +1,11 @@
 {
-  inputs,
   config,
-  lib,
   pkgs,
+  lib,
   ...
-}:
-with lib; let
+}: let
   homeDir = config.home.homeDirectory;
+  inherit (builtins) concatStringsSep attrNames readDir;
 in {
   config = {
     xdg = {
@@ -14,9 +13,9 @@ in {
 
       dataFile."xdg-terminals".source = "${pkgs."${config.home.sessionVariables.TERM}"}/share/applications";
 
-      configFile."xdg-terminals.list".text = with builtins; (
+      configFile."xdg-terminals.list".text = (
         concatStringsSep "\n" (attrNames (
-          filterAttrs (entry: type: type == "regular") (
+          lib.filterAttrs (entry: type: type == "regular") (
             readDir "${pkgs."${config.home.sessionVariables.TERM}"}/share/applications"
           )
         ))

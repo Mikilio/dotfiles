@@ -3,24 +3,21 @@
   lib,
   pkgs,
   ...
-}:
-let
-
-      latest =  import inputs.nixpkgs {
-        inherit (pkgs.stdenv) system;
-      };
-      stable = import inputs.nixpkgs-stable {
-        inherit (pkgs.stdenv) system;
-        config.allowUnfree = true;
-      };
+}: let
+  latest = import inputs.nixpkgs {
+    inherit (pkgs.stdenv) system;
+  };
+  stable = import inputs.nixpkgs-stable {
+    inherit (pkgs.stdenv) system;
+    config.allowUnfree = true;
+  };
 in {
-
   imports = [
   ];
 
   nixpkgs = {
     config = {
-      allowUnfreePredicate =  pkg:
+      allowUnfreePredicate = pkg:
         builtins.elem [] (
           map (re: builtins.match re (lib.getName pkg)) [
             "spotify"
@@ -33,8 +30,7 @@ in {
           ]
         );
       permittedInsecurePackages = [];
-      allowUnsupportedSystem  = true;
-
+      allowUnsupportedSystem = true;
     };
 
     overlays = [
@@ -50,7 +46,11 @@ in {
       #all normal overrides
       (
         final: prev: {
-          keepasscx = prev.keepassxc.override {withKeePassX11 = false;};
+          clight = prev.clight.overrideAttrs (o: {
+            postInstall = ''
+              rm -r $out/etc/xdg/autostart
+            '';
+          });
 
           steam = prev.steam.override {
             extraPkgs = pkgs:
@@ -96,4 +96,4 @@ in {
       )
     ];
   };
- }
+}

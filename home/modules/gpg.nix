@@ -1,11 +1,8 @@
 {
-  inputs,
   config,
-  lib,
   pkgs,
   ...
-}:
-with lib; {
+}: {
   programs = {
     gpg = {
       enable = true;

@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   services = {
     # needed for GNOME services outside of GNOME Desktop
     dbus.packages = with pkgs; [
@@ -10,11 +9,11 @@
     gvfs.enable = true;
 
     #Proper disk mounting
-    udisks2 ={
+    udisks2 = {
       enable = true;
       mountOnMedia = true;
     };
-  
+
     printing.enable = true;
   };
 

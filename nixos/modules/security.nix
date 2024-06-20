@@ -6,9 +6,7 @@
   inputs,
   ...
 }: {
-
   imports = [
-
     inputs.sops-nix.nixosModules.default
   ];
 
@@ -58,7 +56,6 @@
     enable = true;
     abrmd.enable = true;
   };
-
 
   # So we don't have to do this later...
   security.acme = {

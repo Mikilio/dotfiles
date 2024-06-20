@@ -1,6 +1,6 @@
 {...}: {
   # Minimal list of modules to use the EFI system partition and the YubiKey
-  boot.initrd.kernelModules = [ "vfat" "nls_cp437" "nls_iso8859-1" "usbhid" ];
+  boot.initrd.kernelModules = ["vfat" "nls_cp437" "nls_iso8859-1" "usbhid"];
   # Enable support for the YubiKey PBA
   # boot.initrd.luks.yubikeySupport = true;
 
@@ -29,10 +29,10 @@
               content = {
                 type = "luks";
                 name = "crypted";
-                extraOpenArgs = [ ];
+                extraOpenArgs = [];
                 askPassword = true;
                 settings = {
-                  # preLVM = true; 
+                  # preLVM = true;
                   # yubikey = {
                   #   slot = 2;
                   #   twoFactor = false;
