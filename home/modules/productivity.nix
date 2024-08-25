@@ -42,13 +42,17 @@ in {
 
       #10xorganization
       logseq
+      glibc #https://github.com/logseq/logseq/issues/10851
 
       #need it for work
       vesktop
-      teams
+      teams-for-linux
 
       #matrix
       element-desktop
+
+      #science
+      zotero
     ];
     dconf.settings = {
       "org/virt-manager/virt-manager/connections" = {

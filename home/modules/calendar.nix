@@ -5,6 +5,7 @@
   pkgs,
   ...
 }:
+#TODO: do something other than nextcloud because we hate php
 with lib; let
 in {
   config = {

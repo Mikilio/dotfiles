@@ -1,44 +1,45 @@
 {
-  inputs,
   config,
   lib,
   pkgs,
   ...
-}:
-with lib; let
+}: let
   preview = pkgs.writeShellScript "preview.sh" (builtins.readFile (builtins.fetchurl {
     url = "https://raw.githubusercontent.com/lotabout/skim.vim/4145f53f3d343c389ff974b1f1a68eeb39fba18b/bin/preview.sh";
     sha256 = "1ilfqcxvaxw906sdy4aqk9lyw3i1qwi00dvj3vhvygi90ja3qhhw";
   }));
 in {
-  home.packages = with pkgs; [
-    # archives
-    zip
-    unzip
-    unar
+  home.packages =
+    [
+      config.nur.repos.mikilio.xdg-terminal-exec
+    ]
+    ++ (with pkgs; [
+      # archives
+      zip
+      unzip
+      unar
 
-    #TUI
-    calcurse
+      #TUI
+      calcurse
 
-    # utils
-    jaq
-    file
-    du-dust
-    duf
-    fd
-    bat
-    ripgrep
-    xdg-utils
-    config.nur.repos.mikilio.xdg-terminal-exec
+      # utils
+      jaq
+      file
+      du-dust
+      duf
+      fd
+      bat
+      ripgrep
+      xdg-utils
 
-    #nix
-    sops
-    alejandra
-    deadnix
-    statix
-    cachix
-    devenv
-  ];
+      #nix
+      sops
+      alejandra
+      deadnix
+      statix
+      cachix
+      devenv
+    ]);
 
   programs = {
     bash = {
@@ -66,7 +67,7 @@ in {
         stty -ctlecho           # turn off control character echoing
       '';
       initExtra = ''
-        source "${getExe pkgs.complete-alias}"
+        source "${lib.getExe pkgs.complete-alias}"
         complete -F _complete_alias "''${!BASH_ALIASES[@]}"
       '';
     };
@@ -75,18 +76,6 @@ in {
       enable = true;
       config = {
         pager = "less -FR";
-        theme = "Catppuccin-mocha";
-      };
-      themes = {
-        Catppuccin-mocha = {
-          src = pkgs.fetchFromGitHub {
-            owner = "catppuccin";
-            repo = "bat"; # Bat uses sublime syntax for its themes
-            rev = "ba4d16880d63e656acced2b7d4e034e4a93f74b1";
-            sha256 = "6WVKQErGdaqb++oaXnY3i6/GuH2FhTgK0v4TN4Y0Wbw=";
-          };
-          file = "Catppuccin-mocha.tmTheme";
-        };
       };
     };
     btop.enable = true;

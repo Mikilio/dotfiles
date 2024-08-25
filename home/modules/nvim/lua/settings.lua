@@ -6,6 +6,8 @@ vim.loader.enable()
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
 
+require("persistence").setup()
+
 -- cursor behavior
 local cursorGrp = api.nvim_create_augroup("CursorLine", { clear = true })
 api.nvim_create_autocmd(
@@ -35,14 +37,6 @@ autocmd("TextYankPost", {
       timeout = 40,
     })
   end,
-})
-
-local session = require('session_manager')
-
-session.setup({
-  autoload_mode = 'Disabled',              -- Define what to do when Neovim is started without arguments. Possible values: Disabled, CurrentDir, LastSession
-  autosave_ignore_dirs = { '~', '~/dev' }, -- A list of directories where the session will not be autosaved.
-  autosave_only_in_session = true,         -- Always autosaves session. If true, only autosaves after a session is active.
 })
 
 local options = {

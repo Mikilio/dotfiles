@@ -19,7 +19,7 @@ in {
       delta.enable = true;
       signing = {
         signByDefault = true;
-        key = "5B2F1A890CF33F3F!";
+        key = "0C159FAB320FEB35!";
       };
       attributes = [
         "*.pdf diff=pdf"

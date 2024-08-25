@@ -1,67 +1,43 @@
 {
-  config,
+  ezConfigs,
+  inputs,
   pkgs,
+  lib,
+  config,
+  osConfig,
   ...
-}: let
-in {
-  config = {
-    home.pointerCursor = {
-      package = pkgs.bibata-cursors;
-      name = "Bibata-Modern-Classic";
-      size = 24;
-      gtk.enable = true;
-      x11.enable = true;
-    };
+}: {
+  imports = with inputs; [
+    stylix.homeManagerModules.stylix
+  ];
 
-    qt.enable = true;
-    qt.platformTheme .name = "qtct";
-    qt.style.name = "kvantum";
+  stylix = let
+    global = osConfig.stylix;
+    palette = ''${lib.getExe pkgs.yq} '.palette | values | join(" ")' ${global.base16Scheme} | tr -d '"' '';
+    prism = pkgs.runCommand "prism" {} ''
+      mkdir $out
+      for WALLPAPER in $(find ${ezConfigs.root}/assets/wallpapers -type f)
+      do
+        ${pkgs.lutgen}/bin/lutgen apply $WALLPAPER -o $out/$(basename $WALLPAPER) -- ''$(${palette})
+      done
+    '';
+  in {
+    enable = true;
+    inherit (global) image base16Scheme polarity cursor;
+  };
 
-    home.packages = with pkgs; [
-      (catppuccin-kvantum.override {
-        accent = "Mauve";
-        variant = "Mocha";
-      })
-      rose-pine-icon-theme
+  home = {
+    packages = with pkgs; [
+      adwaita-icon-theme
+      papirus-icon-theme
     ];
+  };
 
-    xdg.configFile."Kvantum/kvantum.kvconfig".source =
-      (
-        pkgs.formats.ini {}
-      )
-      .generate "kvantum.kvconfig" {
-        General.theme = "Catppuccin-Mocha-Mauve";
-      };
-
-    gtk = {
-      enable = true;
-
-      font = {
-        name = "Roboto";
-        package = pkgs.roboto;
-      };
-
-      gtk2.configLocation = "${config.xdg.configHome}/gtk-2.0/gtkrc";
-
-      iconTheme = {
-        name = "Papirus-Dark";
-        package = pkgs.papirus-icon-theme;
-      };
-
-      theme = {
-        name = "Catppuccin-Mocha-Compact-Mauve-Dark";
-        package = pkgs.catppuccin-gtk.override {
-          accents = ["mauve"];
-          size = "compact";
-          variant = "mocha";
-        };
-      };
-    };
-    systemd.user.sessionVariables = {
-      GTK_THEME = "Catppuccin-Mocha-Compact-Mauve-Dark";
-      XCURSOR_THEME = "Bibata-Modern-Classic";
-      XCURSOR_SIZE = 24;
-      GTK2_RC_FILES = "${config.xdg.configHome}/gtk-2.0/gtkrc";
-    };
+  gtk.iconTheme = {
+    package = pkgs.papirus-icon-theme;
+    name =
+      if (config.stylix.polarity == "dark")
+      then "Papirus-Dark"
+      else "Papirus-Light";
   };
 }

@@ -8,16 +8,21 @@ in {
   config = {
     programs.firefox = {
       enable = true;
-      package = pkgs.firefox.override (old: {
-        extraPrefsFiles =
-          old.extraPrefsFiles
-          or []
-          ++ [(pkgs.writeText "firefox-autoconfig.js" autoConfig)];
-        nativeMessagingHosts = [pkgs.tridactyl-native];
-      });
+      # package = pkgs.firefox.override (old: {
+      #   extraPrefsFiles =
+      #     old.extraPrefsFiles or []
+      #     ++ [(pkgs.writeText "firefox-autoconfig.js" autoConfig)];
+      # });
+      nativeMessagingHosts = with pkgs; [
+        tridactyl-native
+        browserpass
+      ];
       profiles.Default = {
         extraConfig = builtins.readFile ./user.js;
         userChrome = builtins.readFile ./userChrome.css;
+        settings = {
+          "extensions.autoDisableScopes" = 0;
+        };
         extensions = with config.nur.repos.rycee.firefox-addons; [
           tridactyl
           ublock-origin
@@ -27,10 +32,12 @@ in {
           languagetool
           sidebery
           skip-redirect
-          unpaywall
           # firemonkey
           tampermonkey
           wikiwand-wikipedia-modernized
+          omnivore
+          zotero-connector
+          # bypass-paywalls-clean
         ];
       };
     };

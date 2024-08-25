@@ -24,7 +24,7 @@ local function lsp_setup()
 
     lsp.default_keymaps({ buffer = bufnr })
 
-    wk.register({
+    wk.add({
       --  TODO: add labels
     })
 

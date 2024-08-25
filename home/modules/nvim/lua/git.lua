@@ -20,33 +20,22 @@ local function git_setup()
         vim.ui.input({ prompt = 'Rev: ' }, function(rev) gs.diffthis(rev) end)
       end
 
-      require('which-key').register({
-        -- Jump between hunks
-        [']g'] = { next, 'Next hunk', { expr = true } },
-        ['[g'] = { prev, 'Previus hunk', { expr = true } },
-
-        -- Popup what's changed in a hunk under cursor
-        ['<Leader>g'] = {
-          name = 'git',
-          p = { gs.preview_hunk, 'Preview hunk' },
-
-          -- Stage/reset individual hunks under cursor in a file
-          s = { gs.stage_hunk, 'Stage hunk' },
-          r = { gs.reset_hunk, 'Reset hunk' },
-          u = { gs.undo_stage_hunk, 'Unstage hunk' },
-
-          -- Stage/reset all hunks in a file
-          S = { gs.stage_buffer, 'Stage buffer' },
-          U = { gs.reset_buffer_index, 'Unstage buffer' },
-          R = { gs.reset_buffer, 'Reset buffer' },
-
-          d = { gs.diffthis, 'Vimdiff: default' },
-          D = { diff, 'Vimdiff: prompt' },
-
-          b = { function() gs.blame_line { full = true } end, 'Git-blame' },
-          t = { gs.setqflist, 'Trouble' }
-        }
-      }, { buffer = bufnr })
+      require('which-key').add({
+        { "<Leader>g",  buffer = bufnr,                               group = "git" },
+        { "<Leader>gD", function() diff() end,                        buffer = bufnr, desc = "Vimdiff: prompt" },
+        { "<Leader>gR", function() gs.stage_buffer() end,             buffer = bufnr, desc = "Reset buffer" },
+        { "<Leader>gS", function() gs.reset_buffer_index() end,       buffer = bufnr, desc = "Stage buffer" },
+        { "<Leader>gU", function() gs.reset_buffer() end,             buffer = bufnr, desc = "Unstage buffer" },
+        { "<Leader>gb", function() gs.blame_line { full = true } end, buffer = bufnr, desc = "Git-blame" },
+        { "<Leader>gd", function() gs.diffthis() end,                 buffer = bufnr, desc = "Vimdiff: default" },
+        { "<Leader>gp", function() gs.preview_hunk() end,             buffer = bufnr, desc = "Preview hunk" },
+        { "<Leader>gr", function() gs.reset_hunk() end,               buffer = bufnr, desc = "Reset hunk" },
+        { "<Leader>gs", function() gs.stage_hunk() end,               buffer = bufnr, desc = "Stage hunk" },
+        { "<Leader>gt", function() gs.setqflist() end,                buffer = bufnr, desc = "Trouble" },
+        { "<Leader>gu", function() gs.undo_stage_hunk() end,          buffer = bufnr, desc = "Unstage hunk" },
+        { "[g",         function() prev() end,                        buffer = bufnr, desc = "Previus hunk" },
+        { "]g",         function() next() end,                        buffer = bufnr, desc = "Next hunk" },
+      })
     end
   })
 end

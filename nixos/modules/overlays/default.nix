@@ -11,6 +11,10 @@
     inherit (pkgs.stdenv) system;
     config.allowUnfree = true;
   };
+  patched = import inputs.patched {
+    inherit (pkgs.stdenv) system;
+    config.allowUnfree = true;
+  };
 in {
   imports = [
   ];
@@ -29,7 +33,7 @@ in {
             "teams"
           ]
         );
-      permittedInsecurePackages = [];
+      permittedInsecurePackages = ["electron.*"];
       allowUnsupportedSystem = true;
     };
 
@@ -57,7 +61,7 @@ in {
               with pkgs; [
                 keyutils
                 libkrb5
-                gamemode
+                # gamemode
               ];
           };
 
@@ -70,6 +74,16 @@ in {
               ];
           };
 
+          logseq = prev.logseq.overrideAttrs (oldAttrs: {
+            postFixup = ''
+              makeWrapper ${prev.electron_27}/bin/electron $out/bin/${oldAttrs.pname} \
+                --set "LOCAL_GIT_DIRECTORY" ${prev.git} \
+                --add-flags $out/share/${oldAttrs.pname}/resources/app \
+                --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations}}" \
+                --prefix LD_LIBRARY_PATH : "${prev.lib.makeLibraryPath [prev.stdenv.cc.cc.lib]}"
+            '';
+          });
+
           discord = prev.discord-canary.override {
             nss = prev.nss_latest;
             withOpenASAR = true;
@@ -78,10 +92,17 @@ in {
 
           flutter = prev.flutter319;
 
+          kicad = prev.kicad;
+
+          pass-secret-service = prev.pass-secret-service;
+
           vivaldi = prev.vivaldi.override {
             proprietaryCodecs = true;
             enableWidevine = true;
           };
+
+          # PR patched-1
+          floorp = patched.floorp;
 
           xdg-desktop-portal-hyprland = stable.xdg-desktop-portal-hyprland;
 

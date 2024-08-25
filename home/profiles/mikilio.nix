@@ -8,31 +8,32 @@
   ...
 }: {
   imports = with ezModules; [
-    ags
-    spicetify
-    media
-    xdg
-    sioyek
+    anyrun
+    cli
+    email
+    foot
     firefox
+    floorp
     gpg
     games
-    kanshi
-    theming
-    wezterm
-    productivity
-    starship
-    nushell
     git
-    cli
-    nvim
-    yazi
-    calendar
-    ssh
-    pass
+    hyprshell
     hyprland
+    media
+    nushell
+    nvim
+    pass
     pipewire
-    foot
-    syncthing
+    productivity
+    sioyek
+    spicetify
+    ssh
+    starship
+    theming
+    tmux
+    transient-services
+    xdg
+    yazi
   ];
 
   config = {
@@ -40,12 +41,6 @@
       username = "mikilio";
       homeDirectory = osConfig.users.users.mikilio.home;
       extraOutputsToInstall = ["doc" "devdoc"];
-    };
-
-    home.sessionVariables.TERM = "wezterm";
-
-    xdg.configFile = {
-      "autostart/org.wezfurlong.wezterm.desktop".source = "${config.programs.wezterm.package}/share/applications/org.wezfurlong.wezterm.desktop";
     };
 
     sops = {
@@ -59,11 +54,6 @@
             value // {path = "${config.xdg.userDirs.extraConfig.XDG_PRIVATE_DIR}/secrets/${name}";}
         ) {
           google-git = {};
-          spotify_pwd.key = "spotify/pwd";
-          spotify_usr.key = "spotify/usr";
-          syncthing-gui = {};
-          keepassxc = {};
-          nextcloud = {};
         };
     };
   };

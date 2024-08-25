@@ -94,19 +94,17 @@ local function trouble_setup()
   require('todo-comments').setup({
 
   })
-  require("which-key").register({
-    ['<leader>x'] = {
-      name = "trouble",
-      x = { function() require("trouble").toggle() end, "Main window" },
-      w = { function() require("trouble").toggle("workspace_diagnostics") end, "Workspace" },
-      d = { function() require("trouble").toggle("document_diagnostics") end, "Document" },
-      q = { function() require("trouble").toggle("quickfix") end, "Quickfix" },
-      l = { function() require("trouble").toggle("loclist") end, "Loclist" },
-      t = { function() require("trouble").toggle("todo") end, "Todo" },
-    },
-    gr = { function() require("trouble").toggle("lsp_references") end, "LSP Referces" },
-    [']t'] = { function() require("trouble").next({ skip_groups = true, jump = true }) end, "Next trouble item" },
-    ['[t'] = { function() require("trouble").previous({ skip_groups = true, jump = true }) end, "Next trouble item" },
+  require("which-key").add({
+    { "<leader>x",  group = "trouble" },
+    { "<leader>xd", function() require("trouble").toggle("document_diagnostics") end,                desc = "Document" },
+    { "<leader>xl", function() require("trouble").toggle("loclist") end,                             desc = "Loclist" },
+    { "<leader>xq", function() require("trouble").toggle("quickfix") end,                            desc = "Quickfix" },
+    { "<leader>xt", function() require("trouble").toggle("todo") end,                                desc = "Todo" },
+    { "<leader>xw", function() require("trouble").toggle("workspace_diagnostics") end,               desc = "Workspace" },
+    { "<leader>xx", function() require("trouble").toggle() end,                                      desc = "Main window" },
+    { "[t",         function() require("trouble").previous({ skip_groups = true, jump = true }) end, desc = "Prev trouble item" },
+    { "]t",         function() require("trouble").next({ skip_groups = true, jump = true }) end,     desc = "Next trouble item" },
+    { "gr",         function() require("trouble").toggle("lsp_references") end,                      desc = "LSP Referces" },
   })
 end
 

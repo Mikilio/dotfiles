@@ -10,20 +10,20 @@
       boot
       client
       dbus
-      fonts
       fwupd
       gaming
       gnome-services
+      graphics
       greetd
       home-manager
       hyprland
       lanzaboote
       nix
-      opengl
       overlays
       pipewire
       security
       spotify
+      style
       syncthing
       tailscale
     ])
@@ -46,13 +46,6 @@
   # enable programs we can't live without
   programs = {
     less.enable = true;
-
-    tmux = {
-      enable = true;
-      keyMode = "vi";
-      clock24 = true;
-      baseIndex = 1;
-    };
   };
 
   users.mutableUsers = false;

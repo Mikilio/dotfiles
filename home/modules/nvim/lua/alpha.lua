@@ -21,7 +21,7 @@ local function setup_alpha()
     '',
   }
   dashboard.section.buttons.val = {
-    dashboard.button("<CR>", "  Restore last session", ':SessionManager load_last_session<CR>'),
+    dashboard.button("<CR>", "  Restore last session", function() require("persistence").load() end),
     dashboard.button("f", "󰈞  Find file", ":Telescope find_files <CR>"),
     dashboard.button("e", "󰥨  Explore", ":Ex <CR>"),
     dashboard.button("z", "󰇐  Jump to directory", ":Telescope zoxide list <CR>"),

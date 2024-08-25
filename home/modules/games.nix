@@ -14,7 +14,6 @@ in {
       # inputs.nix-gaming.packages.${pkgs.stdenv.system}.wine-discord-ipc-bridge
       # inputs.nix-gaming.packages.${pkgs.stdenv.system}.proton-ge
       # (lutris.override {extraPkgs = p: [p.libnghttp2 p.jansson ];})
-      gamescope
       wine
       winetricks
     ];

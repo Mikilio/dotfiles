@@ -33,7 +33,6 @@
       "2a07:a8c1::#193dfc.dns.nextdns.io"
     ];
 
-    #NOTE: created by: https://github.com/janik-haag/nm2nix
     networkmanager.ensureProfiles.profiles = import ./nm.nix;
   };
 

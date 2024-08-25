@@ -28,10 +28,6 @@
         system,
         ...
       }: {
-        _module.args.pkgs = import inputs.nixpkgs {
-          inherit system;
-        };
-
         formatter = pkgs.alejandra;
       };
     };
@@ -39,6 +35,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/23.11";
+    patched.url = "github:Mikilio/nixpkgs/patch-1";
 
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
@@ -94,7 +91,7 @@
     };
 
     home-manager = {
-      url = "github:Mikilio/home-manager/todoman";
+      url = "github:brckd/home-manager/firefox/floorp";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -111,17 +108,10 @@
     hyprshell = {
       url = "github:Mikilio/hyprshell";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.hyprland.follows = "hyprland";
-      inputs.matugen.follows = "matugen";
     };
 
     kmonad = {
       url = "github:kmonad/kmonad?dir=nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    matugen = {
-      url = "github:/InioX/Matugen/v2.2.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -133,7 +123,6 @@
       url = "github:nix-community/lanzaboote";
       inputs = {
         flake-parts.follows = "flake-parts";
-        flake-utils.follows = "flake-utils";
         nixpkgs.follows = "nixpkgs";
       };
     };
@@ -151,13 +140,21 @@
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
+    };
+
+    sessionx = {
+      url = "github:omerxx/tmux-sessionx";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     spicetify-nix = {
-      url = "github:the-argus/spicetify-nix";
+      url = "github:Gerg-L/spicetify-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    stylix.url = "github:danth/stylix";
+
+    templates.url = "github:NixOS/templates";
 
     wezterm = {
       url = "github:wez/wezterm?dir=nix";

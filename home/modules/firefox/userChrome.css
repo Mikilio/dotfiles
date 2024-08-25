@@ -7,11 +7,6 @@
   visibility: collapse;
 }
 
-statuspanel[type="overLink"],
-#statuspanel[type="overLink"] {
-  display: none !important;
-}
-
 #TabsToolbar {
   visibility: collapse;
 }

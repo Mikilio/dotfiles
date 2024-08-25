@@ -3,10 +3,10 @@
   pkgs,
   ...
 }: let
-  spicePkgs = inputs.spicetify-nix.packages.${pkgs.stdenv.system}.default;
+  spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.system};
 in {
   imports = [
-    inputs.spicetify-nix.homeManagerModule
+    inputs.spicetify-nix.homeManagerModules.default
   ];
   # import the flake's module for your system
   config = {

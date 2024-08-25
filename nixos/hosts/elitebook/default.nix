@@ -1,5 +1,6 @@
 {
   inputs,
+  pkgs,
   ezModules,
   ...
 } @ args: {
@@ -27,7 +28,17 @@
   virtualisation.docker.rootless = {
     enable = true;
     setSocketVariable = true;
+    daemon.settings = {
+      dns = ["192.168.2.1"];
+    };
   };
+
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [
+    # Add any missing dynamic libraries for unpackaged programs
+    # here, NOT in environment.systemPackages
+    pcsclite
+  ];
 
   users.mutableUsers = false;
   users.users.mikilio = {

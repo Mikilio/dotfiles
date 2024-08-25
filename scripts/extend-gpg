@@ -1,0 +1,9 @@
+#!/bin/sh
+
+export GNUPGHOME=$XDG_RUNTIME_DIR/gpg # Or apply --homedir on each invocation
+mkdir $GNUPGHOME
+gpg  --batch --import "$1"
+gpg --pinentry-mode loopback --quick-set-expire 'B56C 119D 668E D66D 7CC7  FDF1 8A08 3F80 D1CC 5B3A' 1y
+gpg --pinentry-mode loopback --quick-set-expire 'B56C 119D 668E D66D 7CC7  FDF1 8A08 3F80 D1CC 5B3A' 1y '*'
+rm -r $GNUPGHOME # Can be omitted
+unset $GNUPGHOME

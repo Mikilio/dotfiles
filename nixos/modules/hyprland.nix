@@ -1,7 +1,5 @@
 {
   inputs,
-  config,
-  lib,
   pkgs,
   ...
 }: let
@@ -32,13 +30,6 @@ in {
     extraPortals = [
       pkgs.xdg-desktop-portal-gtk
     ];
-  };
-
-  #Qt styling
-  qt = {
-    enable = true;
-    platformTheme = "gtk2";
-    style = "gtk2";
   };
 
   environment.variables.NIXOS_OZONE_WL = "1";

@@ -89,7 +89,7 @@ in {
         popup-nvim # Pop-up API from vim
         zoxide-vim # Zoxide
         gitsigns-nvim # Git
-        neovim-session-manager #session management
+        persistence-nvim #session management
         wezterm-nvim #wezterm TODO: replace by vim.system on v10
         smart-splits-nvim # better splits
       ];

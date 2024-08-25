@@ -20,10 +20,9 @@
     QT_AUTO_SCREEN_SCALE_FACTOR = 1;
     QT_WAYLAND_DISABLE_WINDOWDECORATION = 1;
     _JAVA_AWT_WM_NONREPARENTING = 1;
-  };
-  catppuccin = fetchTarball {
-    url = "https://github.com/catppuccin/hyprland/archive/refs/tags/v1.3.tar.gz";
-    sha256 = "0aqfzf4w8m57f141wjkqwi83ln1ap0rrz276b3lj536babdk8jcf";
+
+    HYPRCURSOR_THEME = config.stylix.cursor.name;
+    HYPRCURSOR_SIZE = config.stylix.cursor.name;
   };
 in {
   imports = [
@@ -51,10 +50,6 @@ in {
       "Hyprland-xdg-terminals.list".text = "wezterm";
       "xkb" = {
         source = ./xkb;
-        recursive = true;
-      };
-      "hypr" = {
-        source = "${catppuccin}/themes";
         recursive = true;
       };
     };
@@ -172,19 +167,16 @@ in {
         ];
       };
 
-      settings = let
-        pointer = config.home.pointerCursor;
-      in {
-        exec-once = [
-          "hyprctl setcursor ${pointer.name} ${toString pointer.size}"
+      settings = {
+        "$mod" = "SUPER";
+
+        monitor = [
+          "desc:Chimei Innolux Corporation 0x1435,preferred,auto-down,1.2"
+          ",preferred,auto-up,auto"
         ];
 
         xwayland = {
           force_zero_scaling = true;
-        };
-
-        general = {
-          cursor_inactive_timeout = 5;
         };
 
         dwindle = {
@@ -197,14 +189,13 @@ in {
           drop_shadow = "yes";
           shadow_range = 8;
           shadow_render_power = 2;
-          "col.shadow" = "rgba(00000044)";
 
           dim_inactive = false;
 
           blur = {
             enabled = true;
-            size = 8;
-            passes = 3;
+            size = 6;
+            passes = 2;
             new_optimizations = "on";
             noise = 0.01;
             contrast = 0.9;
@@ -246,6 +237,12 @@ in {
             kb_options = "grp:alt_caps_toggle";
             resolve_binds_by_sym = 1;
           }
+          {
+            name = "mosart-semi.-2.4g-wireless-keyboard";
+            kb_layout = "de";
+            kb_options = "grp:alt_caps_toggle";
+            resolve_binds_by_sym = 1;
+          }
         ];
 
         misc = {
@@ -264,25 +261,9 @@ in {
           resizeactive = binding "SUPER CTRL" "resizeactive";
           mvactive = binding "SUPER ALT" "moveactive";
           mvtows = binding "SUPER SHIFT" "movetoworkspace";
-          e = "exec, hyprshell -b hypr";
           arr = [1 2 3 4 5 6 7 8 9];
-          play = pkgs.writeShellScriptBin "play" ''
-            notify-send "Opening video" "$(wl-paste)"
-            mpv "$(wl-paste)"
-          '';
         in
           [
-            "CTRL ALT, R,   ${e} quit; hyprshell -b hypr"
-            "SUPER, Space,  ${e} -t launcher"
-            "SUPER, Escape, ${e} -t powermenu"
-            "SUPER, Tab,    ${e} -t overview"
-
-            # youtube
-            ", F9,  exec, ${lib.getExe play}"
-            ", F1, ${e} -r 'color.pick()'"
-            ",Print,         exec, hyprshell -r 'recorder.screenshot()'"
-            "SHIFT,Print,    exec, hyprshell -r 'recorder.screenshot(true)'"
-
             "ALT, Tab, focuscurrentorlast"
             "CTRL ALT, Delete, exit"
             "SUPER, Q, killactive"
@@ -370,18 +351,23 @@ in {
           # fix xwayland apps
           "rounding 0, xwayland:1, floating:1"
           #don't touch: "fullscreen, forceinput, xwayland:1, class:^(league of legends.exe)$"
-          #main apps
-          "workspace 1 silent, class:^(Alacritty|org.wezfurlong.wezterm)$"
-          "workspace 2 silent, class:^(vivaldi-stable|firefox)$"
+
           # make picture in picture a nice pinned window
           "keepaspectratio,class:^(firefox)$,title:^(Picture-in-Picture)$"
+          "keepaspectratio,initialTitle:^(Discord Popout)$"
           "noborder,class:^(firefox)$,title:^(Picture-in-Picture)$"
-          "fakefullscreen,class:^(firefox)$,title:^(Firefox)$"
+          "noborder,initialTitle:^(Discord Popout)$"
+          # "fakefullscreen,class:^(firefox)$,title:^(Firefox)$"
           "fakefullscreen,class:^(firefox)$,title:^(Picture-in-Picture)$"
-          "pin,class:^(firefox)$,title:^(Firefox)$"
+          "fakefullscreen,initialTitle:^(Discord Popout)$"
+          # "pin,class:^(firefox)$,title:^(Firefox)$"
           "pin,class:^(firefox)$,title:^(Picture-in-Picture)$"
-          "float,class:^(firefox)$,title:^(Firefox)$"
+          "pin,initialTitle:^(Discord Popout)$"
+          # "float,class:^(firefox)$,title:^(Firefox)$"
           "float,class:^(firefox)$,title:^(Picture-in-Picture)$"
+          "float,initialTitle:^(Discord Popout)$"
+          #workarount for thunderai
+          "float,class:thunderbird,title:^(?!Mozilla*)"
         ];
       };
     };

@@ -7,107 +7,80 @@ local function wk_setup()
       },
     },
   })
-  wk.register({
-    ['j'] = { 'h', "hjkl remap" },
-    ['k'] = { 'j', "hjkl remap" },
-    ['l'] = { 'k', "hjkl remap" },
-    ['h'] = { 'l', "hjkl remap" },
-
+  wk.add({
+    { "&",           desc = 'Repeat previous ":s"' },
     -- Better window control --
-    ['<A-Left>'] = { require('smart-splits').resize_left, "which_key_ignore" },
-    ['<A-Down>'] = { require('smart-splits').resize_down, "which_key_ignore" },
-    ['<A-Up>'] = { require('smart-splits').resize_up, "which_key_ignore" },
-    ['<A-Right>'] = { require('smart-splits').resize_right, "which_key_ignore" },
-    ['<A-j>'] = { require('smart-splits').resize_left, "which_key_ignore" },
-    ['<A-k>'] = { require('smart-splits').resize_down, "which_key_ignore" },
-    ['<A-l>'] = { require('smart-splits').resize_up, "which_key_ignore" },
-    ['<A-h>'] = { require('smart-splits').resize_right, "which_key_ignore" },
+    { '<A-Left>',    function() require('smart-splits').resize_left() end,       hidden = true },
+    { '<A-Down>',    function() require('smart-splits').resize_down() end,       hidden = true },
+    { '<A-Up>',      function() require('smart-splits').resize_up() end,         hidden = true },
+    { '<A-Right>',   function() require('smart-splits').resize_right() end,      hidden = true },
+    { '<A-h>',       function() require('smart-splits').resize_left() end,       hidden = true },
+    { '<A-j>',       function() require('smart-splits').resize_down() end,       hidden = true },
+    { '<A-k>',       function() require('smart-splits').resize_up() end,         hidden = true },
+    { '<A-l>',       function() require('smart-splits').resize_right() end,      hidden = true },
 
     -- moving between splits
-    ['<C-Left>'] = { require('smart-splits').move_cursor_left, "which_key_ignore" },
-    ['<C-Down>'] = { require('smart-splits').move_cursor_down, "which_key_ignore" },
-    ['<C-Up>'] = { require('smart-splits').move_cursor_up, "which_key_ignore" },
-    ['<C-Right>'] = { require('smart-splits').move_cursor_right, "which_key_ignore" },
-    ['<C-j>'] = { require('smart-splits').move_cursor_left, "which_key_ignore" },
-    ['<C-k>'] = { require('smart-splits').move_cursor_down, "which_key_ignore" },
-    ['<C-l>'] = { require('smart-splits').move_cursor_up, "which_key_ignore" },
-    ['<C-h>'] = { require('smart-splits').move_cursor_right, "which_key_ignore" },
-
-    -- moving between splits
-    ['<C-S-Left>'] = { '<C-W>H', "which_key_ignore" },
-    ['<C-S-Down>'] = { '<C-W>J', "which_key_ignore" },
-    ['<C-S-Up>'] = { '<C-W>K', "which_key_ignore" },
-    ['<C-S-Right>'] = { '<C-W>L', "which_key_ignore" },
-    ['<C-S-j>'] = { '<C-W>H', "which_key_ignore" },
-    ['<C-S-k>'] = { '<C-W>J', "which_key_ignore" },
-    ['<C-S-l>'] = { '<C-W>K', "which_key_ignore" },
-    ['<C-S-h>'] = { '<C-W>L', "which_key_ignore" },
-
-    -- splitting windows
-    s = {
-      name = "split",
-      ['<Down>'] = { ":set splitbelow<CR>:split<CR>", "New Window down" },
-      ['<Up>'] = { ":set nosplitbelow<CR>:split<CR>", "New Window up" },
-      ['<Left>'] = { ":set nosplitright<CR>:vsplit<CR>", "New Window left" },
-      ['<Right>'] = { ":set splitright<CR>:vsplit<CR>", "New Window right" },
-      ['k'] = { ":set splitbelow<CR>:split<CR>", "New Window down" },
-      ['l'] = { ":set nosplitbelow<CR>:split<CR>", "New Window up" },
-      ['j'] = { ":set nosplitright<CR>:vsplit<CR>", "New Window left" },
-      ['h'] = { ":set splitright<CR>:vsplit<CR>", "New Window right" },
-      ['='] = { "<C-w>=", "Adjust window size" },
-      x = { ":close<CR>", "Close current window" }
-    },
-
-    -- Better viewing of search results --
-    n = { "nzz", "which_key_ignore" },
-    N = { "Nzz", "which_key_ignore" },
-
-    -- missing descriptions
-    ['<C-L>'] = "clear and redraw the screen",
-    ['&'] = 'Repeat previous ":s"',
-    Y = "which_key_ignore",
-    f = "which_key_ignore",
-    F = "which_key_ignore",
-    t = "which_key_ignore",
-    T = "which_key_ignore",
-
-    -- netrw
-    ['<leader>ex'] = { ":Explore<CR>", "netrw" },
-
+    { '<C-Left>',    function() require('smart-splits').move_cursor_left() end,  hidden = true },
+    { '<C-Down>',    function() require('smart-splits').move_cursor_down() end,  hidden = true },
+    { '<C-Up>',      function() require('smart-splits').move_cursor_up() end,    hidden = true },
+    { '<C-Right>',   function() require('smart-splits').move_cursor_right() end, hidden = true },
+    { '<C-h>',       function() require('smart-splits').move_cursor_left() end,  hidden = true },
+    { '<C-j>',       function() require('smart-splits').move_cursor_down() end,  hidden = true },
+    { '<C-k>',       function() require('smart-splits').move_cursor_up() end,    hidden = true },
+    { '<C-l>',       function() require('smart-splits').move_cursor_right() end, hidden = true },
+    { "<C-L>",       desc = "clear and redraw the screen" },
+    { "<C-S-Down>",  "<C-W>J",                                                   hidden = true },
+    { "<C-S-Left>",  "<C-W>H",                                                   hidden = true },
+    { "<C-S-Right>", "<C-W>L",                                                   hidden = true },
+    { "<C-S-Up>",    "<C-W>K",                                                   hidden = true },
+    { "<C-S-h>",     "<C-W>H",                                                   hidden = true },
+    { "<C-S-j>",     "<C-W>J",                                                   hidden = true },
+    { "<C-S-k>",     "<C-W>K",                                                   hidden = true },
+    { "<C-S-l>",     "<C-W>L",                                                   hidden = true },
+    { "<leader>ex",  ":Explore<CR>",                                             desc = "netrw" },
+    { "F",           hidden = true },
+    { "N",           "Nzz",                                                      hidden = true },
+    { "T",           hidden = true },
+    { "Y",           hidden = true },
+    { "f",           hidden = true },
+    { "n",           "nzz",                                                      hidden = true },
+    { "s",           group = "split" },
+    { "s<Down>",     ":set splitbelow<CR>:split<CR>",                            desc = "New Window down" },
+    { "s<Left>",     ":set nosplitright<CR>:vsplit<CR>",                         desc = "New Window left" },
+    { "s<Right>",    ":set splitright<CR>:vsplit<CR>",                           desc = "New Window right" },
+    { "s<Up>",       ":set nosplitbelow<CR>:split<CR>",                          desc = "New Window up" },
+    { "s=",          "<C-w>=",                                                   desc = "Adjust window size" },
+    { "sh",          ":set splitbelow<CR>:split<CR>",                            desc = "New Window down" },
+    { "sj",          ":set nosplitbelow<CR>:split<CR>",                          desc = "New Window up" },
+    { "sk",          ":set nosplitright<CR>:vsplit<CR>",                         desc = "New Window left" },
+    { "sl",          ":set splitright<CR>:vsplit<CR>",                           desc = "New Window right" },
+    { "sx",          ":close<CR>",                                               desc = "Close current window" },
+    { "t",           hidden = true },
   })
 
-  wk.register({
-    -- Stay in indent mode --
-    ['<'] = { "<gv", "Move selected line a shiftwidth left" },
-    ['>'] = { ">gv", "Move selected line a shiftwidth right" },
+  wk.add({
+    { "#",        desc = "Search backward" },
+    { "*",        desc = "Search forward" },
+    { "<",        "<gv",                                      desc = "Move selected line a shiftwidth left" },
+    { "<C-S-C>",  '"+y',                                      hidden = true },
+    { "<C-S-X",   '"+d',                                      hidden = true },
+    { "<S-Down>", ":move '<-2<CR>gv=gv",                      desc = " Move text down" },
+    { "<S-Up>",   ":move '>+1<CR>gv=gv",                      desc = "Move text up" },
+    { ">",        ">gv",                                      desc = "Move selected line a shiftwidth right" },
+    { "@",        desc = "Repeat macro on each line" },
+    { 'Q',        desc = "Repeat last recording on each line" },
+    mode = "v"
+  })
 
-    -- System clipboard
-    ['<C-S-C>'] = { '"+y', "which_key_ignore" },
-    ['<C-S-X'] = { '"+d', "which_key_ignore" },
+  wk.add({
+    { "<S-Down>", ":move '<-2<CR>gv=gv", desc = " Move text down", mode = "x" },
+    { "<S-Up>",   ":move '>+1<CR>gv=gv", desc = "Move text up",    mode = "x" },
+  })
 
-    -- Move text up and down --
-    ['<S-Up>'] = { ":move '>+1<CR>gv=gv", "Move text up" },
-    ['<S-Down>'] = { ":move '<-2<CR>gv=gv", " Move text down" },
-
-    -- missing descriptions
-    Q = "Repeat last recording on each line",
-    ['@'] = "Repeat macro on each line",
-    ['*'] = "Search forward",
-    ['#'] = "Search backward",
-
-  }, { mode = "v" })
-
-  wk.register({
-    -- Move text up and down --
-    ['<S-Up>'] = { ":move '>+1<CR>gv=gv", "Move text up" },
-    ['<S-Down>'] = { ":move '<-2<CR>gv=gv", " Move text down" },
-  }, { mode = "x" })
-
-  wk.register({
-    -- missing descriptions
-    ['<C-U>'] = "Delete left of cursor",
-    ['<C-W>'] = "Delete last word",
-  }, { mode = "i" })
+  wk.add({
+    { "<C-U>", desc = "Delete left of cursor", mode = "i" },
+    { "<C-W>", desc = "Delete last word",      mode = "i" },
+  })
 end
 
 vim.g.mapleader = " "

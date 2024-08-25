@@ -1,4 +1,4 @@
-{pkgs, ...}: let
+{pkgs, config, ...}: let
 in {
   config = {
     programs.password-store = {
@@ -17,6 +17,8 @@ in {
     programs.browserpass.enable = true;
     services.pass-secret-service = {
       enable = true;
+      storePath = "${config.home.homeDirectory}/.local/share/password-store";
+
     };
   };
 }

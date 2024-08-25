@@ -64,21 +64,9 @@ local function flash_setup()
     }
   })
 
-  local function get_map(indc)
-    local mappings = {
-      l = { function() require("flash").treesitter() end, "Flash Treesitter" },
-      r = { function() require("flash").remote() end, "Remote Flash" },
-      R = { function() require("flash").treesitter_search() end, "Treesitter Search" },
-      ['<c-s>'] = { function() require("flash").toggle() end, "Toggle Flash Search" },
-    }
-    local map = {}
-    for _, index in ipairs(indc) do
-      map[index] = mappings[index]
-    end
-    return map
-  end
-
-  require('which-key').register(get_map { '<c-l>' }, { mode = 'c' })
+  require('which-key').add({
+    { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+  })
 end
 
 xpcall(autopairs_setup, function() print("Setup of autopairs failed!") end)
