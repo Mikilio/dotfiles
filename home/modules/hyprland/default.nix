@@ -160,6 +160,7 @@ in {
     # enable hyprland
     wayland.windowManager.hyprland = {
       enable = true;
+      package = pkgs.hyprland;
       systemd = {
         enableXdgAutostart = true;
         variables = [
@@ -338,6 +339,9 @@ in {
         ];
 
         windowrulev2 = [
+          #markdown preview for neovim
+          "tile,title:^(Markdown Preview)(.*)$"
+          
           #weird wezterm workaround
           "float,class:^(org.wezfurlong.wezterm)$"
           "tile,class:^(org.wezfurlong.wezterm)$"

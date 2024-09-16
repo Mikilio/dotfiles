@@ -35,9 +35,8 @@
   };
 
   wayland.windowManager.hyprland.settings = {
-    exec-once = ["hyprshell -b hypr"];
     bind = let
-      e = "exec, hyprshell -b hypr";
+      e = "exec, hyprshell -b hyprshell";
     in [
       "CTRL ALT, R, exec, systemctl --user restart hyprshell.service"
       #prefer anyrun

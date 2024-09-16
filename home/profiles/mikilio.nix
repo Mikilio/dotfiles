@@ -21,7 +21,8 @@
     hyprland
     media
     nushell
-    nvim
+    # nvim
+    neovix
     pass
     pipewire
     productivity

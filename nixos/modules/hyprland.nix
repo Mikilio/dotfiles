@@ -13,10 +13,6 @@
     '')
     .overrideAttrs (_: {passthru.providedSessions = ["hyprland"];});
 in {
-  #everything necessary to have hyprland work properly
-  imports = [
-    inputs.hyprland.nixosModules.default
-  ];
 
   #fix portals
   xdg.portal = {

@@ -74,9 +74,11 @@
       inputs.rust-overlay.follows = "rust-overlay";
     };
 
-    ez-configs.url = "github:ehllie/ez-configs";
+    ez-configs = {
+      url = "github:ehllie/ez-configs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
-    flake-utils.url = "github:numtide/flake-utils";
 
     gBar = {
       url = "github:Mikilio/gBar/xdg-paths";
@@ -85,7 +87,6 @@
 
     helix = {
       url = "github:/helix-editor/helix";
-      inputs.flake-utils.follows = "flake-utils";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.rust-overlay.follows = "rust-overlay";
     };
@@ -94,9 +95,6 @@
       url = "github:brckd/home-manager/firefox/floorp";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
-    hyprlock.url = "git+https://github.com/hyprwm/hyprlock";
 
     hyprland-contrib = {
       url = "github:hyprwm/contrib";
@@ -116,6 +114,11 @@
     };
 
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+
+    neovix = {
+        url = "github:Mikilio/neovix";
+        inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     nur.url = "github:nix-community/NUR";
 

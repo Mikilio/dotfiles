@@ -14,6 +14,42 @@
         enable = true;
         settings = id: {
           "mail.smtpserver.smtp_${id}.authMethod" = 10;
+          "mail.identity.id_${id}.htmlSigText" = ''
+            <div style="font-family: Arial, sans-serif; padding: 10px;">
+              <style>
+                @media (prefers-color-scheme: dark) {
+                  .signature {
+                    color: #fff;
+                  }
+                  .signature a {
+                    color: #CBA6F7;
+                  }
+                }
+                @media (prefers-color-scheme: light) {
+                  .signature {
+                    color: #333;
+                  }
+                  .signature a {
+                    color: #8839EF;
+                  }
+                }
+              </style>
+              <div class="signature">
+                <p>Best regards,</p>
+                <p><strong>Kilian Mio</strong><br>
+                Freelancer at Mikilio</p>
+              </div>
+              <div class="signature" style="padding: 10px; border: 1px solid #CBA6F7; border-radius: 5px;">
+                <p><strong>Address:</strong><br>
+                Einsteinstraße 10<br>
+                85748 Garching bei München<br>
+                Munich, Germany</p>
+                <p><strong>Phone:</strong> <a href="tel:+4915153270276">+49 151 53270276</a><br>
+                <strong>Email:</strong> <a href="mailto:official.mikilio@gmail.com">official.mikilio@gmail.com</a></p>
+                <p><strong>VAT Number:</strong> DE368859881</p>
+              </div>
+            </div>
+          '';
         };
       };
     };
@@ -36,7 +72,7 @@
 
   programs.thunderbird = {
     enable = true;
-    package = pkgs.betterbird.override {
+    package = pkgs.thunderbird.override {
       extraPolicies.ExtensionSettings = {
         "{16b73c21-a2ff-46c4-8b5f-eb0c7d115db7}" = {
           installation_mode = "normal_installed";

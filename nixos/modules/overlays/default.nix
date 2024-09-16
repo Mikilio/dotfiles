@@ -31,6 +31,7 @@ in {
             "wikiwand.*"
             "discord.*"
             "teams"
+            "codeium"
           ]
         );
       permittedInsecurePackages = ["electron.*"];
@@ -40,12 +41,6 @@ in {
     overlays = [
       inputs.rust-overlay.overlays.default
       inputs.sops-nix.overlays.default
-      inputs.hyprlock.overlays.default
-
-      #nur overlays
-      #WARNING:my nur is broken
-      # nur.repos.mikilio.overlays.thunar
-      # nur.repos.mikilio.overlays.waybar
 
       #all normal overrides
       (
@@ -94,8 +89,6 @@ in {
 
           kicad = prev.kicad;
 
-          pass-secret-service = prev.pass-secret-service;
-
           vivaldi = prev.vivaldi.override {
             proprietaryCodecs = true;
             enableWidevine = true;
@@ -103,8 +96,6 @@ in {
 
           # PR patched-1
           floorp = patched.floorp;
-
-          xdg-desktop-portal-hyprland = stable.xdg-desktop-portal-hyprland;
 
           yazi = inputs.yazi.packages.${pkgs.stdenv.system}.default.overrideAttrs (o: {
             patches =
