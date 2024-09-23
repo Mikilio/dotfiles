@@ -3,14 +3,13 @@
   inputs,
   ezModules,
   ...
-}: {
+}:
+{
   imports =
     (with ezModules; [
       bluetooth
-      boot
-      client
+      networking
       dbus
-      fwupd
       gaming
       gnome-services
       graphics
@@ -21,10 +20,9 @@
       nix
       overlays
       pipewire
+      plymouth
       security
-      spotify
       style
-      syncthing
       tailscale
     ])
     ++ [

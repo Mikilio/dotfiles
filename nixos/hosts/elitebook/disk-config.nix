@@ -1,6 +1,14 @@
-{...}: {
+{ ... }:
+{
+  # Allow installation to change EFI variables
+  boot.loader.efi.canTouchEfiVariables = true;
   # Minimal list of modules to use the EFI system partition and the YubiKey
-  boot.initrd.kernelModules = ["vfat" "nls_cp437" "nls_iso8859-1" "usbhid"];
+  boot.initrd.kernelModules = [
+    "vfat"
+    "nls_cp437"
+    "nls_iso8859-1"
+    "usbhid"
+  ];
   # Enable support for the YubiKey PBA
   # boot.initrd.luks.yubikeySupport = true;
 
@@ -29,7 +37,7 @@
               content = {
                 type = "luks";
                 name = "crypted";
-                extraOpenArgs = [];
+                extraOpenArgs = [ ];
                 askPassword = true;
                 settings = {
                   # preLVM = true;
@@ -43,40 +51,41 @@
                   allowDiscards = true;
                 };
                 content = {
-                  type = "lvm_pv";
-                  vg = "pool";
+                  type = "btrfs";
+                  extraArgs = [ "-f" ];
+                  subvolumes = {
+                    "/root" = {
+                      mountpoint = "/";
+                      mountOptions = [
+                        "compress=zstd"
+                        "noatime"
+                      ];
+                    };
+                    "/home" = {
+                      mountpoint = "/home";
+                      mountOptions = [
+                        "compress=zstd"
+                        "noatime"
+                      ];
+                    };
+                    "/nix" = {
+                      mountpoint = "/nix";
+                      mountOptions = [
+                        "compress=zstd"
+                        "noatime"
+                      ];
+                    };
+                    "/persistent" = {
+                      mountpoint = "/persistent";
+                      mountOptions = [
+                        "compress=zstd"
+                        "noatime"
+                      ];
+                    };
+                  };
                 };
               };
             };
-          };
-        };
-      };
-    };
-    lvm_vg = {
-      pool = {
-        type = "lvm_vg";
-        lvs = {
-          root = {
-            size = "100G";
-            content = {
-              type = "filesystem";
-              format = "ext4";
-              mountpoint = "/";
-              mountOptions = [
-                "defaults"
-              ];
-            };
-          };
-          home = {
-            size = "500G";
-            content = {
-              type = "filesystem";
-              format = "ext4";
-              mountpoint = "/home";
-            };
-          };
-          raw = {
-            size = "10M";
           };
         };
       };

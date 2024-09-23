@@ -19,6 +19,11 @@
         nixos = {
           configurationsDirectory = "${ezConfigs.root}/nixos/hosts";
           modulesDirectory = "${ezConfigs.root}/nixos/modules";
+          hosts = {
+            elitebook ={
+              userHomeModules = [ "mikilio" ];
+            };
+          };
         };
       };
 
@@ -68,11 +73,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    eww = {
-      url = "github:hylophile/eww/dynamic-icons";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.rust-overlay.follows = "rust-overlay";
-    };
+    # eww = {
+    #   url = "github:hylophile/eww/dynamic-icons";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    #   inputs.rust-overlay.follows = "rust-overlay";
+    # };
 
     ez-configs = {
       url = "github:ehllie/ez-configs";
@@ -80,10 +85,10 @@
     };
 
 
-    gBar = {
-      url = "github:Mikilio/gBar/xdg-paths";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # gBar = {
+    #   url = "github:Mikilio/gBar/xdg-paths";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
 
     helix = {
       url = "github:/helix-editor/helix";
@@ -100,8 +105,6 @@
       url = "github:hyprwm/contrib";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    hyprscratch.url = "github:Mikilio/hyprscratch";
 
     hyprshell = {
       url = "github:Mikilio/hyprshell";
@@ -155,14 +158,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    stylix.url = "github:danth/stylix";
+    stylix.url = "github:Mikilio/stylix/regreet";
 
     templates.url = "github:NixOS/templates";
 
-    wezterm = {
-      url = "github:wez/wezterm?dir=nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # wezterm = {
+    #   url = "github:wez/wezterm?dir=nix";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
 
     yazi = {
       url = "github:sxyazi/yazi";

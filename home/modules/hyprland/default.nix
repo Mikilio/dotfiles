@@ -26,7 +26,7 @@
   };
 in {
   imports = [
-    ./hyprscratch.nix
+    ./pyprland.nix
   ];
 
   config = {
@@ -209,7 +209,7 @@ in {
           enabled = true;
           bezier = "myBezier, 0.05, 0.9, 0.1, 1.05";
           animation = [
-            "windows, 1, 5, myBezier"
+            "windows, 1, 3, myBezier"
             "windowsOut, 1, 7, default, popin 80%"
             "border, 1, 10, default"
             "fade, 1, 7, default"
@@ -261,7 +261,7 @@ in {
           ws = binding "SUPER" "workspace";
           resizeactive = binding "SUPER CTRL" "resizeactive";
           mvactive = binding "SUPER ALT" "moveactive";
-          mvtows = binding "SUPER SHIFT" "movetoworkspace";
+          mvtows = binding "SUPER ALT" "movetoworkspace";
           arr = [1 2 3 4 5 6 7 8 9];
         in
           [
@@ -270,7 +270,6 @@ in {
             "SUPER, Q, killactive"
             "SUPER, F, togglefloating"
             "SUPER, Z, fullscreen"
-            "SUPER, M, fakefullscreen"
             "SUPER, R, layoutmsg, togglesplit"
 
             (mvfocus "up" "u")
@@ -336,6 +335,8 @@ in {
           (f "xdg-desktop-portal-gnome")
           (f "transmission-gtk")
           (f "com.github.Aylur.ags")
+          (f "vesktop")
+          "float, title:^(Spotify)(.*)$"
         ];
 
         windowrulev2 = [
@@ -361,9 +362,6 @@ in {
           "keepaspectratio,initialTitle:^(Discord Popout)$"
           "noborder,class:^(firefox)$,title:^(Picture-in-Picture)$"
           "noborder,initialTitle:^(Discord Popout)$"
-          # "fakefullscreen,class:^(firefox)$,title:^(Firefox)$"
-          "fakefullscreen,class:^(firefox)$,title:^(Picture-in-Picture)$"
-          "fakefullscreen,initialTitle:^(Discord Popout)$"
           # "pin,class:^(firefox)$,title:^(Firefox)$"
           "pin,class:^(firefox)$,title:^(Picture-in-Picture)$"
           "pin,initialTitle:^(Discord Popout)$"

@@ -1,7 +1,15 @@
-{pkgs, ...}: {
+{ pkgs, config, ... }:
+{
   programs.regreet = {
     enable = true;
-    cageArgs = ["-s" "-m" "last"];
+    settings = {
+      GTK.application_prefer_dark_theme = true;
+    };
+    cageArgs = [
+      "-s"
+      "-m"
+      "last"
+    ];
   };
 
   services.udev.extraRules = ''

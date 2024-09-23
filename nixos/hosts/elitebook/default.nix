@@ -40,6 +40,12 @@
     pcsclite
   ];
 
+  boot.kernel.sysctl = {
+    #better mmap entropy
+    "vm.mmap_rnd_bits" = 32;
+    "vm.mmap_rnd_compat_bits" = 16;
+  };
+
   users.mutableUsers = false;
   users.users.mikilio = {
     isNormalUser = true;
