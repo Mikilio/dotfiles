@@ -53,6 +53,9 @@ in {
 
       #science
       zotero
+
+      #ftp
+      filezilla
     ];
     dconf.settings = {
       "org/virt-manager/virt-manager/connections" = {

@@ -13,6 +13,7 @@
       enable = true;
       mountOnMedia = true;
     };
+    davfs2.enable = true;
 
     printing.enable = true;
   };

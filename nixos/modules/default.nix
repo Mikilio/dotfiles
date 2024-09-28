@@ -18,6 +18,7 @@
       hyprland
       lanzaboote
       nix
+      ollama
       overlays
       pipewire
       plymouth
@@ -39,11 +40,6 @@
       "ja_JP.UTF-8/UTF-8"
       "de_DE.UTF-8/UTF-8"
     ];
-  };
-
-  # enable programs we can't live without
-  programs = {
-    less.enable = true;
   };
 
   users.mutableUsers = false;

@@ -1,13 +1,14 @@
 {
-  inputs,
   config,
   lib,
   pkgs,
   ...
 }:
-with lib; let
-in {
-  home.packages = with pkgs; [xdragon];
+with lib;
+let
+in
+{
+  home.packages = with pkgs; [ xdragon ];
   # yazi file manager
   programs.yazi = {
     enable = true;
@@ -22,14 +23,14 @@ in {
     keymap = {
       manager.prepend_keymap = [
         {
-          on = ["<C-n>"];
+          on = [ "<C-n>" ];
           run = ''
             shell 'dragon -x -i -T "$1"' --confirm
           '';
           desc = ''Drag and Drop item'';
         }
         {
-          on = ["y"];
+          on = [ "y" ];
           run = [
             "yank"
             ''
@@ -38,9 +39,34 @@ in {
           ];
         }
         {
-          on = ["<C-s>"];
+          on = [ "<C-s>" ];
           run = "shell '$SHELL' --block --confirm";
           desc = "Open shell here";
+        }
+      ];
+    };
+
+    theme = {
+      icon.prepend_dirs = [
+        {
+          name = "Code";
+          text = "";
+        }
+        {
+          name = "Templates";
+          text = "";
+        }
+        {
+          name = "Nexus";
+          text = "";
+        }
+        {
+          name = "Documents";
+          text = "󰂺";
+        }
+        {
+          name = "Public";
+          text = "";
         }
       ];
     };

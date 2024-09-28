@@ -9,7 +9,7 @@
       inputs.disko.nixosModules.disko
       ./hardware-configuration.nix
       ./secrets.nix
-      ./disk-config.nix
+      ./disko-impermanence.nix
       inputs.nixos-hardware.nixosModules.hp-elitebook-845g9
       inputs.nixos-hardware.nixosModules.common-pc-laptop-acpi_call
     ]
@@ -20,6 +20,9 @@
     ]);
 
   networking.hostName = "elitebook";
+
+  # I have rocm support apparently
+  nixpkgs.config.rocmSupport = true;
 
   # virtualisation
   virtualisation.libvirtd.enable = true;
@@ -63,6 +66,7 @@
       "wheel"
       "docker"
       "ydotool"
+      "davfs2"
     ];
   };
 }

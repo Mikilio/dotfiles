@@ -1,32 +1,34 @@
 {
   inputs,
   config,
-  osConfig,
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   environment = {
+    # make everything use wayland
     GDK_BACKEND = "wayland,x11,*";
     QT_QPA_PLATFORM = "wayland;xcb";
-    # SDL_VIDEODRIVER = "wayland";
+    SDL_VIDEODRIVER = "wayland";
     CLUTTER_BACKEND = "wayland";
     NIXOS_OZONE_WL = 1;
-    XAUTHORITY = "$XDG_RUNTIME_DIR/Xauthority";
 
-    XDG_SESSION_TYPE = "wayland";
-    XDG_SESSION_DESKTOP = "Hyprland";
+    # only for XWayland but I don't remember why
+    XAUTHORITY = "$XDG_RUNTIME_DIR/Xauthority";
 
     QT_AUTO_SCREEN_SCALE_FACTOR = 1;
     QT_WAYLAND_DISABLE_WINDOWDECORATION = 1;
-    _JAVA_AWT_WM_NONREPARENTING = 1;
+    QT_QPA_PLATFORMTHEME = "qt5ct";
 
     HYPRCURSOR_THEME = config.stylix.cursor.name;
     HYPRCURSOR_SIZE = config.stylix.cursor.name;
   };
-in {
+in
+{
   imports = [
-    ./pyprland.nix
+    ./shikane.nix
+    ./scratchpad.nix
   ];
 
   config = {
@@ -37,6 +39,7 @@ in {
         (with pkgs; [
           xorg.xprop # get properties from XWayland
           xorg.xauth # to enable ssh Xforwarding
+          hyprpolkitagent # UI for polkit
           wl-clipboard
         ])
         ++ [
@@ -47,7 +50,7 @@ in {
     };
 
     xdg.configFile = {
-      "Hyprland-xdg-terminals.list".text = "wezterm";
+      "Hyprland-xdg-terminals.list".text = "foot";
       "xkb" = {
         source = ./xkb;
         recursive = true;
@@ -57,10 +60,6 @@ in {
     programs.hyprlock = {
       enable = true;
       settings = {
-        source = "$HOME/.config/hypr/mocha.conf";
-        "$accent" = "$mauve";
-        "$accentAlpha" = "$mauveAlpha";
-        "$font" = "JetBrainsMono Nerd Font";
 
         # GENERAL
         general = {
@@ -68,23 +67,11 @@ in {
           hide_cursor = true;
         };
 
-        # BACKGROUND
-        background = [
-          {
-            path = "~/.config/background";
-            blur_passes = 2;
-            blur_size = 4;
-            color = "$base";
-          }
-        ];
-
         label = [
           # TIME
           {
             text = ''cmd[update:30000] echo "$(date +"%R")"'';
-            color = "$text";
             font_size = 90;
-            font_family = "$font";
             position = "-30, 0";
             halign = "right";
             valign = "top";
@@ -92,9 +79,7 @@ in {
           # DATE
           {
             text = ''cmd[update:43200000] echo "$(date +"%A, %d %B %Y")"'';
-            color = "$text";
             font_size = 25;
-            font_family = "$font";
             position = "-30, -150";
             halign = "right";
             valign = "top";
@@ -105,33 +90,8 @@ in {
           # USER AVATAR
           {
             path = "~/.face";
-            size = 100;
-            border_color = "$accent";
-
-            position = "0, 75";
-            halign = "center";
-            valign = "center";
-          }
-        ];
-        # INPUT FIELD
-        input-field = [
-          {
-            size = "300, 60";
-            outline_thickness = 4;
-            dots_size = 0.2;
-            dots_spacing = 0.2;
-            dots_center = true;
-            outer_color = "$accent";
-            inner_color = "$surface0";
-            font_color = "$text";
-            fade_on_empty = false;
-            placeholder_text = ''<span foreground="##$textAlpha"><i>󰌾 Logged in as </i><span foreground="##$accentAlpha">$USER</span></span>'';
-            hide_input = false;
-            check_color = "$accent";
-            fail_color = "$red";
-            fail_text = ''<i>$FAIL <b>($ATTEMPTS)</b></i>'';
-            capslock_color = "$yellow";
-            position = "0, -35";
+            size = 200;
+            position = "0, 250";
             halign = "center";
             valign = "center";
           }
@@ -176,6 +136,11 @@ in {
           ",preferred,auto-up,auto"
         ];
 
+        general = {
+          border_size = 2;
+          allow_tearing = true;
+        };
+
         xwayland = {
           force_zero_scaling = true;
         };
@@ -183,22 +148,25 @@ in {
         dwindle = {
           pseudotile = true;
           preserve_split = true;
-          no_gaps_when_only = 1;
         };
 
         decoration = {
-          drop_shadow = "yes";
-          shadow_range = 8;
-          shadow_render_power = 2;
 
           dim_inactive = false;
+          rounding = 8;
+
+          shadow = {
+            enabled = true;
+            range = 8;
+            render_power = 2;
+          };
 
           blur = {
             enabled = true;
             size = 6;
             passes = 2;
             new_optimizations = "on";
-            noise = 0.01;
+            noise = 1.0e-2;
             contrast = 0.9;
             brightness = 0.8;
             popups = true;
@@ -226,22 +194,14 @@ in {
         device = [
           {
             name = "at-translated-set-2-keyboard";
-            kb_layout = "us,eu";
-            kb_variant = ",eurkey-cmk-dh-iso";
-            kb_options = "grp:alt_caps_toggle";
+            kb_layout = "eu,us";
+            kb_variant = "eurkey-cmk-dh-iso,";
             resolve_binds_by_sym = 1;
           }
           {
             name = "semico---usb-gaming-keyboard-";
-            kb_layout = "us,eu";
-            kb_variant = ",eurkey-cmk-dh-ansi";
-            kb_options = "grp:alt_caps_toggle";
-            resolve_binds_by_sym = 1;
-          }
-          {
-            name = "mosart-semi.-2.4g-wireless-keyboard";
-            kb_layout = "de";
-            kb_options = "grp:alt_caps_toggle";
+            kb_layout = "eu,us";
+            kb_variant = "eurkey-cmk-dh-ansi,";
             resolve_binds_by_sym = 1;
           }
         ];
@@ -255,20 +215,34 @@ in {
           allow_workspace_cycles = true;
         };
 
-        bind = let
-          binding = mod: cmd: key: arg: "${mod}, ${key}, ${cmd}, ${arg}";
-          mvfocus = binding "SUPER" "movefocus";
-          ws = binding "SUPER" "workspace";
-          resizeactive = binding "SUPER CTRL" "resizeactive";
-          mvactive = binding "SUPER ALT" "moveactive";
-          mvtows = binding "SUPER ALT" "movetoworkspace";
-          arr = [1 2 3 4 5 6 7 8 9];
-        in
+        bind =
+          let
+            binding =
+              mod: cmd: key: arg:
+              "${mod}, ${key}, ${cmd}, ${arg}";
+            mvfocus = binding "SUPER" "movefocus";
+            ws = binding "SUPER" "workspace";
+            resizeactive = binding "SUPER CTRL" "resizeactive";
+            mvactive = binding "SUPER ALT" "moveactive";
+            mvtows = binding "SUPER ALT" "movetoworkspace";
+            arr = [
+              1
+              2
+              3
+              4
+              5
+              6
+              7
+              8
+              9
+            ];
+          in
           [
             "ALT, Tab, focuscurrentorlast"
             "CTRL ALT, Delete, exit"
             "SUPER, Q, killactive"
             "SUPER, F, togglefloating"
+            "SUPER, P, pin"
             "SUPER, Z, fullscreen"
             "SUPER, R, layoutmsg, togglesplit"
 
@@ -305,14 +279,13 @@ in {
         ];
 
         bindl = [
+          "ALT, code:66,      exec, hyprctl switchxkblayout current next"
           ",XF86AudioPlay,    exec, ${lib.getExe pkgs.playerctl} play-pause"
           ",XF86AudioStop,    exec, ${lib.getExe pkgs.playerctl} pause"
           ",XF86AudioPause,   exec, ${lib.getExe pkgs.playerctl} pause"
           ",XF86AudioPrev,    exec, ${lib.getExe pkgs.playerctl} previous"
           ",XF86AudioNext,    exec, ${lib.getExe pkgs.playerctl} next"
           ",XF86AudioMicMute, exec, ${pkgs.pulseaudio.outPath}/bin/pactl set-source-mute @DEFAULT_SOURCE@ toggle"
-          '',switch:off:Lid Switch,exec,hyprctl keyword monitor "eDP-1, preffered, auto, 1"''
-          '',switch:on:Lid Switch,exec,hyprctl keyword monitor "eDP-1, disable"''
         ];
 
         bindm = [
@@ -320,57 +293,74 @@ in {
           "SUPER, mouse:272, movewindow"
         ];
 
-        windowrule = let
-          f = regex: "float, ^(${regex})$";
-        in [
-          (f "org.gnome.Calculator")
-          (f "org.gnome.Nautilus")
-          (f "pavucontrol")
-          (f "nm-connection-editor")
-          (f "blueberry.py")
-          (f "org.gnome.Settings")
-          (f "org.gnome.design.Palette")
-          (f "Color Picker")
-          (f "xdg-desktop-portal")
-          (f "xdg-desktop-portal-gnome")
-          (f "transmission-gtk")
-          (f "com.github.Aylur.ags")
-          (f "vesktop")
-          "float, title:^(Spotify)(.*)$"
-        ];
+        windowrule =
+          let
+            f = regex: "float, ^(${regex})$";
+          in
+          [
+            (f "org.gnome.Calculator")
+            (f "org.gnome.Nautilus")
+            (f "pavucontrol")
+            (f "nm-connection-editor")
+            (f "blueberry.py")
+            (f "org.gnome.Settings")
+            (f "org.gnome.design.Palette")
+            (f "Color Picker")
+            (f "xdg-desktop-portal")
+            (f "xdg-desktop-portal-gnome")
+            (f "transmission-gtk")
+            (f "com.github.Aylur.ags")
+          ];
 
         windowrulev2 = [
+          # smart gaps
+          "bordersize 0, floating:0, onworkspace:w[tv1]"
+          "rounding 0, floating:0, onworkspace:w[tv1]"
+          "bordersize 0, floating:0, onworkspace:f[1]"
+          "rounding 0, floating:0, onworkspace:f[1]"
+
           #markdown preview for neovim
           "tile,title:^(Markdown Preview)(.*)$"
-          
+
           #weird wezterm workaround
           "float,class:^(org.wezfurlong.wezterm)$"
           "tile,class:^(org.wezfurlong.wezterm)$"
+
           #optimization
           "noshadow, floating:0"
+
           #xwaylandvideobridge
           "opacity 0.0 override 0.0 override,class:^(xwaylandvideobridge)$"
           "noanim,class:^(xwaylandvideobridge)$"
           "nofocus,class:^(xwaylandvideobridge)$"
           "noinitialfocus,class:^(xwaylandvideobridge)$"
+
           # fix xwayland apps
           "rounding 0, xwayland:1, floating:1"
-          #don't touch: "fullscreen, forceinput, xwayland:1, class:^(league of legends.exe)$"
+
+          #allow tearing for steam games
+          "immediate, class:^(steam_app_)(.*)$"
 
           # make picture in picture a nice pinned window
           "keepaspectratio,class:^(firefox)$,title:^(Picture-in-Picture)$"
           "keepaspectratio,initialTitle:^(Discord Popout)$"
           "noborder,class:^(firefox)$,title:^(Picture-in-Picture)$"
           "noborder,initialTitle:^(Discord Popout)$"
-          # "pin,class:^(firefox)$,title:^(Firefox)$"
           "pin,class:^(firefox)$,title:^(Picture-in-Picture)$"
           "pin,initialTitle:^(Discord Popout)$"
-          # "float,class:^(firefox)$,title:^(Firefox)$"
           "float,class:^(firefox)$,title:^(Picture-in-Picture)$"
           "float,initialTitle:^(Discord Popout)$"
+
           #workarount for thunderai
           "float,class:thunderbird,title:^(?!Mozilla*)"
         ];
+
+        workspace = [
+          "w[tv1], gapsout:0, gapsin:0"
+          "f[1], gapsout:0, gapsin:0"
+        ];
+
+        debug.disable_logs = false;
       };
     };
   };

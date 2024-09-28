@@ -1,4 +1,5 @@
 {
+  inputs,
   pkgs,
   ezModules,
   modulesPath,
@@ -7,12 +8,13 @@
 {
   imports =
     [
-      (modulesPath + "installation-cd-graphical-gnome.nix")
+      (modulesPath + "/installer/cd-dvd/installation-cd-minimal.nix")
     ]
     ++ (with ezModules; [
-      networking
+      # networking
     ]);
 
+  nixpkgs.hostPlatform = "x86_64-linux";
   networking.hostName = "nixos-installer";
   environment.systemPackages = with pkgs; [ neovim sbctl disko];
 }

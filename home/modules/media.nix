@@ -26,18 +26,17 @@ in {
     ];
 
     programs = {
-      # mpv = {
-      #   enable = true;
-      #   defaultProfiles = ["gpu-hq"];
-      #   scripts = [pkgs.mpvScripts.mpris];
-      # };
+      mpv = {
+        enable = true;
+        defaultProfiles = ["gpu-hq"];
+        scripts = [pkgs.mpvScripts.mpris];
+      };
 
       imv.enable = true;
 
       obs-studio = {
         enable = true;
         plugins = with pkgs.obs-studio-plugins; [
-          wlrobs
           droidcam-obs
         ];
       };

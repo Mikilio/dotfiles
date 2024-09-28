@@ -1,9 +1,10 @@
 {
   description = "Mikilio's NixOS and Home-Manager flake";
 
-  outputs = inputs:
-    inputs.flake-parts.lib.mkFlake {inherit inputs;} rec {
-      systems = ["x86_64-linux"];
+  outputs =
+    inputs:
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } rec {
+      systems = [ "x86_64-linux" ];
 
       imports = [
         inputs.ez-configs.flakeModule
@@ -11,7 +12,9 @@
 
       ezConfigs = {
         root = ./.;
-        globalArgs = {inherit inputs ezConfigs;};
+        globalArgs = {
+          inherit inputs ezConfigs;
+        };
         home = {
           configurationsDirectory = "${ezConfigs.root}/home/profiles";
           modulesDirectory = "${ezConfigs.root}/home/modules";
@@ -20,21 +23,24 @@
           configurationsDirectory = "${ezConfigs.root}/nixos/hosts";
           modulesDirectory = "${ezConfigs.root}/nixos/modules";
           hosts = {
-            elitebook ={
+            elitebook = {
               userHomeModules = [ "mikilio" ];
             };
+            installer.importDefault = false;
           };
         };
       };
 
-      perSystem = {
-        pkgs,
-        lib,
-        system,
-        ...
-      }: {
-        formatter = pkgs.alejandra;
-      };
+      perSystem =
+        {
+          pkgs,
+          lib,
+          system,
+          ...
+        }:
+        {
+          formatter = pkgs.alejandra;
+        };
     };
 
   inputs = {
@@ -84,21 +90,29 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-
     # gBar = {
     #   url = "github:Mikilio/gBar/xdg-paths";
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
 
-    helix = {
-      url = "github:/helix-editor/helix";
+    home-manager = {
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.rust-overlay.follows = "rust-overlay";
     };
 
-    home-manager = {
-      url = "github:brckd/home-manager/firefox/floorp";
+    hyprland = {
+      url = "github:hyprwm/Hyprland";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    hyprutils = {
+      url = "github:hyprwm/hyprutils";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    hyprpolkitagent = {
+      url = "github:hyprwm/hyprpolkitagent";
+      inputs.hyprutils.follows = "hyprutils";
     };
 
     hyprland-contrib = {
@@ -108,8 +122,10 @@
 
     hyprshell = {
       url = "github:Mikilio/hyprshell";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
     };
+
+    impermanence.url = "github:nix-community/impermanence";
 
     kmonad = {
       url = "github:kmonad/kmonad?dir=nix";
@@ -119,8 +135,8 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
     neovix = {
-        url = "github:Mikilio/neovix";
-        inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:Mikilio/neovix/smartsplit";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nur.url = "github:nix-community/NUR";
@@ -143,11 +159,6 @@
       inputs.flake-parts.follows = "flake-parts";
     };
 
-    rust-overlay = {
-      url = "github:oxalica/rust-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     sessionx = {
       url = "github:omerxx/tmux-sessionx";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -158,31 +169,25 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    stylix.url = "github:Mikilio/stylix/regreet";
+    stylix.url = "github:Mikilio/stylix";
+    stylix.inputs.base16.follows = "base16";
+    base16.url = "github:SenchoPens/base16.nix?ref=refs/pull/19/head";
 
     templates.url = "github:NixOS/templates";
 
-    # wezterm = {
-    #   url = "github:wez/wezterm?dir=nix";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
-
     yazi = {
       url = "github:sxyazi/yazi";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
   nixConfig = {
     extra-substituters = [
-      "https://helix.cachix.org"
       "https://hyprland.cachix.org"
       "https://devenv.cachix.org"
       "https://nix-community.cachix.org"
       "https://mikilio.cachix.org"
     ];
     extra-trusted-public-keys = [
-      "helix.cachix.org-1:ejp9KQpR1FBI2onstMQ34yogDm4OgU2ru6lIwPvuCVs="
       "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
       "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="

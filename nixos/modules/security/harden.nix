@@ -93,8 +93,8 @@ with lib;
   # Hide kptrs even for processes with CAP_SYSLOG
   boot.kernel.sysctl."kernel.kptr_restrict" = mkOverride 500 2;
 
-  # Disable bpf() JIT (to eliminate spray attacks)
-  boot.kernel.sysctl."net.core.bpf_jit_enable" = mkDefault false;
+  # JIT hardening for unprivileged users only (to eliminate spray attacks)
+  boot.kernel.sysctl."net.core.bpf_jit_harden" = mkDefault 1;
 
   # Disable ftrace debugging
   boot.kernel.sysctl."kernel.ftrace_enabled" = mkDefault false;

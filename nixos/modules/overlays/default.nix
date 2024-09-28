@@ -36,6 +36,7 @@ in
             "discord.*"
             "teams"
             "codeium"
+            "xow_dongle-firmware"
           ]
         );
       permittedInsecurePackages = [ "electron-27.3.11" ];
@@ -43,11 +44,14 @@ in
     };
 
     overlays = [
-      inputs.rust-overlay.overlays.default
       inputs.sops-nix.overlays.default
+      inputs.hyprland.overlays.default
+      inputs.hyprpolkitagent.overlays.default
 
       #all normal overrides
       (final: prev: {
+
+        inherit (stable) yubioath-flutter yubikey-manager blender;
 
         lib = prev.lib // {
           mkOptional = # Name for the created option
@@ -84,33 +88,16 @@ in
             ];
         };
 
-        logseq = prev.logseq.overrideAttrs (oldAttrs: {
-          postFixup = ''
-            makeWrapper ${prev.electron_27}/bin/electron $out/bin/${oldAttrs.pname} \
-              --set "LOCAL_GIT_DIRECTORY" ${prev.git} \
-              --add-flags $out/share/${oldAttrs.pname}/resources/app \
-              --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations}}" \
-              --prefix LD_LIBRARY_PATH : "${prev.lib.makeLibraryPath [ prev.stdenv.cc.cc.lib ]}"
-          '';
-        });
-
         discord = prev.discord-canary.override {
           nss = prev.nss_latest;
           withOpenASAR = true;
           withVencord = true;
         };
 
-        flutter = prev.flutter319;
-
-        kicad = prev.kicad;
-
         vivaldi = prev.vivaldi.override {
           proprietaryCodecs = true;
           enableWidevine = true;
         };
-
-        # PR patched-1
-        floorp = patched.floorp;
 
         yazi = inputs.yazi.packages.${pkgs.stdenv.system}.default.overrideAttrs (o: {
           patches = (o.patches or [ ]) ++ [

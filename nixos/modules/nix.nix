@@ -6,22 +6,21 @@
   ...
 }:
 let
-  cfg = config.dotfiles.nix;
+  cfg = config.modules.nix;
 in
 {
-  options.dotfiles.nix = {
-    enable = pkgs.lib.mkOptional "Nix Settings";
-  };
-  config = lib.mkIf cfg.enable {
+  options.modules.nix = pkgs.lib.mkOptional "Nix Settings";
+
+  config = lib.mkIf cfg {
     # nh default flake
-    environment.variables.FLAKE = "/home/mihai/Documents/code/dotfiles";
+    environment.variables.FLAKE = "/home/mikilio/dev/dotfiles";
 
     programs.nh = {
       enable = true;
       # weekly cleanup
       clean = {
         enable = true;
-        extraArgs = "--keep-since 30d";
+        extraArgs = "--keep 10 --keep-since 30d";
       };
     };
 

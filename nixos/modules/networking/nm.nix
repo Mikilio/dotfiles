@@ -1,4 +1,35 @@
 {
+  eduroam = {
+    "802-1x" = {
+      anonymous-identity = "anonymous";
+      domain-suffix-match = "radius.lrz.de";
+      eap = "peap;";
+      identity = "ga84tet@eduroam.mwn.de";
+      password-flags = "1";
+      phase2-auth = "mschapv2";
+    };
+    connection = {
+      id = "eduroam";
+      interface-name = "wlp1s0";
+      type = "wifi";
+      uuid = "082521d4-67c1-4866-8c85-a3593a5ec026";
+    };
+    ipv4 = {
+      method = "auto";
+    };
+    ipv6 = {
+      addr-gen-mode = "stable-privacy";
+      method = "auto";
+    };
+    proxy = { };
+    wifi = {
+      mode = "infrastructure";
+      ssid = "eduroam";
+    };
+    wifi-security = {
+      key-mgmt = "wpa-eap";
+    };
+  };
   "Captain Commodore" = {
     connection = {
       id = "Captain Commodore";

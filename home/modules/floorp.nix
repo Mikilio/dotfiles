@@ -25,15 +25,14 @@ in
             tridactyl
             ublock-origin
             stylus
-            firefox-color
             browserpass
+            firenvim
             languagetool
             sidebery
             skip-redirect
             # firemonkey
             tampermonkey
             wikiwand-wikipedia-modernized
-            omnivore
             zotero-connector
             # bypass-paywalls-clean
             metamask

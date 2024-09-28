@@ -62,6 +62,7 @@ in
     };
 
     security = {
+      sudo.execWheelOnly = true;
 
       tpm2 = {
         enable = true;
@@ -69,6 +70,10 @@ in
       };
       # I need sandboxes
       unprivilegedUsernsClone = lib.mkForce true;
+      # Need it for no brain desktop services
+      lockKernelModules = lib.mkForce false;
+      #polkit
+      polkit.enable = true;
     };
     services = {
       # smart card deamon
@@ -108,8 +113,12 @@ in
       enable = true;
       wrappedBinaries = {
         floorp = {
-          executable = "${pkgs.lib.getBin pkgs.floorp}/bin/floorp";
+          executable = lib.getExe pkgs.floorp;
           profile = "${pkgs.firejail}/etc/firejail/floorp.profile";
+        };
+        thunderbird = {
+          executable = lib.getExe pkgs.thunderbird;
+          profile = "${pkgs.firejail}/etc/firejail/thunderbird.profile";
         };
         mpv = {
           executable = "${lib.getBin pkgs.mpv}/bin/mpv";

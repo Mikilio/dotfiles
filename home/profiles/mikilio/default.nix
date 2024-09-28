@@ -6,13 +6,13 @@
   ezModules,
   osConfig,
   ...
-}: {
+}:
+{
   imports = with ezModules; [
     anyrun
     cli
     email
     foot
-    firefox
     floorp
     gpg
     games
@@ -41,21 +41,41 @@
     home = {
       username = "mikilio";
       homeDirectory = osConfig.users.users.mikilio.home;
-      extraOutputsToInstall = ["doc" "devdoc"];
+      extraOutputsToInstall = [
+        "doc"
+        "devdoc"
+      ];
     };
+
+    programs = {
+      gpg.publicKeys = [
+        {
+          source = ./gmail_mikilio.asc;
+          trust = 5;
+        }
+      ];
+    };
+
+    pam.yubico.authorizedYubiKeys.ids = [ "cccccbhkevjb" ];
 
     sops = {
       # or some other source for the decryption key
       gnupg.home = "${config.xdg.dataHome}/gnupg";
       # or which file contains the encrypted secrets
-      defaultSopsFile = ../../secrets/user/mikilio.yaml;
-      secrets =
-        builtins.mapAttrs (
-          name: value:
-            value // {path = "${config.xdg.userDirs.extraConfig.XDG_PRIVATE_DIR}/secrets/${name}";}
-        ) {
-          google-git = {};
-        };
+      defaultSopsFile = ../../../secrets/user/mikilio.yaml;
+      secrets = {
+        google-git = { };
+      };
     };
+    systemd.user.services.sops-nix = {
+      Install = {
+        WantedBy = lib.mkForce [ "graphical-session.target" ];
+      };
+      Unit = {
+        After = "graphical-session.target";
+        Before = "xdg-desktop-autostart.target";
+      };
+    };
+
   };
 }

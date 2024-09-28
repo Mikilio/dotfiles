@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, config, ... }:
+{
   home.sessionVariables.TERM = "foot";
 
   programs.foot = {
@@ -6,7 +7,7 @@
     server.enable = true;
     settings = {
       main = {
-        shell = "${pkgs.tmux}/bin/tmux";
+        shell = "${pkgs.tmux}/bin/tmux -L ${config.home.username} attach";
         login-shell = "yes";
       };
 

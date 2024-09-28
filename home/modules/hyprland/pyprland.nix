@@ -17,7 +17,6 @@ let
         size = "80% 80%";
         allow_special_workspaces = true;
         unfocus = "hide";
-        lazy = true;
       };
       spotify = {
         command = "spotify";
@@ -51,12 +50,13 @@ let
       };
     };
   };
-  makeRule = app: "float, ${app.match_by}:${app.${app.match_by}}";
+  floatRule = app: "float, ${app.match_by}:${app.${app.match_by}}";
+  wkpRule = name: app: "workspace silent special:scratch_${name}, ${app.match_by}:${app.${app.match_by}}";
 in
 {
   wayland.windowManager.hyprland.settings = {
-    exec-once = [ "${pkgs.pyprland}/bin/pypr" ];
-    windowrulev2 = lib.attrsets.mapAttrsToList (_: makeRule) pyprlandConfig.scratchpads;
+    windowrulev2 = lib.attrsets.mapAttrsToList (_: floatRule) pyprlandConfig.scratchpads
+      ++ lib.attrsets.mapAttrsToList wkpRule pyprlandConfig.scratchpads;
     bind =
       let
         e = "exec, pypr toggle";
@@ -80,8 +80,9 @@ in
       Description = "Scratchpads & many goodies for Hyprland";
       Documentation = "https://github.com/hyprland-community/pyprland";
       PartOf = [ "graphical-session.target" ];
-      After = [ "xdg-desktop-autostart.target" ];
-      X-Restart-Triggers = [
+      Requires = [ "sops-nix.service"];
+      After = [ "xdg-desktop-autostart.target" "sops-nix.service"];
+      X-Reload-Triggers = [
         "${config.xdg.configFile."hypr/pyprland.toml".source}"
       ];
     };
@@ -94,13 +95,15 @@ in
         ExecStart = pypr;
         ExecReload = "${pypr} reload";
         ExecStop = "${pypr} exit";
+        ExecStopPost = "${pkgs.writeShellScript "cleanup" ''
+          rm -f ''${XDG_RUNTIME_DIR}/hypr/''${HYPRLAND_INSTANCE_SIGNATURE}/.pyprland.sock
+        ''}";
         Restart = "on-failure";
-        #NOTE: not recommended but seems like the best solution now
-        KillMode = "none";
+        KillMode = "control-group";
       };
 
     Install = {
-      WantedBy = [ "graphical-session.target" ];
+      WantedBy = [ "xdg-desktop-autostart.target" ];
     };
   };
 }

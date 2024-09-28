@@ -37,14 +37,6 @@
     };
   };
 
-  #integration with pam services (unlock gpg after login)
-  home.file.".pam-gnupg".text = ''
-    ${config.programs.gpg.homedir}
-    AFF0BF78824FE6E2C8B23A035EF592F4B0A189DE
-    833FE074875A67DB3215AE16C1DCCCAD084FAB6C
-    CC15ADE7A7DCCD12159E32BB32D14EFFEBE8EB5C
-  '';
-
   home = {
     sessionVariables.GPG_TTY = "$(tty)";
     packages = with pkgs; [
@@ -55,9 +47,8 @@
     ];
   };
 
-  pam.yubico.authorizedYubiKeys.ids = ["cccccbhkevjb"];
-
   services = {
+    # TODO: this config is not reusable! create some logic here
     gpg-agent = {
       enable = true;
       enableSshSupport = true;

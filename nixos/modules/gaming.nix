@@ -4,7 +4,8 @@
   lib,
   pkgs,
   ...
-}: {
+}:
+{
   programs = {
     steam = {
       enable = true;
@@ -27,8 +28,15 @@
     };
   };
 
-  # see https://github.com/fufexan/nix-gaming/#pipewire-low-latency
-  services.pipewire.lowLatency.enable = true;
+  services = {
+    # see https://github.com/fufexan/nix-gaming/#pipewire-low-latency
+    pipewire.lowLatency.enable = true;
+  };
+
+  hardware = {
+    steam-hardware.enable = true;
+  };
+  boot.extraModprobeConfig = '' options bluetooth disable_ertm=1 '';
   imports = [
     inputs.nix-gaming.nixosModules.pipewireLowLatency
   ];

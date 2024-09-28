@@ -24,21 +24,18 @@ in {
       userDirs = {
         enable = true;
         createDirectories = true;
-        desktop = "${homeDir}/misc";
-        documents = "${homeDir}/docs";
-        download = "${homeDir}/misc/download";
-        music = "${homeDir}/media/music";
-        pictures = "${homeDir}/media/pics";
-        videos = "${homeDir}/media/videos";
-        publicShare = "${homeDir}/misc/public";
-        templates = "${homeDir}/docs/temp";
         extraConfig = {
-          XDG_DEV_DIR = "${homeDir}/dev";
-          XDG_PRIVATE_DIR = "${homeDir}/misc/private";
-          XDG_SCREENSHOTS_DIR = "${homeDir}/media/pics/screenshots";
+          XDG_DEV_DIR = "${homeDir}/Code";
+          XDG_SCREENSHOTS_DIR = "${homeDir}/Pictures/screenshots";
         };
       };
-      #TODO: add preferences so inkscape doen't annoy me
+      
+      mimeApps = {
+        enable = true;
+        defaultApplications = {
+
+        };
+      };
     };
 
     home.packages = [config.nur.repos.mikilio.xdg-terminal-exec];
