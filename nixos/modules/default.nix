@@ -27,7 +27,7 @@
       tailscale
     ])
     ++ [
-      inputs.nur.nixosModules.nur
+      inputs.nur.modules.nixos.default
     ];
 
   documentation.dev.enable = true;

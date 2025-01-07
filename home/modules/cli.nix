@@ -3,50 +3,65 @@
   lib,
   pkgs,
   ...
-}: let
-  preview = pkgs.writeShellScript "preview.sh" (builtins.readFile (builtins.fetchurl {
-    url = "https://raw.githubusercontent.com/lotabout/skim.vim/4145f53f3d343c389ff974b1f1a68eeb39fba18b/bin/preview.sh";
-    sha256 = "1ilfqcxvaxw906sdy4aqk9lyw3i1qwi00dvj3vhvygi90ja3qhhw";
-  }));
-in {
-  home.packages =
-    [
-      config.nur.repos.mikilio.xdg-terminal-exec
-    ]
-    ++ (with pkgs; [
-      # archives
-      zip
-      unzip
-      unar
+}:
+let
+  preview = pkgs.writeShellScript "preview.sh" (
+    builtins.readFile (
+      builtins.fetchurl {
+        url = "https://raw.githubusercontent.com/lotabout/skim.vim/4145f53f3d343c389ff974b1f1a68eeb39fba18b/bin/preview.sh";
+        sha256 = "1ilfqcxvaxw906sdy4aqk9lyw3i1qwi00dvj3vhvygi90ja3qhhw";
+      }
+    )
+  );
+in
+{
+  home.packages = with pkgs; [
+    # archives
+    zip
+    unzip
+    unar
 
-      #TUI
-      calcurse
+    #TUI
+    calcurse
 
-      # utils
-      jaq
-      file
-      du-dust
-      duf
-      fd
-      bat
-      ripgrep
-      xdg-utils
+    # utils
+    jaq
+    file
+    du-dust
+    duf
+    fd
+    bat
+    ripgrep
+    xdg-utils
+    nur.repos.mikilio.xdg-terminal-exec
 
-      #nix
-      sops
-      alejandra
-      deadnix
-      statix
-      cachix
-      devenv
-    ]);
+    #nix
+    sops
+    alejandra
+    deadnix
+    statix
+    cachix
+    devenv
+  ];
 
   programs = {
     bash = {
       enable = true;
       enableCompletion = false;
-      historyControl = ["ignoredups" "ignorespace" "erasedups"];
-      historyIgnore = ["&" "ls" "[bf]g" "exit" "reset" "clear" "cd*"];
+      historyControl = [
+        "ignoredups"
+        "ignorespace"
+        "erasedups"
+      ];
+      historyIgnore = [
+        "&"
+        "ls"
+        "[bf]g"
+        "exit"
+        "reset"
+        "clear"
+        "cd*"
+      ];
       shellOptions = [
         "autocd"
         "cdspell"
@@ -92,7 +107,7 @@ in {
     };
     atuin = {
       enable = true;
-      flags = ["--disable-up-arrow"];
+      flags = [ "--disable-up-arrow" ];
     };
     less = {
       enable = true;
@@ -135,7 +150,10 @@ in {
     skim = {
       enable = true;
       defaultCommand = "rg --color=always --line-number '{}'";
-      defaultOptions = ["--ansi" "--preview '${preview} {}'"];
+      defaultOptions = [
+        "--ansi"
+        "--preview '${preview} {}'"
+      ];
       changeDirWidgetOptions = [
         "--preview 'exa --icons --git --color always -T -L 3 {} | head -200'"
         "--exact"
@@ -200,6 +218,6 @@ in {
 
       DIRENV_LOG_FORMAT = "";
     };
-    sessionPath = ["$HOME/.local/share/bin"];
+    sessionPath = [ "$HOME/.local/share/bin" ];
   };
 }

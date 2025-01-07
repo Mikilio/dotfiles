@@ -1,7 +1,7 @@
-{ pkgs, config, ... }:
+{ pkgs,  ... }:
 let
 
-  inherit (config.nur.repos.rycee.firefox-addons) buildFirefoxXpiAddon;
+  inherit (pkgs.nur.repos.rycee.firefox-addons) buildFirefoxXpiAddon;
   extensionPath = "extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}";
   extensions = [
     (buildFirefoxXpiAddon {
@@ -75,21 +75,6 @@ in
               </div>
             </div>
           '';
-        };
-      };
-    };
-    Duckrabbit = {
-      address = "mikilio@duckrabbit.com";
-      flavor = "outlook.office365.com";
-      gpg = {
-        key = "FFF94A5986542148";
-        signByDefault = true;
-      };
-      realName = "Kilian Mio";
-      thunderbird = {
-        enable = true;
-        settings = id: {
-          "mail.smtpserver.smtp_${id}.authMethod" = 10;
         };
       };
     };

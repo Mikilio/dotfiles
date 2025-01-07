@@ -21,6 +21,4 @@
     jack.enable = true;
     pulse.enable = true;
   };
-
-  hardware.pulseaudio.enable = lib.mkForce false;
 }

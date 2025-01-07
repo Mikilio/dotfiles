@@ -41,10 +41,7 @@
       };
 
       monospace = {
-        package = pkgs.nerdfonts.override {
-          fonts = [ "DejaVuSansMono" ];
-          enableWindowsFonts = true;
-        };
+        package = pkgs.nerd-fonts.dejavu-sans-mono;
         name = "DejaVu Sans Mono Nerd Font";
       };
 

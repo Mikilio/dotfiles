@@ -1,6 +1,4 @@
 {
-  inputs,
-  config,
   lib,
   pkgs,
   ...
@@ -22,7 +20,7 @@ in {
       #mpris
       playerctl
 
-      config.nur.repos.mikilio.xwaylandvideobridge-hypr
+      nur.repos.mikilio.xwaylandvideobridge-hypr
     ];
 
     programs = {

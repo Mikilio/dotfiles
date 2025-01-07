@@ -68,6 +68,7 @@
     escapeTime = 0;
     keyMode = "vi";
     mouse = true;
+    focusEvents = true;
     terminal = "tmux-256color";
     disableConfirmationPrompt = true;
     secureSocket = true;

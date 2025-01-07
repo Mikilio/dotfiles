@@ -50,6 +50,14 @@ let
       size = "40% 90%";
       key = "R"; # Reading
     };
+
+    slack = {
+      command = lib.getExe pkgs.slack;
+      match_by = "initialClass";
+      initialClass = "Slack";
+      size = "40% 90%";
+      key = "E"; # Enterprise
+    };
   };
   workspaceRule = name: app: "special:scratch_${name},shadow:1, gapsout:60, on-created-empty:${app.command}";
   windowRule =

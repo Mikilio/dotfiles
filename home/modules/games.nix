@@ -1,7 +1,7 @@
-{ pkgs, lib, config, osConfig, ... }:
+{ pkgs, lib, config, osConfig, inputs, ... }:
 
 lib.optionalAttrs osConfig.programs.steam.enable {
-  home.packages = [ pkgs.adwsteamgtk ];
+  home.packages = [ pkgs.adwsteamgtk pkgs.fjordlauncher ];
 
   home.activation = let
     applySteamTheme = pkgs.writeShellScript "applySteamTheme" ''

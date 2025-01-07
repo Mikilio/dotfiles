@@ -3,7 +3,7 @@
   ...
 }: {
   imports = [
-    inputs.nur.hmModules.nur
+    inputs.nur.modules.homeManager.default
     inputs.nix-index-db.hmModules.nix-index
     inputs.sops-nix.homeManagerModule
   ];

@@ -46,7 +46,8 @@ in {
 
       #need it for work
       vesktop
-      teams-for-linux
+      slack
+      zoom-us
 
       #matrix
       element-desktop

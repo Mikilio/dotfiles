@@ -11,7 +11,6 @@
       ./secrets.nix
       ./disko-impermanence.nix
       inputs.nixos-hardware.nixosModules.hp-elitebook-845g9
-      inputs.nixos-hardware.nixosModules.common-pc-laptop-acpi_call
     ]
     ++ (with ezModules; [
       backlight

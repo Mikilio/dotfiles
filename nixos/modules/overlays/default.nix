@@ -35,8 +35,8 @@ in
             "wikiwand.*"
             "discord.*"
             "teams"
-            "codeium"
-            "xow_dongle-firmware"
+            "slack.*"
+            "zoom.*"
           ]
         );
       permittedInsecurePackages = [ "electron-27.3.11" ];
@@ -51,8 +51,6 @@ in
       #all normal overrides
       (final: prev: {
 
-        inherit (stable) yubioath-flutter yubikey-manager blender;
-
         lib = prev.lib // {
           mkOptional = # Name for the created option
             name:
@@ -63,6 +61,8 @@ in
               type = lib.types.bool;
             };
         };
+
+        #inherit (stable) anything;
 
         clight = prev.clight.overrideAttrs (o: {
           postInstall = ''
@@ -97,6 +97,16 @@ in
         vivaldi = prev.vivaldi.override {
           proprietaryCodecs = true;
           enableWidevine = true;
+        };
+
+        fjordlauncher = inputs.fjordlauncher.packages.${pkgs.system}.fjordlauncher.override {
+          fjordlauncher-unwrapped =
+            inputs.fjordlauncher.packages.${pkgs.system}.fjordlauncher-unwrapped.overrideAttrs
+              (o: {
+                patches = (o.patches or [ ]) ++ [
+                  ./fjord/no_drm.patch
+                ];
+              });
         };
 
         yazi = inputs.yazi.packages.${pkgs.stdenv.system}.default.overrideAttrs (o: {

@@ -17,7 +17,10 @@ in
         enable = true;
         loadModels = [
           "llama3.2:latest"
+          "codellama:latest"
+          "qwen2.5-coder:latest"
         ];
+        rocmOverrideGfx = "11.0.2";
         environmentVariables = {
           OLLAMA_ORIGINS = "moz-extension://*";
         };

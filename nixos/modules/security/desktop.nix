@@ -81,7 +81,7 @@ in
       #secure usb devices
       fwupd.enable = true;
       usbguard = {
-        enable = true;
+        enable = false;
         dbus.enable = true;
         restoreControllerDeviceState = true;
         ruleFile = config.sops.secrets.usbguard-rules.path;
@@ -103,6 +103,7 @@ in
       systemPackages = [
         inputs.sops-nix.packages.${pkgs.stdenv.system}.default
         pkgs.pcscliteWithPolkit
+        pkgs.usbguard-notifier
       ];
     };
 

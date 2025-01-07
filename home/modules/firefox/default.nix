@@ -1,5 +1,4 @@
 {
-  config,
   pkgs,
   ...
 }: let
@@ -23,7 +22,7 @@ in {
         settings = {
           "extensions.autoDisableScopes" = 0;
         };
-        extensions = with config.nur.repos.rycee.firefox-addons; [
+        extensions = with pkgs.nur.repos.rycee.firefox-addons; [
           tridactyl
           ublock-origin
           stylus

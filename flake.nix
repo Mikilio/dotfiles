@@ -44,9 +44,9 @@
     };
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/23.11";
-    patched.url = "github:Mikilio/nixpkgs/patch-1";
+    patched.url = "github:Mikilio/nixpkgs/zotero";
 
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
@@ -90,10 +90,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # gBar = {
-    #   url = "github:Mikilio/gBar/xdg-paths";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
+    fjordlauncher = {
+      url = "github:unmojang/FjordLauncher";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -135,7 +135,7 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
     neovix = {
-      url = "github:Mikilio/neovix/smartsplit";
+      url = "github:Mikilio/neovix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -169,9 +169,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    stylix.url = "github:Mikilio/stylix";
-    stylix.inputs.base16.follows = "base16";
-    base16.url = "github:SenchoPens/base16.nix?ref=refs/pull/19/head";
+    stylix.url = "github:Mikilio/stylix/fix-regreet";
 
     templates.url = "github:NixOS/templates";
 

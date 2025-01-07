@@ -244,7 +244,7 @@ in
             "SUPER, F, togglefloating"
             "SUPER, P, pin"
             "SUPER, Z, fullscreen"
-            "SUPER, R, layoutmsg, togglesplit"
+            "SUPER, ., layoutmsg, togglesplit"
 
             (mvfocus "up" "u")
             (mvfocus "down" "d")
