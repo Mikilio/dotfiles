@@ -5,12 +5,11 @@
   ...
 }:
 let
-  latest = import inputs.nixpkgs {
-    inherit (pkgs.stdenv) system;
-  };
+
   stable = import inputs.nixpkgs-stable {
     inherit (pkgs.stdenv) system;
     config.allowUnfree = true;
+    config.permittedInsecurePackages = [ "electron-27.3.11" ];
   };
   patched = import inputs.patched {
     inherit (pkgs.stdenv) system;
@@ -18,9 +17,8 @@ let
   };
 in
 {
-  imports =
-    [
-    ];
+  imports = [
+  ];
 
   nixpkgs = {
     config = {
@@ -28,6 +26,7 @@ in
         pkg:
         builtins.elem [ ] (
           map (re: builtins.match re (lib.getName pkg)) [
+            # The Wall of Shame
             "spotify"
             "steam.*"
             "languagetool*"
@@ -37,17 +36,16 @@ in
             "teams"
             "slack.*"
             "zoom.*"
+            "morgen"
           ]
         );
-      permittedInsecurePackages = [ "electron-27.3.11" ];
       allowUnsupportedSystem = true;
     };
 
     overlays = [
       inputs.sops-nix.overlays.default
-      inputs.hyprland.overlays.default
-      inputs.hyprpolkitagent.overlays.default
-
+      # inputs.hyprland.overlays.default
+      inputs.hyprpanel.overlay
       #all normal overrides
       (final: prev: {
 
@@ -62,7 +60,7 @@ in
             };
         };
 
-        #inherit (stable) anything;
+        # inherit (stable) logseq;
 
         clight = prev.clight.overrideAttrs (o: {
           postInstall = ''
@@ -75,7 +73,7 @@ in
             pkgs: with pkgs; [
               keyutils
               libkrb5
-              # gamemode
+              gamemode
             ];
         };
 
@@ -88,11 +86,33 @@ in
             ];
         };
 
+        # #Lot of rebuild be careful
+        # rocmPackages = prev.rocmPackages.overrideScope (
+        #   _final: prev: {
+        #     clr = prev.clr.overrideAttrs (o: {
+        #       passthru = o.passthru // {
+        #         gpuTargets = [
+        #           "gfx1103"
+        #           "gfx1031"
+        #         ];
+        #       };
+        #     });
+        #   }
+        # );
+
         discord = prev.discord-canary.override {
           nss = prev.nss_latest;
           withOpenASAR = true;
           withVencord = true;
         };
+
+        ghostty = prev.ghostty.overrideAttrs (o: {
+          postPatch = ''
+            shopt -s globstar
+            substituteInPlace **/*.zig --replace 'const xev = @import("xev");' 'const xev = @import("xev").Epoll;'
+            shopt -u globstar
+          '';
+        });
 
         vivaldi = prev.vivaldi.override {
           proprietaryCodecs = true;
@@ -114,6 +134,18 @@ in
             ./yazi/symlink-status.patch
           ];
         });
+
+        zen-browser = inputs.zen-browser.packages.${pkgs.system}.default;
+
+        # Zoom, again.
+        # https://qumulo.zoom.us
+        zoom-us = prev.zoom-us.overrideAttrs {
+          version = "6.2.10.4983";
+          src = pkgs.fetchurl {
+            url = "https://zoom.us/client/6.2.10.4983/zoom_x86_64.pkg.tar.xz";
+            hash = "sha256-lPUKxkXI3yB/fCY05kQSJhTGSsU6v+t8nq5H6FLwhrk=";
+          };
+        };
       })
     ];
   };

@@ -6,12 +6,14 @@
   ...
 }:
 {
+  home.sessionVariables.TINTED_TMUX_OPTION_ACTIVE = 1;
   programs.tmux = {
     enable = true;
     plugins = with pkgs.tmuxPlugins; [
       yank
       open
       copycat
+      tmux-floax
       {
         plugin = catppuccin;
         extraConfig = # tmux
@@ -39,10 +41,28 @@
         plugin = resurrect;
         extraConfig = # tmux
           ''
-            set -g @resurrect-processes 'ssh psql mysql sqlite3'
+            set -g @resurrect-processes 'ssh psql mysql sqlite3 btop bat socat "nix repl" ~python3 "~yarn watch" yazi "gh dash"'
             resurrect_dir=~/.local/share/tmux/resurrect
             set -g @resurrect-dir $resurrect_dir
-            set -g @resurrect-hook-post-save-all "sed -i 's| --cmd .*-vim-pack-dir||g; s|/etc/profiles/per-user/$USER/bin/||g' $(readlink -f $resurrect_dir/last)"
+            set -g @resurrect-hook-post-save-all "sed -i 's| --cmd .*-vim-pack-dir||g; s|/etc/profiles/per-user/$USER/bin/||g; s|/nix/store/.*/bin/||g' $(readlink -f $resurrect_dir/last)"
+          '';
+      }
+      {
+        plugin = tmux-sessionx;
+        extraConfig = # tmux
+          ''
+            set -g @sessionx-bind 'o'
+            set -g @sessionx-zoxide-mode 'on'
+            set -g @sessionx-ls-command 'ls --tree'
+            set -g @sessionx-window-mode 'off'
+          '';
+      }
+      {
+        plugin = tmux-thumbs;
+        extraConfig = # tmux
+          ''
+            set -g @thumbs-alphabet colemak-homerow
+            set -g @thumbs-command 'tmux set-buffer -- {} && tmux display-message \"Copied {}\" && xdg-open {}'
           '';
       }
       {
@@ -50,26 +70,17 @@
         extraConfig = # tmux
           ''
             set -g @continuum-restore 'on'
-            set -g @continuum-save-interval '10'
-          '';
-      }
-      {
-        plugin = inputs.sessionx.packages.${pkgs.stdenv.system}.default;
-        extraConfig = # tmux
-          ''
-            set -g @sessionx-bind 'o'
-            set -g @sessionx-window-mode 'on'
-            set -g @sessionx-zoxide-mode 'on'
           '';
       }
     ];
+    # sensibleOnTop = true;
     prefix = "C-Space";
     baseIndex = 1;
     escapeTime = 0;
     keyMode = "vi";
     mouse = true;
     focusEvents = true;
-    terminal = "tmux-256color";
+    terminal = "screen-256color";
     disableConfirmationPrompt = true;
     secureSocket = true;
     extraConfig = # tmux
@@ -96,34 +107,68 @@
         bind-key -n M-Right if -F "#{@pane-is-vim}" 'send-keys M-Right' 'resize-pane -R 3'
       '';
   };
+  systemd.user =
 
-  systemd.user.services.tmux-server =
     let
-      systemdTarget = "graphical-session.target";
+      tmux = lib.getExe config.programs.tmux.package;
+      shutdown = pkgs.writeShellScript "shutdown.sh" ''
+        start_time=$(systemctl show --user --property=ActiveEnterTimestampMonotonic --value tmux.service)
 
+        # Check that we got a value; if not, warn and set start_time to 0.
+        if [ -z "$start_time" ]; then
+            echo "Warning: Could not retrieve ActiveEnterTimestampMonotonic; assuming 0."
+            start_time=0
+        fi
+
+        # Get the current uptime from /proc/uptime (first field in seconds), converting to microseconds.
+        now=$(awk '{printf "%d", $1 * 1000000}' /proc/uptime)
+
+        # Calculate how long the service has been active (in microseconds).
+        elapsed=$(( now - start_time ))
+        threshold=60000000  # 60 seconds expressed in microseconds.
+
+        # If the service has been active for at least 60 seconds, run the save script.
+        if [ "$elapsed" -ge "$threshold" ]; then
+            echo "tmux has been running for at least 60 seconds ($elapsed us); running save script..."
+            ${pkgs.tmuxPlugins.resurrect}/share/tmux-plugins/resurrect/scripts/save.sh
+        else
+            echo "tmux has been running for less than 60 seconds ($elapsed us); skipping save script..."
+        fi
+
+        #kill neovim gracefully to save the session
+        #sometimes plugins may have issues and hangs so we do it here manually
+        pkill -SIGTERM nvim
+
+        # Always kill the tmux server.
+        echo "Killing tmux server..."
+        ${tmux} kill-server
+      '';
+      start = "${tmux} -D";
+      runShell = c: "${pkgs.runtimeShell} -l -c '${c}'";
     in
     {
-      Unit = {
-        Description = "tmux user server";
-        Documentation = "man:tmux(1)";
-        PartOf = systemdTarget;
-        After = systemdTarget;
-      };
-
-      Service =
-        let
-          # Wrap `tmux` in a login shell and set the socket path
-          tmuxCmd = "${config.programs.tmux.package}/bin/tmux -L ${config.home.username}";
-          mkTmuxCommand = c: "${pkgs.runtimeShell} -l -c '${tmuxCmd} ${c}'";
-        in
-        {
-          Type = "forking";
-          PassEnvironment = "*";
-          ExecStart = mkTmuxCommand "start-server";
-          ExecStop = mkTmuxCommand "kill-server";
+      services.tmux-server = {
+        Unit = {
+          Description = "tmux user server";
+          Documentation = "man:tmux(1)";
+          PartOf = [ "tmux.slice" ];
+          After = [ "tmux.slice" ];
         };
-      Install = {
-        WantedBy = [ systemdTarget ];
+
+        Service = {
+          ExecStart = start;
+          ExecStop = runShell shutdown;
+          Slice = "tmux.slice";
+        };
+        Install.WantedBy = [ "graphical-session.target" ];
+      };
+      slices.tmux = {
+        Unit = {
+          Description = "tmux user sessions";
+          Documentation = "man:tmux(1)";
+          After = [ "graphical-session.target" ];
+        };
+        Install.WantedBy = [ "graphical-session.target" ];
       };
     };
 }

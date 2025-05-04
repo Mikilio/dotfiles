@@ -42,6 +42,9 @@ in
     statix
     cachix
     devenv
+    
+    #DevOps
+    kubectl
   ];
 
   programs = {
@@ -67,6 +70,7 @@ in
         "cdspell"
         "dirspell"
         "extglob"
+        "globstar"
         "no_empty_cmd_completion"
         "checkwinsize"
         "checkhash"
@@ -143,7 +147,7 @@ in
         mark-symlinked-directories = true;
         show-all-if-ambiguous = true;
         show-all-if-unmodified = true;
-        skip-completed = true;
+        skip-completed-text = true;
         visible-stats = true;
       };
     };

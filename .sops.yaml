@@ -1,7 +1,7 @@
 keys:
   - &mikilio E12CB38E6FC75F203B973FE8C1FD5ADC93DB2220
   - &workstation age1w2dzk2a9ccrgjk4hxa539xu2mm53yjps4ll9rfdqenytr3a2epjqvwcs60
-  - &homeserver age1cf48ggh87r9gy3r03l8mjp5gyd5v8r53c543u59mnuq8lctmlspsvs5uyu
+  - &homeserver age1xp3gklhyu4cahh40sj7x6zu5pkqkh7xaemrqx3f6t3wqfwje45wqe9epmv
   - &elitebook age18c2n2ayd32kspxcvsxcc0a6lrxp8uyvqfz0y6wmld5h7lhwde3gq0kqj05
 
 creation_rules:

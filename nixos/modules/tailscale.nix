@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, ... }:
 let
   cfg = config.services.tailscale;
 in
@@ -16,11 +16,5 @@ in
     openFirewall = false;
   };
 
-  systemd.services.tailscaled.path = ["/run/wrappers"];
-
-  # systemd.services.tailscaled.environment.PATH = with lib;
-  #   let
-  #     su = "${config.security.wrapperDir}/${config.security.wrappers.su.program}";
-  #     cfg = config.systemd.services.tailscaled;
-  #   in mkOverride 99 "${makeBinPath cfg.path}:${makeSearchPathOutput "bin" "sbin" cfg.path}:${su}";
+  systemd.services.tailscaled.path = [ "/run/wrappers" ];
 }

@@ -9,7 +9,13 @@
   programs = {
     steam = {
       enable = true;
-
+      gamescopeSession = {
+        enable = true;
+        # args = [ "--prefer-vk-device" ];
+        env = {
+          MESA_VK_DEVICE_SELECT = "1002:73df!";
+        };
+      };
       extraCompatPackages = [
         pkgs.proton-ge-bin
       ];
@@ -19,6 +25,7 @@
     };
     gamemode = {
       enable = true;
+      capSysNice = true;
       settings = {
         general = {
           softrealtime = "auto";

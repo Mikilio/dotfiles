@@ -6,26 +6,11 @@
 }:
 let
   homeDir = config.home.homeDirectory;
-  inherit (builtins) concatStringsSep attrNames readDir;
 in
 {
   config = {
     xdg = {
       enable = true;
-
-      dataFile."xdg-terminals".source = "${
-        pkgs."${config.home.sessionVariables.TERM}"
-      }/share/applications";
-
-      configFile."xdg-terminals.list".text = (
-        concatStringsSep "\n" (
-          attrNames (
-            lib.filterAttrs (entry: type: type == "regular") (
-              readDir "${pkgs."${config.home.sessionVariables.TERM}"}/share/applications"
-            )
-          )
-        )
-      );
 
       userDirs = {
         enable = true;
@@ -40,6 +25,10 @@ in
         enable = true;
         defaultApplications = {
           "application/pdf" = [ "sioyek.desktop" ];
+          "text/html" = [ "floorp.desktop" ];
+          "x-scheme-handler/http" = [ "floorp.desktop" ];
+          "x-scheme-handler/https" = [ "floorp.desktop" ];
+          "inode/directory" = [ "yazi.desktop"];
         };
       };
     };

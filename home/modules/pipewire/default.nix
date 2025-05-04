@@ -8,13 +8,6 @@
 
     #OBS Pipewire nodes
     xdg.configFile = {
-      "wireplumber/bluetooth.lua.d/51-bluez-config.lua".text = ''
-        bluez_monitor.properties = {
-          ["bluez5.enable-sbc-xq"] = true,
-          ["bluez5.enable-msbc"] = true,
-          ["bluez5.codecs"] = "[sbc sbc_xq]",
-        }
-      '';
       "pipewire/pipewire.conf.d/10-obs.conf".text = ''
         context.objects = [
           {
@@ -77,16 +70,8 @@
       '';
     };
 
-    systemd.user.targets.sound = {
-      Install.WantedBy = ["graphical-session.target"];
-      Unit = {
-        Requires = [
-          "pipewire.service"
-          "wireplumber.service"
-          "easyeffects.service"
-        ];
-        PartOf = ["graphical-session.target"];
-      };
+    systemd.user.services.easyeffects = {
+      Service.Slice = "background-graphical.slice";
     };
   };
 }

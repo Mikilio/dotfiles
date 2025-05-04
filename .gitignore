@@ -4,3 +4,4 @@
 .ccls-cache/
 tags
 result
+*.qcow2

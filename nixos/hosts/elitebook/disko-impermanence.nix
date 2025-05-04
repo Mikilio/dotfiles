@@ -117,6 +117,7 @@
                     #     device = "$EFI_PART";
                     #   };
                     # };
+                    crypttabExtraOpts = [ "tpm2-device=auto" ];
                     allowDiscards = true;
                   };
                   content = {

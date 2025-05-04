@@ -7,14 +7,15 @@
 {
   imports = [
     ./desktop.nix
+    ./harden.nix
+    ./server.nix
   ];
   options.dotfiles.security = {
-    enable = pkgs.lib.mkOptional "Security Settings";
     target = lib.mkOption {
-      default = "desktop";
+      default = null;
       example = "server";
       description = "What kind of device is this intended for?";
-      type = lib.types.str;
+      type = lib.types.nullOr lib.types.str;
     };
   };
 }

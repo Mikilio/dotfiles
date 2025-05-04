@@ -18,6 +18,7 @@ in {
 
       #svg and png editing
       inkscape
+      gimp
 
       # office
       libreoffice-still
@@ -25,14 +26,16 @@ in {
       # 3d modelling
       blender
 
-      #curcuits
-      kicad
+      # books
+      calibre
 
-      #vpn
-      eduvpn-client
+      #curcuits
+      # kicad
 
       #durov <3
       telegram-desktop
+      #ZUCK
+      whatsapp-for-linux
 
       #tor <3
       tor-browser
@@ -40,14 +43,19 @@ in {
       #mumble
       mumble
 
+      #Calendar
+      morgen
+
       #10xorganization
       logseq
       glibc #https://github.com/logseq/logseq/issues/10851
 
       #need it for work
       vesktop
+      brave
       slack
-      zoom-us
+      teams-for-linux
+      # zoom-us
 
       #matrix
       element-desktop
@@ -57,6 +65,9 @@ in {
 
       #ftp
       filezilla
+
+      #for testing
+      zen-browser
     ];
     dconf.settings = {
       "org/virt-manager/virt-manager/connections" = {

@@ -3,13 +3,14 @@
   config,
   lib,
   pkgs,
+  ezConfigs,
   ...
-}:
-let
+}: let
   environment = {
     # make everything use wayland
     GDK_BACKEND = "wayland,x11,*";
     QT_QPA_PLATFORM = "wayland;xcb";
+    QT_IM_MODULES = "wayland;fcitx;ibus";
     SDL_VIDEODRIVER = "wayland";
     CLUTTER_BACKEND = "wayland";
     NIXOS_OZONE_WL = 1;
@@ -17,40 +18,43 @@ let
     # only for XWayland but I don't remember why
     XAUTHORITY = "$XDG_RUNTIME_DIR/Xauthority";
 
+    #QT stuff
     QT_AUTO_SCREEN_SCALE_FACTOR = 1;
     QT_WAYLAND_DISABLE_WINDOWDECORATION = 1;
-    QT_QPA_PLATFORMTHEME = "qt5ct";
 
+    #cursor
     HYPRCURSOR_THEME = config.stylix.cursor.name;
     HYPRCURSOR_SIZE = config.stylix.cursor.name;
+
+    #GPUs
+    # AQ_DRM_DEVICES = "/dev/dri/card1:/dev/dri/card0";
+    AQ_DRM_DEVICES = "/dev/dri/card1";
   };
-in
-{
+in {
   imports = [
     ./shikane.nix
     ./scratchpad.nix
+    ./hyprpanel.nix
+    ./hypridle.nix
   ];
 
   config = {
     home = {
       sessionVariables = environment;
 
-      packages =
-        (with pkgs; [
-          xorg.xprop # get properties from XWayland
-          xorg.xauth # to enable ssh Xforwarding
-          hyprpolkitagent # UI for polkit
-          wl-clipboard
-        ])
-        ++ [
-          inputs.hyprland-contrib.packages.${pkgs.stdenv.system}.grimblast
-        ];
+      packages = with pkgs; [
+        xorg.xprop # get properties from XWayland
+        xorg.xauth # to enable ssh Xforwarding
+        grim # needed by portal for screenshots
+        uwsm # for UWSM
+        hyprsunset # blulight filter
+        wl-clipboard
+      ];
 
       file.".XCompose".source = ./XCompose;
     };
 
     xdg.configFile = {
-      "Hyprland-xdg-terminals.list".text = "foot";
       "xkb" = {
         source = ./xkb;
         recursive = true;
@@ -60,7 +64,6 @@ in
     programs.hyprlock = {
       enable = true;
       settings = {
-
         # GENERAL
         general = {
           disable_loading_bar = true;
@@ -89,7 +92,7 @@ in
         image = [
           # USER AVATAR
           {
-            path = "~/.face";
+            path = "${ezConfigs.root}/assets/mikilio.png";
             size = 200;
             position = "0, 250";
             halign = "center";
@@ -98,38 +101,40 @@ in
         ];
       };
     };
-    services.hypridle = {
-      enable = true;
-      settings = {
-        general = {
-          after_sleep_cmd = "hyprctl dispatch dpms on";
-          lock_cmd = "pidof hyprlock || hyprlock";
-          unlock_cmd = "pkill -USR1 hyprlock";
-        };
 
-        listener = [
-          {
-            timeout = 1200;
-            on-timeout = "hyprctl dispatch dpms off";
-            on-resume = "hyprctl dispatch dpms on";
-          }
+    i18n.inputMethod = {
+      enable = true;
+      type = "fcitx5";
+      fcitx5 = {
+        waylandFrontend = true;
+        addons = with pkgs; [
+          fcitx5-mozc
         ];
       };
     };
 
+    gtk = {
+      gtk2 = {
+        configLocation = "${config.xdg.configHome}/gtk-2.0/gtkrc";
+        extraConfig = ''gtk-im-module="fcitx"'';
+      };
+      gtk3.extraConfig.gtk-im-module = "fcitx";
+      gtk4.extraConfig.gtk-im-module = "fcitx";
+    };
+
+    systemd.user.services.hyprpaper.Service.Slice = "background-graphical.slice";
+
     # enable hyprland
     wayland.windowManager.hyprland = {
       enable = true;
-      package = pkgs.hyprland;
-      systemd = {
-        enableXdgAutostart = true;
-        variables = [
-          "--all"
-        ];
-      };
+      package = null;
+      portalPackage = null;
+      systemd.enable = false; # UWSM
 
       settings = {
         "$mod" = "SUPER";
+
+        exec-once = ["uwsm app -s b -- ${lib.getExe pkgs.hyprpolkitagent}"];
 
         monitor = [
           "desc:Chimei Innolux Corporation 0x1435,preferred,auto-down,1.2"
@@ -151,7 +156,6 @@ in
         };
 
         decoration = {
-
           dim_inactive = false;
           rounding = 8;
 
@@ -209,36 +213,36 @@ in
         misc = {
           disable_autoreload = true;
           vrr = 1;
+          focus_on_activate = true;
         };
 
         binds = {
           allow_workspace_cycles = true;
         };
 
-        bind =
-          let
-            binding =
-              mod: cmd: key: arg:
-              "${mod}, ${key}, ${cmd}, ${arg}";
-            mvfocus = binding "SUPER" "movefocus";
-            ws = binding "SUPER" "workspace";
-            resizeactive = binding "SUPER CTRL" "resizeactive";
-            mvactive = binding "SUPER ALT" "moveactive";
-            mvtows = binding "SUPER ALT" "movetoworkspace";
-            arr = [
-              1
-              2
-              3
-              4
-              5
-              6
-              7
-              8
-              9
-            ];
-          in
+        bind = let
+          binding = mod: cmd: key: arg: "${mod}, ${key}, ${cmd}, ${arg}";
+          mvfocus = binding "SUPER" "movefocus";
+          ws = binding "SUPER" "workspace";
+          resizeactive = binding "SUPER CTRL" "resizeactive";
+          mvactive = binding "SUPER ALT" "moveactive";
+          mvtows = binding "SUPER ALT" "movetoworkspace";
+          arr = [
+            1
+            2
+            3
+            4
+            5
+            6
+            7
+            8
+            9
+          ];
+        in
           [
-            "ALT, Tab, focuscurrentorlast"
+            "ALT, Tab, cyclenext"
+            "ALT, Tab, bringactivetotop"
+            "SUPER, Tab, focuscurrentorlast"
             "CTRL ALT, Delete, exit"
             "SUPER, Q, killactive"
             "SUPER, F, togglefloating"
@@ -267,25 +271,25 @@ in
             (mvactive "down" "0 20")
             (mvactive "right" "20 0")
             (mvactive "left" "-20 0")
+            "SUPERALT, SPACE, exec, hyprctl switchxkblayout current next"
           ]
           ++ (map (i: ws (toString i) (toString i)) arr)
           ++ (map (i: mvtows (toString i) (toString i)) arr);
 
         bindle = [
-          ",XF86MonBrightnessUp,   exec, ${lib.getExe pkgs.brightnessctl} set +5%"
-          ",XF86MonBrightnessDown, exec, ${lib.getExe pkgs.brightnessctl} set  5%-"
-          ",XF86AudioRaiseVolume,  exec, ${pkgs.pulseaudio.outPath}/bin/pactl set-sink-volume @DEFAULT_SINK@ +5%"
-          ",XF86AudioLowerVolume,  exec, ${pkgs.pulseaudio.outPath}/bin/pactl set-sink-volume @DEFAULT_SINK@ -5%"
+          ",XF86MonBrightnessUp,   exec, ${lib.getExe pkgs.brightnessctl} set 5%+"
+          ",XF86MonBrightnessDown, exec, ${lib.getExe pkgs.brightnessctl} set 5%-"
+          ",XF86AudioRaiseVolume,  exec, ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
+          ",XF86AudioLowerVolume,  exec, ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
         ];
 
         bindl = [
-          "ALT, code:66,      exec, hyprctl switchxkblayout current next"
           ",XF86AudioPlay,    exec, ${lib.getExe pkgs.playerctl} play-pause"
           ",XF86AudioStop,    exec, ${lib.getExe pkgs.playerctl} pause"
           ",XF86AudioPause,   exec, ${lib.getExe pkgs.playerctl} pause"
           ",XF86AudioPrev,    exec, ${lib.getExe pkgs.playerctl} previous"
           ",XF86AudioNext,    exec, ${lib.getExe pkgs.playerctl} next"
-          ",XF86AudioMicMute, exec, ${pkgs.pulseaudio.outPath}/bin/pactl set-source-mute @DEFAULT_SOURCE@ toggle"
+          ",XF86AudioMicMute, exec, ${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
         ];
 
         bindm = [
@@ -293,31 +297,26 @@ in
           "SUPER, mouse:272, movewindow"
         ];
 
-        windowrule =
-          let
-            f = regex: "float, ^(${regex})$";
-          in
-          [
-            (f "org.gnome.Calculator")
-            (f "org.gnome.Nautilus")
-            (f "pavucontrol")
-            (f "nm-connection-editor")
-            (f "blueberry.py")
-            (f "org.gnome.Settings")
-            (f "org.gnome.design.Palette")
-            (f "Color Picker")
-            (f "xdg-desktop-portal")
-            (f "xdg-desktop-portal-gnome")
-            (f "transmission-gtk")
-            (f "com.github.Aylur.ags")
-          ];
+        windowrule = [
+          #floating windows
+          "float,class:^(org.gnome.Calculator)$"
+          "float,class:^(org.gnome.Nautilus)$"
+          "float,class:^(pavucontrol)$"
+          "float,class:^(nm-connection-editor)$"
+          "float,class:^(blueberry.py)$"
+          "float,class:^(org.gnome.Settings)$"
+          "float,class:^(org.gnome.design.Palette)$"
+          "float,class:^(Color Picker)$"
+          "float,class:^(xdg-desktop-portal)$"
+          "float,class:^(xdg-desktop-portal-gnome)$"
+          "float,class:^(transmission-gtk)$"
+          "float,class:^(com.github.Aylur.ags)$"
 
-        windowrulev2 = [
           # smart gaps
-          "bordersize 0, floating:0, onworkspace:w[tv1]"
-          "rounding 0, floating:0, onworkspace:w[tv1]"
-          "bordersize 0, floating:0, onworkspace:f[1]"
-          "rounding 0, floating:0, onworkspace:f[1]"
+          "bordersize 1, floating:0, onworkspace:w[tv1]"
+          # "rounding 0, floating:0, onworkspace:w[tv1]"
+          "bordersize 1, floating:0, onworkspace:f[1]"
+          # "rounding 0, floating:0, onworkspace:f[1]"
 
           #markdown preview for neovim
           "tile,title:^(Markdown Preview)(.*)$"
@@ -338,6 +337,11 @@ in
           # fix xwayland apps
           "rounding 0, xwayland:1, floating:1"
 
+          #Zoom meetings
+          "float,class:^(zoom)$"
+          "pin,title:^(zoom_linux_float_video_window)$"
+          "pin,class:^(zoom)$,title:^(as_toolbar)$"
+
           #allow tearing for steam games
           "immediate, class:^(steam_app_)(.*)$"
 
@@ -353,6 +357,9 @@ in
 
           #workarount for thunderai
           "float,class:thunderbird,title:^(?!Mozilla*)"
+
+          #floating ephemeral terminals
+          "float,class:com.mitchellh.ghostty,title:ephemeral"
         ];
 
         workspace = [

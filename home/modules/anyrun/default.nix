@@ -4,9 +4,6 @@
   lib,
   ...
 }: {
-  imports = [
-    inputs.anyrun.homeManagerModules.default
-  ];
 
   programs.anyrun = {
     enable = true;
@@ -31,9 +28,12 @@
     extraConfigFiles = {
       "applications.ron".text = ''
         Config(
-          desktop_actions: false,
-          max_entries: 5,
-          terminal: Some("foot"),
+          desktop_actions: true,
+          max_entries: 5, 
+          terminal: Some(Terminal(
+            command: "ghostty",
+            args: "--title=ephemeral -e {}",
+          )),
         )
       '';
 

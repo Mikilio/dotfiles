@@ -7,20 +7,19 @@
 
   #fix portals
   xdg.portal = {
-    enable = true;
     xdgOpenUsePortal = true;
-    config = {
-      common.default = [ "gtk" ];
-      hyprland.default = [
-        "gtk"
-        "hyprland"
-      ];
-    };
-
     extraPortals = [
       pkgs.xdg-desktop-portal-gtk
     ];
   };
+  environment.pathsToLink = [ "/share/xdg-desktop-portal" "/share/applications" ];
+
+  # for hyprlock
+  security.pam.services.hyprlock.u2fAuth = true;
+
+  services.dbus.packages = with pkgs; [
+    xdg-desktop-portal-hyprland
+  ];
 
   # enable hyprland and required options
   programs = {
@@ -28,11 +27,9 @@
       enable = true;
       withUWSM = true;
     };
-    # make HM-managed GTK stuff work
-    dconf.enable = true;
+
+    iio-hyprland.enable = true;
 
     ydotool.enable = true;
-
-    kdeconnect.enable = true;
   };
 }

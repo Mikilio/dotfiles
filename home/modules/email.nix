@@ -1,31 +1,45 @@
-{ pkgs,  ... }:
-let
-
-  inherit (pkgs.nur.repos.rycee.firefox-addons) buildFirefoxXpiAddon;
-  extensionPath = "extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}";
-  extensions = [
-    (buildFirefoxXpiAddon {
-      pname = "thunderAI";
-      version = "v2.2.0pre5";
-      addonId = "thunderai@micz.it";
-      url = "https://github.com/micz/ThunderAI/releases/download/v2.2.0pre5/thunderai-v2.2.0pre5.xpi";
-      sha256 = "NSEMCAlVWH22sY0Z5zEYltrbU8CS1RdG5CXIxerpJh0=";
-      meta = { };
-    })
-    (buildFirefoxXpiAddon {
-      pname = "languagetool";
-      version = "8.11.2";
-      addonId = "languagetool-mailextension@languagetool.org";
-      url = "https://addons.thunderbird.net/thunderbird/downloads/file/1031394/grammatik_und_rechtschreibprufung_languagetool-8.11.2-tb.xpi";
-      sha256 = "gBaKJIXjPtchXTNUKTRjD9iZ2OSqZGlw7xMjjsaK8rw=";
-      meta = { };
-    })
-  ];
-
-in
 {
-
+  pkgs,
+  inputs,
+  ...
+}: let
+  inherit (pkgs.nur.repos.rycee.firefox-addons) buildFirefoxXpiAddon;
+  extensions = [
+    (pkgs.fetchFirefoxAddon {
+      name = "thunderAI";
+      src = inputs.thunderAI;
+    })
+    # (pkgs.fetchFirefoxAddon {
+    #   name = "language-tool";
+    #   src = inputs.language-tool;
+    # })
+    # (pkgs.fetchFirefoxAddon {
+    #   name = "tbConversations ";
+    #   src = inputs.tbConversations;
+    # })
+  ];
+in {
   accounts.email.accounts = {
+    TUM = {
+      address = "kilian.mio@tum.de";
+      userName = "ga84tet@mytum.de";
+      aliases = [];
+      gpg = {
+        key = "FFF94A5986542148";
+        signByDefault = true;
+      };
+      realName = "Kilian Mio";
+      imap = {
+        host = "xmail.mwn.de";
+        port = 993;
+      };
+      smtp = {
+        host = "postout.lrz.de";
+        port = 465;
+      };
+      passwordCommand = "pass TUM/online";
+      thunderbird.enable = true;
+    };
     Google = {
       primary = true;
       address = "official.mikilio@gmail.com";
@@ -60,9 +74,8 @@ in
                 }
               </style>
               <div class="signature">
-                <p>Best regards,</p>
                 <p><strong>Kilian Mio</strong><br>
-                Freelancer at Mikilio</p>
+                Mikilio</p>
               </div>
               <div class="signature" style="padding: 10px; border: 1px solid #CBA6F7; border-radius: 5px;">
                 <p><strong>Address:</strong><br>
@@ -82,8 +95,9 @@ in
 
   programs.thunderbird = {
     enable = true;
+    package = pkgs.thunderbird-latest;
     settings = {
-      "widget.wayland.use-move-to-rect" = false; #NOTE: workaround
+      "extensions.autoDisableScopes" = 0;
       "mail.biff.show_tray_icon_always" = true;
       "mail.minimizeToTray" = true;
       "ldap_2.servers.outlook.dirType" = 3;
@@ -115,13 +129,10 @@ in
   home.file = {
     ".thunderbird/default/extensions" = {
       source =
-        let
-          extensionsEnvPkg = pkgs.buildEnv {
-            name = "hm-thunderbird-extensions";
-            paths = extensions;
-          };
-        in
-        "${extensionsEnvPkg}/share/mozilla/${extensionPath}";
+        (pkgs.buildEnv {
+          name = "hm-thunderbird-extensions";
+          paths = extensions;
+        }).outPath;
       recursive = true;
       force = true;
     };

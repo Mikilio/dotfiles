@@ -1,13 +1,13 @@
 {
   description = "Mikilio's NixOS and Home-Manager flake";
 
-  outputs =
-    inputs:
-    inputs.flake-parts.lib.mkFlake { inherit inputs; } rec {
-      systems = [ "x86_64-linux" ];
+  outputs = inputs:
+    inputs.flake-parts.lib.mkFlake {inherit inputs;} rec {
+      systems = ["x86_64-linux"];
 
       imports = [
         inputs.ez-configs.flakeModule
+        inputs.home-manager.flakeModules.home-manager
       ];
 
       ezConfigs = {
@@ -24,28 +24,29 @@
           modulesDirectory = "${ezConfigs.root}/nixos/modules";
           hosts = {
             elitebook = {
-              userHomeModules = [ "mikilio" ];
+              userHomeModules = ["mikilio"];
+            };
+            gamebox = {
+              userHomeModules = ["mikilio"];
             };
             installer.importDefault = false;
           };
         };
       };
 
-      perSystem =
-        {
-          pkgs,
-          lib,
-          system,
-          ...
-        }:
-        {
-          formatter = pkgs.alejandra;
-        };
+      perSystem = {
+        pkgs,
+        lib,
+        system,
+        ...
+      }: {
+        formatter = pkgs.alejandra;
+      };
     };
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs";
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/23.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/release-24.11";
     patched.url = "github:Mikilio/nixpkgs/zotero";
 
     flake-parts = {
@@ -101,22 +102,7 @@
     };
 
     hyprland = {
-      url = "github:hyprwm/Hyprland";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    hyprutils = {
-      url = "github:hyprwm/hyprutils";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    hyprpolkitagent = {
-      url = "github:hyprwm/hyprpolkitagent";
-      inputs.hyprutils.follows = "hyprutils";
-    };
-
-    hyprland-contrib = {
-      url = "github:hyprwm/contrib";
+      url = "github:hyprwm/Hyprland/v0.48.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -124,6 +110,8 @@
       url = "github:Mikilio/hyprshell";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
+
+    hyprpanel.url = "github:Jas-SinghFSU/HyprPanel";
 
     impermanence.url = "github:nix-community/impermanence";
 
@@ -135,11 +123,16 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
     neovix = {
-      url = "github:Mikilio/neovix";
+      url = "github:Mikilio/neovix/lz-n";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nur.url = "github:nix-community/NUR";
+
+    # language-tool = {
+    #   url = "https://addons.thunderbird.net/thunderbird/downloads/file/1031394/grammatik_und_rechtschreibprufung_languagetool-8.11.2-tb.xpi?src=version-history";
+    #   flake = false;
+    # };
 
     lanzaboote = {
       url = "github:nix-community/lanzaboote";
@@ -169,13 +162,26 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    stylix.url = "github:Mikilio/stylix/fix-regreet";
+    stylix.url = "github:danth/stylix";
+
+    srvos.url = "github:nix-community/srvos";
 
     templates.url = "github:NixOS/templates";
+
+    thunderAI = {
+      url = "https://github.com/micz/ThunderAI/releases/download/v3.4.1/thunderai-v3.4.1.xpi";
+      flake = false;
+    };
+
+    # tbConversations = {
+    #   url = "https://addons.thunderbird.net/thunderbird/downloads/latest/gmail-conversation-view/addon-54035-latest.xpi?src=dp-btn-primary";
+    #   flake = false;
+    # };
 
     yazi = {
       url = "github:sxyazi/yazi";
     };
+    zen-browser.url = "github:0xc000022070/zen-browser-flake";
   };
 
   nixConfig = {

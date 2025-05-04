@@ -3,27 +3,14 @@
   inputs,
   ezModules,
   ...
-}:
-{
+}: {
   imports =
     (with ezModules; [
-      bluetooth
       networking
-      dbus
-      gaming
-      gnome-services
-      graphics
-      greetd
-      home-manager
-      hyprland
-      lanzaboote
-      nix
-      ollama
-      overlays
-      pipewire
-      plymouth
       security
-      style
+      home-manager
+      nix
+      overlays
       tailscale
     ])
     ++ [
@@ -46,10 +33,7 @@
   users.users.root.hashedPassword = "!";
 
   # don't touch this
-  system.stateVersion = lib.mkDefault "23.11";
+  system.stateVersion = lib.mkDefault "24.11";
 
-  time.timeZone = lib.mkDefault "Europe/Berlin";
-
-  # compresses half the ram for use as swap
-  zramSwap.enable = true;
+  time.timeZone = "Europe/Berlin";
 }

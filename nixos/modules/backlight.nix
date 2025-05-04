@@ -1,3 +1,4 @@
+#NOT IN USE
 {...}: {
   # smooth backlight control
   hardware.brillo.enable = true;

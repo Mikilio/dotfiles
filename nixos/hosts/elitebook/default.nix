@@ -1,6 +1,7 @@
 {
   inputs,
   pkgs,
+  lib,
   ezModules,
   ...
 } @ args: {
@@ -13,27 +14,98 @@
       inputs.nixos-hardware.nixosModules.hp-elitebook-845g9
     ]
     ++ (with ezModules; [
-      backlight
-      location
+      thunderbolt
+      lanzaboote
+      pipewire
+      plymouth
+      style
+      desktop-essentials
+      graphics
+      greetd
       power
+      bluetooth
+      hyprland
+      ollama
+      gaming
+      distro-testing
     ]);
 
+  dotfiles.security.target = "desktop";
+  dotfiles.networking.target = "desktop";
+
   networking.hostName = "elitebook";
+
+  # compresses half the ram for use as swap
+  zramSwap.enable = true;
 
   # I have rocm support apparently
   nixpkgs.config.rocmSupport = true;
 
-  # virtualisation
-  virtualisation.libvirtd.enable = true;
-  programs.virt-manager.enable = true;
-  virtualisation.docker.enable = true;
-  virtualisation.docker.rootless = {
-    enable = true;
-    setSocketVariable = true;
-    daemon.settings = {
-      dns = ["192.168.2.1"];
+  specialisation.gaming.configuration = {
+    config = {
+      boot.kernelPackages = pkgs.linuxKernel.packages.linux_zen;
+      dotfiles.security.target = lib.mkForce null;
     };
   };
+
+  # virtualisation
+  programs.virt-manager.enable = true;
+  environment = {
+    systemPackages = with pkgs; [
+      virtio-win
+      win-spice
+      dive # look into docker image layers
+      podman
+      podman-tui # Terminal mgmt UI for Podman
+      passt # For Pasta rootless networking
+    ];
+    extraInit = ''
+      if [ -z "$DOCKER_HOST" -a -n "$XDG_RUNTIME_DIR" ]; then
+        export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
+      fi
+    '';
+  };
+  virtualisation = {
+    libvirtd = {
+      enable = true;
+      qemu = {
+        ovmf = {
+          enable = true;
+          packages = [pkgs.OVMFFull.fd];
+        };
+        swtpm.enable = true;
+      };
+    };
+    spiceUSBRedirection.enable = true;
+    containers = {
+      enable = true;
+      storage.settings = {
+        storage = {
+          driver = "btrfs";
+          runroot = "/run/containers/storage";
+          graphroot = "/var/lib/containers/storage";
+          options.overlay.mountopt = "nodev,metacopy=on";
+        };
+      };
+    };
+    oci-containers.backend = "podman";
+    podman = {
+      enable = true;
+      autoPrune.enable = true;
+      dockerCompat = true;
+      dockerSocket.enable = true;
+    };
+  };
+  security.polkit.extraConfig =
+    # JS
+    ''
+      polkit.addRule(function(action, subject) {
+          if (action.id.startsWith("org.libvirt") && subject.hasAuthPriv("auth_admin")) {
+              return polkit.Result.YES;
+          }
+      });
+    '';
+  security.unprivilegedUsernsClone = true;
 
   programs.nix-ld.enable = true;
   programs.nix-ld.libraries = with pkgs; [
@@ -42,11 +114,34 @@
     pcsclite
   ];
 
-  boot.kernel.sysctl = {
-    #better mmap entropy
-    "vm.mmap_rnd_bits" = 32;
-    "vm.mmap_rnd_compat_bits" = 16;
+  boot = {
+    kernel.sysctl = {
+      #better mmap entropy
+      "vm.mmap_rnd_bits" = 32;
+      "vm.mmap_rnd_compat_bits" = 16;
+    };
+    kernelParams = [
+      "iommu=pt"
+      "video=efifb:off"
+      "fbcon=map:1"
+      "pci=realloc"
+    ];
+    # initrd.services.udev.rules =
+    #   #udev
+    #   ''
+    #     SUBSYSTEM=="drm", KERNEL=="card0", ACTION=="add", RUN+="${pkgs.fbset}/bin/con2fbmap 1 1"
+    #   '';
   };
+  #to persist journal
+  environment.etc."machine-id".text = "39bab0f0f3f34287810d06dc1877ba47";
+  # for dock
+  #stop generating annoying coredumps in home dir
+  systemd.coredump.extraConfig = "Storage=journal";
+  #for julle
+  security.lockKernelModules = false;
+  #for embedded systemd
+  hardware.libjaylink.enable = true;
+  hardware.i2c.enable = true;
 
   users.mutableUsers = false;
   users.users.mikilio = {
@@ -56,6 +151,7 @@
       "adbusers"
       "input"
       "libvirtd"
+      "jlink"
       "networkmanager"
       "plugdev"
       "keys"
@@ -63,7 +159,7 @@
       "video"
       "i2c"
       "wheel"
-      "docker"
+      "podman"
       "ydotool"
       "davfs2"
     ];

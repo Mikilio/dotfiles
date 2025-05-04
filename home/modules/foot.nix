@@ -1,4 +1,7 @@
 { pkgs, config, ... }:
+let
+  inherit (builtins) concatStringsSep attrNames readDir;
+in
 {
   home.sessionVariables.TERM = "foot";
 
@@ -7,7 +10,7 @@
     server.enable = true;
     settings = {
       main = {
-        shell = "${pkgs.tmux}/bin/tmux -L ${config.home.username} attach";
+        shell = "${pkgs.tmux}/bin/tmux attach-session";
         login-shell = "yes";
       };
 
@@ -33,5 +36,19 @@
         beam-thickness = 1;
       };
     };
+  };
+
+  xdg = {
+    enable = true;
+
+    dataFile."xdg-terminals".source = "${pkgs.foot}/share/applications";
+
+    configFile."xdg-terminals.list".text = (
+      concatStringsSep "\n" (
+        attrNames (
+          lib.filterAttrs (entry: type: type == "regular") (readDir "${pkgs.foot}/share/applications")
+        )
+      )
+    );
   };
 }

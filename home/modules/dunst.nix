@@ -17,7 +17,6 @@
         alignment = "center";
         corner_radius = 16;
         follow = "mouse";
-        font = "Roboto 10";
         format = "<b>%s</b>\\n%b";
         frame_width = 1;
         offset = "5x5";

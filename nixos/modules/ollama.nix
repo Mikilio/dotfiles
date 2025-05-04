@@ -1,26 +1,19 @@
 {
   lib,
   config,
-  pkgs,
   ...
-}:
-let
-  cfg = config.modules.ollama;
-in
-{
-  options.modules.ollama = pkgs.lib.mkOptional "Ollama";
-
-  config = lib.mkIf cfg {
+}: {
+  config = {
     services = {
-      nextjs-ollama-llm-ui.enable = true;
       ollama = {
         enable = true;
         loadModels = [
-          "llama3.2:latest"
-          "codellama:latest"
-          "qwen2.5-coder:latest"
+          "codellama:13b-instruct"
+          "deepseek-coder:6.7b"
+          "gemma3:12b-it-qat"
+          "qwen3:14b"
         ];
-        rocmOverrideGfx = "11.0.2";
+        rocmOverrideGfx = "10.3.0";
         environmentVariables = {
           OLLAMA_ORIGINS = "moz-extension://*";
         };

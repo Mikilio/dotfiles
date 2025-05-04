@@ -20,6 +20,7 @@ in
       # weekly cleanup
       clean = {
         enable = true;
+        dates = "daily";
         extraArgs = "--keep 10 --keep-since 30d";
       };
     };

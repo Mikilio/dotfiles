@@ -12,12 +12,10 @@
     anyrun
     cli
     email
-    foot
     floorp
     gpg
-    games
     git
-    hyprshell
+    ghostty
     hyprland
     media
     nushell
@@ -65,6 +63,8 @@
       defaultSopsFile = ../../../secrets/user/mikilio.yaml;
       secrets = {
         google-git = { };
+        weather = {};
+        github = {};
       };
     };
     systemd.user.services.sops-nix = {

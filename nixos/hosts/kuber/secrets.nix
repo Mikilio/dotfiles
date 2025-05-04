@@ -7,6 +7,7 @@
     inputs.sops-nix.nixosModules.default
   ];
   config = {
+    services.openssh.enable = true;
     sops = {
       defaultSopsFile = "${ezConfigs.root}/secrets/hosts/homeserver.yaml";
       secrets = {

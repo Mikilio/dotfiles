@@ -45,7 +45,7 @@
       addr-gen-mode = "stable-privacy";
       method = "auto";
     };
-    proxy = {};
+    proxy = { };
     wifi = {
       mode = "infrastructure";
       ssid = "Captain Commodore";
@@ -69,7 +69,7 @@
       addr-gen-mode = "default";
       method = "auto";
     };
-    proxy = {};
+    proxy = { };
     wifi = {
       mode = "infrastructure";
       ssid = "Mi A3";
@@ -92,7 +92,7 @@
       addr-gen-mode = "stable-privacy";
       method = "auto";
     };
-    proxy = {};
+    proxy = { };
     wifi = {
       mode = "infrastructure";
       ssid = "PHX-5G-Guest";
@@ -116,7 +116,7 @@
       addr-gen-mode = "default";
       method = "auto";
     };
-    proxy = {};
+    proxy = { };
     wifi = {
       mode = "infrastructure";
       ssid = "WLAN-260804";
@@ -124,29 +124,6 @@
     wifi-security = {
       key-mgmt = "wpa-psk";
       psk-flags = "1";
-    };
-  };
-  TUM = {
-    connection = {
-      id = "university";
-      type = "vpn";
-      uuid = "a2bdbfe1-d10f-40f4-9c66-e4dc1ffde2e4";
-    };
-    ipv4 = {
-      method = "auto";
-    };
-    ipv6 = {
-      addr-gen-mode = "stable-privacy";
-      method = "auto";
-    };
-    proxy = {};
-    vpn = {
-      ca = "/home/mikilio/.cert/nm-openvpn/vpn-rbg-2.4-linux-ca.pem";
-      connection-type = "password";
-      dev = "tun";
-      password-flags = "1";
-      remote = "rbg.vpn.rbg.tum.de:1128";
-      service-type = "org.freedesktop.NetworkManager.openvpn";
     };
   };
   DuckRabbit = {
@@ -176,6 +153,48 @@
       allowed-ips = "10.10.0.1/32;192.168.128.0/17;185.237.24.15/32;";
       endpoint = "176.9.139.62:54545";
       persistent-keepalive = "25";
+    };
+  };
+  eduVPN = {
+    connection = {
+      autoconnect = "false";
+      id = "eduVPN";
+      interface-name = "eduVPN";
+      permissions = "user:mikilio:;";
+      dns-over-tls = 0;
+      type = "wireguard";
+      uuid = "f8f492b1-e359-4ca1-9ce7-3debcfb8e866";
+    };
+    ipv4 = {
+      address1 = "10.157.60.16/23";
+      dns = "10.156.33.53;129.187.5.1;";
+      dns-search = "tum.de;tu-muenchen.de;";
+      method = "manual";
+      never-default = "true";
+      route-table = "51860";
+      routing-rule1 = "priority 1 not from 0.0.0.0/0 fwmark 0xca94 table 51860";
+    };
+    ipv6 = {
+      addr-gen-mode = "default";
+      address1 = "2001:4ca0:2fff:2:6::10/96";
+      dns = "2001:4ca0::53:1;2001:4ca0::53:2;";
+      dns-search = "tum.de;tu-muenchen.de;";
+      method = "manual";
+      never-default = "true";
+      route-table = "51860";
+      routing-rule1 = "priority 1 not from ::/0 fwmark 0xca94 table 51860";
+    };
+    proxy = { };
+    wireguard = {
+      fwmark = "51860";
+      ip4-auto-default-route = "0";
+      ip6-auto-default-route = "0";
+      mtu = "1392";
+      private-key = "sG2Q6RnPLIt+ud7/vFiG9i+bGXB3ih0wbVT0kZ5z8F4=";
+    };
+    "wireguard-peer.PyClbN5SjrfYcdsfTpdOCLs0eHM0iZME7s1r+8d+dGo=" = {
+      allowed-ips = "10.0.0.0/8;85.208.24.0/22;129.187.0.0/16;131.159.0.0/16;131.188.16.200/32;132.187.1.70/32;138.244.0.0/15;138.246.0.0/16;141.39.128.0/18;141.39.240.0/20;141.40.0.0/16;141.84.0.0/16;172.16.0.0/12;192.54.42.0/24;192.55.197.0/24;192.68.211.0/24;192.68.212.0/24;192.168.0.0/16;193.174.96.0/23;194.94.155.224/28;2001:4ca0::/29;2a09:80c0::/29;";
+      endpoint = "eduvpn-n12.srv.lrz.de:51820";
     };
   };
 }

@@ -4,62 +4,91 @@
   ...
 }:
 let
+
+  wrap = cmds: lib.strings.concatStrings (lib.map (cmd: "uwsm app -- ${cmd} & ") cmds);
   apps = {
-    vesktop = {
-      command = lib.getExe pkgs.vesktop;
-      match_by = "initialTitle";
-      initialTitle = "Discord";
+
+    morgen = {
+      command = [ (lib.getExe pkgs.morgen) ];
+      match_by = "initialClass";
+      initialClass = "Morgen";
       size = "80% 80%";
-      key = "S"; # Social
+      key = "A"; # Agenda
     };
+
+    zotero = {
+      command = [ (lib.getExe pkgs.zotero) ];
+      match_by = "initialClass";
+      initialClass = "Zotero";
+      size = "90% 90%";
+      key = "R"; # Reading
+    };
+
+    slack = {
+      command = [ (lib.getExe pkgs.slack) ];
+      match_by = "initialClass";
+      initialClass = "Slack";
+      size = "80% 80%";
+      key = "S"; #Social | Slack
+    };
+
     spotify = {
-      command = lib.getExe pkgs.spotifywm;
-      match_by = "initialTitle";
-      initialTitle = "Spotify Premium";
+      command = [ (lib.getExe pkgs.spotifywm) ];
+      match_by = "initialClass";
+      initialClass = "spotify";
       size = "80% 80%";
-      key = "M"; # Music
+      key = "T"; # Tunes
     };
+
+    chat = {
+      command = [ (lib.getExe pkgs.telegram-desktop) "${pkgs.whatsapp-for-linux}/bin/wasistlos" ];
+      match_by = "initialClass";
+      initialClass = "org.telegram.desktop";
+      size = "50% 90%";
+      key = "C"; # Chat
+    };
+
+    vesktop = {
+      command = [ (lib.getExe pkgs.vesktop) ];
+      match_by = "initialClass";
+      initialClass = "vesktop";
+      size = "80% 80%";
+      key = "D"; # Discord
+    };
+
+    teams = {
+      command = [ (lib.getExe pkgs.teams-for-linux)];
+      match_by = "initialClass";
+      initialClass = "temas-for-linux";
+      size = "80% 80%";
+      key = "M"; # Microsoft Teams | Meetings
+    };
+
     logseq = {
-      command = lib.getExe pkgs.logseq;
+      command = [ (lib.getExe pkgs.logseq) ];
       match_by = "initialClass";
       initialClass = "Logseq";
       size = "90% 90%";
       key = "N"; # Notes
     };
 
-    telegram = {
-      command = lib.getExe pkgs.telegram-desktop;
+    element = {
+      command = [ (lib.getExe pkgs.element-desktop) ];
       match_by = "initialClass";
-      initialClass = "org.telegram.desktop";
-      size = "40% 90%";
-      key = "T"; # Telegram
+      initialClass = "Element";
+      size = "80% 80%";
+      key = "E"; #Element
     };
 
-    zotero = {
-      command = lib.getExe pkgs.zotero;
+    thunderbird = {
+      command = [ (lib.getExe pkgs.thunderbird-latest) ];
       match_by = "initialClass";
-      initialClass = "Zotero";
-      size = "40% 90%";
-      key = "A"; # Academia
-    };
-
-    sioyek = {
-      command = lib.getExe pkgs.sioyek;
-      match_by = "initialClass";
-      initialClass = "Zotero";
-      size = "40% 90%";
-      key = "R"; # Reading
-    };
-
-    slack = {
-      command = lib.getExe pkgs.slack;
-      match_by = "initialClass";
-      initialClass = "Slack";
-      size = "40% 90%";
-      key = "E"; # Enterprise
+      initialClass = "thunderbird";
+      size = "90% 90%";
+      key = "I"; #Inbox
     };
   };
-  workspaceRule = name: app: "special:scratch_${name},shadow:1, gapsout:60, on-created-empty:${app.command}";
+  workspaceRule = name: app: "special:scratch_${name},shadow:1, gapsout:60, on-created-empty:${wrap app.command}";
   windowRule =
     name: app: "workspace special:scratch_${name} silent, ${app.match_by}:${app.${app.match_by}}";
   keybind = name: app: "SUPER, ${app.key}, togglespecialworkspace, scratch_${name}";
