@@ -128,6 +128,17 @@ in {
                 ];
             });
         };
+
+        python3 = prev.python3.override {
+          packageOverrides = python-self: python-super: {
+            pypass = python-super.pypass.overrideAttrs (o: {
+              patches =
+                (o.patches or [])
+                ++ [
+                  ./pypass/multi-gpgid.patch
+                ];
+            });
+          };
         };
 
         yazi = inputs.yazi.packages.${pkgs.stdenv.system}.default.overrideAttrs (o: {
