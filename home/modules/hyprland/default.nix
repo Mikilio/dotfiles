@@ -3,6 +3,7 @@
   config,
   lib,
   pkgs,
+  osConfig,
   ezConfigs,
   ...
 }: let
@@ -27,8 +28,7 @@
     HYPRCURSOR_SIZE = config.stylix.cursor.name;
 
     #GPUs
-    # AQ_DRM_DEVICES = "/dev/dri/card1:/dev/dri/card0";
-    AQ_DRM_DEVICES = "/dev/dri/card1";
+    AQ_DRM_DEVICES = if osConfig.specialisation == {} then  "/dev/dri/card0" else "/dev/dri/card1:/dev/dri/card0";
   };
 in {
   imports = [
@@ -109,7 +109,14 @@ in {
         waylandFrontend = true;
         addons = with pkgs; [
           fcitx5-mozc
+          fcitx5-gtk
         ];
+        settings.inputMethod = {
+          GroupOrder."0" = "Default";
+          "Groups/0".Name = "Default";
+          "Groups/0/Items/0".Name = "Keyboard";
+          "Groups/0/Items/1".Name = "Mozc";
+        };
       };
     };
 
@@ -271,7 +278,7 @@ in {
             (mvactive "down" "0 20")
             (mvactive "right" "20 0")
             (mvactive "left" "-20 0")
-            "SUPERALT, SPACE, exec, hyprctl switchxkblayout current next"
+            "SUPER ALT, SPACE, exec, hyprctl switchxkblayout current next"
           ]
           ++ (map (i: ws (toString i) (toString i)) arr)
           ++ (map (i: mvtows (toString i) (toString i)) arr);

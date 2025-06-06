@@ -5,12 +5,9 @@
   pkgs,
   ...
 }:
-with lib;
-let
-in
-{
+with lib; let
+in {
   config = {
-
     programs = {
       git = {
         enable = true;
@@ -97,8 +94,13 @@ in
       };
       gh = {
         enable = true;
+        hosts = {
+          "github.com" = {
+            user = "Mikilio";
+          };
+        };
         gitCredentialHelper.enable = true;
-        extensions = [ pkgs.gh-notify ];
+        extensions = [pkgs.gh-notify];
         settings = {
           git_protocol = "ssh";
           aliases = {
@@ -121,7 +123,6 @@ in
             ui = {
               sectionsShowCount = true;
               table = {
-
                 showSeparator = true;
               };
             };
@@ -150,52 +151,50 @@ in
       lazygit.enable = true;
     };
 
-    home =
-      let
+    home = let
+      ghq-fork = pkgs.writeShellScriptBin "ghq-fork" ''
+        set -e
 
-        ghq-fork = pkgs.writeShellScriptBin "ghq-fork" ''
-          set -e
+        if [ $# -ne 1 ]; then
+          echo "Usage: gh ghq owner/repo"
+          exit 1
+        fi
 
-          if [ $# -ne 1 ]; then
-            echo "Usage: gh ghq owner/repo"
-            exit 1
-          fi
+        repo="$1"
+        name=''${repo#*/}
+        owner=''${repo%/*}
+        user=$(gh api user --jq .login)
 
-          repo="$1"
-          name=''${repo#*/}
-          owner=''${repo%/*}
-          user=$(gh api user --jq .login)
+        echo "🔁 Forking $repo..."
+        gh repo fork "$repo" --remote=false
 
-          echo "🔁 Forking $repo..."
-          gh repo fork "$repo" --remote=false
+        echo "📥 Cloning fork via ghq..."
+        ghq get "$user/$name"
 
-          echo "📥 Cloning fork via ghq..."
-          ghq get "$user/$name"
+        echo "🔗 Setting upstream remote..."
+        cd "$(ghq list -p "$user/$name")"
+        git remote add upstream "https://github.com/$owner/$name.git"
 
-          echo "🔗 Setting upstream remote..."
-          cd "$(ghq list -p "$user/$name")"
-          git remote add upstream "https://github.com/$owner/$name.git"
+        echo "📌 Adding to zoxide..."
+        zoxide add .
 
-          echo "📌 Adding to zoxide..."
-          zoxide add .
-
-          echo "✅ Done! Repo is ready at: $(pwd)"
+        echo "✅ Done! Repo is ready at: $(pwd)"
 
 
-        '';
-      in
-      {
-        packages = with pkgs; [
-          ghq
-          ghorg
-          git-branchless
-          ghq-fork
-        ];
-        sessionVariables.GHQ_ROOT = "${config.xdg.userDirs.extraConfig.XDG_DEV_DIR}/Public";
-      };
+      '';
+    in {
+      packages = with pkgs; [
+        ghq
+        ghorg
+        git-branchless
+        ghq-fork
+      ];
+      sessionVariables.GHQ_ROOT = "${config.xdg.userDirs.extraConfig.XDG_DEV_DIR}/Public";
+    };
     xdg.configFile."ghorg/conf.yaml" = {
       force = true;
-      text = # yml
+      text =
+        # yml
         ''
           GHORG_ABSOLUTE_PATH_TO_CLONE_TO: ${config.xdg.userDirs.extraConfig.XDG_DEV_DIR}/Org
           GHORG_CLONE_PROTOCOL: ssh

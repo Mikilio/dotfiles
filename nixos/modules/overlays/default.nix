@@ -3,28 +3,24 @@
   lib,
   pkgs,
   ...
-}:
-let
-
+}: let
   stable = import inputs.nixpkgs-stable {
     inherit (pkgs.stdenv) system;
     config.allowUnfree = true;
-    config.permittedInsecurePackages = [ "electron-27.3.11" ];
+    config.permittedInsecurePackages = ["electron-27.3.11"];
   };
   patched = import inputs.patched {
     inherit (pkgs.stdenv) system;
     config.allowUnfree = true;
   };
-in
-{
+in {
   imports = [
   ];
 
   nixpkgs = {
     config = {
-      allowUnfreePredicate =
-        pkg:
-        builtins.elem [ ] (
+      allowUnfreePredicate = pkg:
+        builtins.elem [] (
           map (re: builtins.match re (lib.getName pkg)) [
             # The Wall of Shame
             "spotify"
@@ -48,17 +44,19 @@ in
       inputs.hyprpanel.overlay
       #all normal overrides
       (final: prev: {
-
-        lib = prev.lib // {
-          mkOptional = # Name for the created option
-            name:
-            prev.lib.mkOption {
-              default = true;
-              example = true;
-              description = "Whether to enable ${name}.";
-              type = lib.types.bool;
-            };
-        };
+        lib =
+          prev.lib
+          // {
+            mkOptional =
+              # Name for the created option
+              name:
+                prev.lib.mkOption {
+                  default = true;
+                  example = true;
+                  description = "Whether to enable ${name}.";
+                  type = lib.types.bool;
+                };
+          };
 
         # inherit (stable) logseq;
 
@@ -69,8 +67,8 @@ in
         });
 
         steam = prev.steam.override {
-          extraPkgs =
-            pkgs: with pkgs; [
+          extraPkgs = pkgs:
+            with pkgs; [
               keyutils
               libkrb5
               gamemode
@@ -78,9 +76,9 @@ in
         };
 
         lutris = prev.lutris.override {
-          extraPkgs = p: [ ];
-          extraLibraries =
-            p: with p; [
+          extraPkgs = p: [];
+          extraLibraries = p:
+            with p; [
               jansson
               libGL
             ];
@@ -122,17 +120,22 @@ in
         fjordlauncher = inputs.fjordlauncher.packages.${pkgs.system}.fjordlauncher.override {
           fjordlauncher-unwrapped =
             inputs.fjordlauncher.packages.${pkgs.system}.fjordlauncher-unwrapped.overrideAttrs
-              (o: {
-                patches = (o.patches or [ ]) ++ [
+            (o: {
+              patches =
+                (o.patches or [])
+                ++ [
                   ./fjord/no_drm.patch
                 ];
-              });
+            });
+        };
         };
 
         yazi = inputs.yazi.packages.${pkgs.stdenv.system}.default.overrideAttrs (o: {
-          patches = (o.patches or [ ]) ++ [
-            ./yazi/symlink-status.patch
-          ];
+          patches =
+            (o.patches or [])
+            ++ [
+              ./yazi/symlink-status.patch
+            ];
         });
 
         zen-browser = inputs.zen-browser.packages.${pkgs.system}.default;

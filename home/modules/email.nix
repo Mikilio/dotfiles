@@ -24,10 +24,6 @@ in {
       address = "kilian.mio@tum.de";
       userName = "ga84tet@mytum.de";
       aliases = [];
-      gpg = {
-        key = "FFF94A5986542148";
-        signByDefault = true;
-      };
       realName = "Kilian Mio";
       imap = {
         host = "xmail.mwn.de";
@@ -39,6 +35,18 @@ in {
       };
       passwordCommand = "pass TUM/online";
       thunderbird.enable = true;
+    };
+    Duckrabbit = {
+      address = "mikilio@duckrabbit.com";
+      flavor = "outlook.office365.com";
+      aliases = [];
+      realName = "Kilian Mio";
+      thunderbird = {
+        enable = true;
+        settings = id: {
+          "mail.smtpserver.smtp_${id}.authMethod" = 10;
+        };
+      };
     };
     Google = {
       primary = true;

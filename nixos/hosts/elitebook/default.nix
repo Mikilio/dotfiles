@@ -123,8 +123,9 @@
     kernelParams = [
       "iommu=pt"
       "video=efifb:off"
-      "fbcon=map:1"
+      "fbcon=map:01"
       "pci=realloc"
+      "acpi_enforce_resources=lax"
     ];
     # initrd.services.udev.rules =
     #   #udev

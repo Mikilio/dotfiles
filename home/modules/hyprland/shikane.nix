@@ -5,7 +5,6 @@
     ''
       [[profile]]
       name = "home-office"
-      exec = ["systemctl --user reload hyprpanel.service"]
 
       [[profile.output]]
       enable = false
@@ -19,14 +18,28 @@
       scale = 1.0
 
       [[profile]]
-      name = "laptop"
-      exec = ["systemctl --user reload hyprpanel.service"]
+      name = "pre-eject"
 
       [[profile.output]]
       enable = true
       match = "eDP-1"
-      scale = 1.2
+      mode = "preferred"
       position = "0,0"
+      scale = 1.0
+
+      [[profile.output]]
+      enable = false
+      search = "/.*"
+
+      [[profile]]
+      name = "default"
+
+      [[profile.output]]
+      enable = true
+      match = "eDP-1"
+      mode = "preferred"
+      position = "0,0"
+      scale = 1.0
     '';
 
   systemd.user.services.shikane = {

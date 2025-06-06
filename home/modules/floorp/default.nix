@@ -3,17 +3,17 @@
   lib,
   config,
   ...
-}:
-let
+}: let
   nativeHosts = with pkgs; [
     tridactyl-native
     browserpass
   ];
-
-in
-{
+in {
   config = {
-    stylix.targets.floorp.profileNames = [ "Default" ];
+    stylix.targets.floorp = {
+      profileNames = ["Default" "PWA"];
+      colorTheme.enable = true;
+    };
     programs.floorp = {
       enable = true;
       nativeMessagingHosts = nativeHosts;
@@ -22,31 +22,34 @@ in
           settings = {
             "extensions.autoDisableScopes" = 0;
           };
-          extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
-            tridactyl
-            ublock-origin
-            stylus
-            browserpass
-            firenvim
-            languagetool
-            sidebery
-            skip-redirect
-            # firemonkey
-            tampermonkey
-            wikiwand-wikipedia-modernized
-            zotero-connector
-            # bypass-paywalls-clean
-            metamask
-          ];
+          extensions = {
+            force = true;
+            packages = with pkgs.nur.repos.rycee.firefox-addons; [
+              ublock-origin
+              stylus
+              browserpass
+              languagetool
+              sidebery
+              skip-redirect
+              # firemonkey
+              wikiwand-wikipedia-modernized
+              zotero-connector
+              # bypass-paywalls-clean
+              metamask
+            ];
+          };
         };
         PWA = {
           id = 1;
           settings = {
             "extensions.autoDisableScopes" = 0;
           };
-          extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
-            ublock-origin
-          ];
+          extensions = {
+            force = true;
+            packages = with pkgs.nur.repos.rycee.firefox-addons; [
+              ublock-origin
+            ];
+          };
         };
       };
     };
@@ -54,10 +57,9 @@ in
     xdg.configFile = {
       "firejail/floorp.local".text = "include firefox-common-addons.profile";
       "tridactyl/tridactylrc".source = ./tridactylrc;
-      "tridactyl/themes/stylix.css".text =
-        with config.lib.stylix.colors.withHashtag;
+      "tridactyl/themes/stylix.css".text = with config.lib.stylix.colors.withHashtag;
         ''
-          :root {    
+          :root {
               --base00: ${base00};
               --base01: ${base01};
               --base02: ${base02};

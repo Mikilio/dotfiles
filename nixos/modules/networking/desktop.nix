@@ -1,11 +1,12 @@
-{ lib, config, ... }:
-with lib;
-
-let
-  cfg = config.dotfiles.networking.target;
-in
 {
-  config = lib.mkIf (cfg == "desktop") {
+  lib,
+  config,
+  ...
+}:
+with lib; let
+  cfg = config.dotfiles.networking;
+in {
+  config = lib.mkIf (cfg.target == "desktop") {
     # client networking configuration
     networking = {
       firewall = {
@@ -38,7 +39,5 @@ in
         dnssec = "allow-downgrade";
       };
     };
-    # Don't wait for network startup
-    # systemd.services.NetworkManager-wait-online.enable = lib.mkForce false;
   };
 }
