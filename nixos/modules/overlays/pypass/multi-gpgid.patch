@@ -1,45 +1,91 @@
-From f86cf0ba0e5cb6a1236ff16d8f238b92bc49c517 Mon Sep 17 00:00:00 2001
-From: Krzysztof Nazarewski <3494992+nazarewk@users.noreply.github.com>
-Date: Wed, 26 Oct 2022 11:34:03 +0200
-Subject: [PATCH 1/3] handle multi-recipient pass configurations
-
----
- pypass/passwordstore.py            | 12 ++++++++----
- pypass/tests/test_passwordstore.py |  2 +-
- 2 files changed, 9 insertions(+), 5 deletions(-)
-
 diff --git a/pypass/passwordstore.py b/pypass/passwordstore.py
-index a732b29..0c7c4d5 100644
+index 9de0376..2346035 100644
 --- a/pypass/passwordstore.py
 +++ b/pypass/passwordstore.py
-@@ -64,7 +64,7 @@ def __init__(
-         self.path = os.path.abspath(path)
+@@ -20,11 +20,18 @@
+ import os
+ import subprocess
+ import string
+-import random
+ import re
  
-         # Check if a main .gpg-id exists
--        self._get_gpg_id(self.path)
+ from .entry_type import EntryType
+ 
++# Secure source of randomness for password generation
++try:
++    from secrets import choice
++except ImportError:
++    import random
++    _system_random = random.SystemRandom()
++    choice = _system_random.choice
++
+ # Find the right gpg binary
+ if subprocess.call(
+         ['which', 'gpg2'],
+@@ -54,14 +61,10 @@ class PasswordStore(object):
+             path=os.path.join(os.getenv("HOME"), ".password-store"),
+             git_dir=None,
+     ):
+-        self.path = path
++        self.path = os.path.realpath(path)
+ 
+-        # Read the .gpg-id
+-        gpg_id_file = os.path.join(path, '.gpg-id')
+-        if os.path.isfile(gpg_id_file):
+-            self.gpg_id = open(gpg_id_file, 'r').read().strip()
+-        else:
+-            raise Exception("could not find .gpg-id file")
++        # Check if a main .gpg-id exists
 +        self._get_gpg_ids(self.path)
  
          # Try to locate the git dir
          git_dir = git_dir or os.path.join(self.path, '.git')
-@@ -85,7 +85,7 @@ def _is_valid_store_subpath(self, file_location):
-             commonprefix = os.path.commonprefix([self.path, child_path])
-             return commonprefix.startswith(self.path)
+@@ -69,6 +72,35 @@ class PasswordStore(object):
+         if self.uses_git:
+             self.git_dir = git_dir
  
--    def _get_gpg_id(self, file_location):
++    def _is_valid_store_subpath(self, file_location):
++        child_path = os.path.realpath(file_location)
++
++        try:
++            # Requires at least Python 3.5
++            store_commonpath = os.path.commonpath([self.path])
++            child_commonpath = os.path.commonpath([self.path, child_path])
++            return store_commonpath == child_commonpath
++        except AttributeError:
++            # Pre-3.5 fallback
++            commonprefix = os.path.commonprefix([self.path, child_path])
++            return commonprefix.startswith(self.path)
++
 +    def _get_gpg_ids(self, file_location):
-         file_path = os.path.abspath(file_location)
- 
-         while self._is_valid_store_subpath(file_path):
-@@ -93,7 +93,7 @@ def _get_gpg_id(self, file_location):
-             gpg_id_path = os.path.join(file_path, '.gpg-id')
-             if os.path.isfile(gpg_id_path):
-                 with open(gpg_id_path, 'r') as gpg_id_file:
--                    return gpg_id_file.read().strip()
++        file_path = os.path.realpath(file_location)
++        tried = []
++
++        while self._is_valid_store_subpath(file_path):
++            # Read the .gpg-id
++            gpg_id_path = os.path.join(file_path, '.gpg-id')
++            tried.append(gpg_id_path)
++            if os.path.isfile(gpg_id_path):
++                with open(gpg_id_path, 'r') as gpg_id_file:
 +                    return [line.strip() for line in gpg_id_file if line.strip()]
++
++            file_path = os.path.dirname(file_path)
++
++        raise Exception("could not find .gpg-id file for {}, tried: {}".format(file_location, " ; ".join(tried)))
++
+     def get_passwords_list(self):
+         """Returns a list of the passwords in the store
  
-             file_path = os.path.dirname(file_path)
+@@ -136,6 +168,8 @@ class PasswordStore(object):
+                     return hostname.groups()[0]
+             else:
+                 return decrypted_password
++        else:
++            raise Exception('Couldn\'t decrypt %s' % path)
  
-@@ -182,12 +182,16 @@ def insert_password(self, path, password):
+     def insert_password(self, path, password):
+         """Encrypts the password at the given path
+@@ -150,12 +184,16 @@ class PasswordStore(object):
  
          if not os.path.isdir(os.path.dirname(passfile_path)):
              os.makedirs(os.path.dirname(passfile_path))
@@ -52,97 +98,161 @@ index a732b29..0c7c4d5 100644
              [
                  GPG_BIN,
                  '-e',
--                '-r', self._get_gpg_id(passfile_path),
+-                '-r', self.gpg_id,
 +                *recipient_args,
                  '--batch',
                  '--use-agent',
                  '--no-tty',
+@@ -170,14 +208,28 @@ class PasswordStore(object):
+         gpg.stdin.close()
+         gpg.wait()
+ 
+-    @staticmethod
+-    def generate_password(digits=True, symbols=True, length=15):
+-        """Returns a random password
++    def generate_password(
++        self,
++        path,
++        digits=True,
++        symbols=True,
++        length=25,
++        first_line_only=False
++    ):
++        """Returns and stores a random password
+ 
++        :param path: Where to insert the password. Ex: 'passwordstore.org'
+         :param digits: Should the password have digits? Defaults to True
+         :param symbols: Should the password have symbols? Defaults to True
+-        :param length: Length of the password. Defaults to 15
++        :param length: Length of the password. Defaults to 25
++        :param first_line_only: Modify only the first line of an existing entry
++        :returns: Generated password.
+         """
++        if first_line_only:
++            old_content = self.get_decrypted_password(path)
++            content_wo_pass = ''.join(old_content.partition('\n')[1:])
++        else:
++            content_wo_pass = ''
+ 
+         chars = string.ascii_letters
+ 
+@@ -187,7 +239,10 @@ class PasswordStore(object):
+         if digits:
+             chars += string.digits
+ 
+-        password = ''.join(random.choice(chars) for i in range(length))
++        password = ''.join(choice(chars) for i in range(length))
++
++        self.insert_password(path, password + content_wo_pass)
++
+         return password
+ 
+     @staticmethod
+@@ -254,7 +309,7 @@ class PasswordStore(object):
+         gpg_id_path = os.path.join(path, '.gpg-id')
+         if os.path.exists(gpg_id_path) is False:
+             # Create .gpg_id and put the gpg id in it
+-            with open(os.path.join(path, '.gpg-id'), 'a') as gpg_id_file:
++            with open(gpg_id_path, 'a') as gpg_id_file:
+                 gpg_id_file.write(gpg_id + '\n')
+ 
+         return PasswordStore(path)
 diff --git a/pypass/tests/test_passwordstore.py b/pypass/tests/test_passwordstore.py
-index 44d1b7c..c2b1ee7 100644
+index 6decc5f..c2b1ee7 100644
 --- a/pypass/tests/test_passwordstore.py
 +++ b/pypass/tests/test_passwordstore.py
-@@ -60,7 +60,7 @@ def tearDown(self):
+@@ -27,6 +27,8 @@ import tempfile
+ from pypass import PasswordStore
+ from pypass import EntryType
+ 
++from ..passwordstore import GPG_BIN
++
+ 
+ class TestPasswordStore(unittest.TestCase):
+ 
+@@ -45,17 +47,28 @@ class TestPasswordStore(unittest.TestCase):
+         # Create one folder
+         email_folder_path = os.path.join(self.dir, 'Email')
+         os.mkdir(email_folder_path)
++        # .gpg_id file in subfolder
++        gpg_path = os.path.join(email_folder_path, '.gpg-id')
++        with open(gpg_path, 'w') as gpg_id_file:
++            gpg_id_file.write('86B4789B')
++
+         open(os.path.join(email_folder_path, 'email.com.gpg'), 'a').close()
+ 
+     def tearDown(self):
+         shutil.rmtree(self.dir)
+ 
      def test_constructor(self):
-         # Construct on properly initialized directory
++        # Construct on properly initialized directory
          store = PasswordStore(self.dir)
--        self.assertEqual(store._get_gpg_id(self.dir), '5C5833E3')
+-        self.assertEqual(store.gpg_id, '5C5833E3')
 +        self.assertEqual(store._get_gpg_ids(self.dir), ['5C5833E3'])
          self.assertFalse(store.uses_git)
          self.assertEqual(self.dir, store.path)
  
-
-From 27b5e8a7d0c50e2d64f9d59582a726f637c24347 Mon Sep 17 00:00:00 2001
-From: Krzysztof Nazarewski <gpg@kdn.im>
-Date: Wed, 7 Jun 2023 20:15:10 +0200
-Subject: [PATCH 2/3] add more info to .gpg-id error
-
----
- pypass/passwordstore.py | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/pypass/passwordstore.py b/pypass/passwordstore.py
-index 0c7c4d5..3eafa79 100644
---- a/pypass/passwordstore.py
-+++ b/pypass/passwordstore.py
-@@ -87,17 +87,19 @@ def _is_valid_store_subpath(self, file_location):
++        # Fail gracefully on missing .gpg-id
++        gpg_id_path = os.path.join(self.dir, '.gpg-id')
++        os.remove(gpg_id_path)
++        self.assertRaises(Exception, PasswordStore, self.dir)
++
+     def test_get_passwords_list(self):
+         store = PasswordStore(self.dir)
+         self.assertListEqual(
+@@ -104,10 +117,17 @@ class TestPasswordStore(unittest.TestCase):
+             store.get_decrypted_password('hello.com', entry=EntryType.password)
+         )
  
-     def _get_gpg_ids(self, file_location):
-         file_path = os.path.abspath(file_location)
-+        tried = []
+-        store.insert_password('hello.com', 'sdf\npassword: pwd\nusername: bob')
++        store.insert_password(
++            'hello',
++            'sdf\npassword: pwd\nusername: bob\nhost: salut.fr'
++        )
+         self.assertEqual(
+             'bob',
+-            store.get_decrypted_password('hello.com', entry=EntryType.username)
++            store.get_decrypted_password('hello', entry=EntryType.username)
++        )
++        self.assertEqual(
++            'salut.fr',
++            store.get_decrypted_password('hello', entry=EntryType.hostname)
+         )
  
-         while self._is_valid_store_subpath(file_path):
-             # Read the .gpg-id
-             gpg_id_path = os.path.join(file_path, '.gpg-id')
-+            tried.append(gpg_id_path)
-             if os.path.isfile(gpg_id_path):
-                 with open(gpg_id_path, 'r') as gpg_id_file:
-                     return [line.strip() for line in gpg_id_file if line.strip()]
+     def test_get_decrypted_password_only_password(self):
+@@ -138,6 +158,10 @@ class TestPasswordStore(unittest.TestCase):
+             os.path.isdir(os.path.join(self.dir, 'A', 'B', 'C', 'D'))
+         )
  
-             file_path = os.path.dirname(file_path)
++    def test_get_decrypted_password_doesnt_exist(self):
++        store = PasswordStore(self.dir)
++        self.assertRaises(Exception, store.get_decrypted_password, 'nope.com')
++
+     def test_init(self):
+         init_dir = tempfile.mkdtemp()
+         PasswordStore.init(
+@@ -226,17 +250,18 @@ class TestPasswordStore(unittest.TestCase):
+         shutil.rmtree(destination_dir)
  
--        raise Exception("could not find .gpg-id file")
-+        raise Exception("could not find .gpg-id file for {}, tried: {}".format(file_location, " ; ".join(tried)))
+     def test_generate_password(self):
+-        only_letters = PasswordStore.generate_password(
+-            digits=False,
+-            symbols=False
+-        )
++        store = PasswordStore(self.dir)
  
-     def get_passwords_list(self):
-         """Returns a list of the passwords in the store
-
-From 6f51145a3bc12ee79d2881204b88a82d149f3228 Mon Sep 17 00:00:00 2001
-From: Krzysztof Nazarewski <gpg@kdn.im>
-Date: Wed, 7 Jun 2023 20:22:42 +0200
-Subject: [PATCH 3/3] os.path.abspath() -> os.path.realpath() to fix errors
-
----
- pypass/passwordstore.py | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/pypass/passwordstore.py b/pypass/passwordstore.py
-index 3eafa79..2346035 100644
---- a/pypass/passwordstore.py
-+++ b/pypass/passwordstore.py
-@@ -61,7 +61,7 @@ def __init__(
-             path=os.path.join(os.getenv("HOME"), ".password-store"),
-             git_dir=None,
-     ):
--        self.path = os.path.abspath(path)
-+        self.path = os.path.realpath(path)
++        store.generate_password('letters.net', digits=False, symbols=False)
++        only_letters = store.get_decrypted_password('letters.net')
+         self.assertTrue(only_letters.isalpha())
  
-         # Check if a main .gpg-id exists
-         self._get_gpg_ids(self.path)
-@@ -73,7 +73,7 @@ def __init__(
-             self.git_dir = git_dir
+-        alphanum = PasswordStore.generate_password(digits=True, symbols=False)
++        store.generate_password('alphanum.co.uk', digits=True, symbols=False)
++        alphanum = store.get_decrypted_password('alphanum.co.uk')
+         self.assertTrue(alphanum.isalnum())
+         for char in alphanum:
+             self.assertTrue(char not in string.punctuation)
  
-     def _is_valid_store_subpath(self, file_location):
--        child_path = os.path.abspath(file_location)
-+        child_path = os.path.realpath(file_location)
- 
-         try:
-             # Requires at least Python 3.5
-@@ -86,7 +86,7 @@ def _is_valid_store_subpath(self, file_location):
-             return commonprefix.startswith(self.path)
- 
-     def _get_gpg_ids(self, file_location):
--        file_path = os.path.abspath(file_location)
-+        file_path = os.path.realpath(file_location)
-         tried = []
- 
-         while self._is_valid_store_subpath(file_path):
+-        length_100 = PasswordStore.generate_password(length=100)
++        store.generate_password('hundred.org', length=100)
++        length_100 = store.get_decrypted_password('hundred.org')
+         self.assertEqual(len(length_100), 100)

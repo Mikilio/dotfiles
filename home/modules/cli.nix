@@ -166,8 +166,6 @@ in
     zoxide.enable = true;
   };
 
-  sops.secrets.cachix.path = "${config.xdg.configHome}/cachix/cachix.dhall";
-
   home = {
     shellAliases = {
       # Alias's to modified commands

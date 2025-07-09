@@ -18,6 +18,8 @@
 
     # only for XWayland but I don't remember why
     XAUTHORITY = "$XDG_RUNTIME_DIR/Xauthority";
+    #for EurKey
+    XCOMPOSEFILE="$HOME/.XCompose";
 
     #QT stuff
     QT_AUTO_SCREEN_SCALE_FACTOR = 1;
@@ -205,14 +207,19 @@ in {
         device = [
           {
             name = "at-translated-set-2-keyboard";
-            kb_layout = "eu,us";
+            kb_layout = "eu,de";
             kb_variant = "eurkey-cmk-dh-iso,";
             resolve_binds_by_sym = 1;
           }
           {
             name = "semico---usb-gaming-keyboard-";
-            kb_layout = "eu,us";
-            kb_variant = "eurkey-cmk-dh-ansi,";
+            kb_layout = "us";
+            resolve_binds_by_sym = 1;
+          }
+          {
+            name  = "totem-keyboard";
+            kb_layout=  "eu";
+            kb_variant = "basic";
             resolve_binds_by_sym = 1;
           }
         ];
@@ -279,6 +286,15 @@ in {
             (mvactive "right" "20 0")
             (mvactive "left" "-20 0")
             "SUPER ALT, SPACE, exec, hyprctl switchxkblayout current next"
+            "SUPER, KP_End, workspace, 1"
+            "SUPER, KP_Down, workspace, 2"
+            "SUPER, KP_Next, workspace, 3"
+            "SUPER, KP_Left, workspace, 4"
+            "SUPER, KP_Begin, workspace, 5"
+            "SUPER, KP_Right, workspace, 6"
+            "SUPER, KP_Home, workspace, 7"
+            "SUPER, KP_Up, workspace, 8"
+            "SUPER, KP_Prior, workspace, 9"
           ]
           ++ (map (i: ws (toString i) (toString i)) arr)
           ++ (map (i: mvtows (toString i) (toString i)) arr);

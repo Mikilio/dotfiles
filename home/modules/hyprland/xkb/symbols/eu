@@ -30,7 +30,7 @@ xkb_symbols "eurkey-cmk-dh-ansi"  {
         key <AB03> { [              d,                 D,              dstroke,              Dstroke ] };
         key <AB04> { [              v,                 V,                   oe,                   OE ] };
         key <AB05> { [              z,                 Z,               yacute,               Yacute ] };
-        key <AB06> { [              k,                 K,           dead_greek,           squareroot ] };
+        key <AB06> { [              k,                 K,           dead_greek,            Multi_key ] };
         key <AB07> { [              h,                 H,               oslash,               Oslash ] };
 };
 

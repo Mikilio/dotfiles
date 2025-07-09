@@ -115,6 +115,7 @@
   ];
 
   boot = {
+    binfmt.emulatedSystems = ["aarch64-linux"];
     kernel.sysctl = {
       #better mmap entropy
       "vm.mmap_rnd_bits" = 32;
@@ -123,7 +124,7 @@
     kernelParams = [
       "iommu=pt"
       "video=efifb:off"
-      "fbcon=map:01"
+      "fbcon=map:10"
       "pci=realloc"
       "acpi_enforce_resources=lax"
     ];
@@ -140,9 +141,11 @@
   systemd.coredump.extraConfig = "Storage=journal";
   #for julle
   security.lockKernelModules = false;
-  #for embedded systemd
+  #for embedded systems
   hardware.libjaylink.enable = true;
   hardware.i2c.enable = true;
+
+  services.logind.lidSwitchExternalPower = "ignore";
 
   users.mutableUsers = false;
   users.users.mikilio = {
