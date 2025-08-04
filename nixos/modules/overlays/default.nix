@@ -41,7 +41,6 @@ in {
     overlays = [
       inputs.sops-nix.overlays.default
       # inputs.hyprland.overlays.default
-      inputs.hyprpanel.overlay
       #all normal overrides
       (final: prev: {
         lib =

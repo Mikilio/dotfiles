@@ -112,8 +112,6 @@
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
-    hyprpanel.url = "github:Jas-SinghFSU/HyprPanel";
-
     impermanence.url = "github:nix-community/impermanence";
 
     kmonad = {

@@ -4,8 +4,7 @@
   inputs,
   config,
   ...
-}:
-{
+}: {
   home.sessionVariables.TINTED_TMUX_OPTION_ACTIVE = 1;
   programs.tmux = {
     enable = true;
@@ -16,7 +15,8 @@
       tmux-floax
       {
         plugin = catppuccin;
-        extraConfig = # tmux
+        extraConfig =
+          # tmux
           ''
             set -g @catppuccin_window_left_separator ""
             set -g @catppuccin_window_right_separator " "
@@ -39,7 +39,8 @@
       }
       {
         plugin = resurrect;
-        extraConfig = # tmux
+        extraConfig =
+          # tmux
           ''
             set -g @resurrect-processes 'ssh psql mysql sqlite3 btop bat socat "nix repl" ~python3 "~yarn watch" yazi "gh dash"'
             resurrect_dir=~/.local/share/tmux/resurrect
@@ -49,7 +50,8 @@
       }
       {
         plugin = tmux-sessionx;
-        extraConfig = # tmux
+        extraConfig =
+          # tmux
           ''
             set -g @sessionx-bind 'o'
             set -g @sessionx-zoxide-mode 'on'
@@ -59,7 +61,8 @@
       }
       {
         plugin = tmux-thumbs;
-        extraConfig = # tmux
+        extraConfig =
+          # tmux
           ''
             set -g @thumbs-alphabet colemak-homerow
             set -g @thumbs-command 'tmux set-buffer -- {} && tmux display-message \"Copied {}\" && xdg-open {}'
@@ -67,7 +70,8 @@
       }
       {
         plugin = continuum;
-        extraConfig = # tmux
+        extraConfig =
+          # tmux
           ''
             set -g @continuum-restore 'on'
           '';
@@ -83,7 +87,8 @@
     terminal = "screen-256color";
     disableConfirmationPrompt = true;
     secureSocket = true;
-    extraConfig = # tmux
+    extraConfig =
+      # tmux
       ''
         set -sg terminal-overrides ",*:RGB"
 
@@ -107,68 +112,70 @@
         bind-key -n M-Right if -F "#{@pane-is-vim}" 'send-keys M-Right' 'resize-pane -R 3'
       '';
   };
-  systemd.user =
+  systemd.user = let
+    tmux = lib.getExe config.programs.tmux.package;
+    shutdown = pkgs.writeShellScript "shutdown.sh" ''
+      start_time=$(systemctl show --user --property=ActiveEnterTimestampMonotonic --value tmux.service)
 
-    let
-      tmux = lib.getExe config.programs.tmux.package;
-      shutdown = pkgs.writeShellScript "shutdown.sh" ''
-        start_time=$(systemctl show --user --property=ActiveEnterTimestampMonotonic --value tmux.service)
+      # Check that we got a value; if not, warn and set start_time to 0.
+      if [ -z "$start_time" ]; then
+          echo "Warning: Could not retrieve ActiveEnterTimestampMonotonic; assuming 0."
+          start_time=0
+      fi
 
-        # Check that we got a value; if not, warn and set start_time to 0.
-        if [ -z "$start_time" ]; then
-            echo "Warning: Could not retrieve ActiveEnterTimestampMonotonic; assuming 0."
-            start_time=0
-        fi
+      # Get the current uptime from /proc/uptime (first field in seconds), converting to microseconds.
+      now=$(awk '{printf "%d", $1 * 1000000}' /proc/uptime)
 
-        # Get the current uptime from /proc/uptime (first field in seconds), converting to microseconds.
-        now=$(awk '{printf "%d", $1 * 1000000}' /proc/uptime)
+      # Calculate how long the service has been active (in microseconds).
+      elapsed=$(( now - start_time ))
+      threshold=60000000  # 60 seconds expressed in microseconds.
 
-        # Calculate how long the service has been active (in microseconds).
-        elapsed=$(( now - start_time ))
-        threshold=60000000  # 60 seconds expressed in microseconds.
+      # If the service has been active for at least 60 seconds, run the save script.
+      if [ "$elapsed" -ge "$threshold" ]; then
+          echo "tmux has been running for at least 60 seconds ($elapsed us); running save script..."
+          ${pkgs.tmuxPlugins.resurrect}/share/tmux-plugins/resurrect/scripts/save.sh
+      else
+          echo "tmux has been running for less than 60 seconds ($elapsed us); skipping save script..."
+      fi
 
-        # If the service has been active for at least 60 seconds, run the save script.
-        if [ "$elapsed" -ge "$threshold" ]; then
-            echo "tmux has been running for at least 60 seconds ($elapsed us); running save script..."
-            ${pkgs.tmuxPlugins.resurrect}/share/tmux-plugins/resurrect/scripts/save.sh
-        else
-            echo "tmux has been running for less than 60 seconds ($elapsed us); skipping save script..."
-        fi
+      #kill neovim gracefully to save the session
+      #sometimes plugins may have issues and hangs so we do it here manually
+      pkill -SIGTERM nvim
 
-        #kill neovim gracefully to save the session
-        #sometimes plugins may have issues and hangs so we do it here manually
-        pkill -SIGTERM nvim
+      #end all scopes
+      systemctl --user kill tmux.slice
 
-        # Always kill the tmux server.
-        echo "Killing tmux server..."
-        ${tmux} kill-server
-      '';
-      start = "${tmux} -D";
-      runShell = c: "${pkgs.runtimeShell} -l -c '${c}'";
-    in
-    {
-      services.tmux-server = {
-        Unit = {
-          Description = "tmux user server";
-          Documentation = "man:tmux(1)";
-          PartOf = [ "tmux.slice" ];
-          After = [ "tmux.slice" ];
-        };
-
-        Service = {
-          ExecStart = start;
-          ExecStop = runShell shutdown;
-          Slice = "tmux.slice";
-        };
-        Install.WantedBy = [ "graphical-session.target" ];
+      # Always kill the tmux server.
+      echo "Killing tmux server..."
+      ${tmux} kill-server || true
+    '';
+    start = "${tmux} start-server";
+    runShell = c: "${pkgs.runtimeShell} -l -c '${c}'";
+  in {
+    services.tmux-server = {
+      Unit = {
+        Description = "tmux user server";
+        Documentation = "man:tmux(1)";
+        PartOf = ["tmux.slice"];
+        After = ["tmux.slice"];
       };
-      slices.tmux = {
-        Unit = {
-          Description = "tmux user sessions";
-          Documentation = "man:tmux(1)";
-          After = [ "graphical-session.target" ];
-        };
-        Install.WantedBy = [ "graphical-session.target" ];
+
+      Service = {
+        Type = "forking";
+        ExecStart = runShell start;
+        ExecStop = runShell shutdown;
+        Slice = "background.slice";
       };
+      Install.WantedBy = ["graphical-session.target"];
     };
+    slices.tmux = {
+      Unit = {
+        Description = "tmux user sessions";
+        Documentation = "man:tmux(1)";
+        After = ["graphical-session.target"];
+      };
+      Slice.Slice = "background.slice";
+      Install.WantedBy = ["graphical-session.target"];
+    };
+  };
 }

@@ -5,14 +5,10 @@
   ezConfigs,
   config,
   ...
-}:
-{
-  imports = [ inputs.hyprpanel.homeManagerModules.hyprpanel ];
-
+}: {
   programs.hyprpanel = {
-
     enable = true;
-    overwrite.enable = true;
+    systemd.enable = true;
 
     # Configure and theme almost all options from the GUI.
     # Options that require '{}' or '[]' are not yet implemented,
@@ -20,11 +16,13 @@
     # See 'https://hyprpanel.com/configuration/settings.html'.
     # Default: <same as gui>
     settings = {
-      # Configure bar layouts for monitors.
-      # See 'https://hyprpanel.com/configuration/panel.html'.
-      # Default: null
-      layout = {
-        "bar.layouts" = {
+      bar = {
+        launcher.autoDetectIcon = true;
+        workspaces.ignored = "-\\d+";
+        # systray.ignore = ["nm-applet"];
+        clock.format = "%a %b %d  %I:%M %p";
+        customModules.hyprsunset.temperature = "12000k";
+        layouts = {
           "*" = {
             left = [
               "dashboard"
@@ -34,6 +32,7 @@
               # "kbinput"
             ];
             middle = [
+              "notifications"
               "media"
             ];
             right = [
@@ -41,20 +40,12 @@
               "network"
               "bluetooth"
               "hyprsunset"
+              "hypridle"
               "battery"
               "clock"
-              "notifications"
             ];
           };
         };
-      };
-
-      bar = {
-        launcher.autoDetectIcon = true;
-        workspaces.ignored = "-\\d+";
-        # systray.ignore = ["nm-applet"];
-        clock.format = "%a %b %d  %I:%M %p";
-        customModules.hyprsunset.temperature = "12000k";
       };
 
       menus = {
@@ -145,37 +136,9 @@
   };
 
   wayland.windowManager.hyprland.settings = {
-    exec-once = [ "uwsm app -s b -- ${pkgs.networkmanagerapplet}/bin/nm-applet" ];
+    exec-once = ["uwsm app -s b -- ${pkgs.networkmanagerapplet}/bin/nm-applet"];
     bind = [
       "CTRL ALT, R, exec, systemctl --user restart hyprpanel.service"
     ];
-  };
-
-  systemd.user.services.hyprpanel = {
-    Unit = {
-
-      Description = "A Bar/Panel for Hyprland";
-      # order startup after WM
-      # After = ["wayland-session@hyprland.desktop.target"];
-      After = ["graphical-session.target"];
-    };
-
-    Service = {
-
-      Type = "exec";
-      # Repurpose XDG Autostart filtering
-      ExecStart = "${pkgs.hyprpanel}/bin/hyprpanel";
-      ExecReload = "${pkgs.hyprpanel}/bin/hyprpanel restart";
-      Restart = "always";
-      RestartSec = 1;
-      TimeoutStopSec = 10;
-      Slice = "app-graphical.slice";
-    };
-
-    Install = {
-
-      # WantedBy = ["wayland-session@hyprland.desktop.target"];
-      WantedBy = ["graphical-session.target"];
-    };
   };
 }

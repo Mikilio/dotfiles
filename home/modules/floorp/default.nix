@@ -6,6 +6,7 @@
 }: let
   nativeHosts = with pkgs; [
     tridactyl-native
+    tridactyl-native
     browserpass
   ];
 in {

@@ -1,7 +1,5 @@
-{ inputs,  ... }:
-{
-
-  imports = [ inputs.impermanence.nixosModules.impermanence ];
+{inputs, ...}: {
+  imports = [inputs.impermanence.nixosModules.impermanence];
 
   config = {
     #required for impermanence
@@ -71,7 +69,6 @@
         "/var/cache/fwupd"
         "/var/lib"
         "/var/log"
-        "/etc/secureboot"
       ];
       files = [
         # "/etc/machine-id"
@@ -90,7 +87,7 @@
             type = "gpt";
             partitions = {
               ESP = {
-                size = "500M";
+                size = "1G";
                 type = "EF00";
                 content = {
                   type = "filesystem";
@@ -106,7 +103,7 @@
                 content = {
                   type = "luks";
                   name = "crypted";
-                  extraOpenArgs = [ ];
+                  extraOpenArgs = [];
                   askPassword = true;
                   settings = {
                     # preLVM = true;
@@ -117,12 +114,12 @@
                     #     device = "$EFI_PART";
                     #   };
                     # };
-                    crypttabExtraOpts = [ "tpm2-device=auto" ];
+                    crypttabExtraOpts = ["tpm2-device=auto"];
                     allowDiscards = true;
                   };
                   content = {
                     type = "btrfs";
-                    extraArgs = [ "-f" ];
+                    extraArgs = ["-f"];
                     subvolumes = {
                       "/root" = {
                         mountpoint = "/";

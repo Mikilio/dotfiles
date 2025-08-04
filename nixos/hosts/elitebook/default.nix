@@ -27,7 +27,6 @@
       hyprland
       ollama
       gaming
-      distro-testing
     ]);
 
   dotfiles.security.target = "desktop";

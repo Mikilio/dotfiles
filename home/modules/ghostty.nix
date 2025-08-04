@@ -3,17 +3,14 @@
   config,
   lib,
   ...
-}:
-let
+}: let
   inherit (builtins) concatStringsSep attrNames readDir;
-in
-{
-
+in {
   programs.ghostty = {
     enable = true;
     enableBashIntegration = true;
     settings = {
-      initial-command = "${pkgs.tmux}/bin/tmux new-session";
+      initial-command = "systemd-run --user --slice=tmux.slice --scope ${pkgs.tmux}/bin/tmux new-session";
       command = "${pkgs.tmux}/bin/tmux attach-session";
       window-decoration = false;
       confirm-close-surface = false;
@@ -38,5 +35,4 @@ in
     );
   };
   wayland.windowManager.hyprland.settings.exec-once = ["uwsm app ghostty"];
-  
 }
