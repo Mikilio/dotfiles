@@ -25,6 +25,9 @@ in {
         enable = true;
         dns = "systemd-resolved";
         ensureProfiles.profiles = import ./nm.nix;
+        settings = {
+          wifi-security.psk-flags = "1";
+        };
       };
 
       # to setup networks and infrastructure shenanigans

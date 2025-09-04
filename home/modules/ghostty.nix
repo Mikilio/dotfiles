@@ -1,6 +1,5 @@
 {
   pkgs,
-  config,
   lib,
   ...
 }: let
@@ -10,8 +9,9 @@ in {
     enable = true;
     enableBashIntegration = true;
     settings = {
-      initial-command = "systemd-run --user --slice=tmux.slice --scope ${pkgs.tmux}/bin/tmux new-session";
-      command = "${pkgs.tmux}/bin/tmux attach-session";
+      initial-command = "${pkgs.tmux}/bin/tmux attach-session -t Desktop || bash
+";
+      command = "${pkgs.tmux}/bin/tmux attach-session -t Desktop";
       window-decoration = false;
       confirm-close-surface = false;
 

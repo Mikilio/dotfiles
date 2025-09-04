@@ -33,7 +33,7 @@ in {
         host = "postout.lrz.de";
         port = 465;
       };
-      passwordCommand = "pass TUM/online";
+      passwordCommand = "pass TUM/tum.de/ga84tet | head -n1";
       thunderbird.enable = true;
     };
     Duckrabbit = {
@@ -45,6 +45,7 @@ in {
         enable = true;
         settings = id: {
           "mail.smtpserver.smtp_${id}.authMethod" = 10;
+          "mail.server.server_${id}.authMethod" = 10;
         };
       };
     };
@@ -61,6 +62,8 @@ in {
         enable = true;
         settings = id: {
           "mail.smtpserver.smtp_${id}.authMethod" = 10;
+          "mail.server.server_${id}.authMethod" = 10;
+          "mail.identity.id_${id}.htmlSigFormat" = true;
           "mail.identity.id_${id}.htmlSigText" = ''
             <div style="font-family: Arial, sans-serif; padding: 10px;">
               <style>
@@ -106,6 +109,7 @@ in {
     package = pkgs.thunderbird-latest;
     settings = {
       "extensions.autoDisableScopes" = 0;
+      "mail.identity.default.reply_on_top" = 1;
       "mail.biff.show_tray_icon_always" = true;
       "mail.minimizeToTray" = true;
       "ldap_2.servers.outlook.dirType" = 3;

@@ -50,6 +50,7 @@ in {
         grim # needed by portal for screenshots
         uwsm # for UWSM
         hyprsunset # blulight filter
+        hyprpolkitagent
         wl-clipboard
       ];
 
@@ -143,8 +144,6 @@ in {
       settings = {
         "$mod" = "SUPER";
 
-        exec-once = ["uwsm app -s b -- ${lib.getExe pkgs.hyprpolkitagent}"];
-
         monitor = [
           "desc:Chimei Innolux Corporation 0x1435,preferred,auto-down,1.2"
           ",preferred,auto-up,auto"
@@ -207,8 +206,8 @@ in {
         device = [
           {
             name = "at-translated-set-2-keyboard";
-            kb_layout = "eu,de";
-            kb_variant = "eurkey-cmk-dh-iso,";
+            kb_layout = "de,eu";
+            kb_variant = ",eurkey-cmk-dh-iso";
             resolve_binds_by_sym = 1;
           }
           {

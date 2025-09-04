@@ -24,34 +24,34 @@ in
     #TUI
     calcurse
 
-    # utils
-    jaq
-    file
-    du-dust
-    duf
-    fd
-    bat
-    ripgrep
-    xdg-utils
-    nur.repos.mikilio.xdg-terminal-exec
+  # utils
+  jaq
+  file
+  du-dust
+  duf
+  fd
+  bat
+  ripgrep
+  xdg-utils
+  nur.repos.mikilio.xdg-terminal-exec
 
-    #nix
-    sops
-    alejandra
-    deadnix
-    statix
-    cachix
-    devenv
-    
-    #DevOps
-    kubectl
-  ];
+  #nix
+  sops
+  alejandra
+  deadnix
+  statix
+  cachix
+  devenv
+  
+  #DevOps
+  kubectl
+];
 
-  programs = {
-    bash = {
-      enable = true;
-      enableCompletion = false;
-      historyControl = [
+programs = {
+  bash = {
+    enable = true;
+    enableCompletion = false;
+    historyControl = [
         "ignoredups"
         "ignorespace"
         "erasedups"
@@ -83,7 +83,9 @@ in
         set -o notify           # notify of completed background jobs immediately
         set -o noclobber        # don\'t overwrite files by accident
         ulimit -S -c 0          # disable core dumps
-        stty -ctlecho           # turn off control character echoing
+        # if [ -t 0 ]; then 
+        #   stty -ctlecho;        #turn off control character echoing
+        # fi
       '';
       initExtra = ''
         source "${lib.getExe pkgs.complete-alias}"
@@ -115,7 +117,7 @@ in
     };
     less = {
       enable = true;
-      keys = ''
+      config = ''
         #env
         LESS = --quit-if-one-screen --ignore-case --status-column --LONG-PROMPT --RAW-CONTROL-CHARS --HILITE-UNREAD --tabs=4 --no-init --window=-4
         LESS_TERMCAP_mb = [01;31m

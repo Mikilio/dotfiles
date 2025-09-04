@@ -16,7 +16,6 @@ Common configuration files shared across hosts.
 | `gaming`          |
 | `gnome-services`  |
 | `greetd`          |
-| `greetd_fufexan`  |
 | `home-manager`    |
 | `hyprland`        |
 | `lanzaboote`      |
