@@ -16,6 +16,7 @@ in {
         delta.enable = true;
         signing = {
           signByDefault = true;
+          format = "openpgp";
           key = "0C159FAB320FEB35!";
         };
         attributes = [

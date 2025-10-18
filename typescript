@@ -1,4 +1,0 @@
-Script started on 2025-08-28 17:37:23+02:00 [COMMAND="tmux new-session -d -s test" TERM="screen-256color" TTY="/dev/pts/9" COLUMNS="116" LINES="59"]
-duplicate session: test
-
-Script done on 2025-08-28 17:37:23+02:00 [COMMAND_EXIT_CODE="1"]

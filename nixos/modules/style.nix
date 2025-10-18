@@ -5,8 +5,7 @@
   ezConfigs,
   config,
   ...
-}:
-{
+}: {
   imports = [
     inputs.stylix.nixosModules.stylix
   ];
@@ -27,6 +26,13 @@
       package = pkgs.catppuccin-cursors.mochaDark;
       name = "catppuccin-mocha-dark-cursors";
       size = 32;
+    };
+
+    icons = {
+      enable = true;
+      package = pkgs.papirus-icon-theme;
+      light = "Papirus-Light";
+      dark = "Papirus-Dark";
     };
 
     fonts = {

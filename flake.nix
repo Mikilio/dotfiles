@@ -20,6 +20,7 @@
           modulesDirectory = "${ezConfigs.root}/home/modules";
         };
         nixos = {
+          earlyModuleArgs = {inherit inputs;};
           configurationsDirectory = "${ezConfigs.root}/nixos/hosts";
           modulesDirectory = "${ezConfigs.root}/nixos/modules";
           hosts = {
@@ -60,11 +61,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    anyrun = {
-      url = "github:Kirottu/anyrun";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     cloudflared = {
       url = "github:cloudflare/cloudflared/2024.3.0";
       flake = false;
@@ -81,12 +77,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # eww = {
-    #   url = "github:hylophile/eww/dynamic-icons";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    #   inputs.rust-overlay.follows = "rust-overlay";
-    # };
-
     ez-configs = {
       url = "github:ehllie/ez-configs";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -98,7 +88,7 @@
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:Mikilio/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -185,7 +175,10 @@
     yazi = {
       url = "github:sxyazi/yazi";
     };
-    zen-browser.url = "github:0xc000022070/zen-browser-flake";
+    zen-browser = {
+      url = "github:0xc000022070/zen-browser-flake";
+      inputs.home-manager.follows = "home-manager";
+    };
   };
 
   nixConfig = {

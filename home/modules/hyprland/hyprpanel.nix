@@ -1,5 +1,4 @@
 {
-  inputs,
   lib,
   pkgs,
   ezConfigs,
@@ -118,7 +117,6 @@
       terminal = "${pkgs.foot}/bin/footclient";
 
       theme = {
-        name = "catppuccin_mocha";
         bar = {
           buttons.enableBorders = true;
           transparent = true;

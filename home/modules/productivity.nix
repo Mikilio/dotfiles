@@ -1,10 +1,4 @@
-{
-  inputs,
-  config,
-  lib,
-  pkgs,
-  ...
-}: let
+{pkgs, ...}: let
 in {
   imports = [./pandoc];
 
@@ -27,7 +21,7 @@ in {
       blender
 
       # books
-      calibre
+      # calibre
 
       #curcuits
       # kicad
@@ -47,12 +41,13 @@ in {
       morgen
 
       #10xorganization
-      logseq
+      obsidian
+      pdfannots2json
+      tesseract
       glibc #https://github.com/logseq/logseq/issues/10851
 
       #need it for work
       vesktop
-      brave
       slack
       teams-for-linux
       # zoom-us
@@ -65,15 +60,16 @@ in {
 
       #ftp
       filezilla
-
-      #for testing
-      zen-browser
     ];
     dconf.settings = {
       "org/virt-manager/virt-manager/connections" = {
         autoconnect = ["qemu:///system"];
         uris = ["qemu:///system"];
       };
+    };
+
+    xdg.configFile = {
+      "autostart/morgen.desktop".source = "${pkgs.morgen}/share/applications/morgen.desktop";
     };
   };
 }

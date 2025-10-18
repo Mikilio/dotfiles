@@ -1,0 +1,67 @@
+window {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+box.main {
+  padding: 5px;
+  margin: 10px;
+  border-radius: 15px;
+  border: 2px solid @theme_selected_bg_color;
+  background-color: alpha(@theme_bg_color,0.90);
+  box-shadow: 0 0 5px black;
+}
+
+
+text {
+  min-height: 30px;
+  padding: 5px;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.matches {
+  background-color: rgba(0, 0, 0, 0);
+  border-radius: 10px;
+}
+
+box.plugin:first-child {
+  margin-top: 10px;
+}
+
+box.plugin.info {
+  min-width: 200px;
+}
+
+list.plugin {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+label.match.description {
+  font-size: 12px;
+}
+
+label.plugin.info {
+  font-size: 14px;
+}
+
+.match {
+  background: transparent;
+  min-height: 24px
+}
+
+.match:selected {
+  border-left: 4px solid @theme_selected_bg_color;
+  background: transparent;
+  animation: fade 0.1s linear;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+

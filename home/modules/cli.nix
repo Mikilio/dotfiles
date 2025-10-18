@@ -3,8 +3,7 @@
   lib,
   pkgs,
   ...
-}:
-let
+}: let
   preview = pkgs.writeShellScript "preview.sh" (
     builtins.readFile (
       builtins.fetchurl {
@@ -13,8 +12,7 @@ let
       }
     )
   );
-in
-{
+in {
   home.packages = with pkgs; [
     # archives
     zip
@@ -24,46 +22,44 @@ in
     #TUI
     calcurse
 
-  # utils
-  jaq
-  file
-  du-dust
-  duf
-  fd
-  bat
-  ripgrep
-  xdg-utils
-  nur.repos.mikilio.xdg-terminal-exec
+    # utils
+    jaq
+    file
+    du-dust
+    duf
+    fd
+    bat
+    ripgrep
+    xdg-utils
+    nur.repos.mikilio.xdg-terminal-exec
 
-  #nix
-  sops
-  alejandra
-  deadnix
-  statix
-  cachix
-  devenv
-  
-  #DevOps
-  kubectl
-];
+    #nix
+    sops
+    alejandra
+    deadnix
+    statix
+    cachix
+    devenv
 
-programs = {
-  bash = {
-    enable = true;
-    enableCompletion = false;
-    historyControl = [
-        "ignoredups"
-        "ignorespace"
+    #DevOps
+    kubectl
+  ];
+
+  programs = {
+    bash = {
+      enable = true;
+      enableCompletion = false;
+      historyFileSize = 0;
+      historyControl = [
+        "ignoreboth"
         "erasedups"
       ];
       historyIgnore = [
         "&"
-        "ls"
         "[bf]g"
         "exit"
         "reset"
         "clear"
-        "cd*"
       ];
       shellOptions = [
         "autocd"
@@ -75,7 +71,6 @@ programs = {
         "checkwinsize"
         "checkhash"
         "histverify"
-        "histappend"
         "histreedit"
         "cmdhist"
       ];
@@ -83,9 +78,10 @@ programs = {
         set -o notify           # notify of completed background jobs immediately
         set -o noclobber        # don\'t overwrite files by accident
         ulimit -S -c 0          # disable core dumps
-        # if [ -t 0 ]; then 
+        # if [ -t 0 ]; then
         #   stty -ctlecho;        #turn off control character echoing
         # fi
+        unset HISTFILE
       '';
       initExtra = ''
         source "${lib.getExe pkgs.complete-alias}"
@@ -113,7 +109,8 @@ programs = {
     };
     atuin = {
       enable = true;
-      flags = [ "--disable-up-arrow" ];
+      enableBashIntegration = true;
+      settings.filter_mode_shell_up_key_binding = "session";
     };
     less = {
       enable = true;
@@ -222,6 +219,6 @@ programs = {
 
       DIRENV_LOG_FORMAT = "";
     };
-    sessionPath = [ "$HOME/.local/share/bin" ];
+    sessionPath = ["$HOME/.local/share/bin"];
   };
 }

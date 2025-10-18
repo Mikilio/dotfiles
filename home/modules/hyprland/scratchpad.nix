@@ -64,10 +64,10 @@ let
       key = "M"; # Microsoft Teams | Meetings
     };
 
-    logseq = {
-      command = [ (lib.getExe pkgs.logseq) ];
+    obsidian = {
+      command = [ (lib.getExe pkgs.obsidian) ];
       match_by = "initialClass";
-      initialClass = "Logseq";
+      initialClass = "obsidian";
       size = "90% 90%";
       key = "N"; # Notes
     };

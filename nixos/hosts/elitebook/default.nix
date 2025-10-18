@@ -26,7 +26,7 @@
       power
       bluetooth
       hyprland
-      ollama
+      # ollama
       gaming
     ]);
 
@@ -88,7 +88,7 @@
   hardware.libjaylink.enable = true;
   hardware.i2c.enable = true;
 
-  services.logind.lidSwitchExternalPower = "ignore";
+  services.logind.settings.Login.HandleLidSwitchExternalPower = "ignore";
 
   users.mutableUsers = false;
   users.users.mikilio = {

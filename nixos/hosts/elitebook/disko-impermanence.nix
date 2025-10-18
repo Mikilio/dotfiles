@@ -42,6 +42,12 @@
                 mv /btrfs_tmp/root "/btrfs_tmp/old_roots/$timestamp"
             fi
 
+            if [[ -e /btrfs_tmp/home ]]; then
+                mkdir -p /btrfs_tmp/old_homes
+                timestamp=$(date --date="@$(stat -c %Y /btrfs_tmp/home)" "+%Y-%m-%-d_%H:%M:%S")
+                mv /btrfs_tmp/home "/btrfs_tmp/old_homes/$timestamp"
+            fi
+
             delete_subvolume_recursively() {
                 IFS=$'\n'
                 for i in $(btrfs subvolume list -o "$1" | cut -f 9- -d ' '); do
@@ -54,7 +60,12 @@
                 delete_subvolume_recursively "$i"
             done
 
+            for i in $(find /btrfs_tmp/old_homes/ -maxdepth 1 -mtime +30); do
+                delete_subvolume_recursively "$i"
+            done
+
             btrfs subvolume create /btrfs_tmp/root
+            btrfs subvolume create /btrfs_tmp/home
             umount /btrfs_tmp
           '';
         };
@@ -75,6 +86,52 @@
         "/root/.config/sops/age/keys.txt"
         "/var/cache/regreet/cache.toml"
       ];
+      users.mikilio = {
+        directories = [
+          "Desktop"
+          "Code"
+          "Downloads"
+          "Zotero"
+          ".floorp/Default"
+          ".floorp/PWA"
+          ".thunderbird/default"
+          ".pki"
+          ".steam"
+          ".yubico"
+          ".zcn"
+          ".zotero"
+          ".local/state"
+          ".local/share/applications"
+          ".local/share/atuin"
+          ".local/share/calibre-ebook.com"
+          ".local/share/com.yubico.yubioath"
+          ".local/share/containers"
+          ".local/share/devenv"
+          ".local/share/direnv"
+          ".local/share/gnupg"
+          ".local/share/nix"
+          ".local/share/nvim"
+          ".local/share/password-store"
+          ".local/share/sioyek"
+          ".local/share/Steam"
+          ".local/share/TelegramDesktop"
+          ".local/share/tmux"
+          ".local/share/Trash"
+          ".local/share/wasistlos"
+          ".local/share/zoxide"
+
+          #exceptions
+          ".config/Morgen"
+          ".config/Obsidian"
+          ".cache/spotify"
+          ".cache/vfs"
+          ".cache/vfsMeta"
+          ".cache/wasistlos"
+        ];
+        files = [
+          ".ssh/known_hosts"
+        ];
+      };
     };
 
     #Disko
@@ -123,13 +180,6 @@
                     subvolumes = {
                       "/root" = {
                         mountpoint = "/";
-                        mountOptions = [
-                          "compress=zstd"
-                          "noatime"
-                        ];
-                      };
-                      "/home" = {
-                        mountpoint = "/home";
                         mountOptions = [
                           "compress=zstd"
                           "noatime"

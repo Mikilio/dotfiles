@@ -1,5 +1,8 @@
-{ ezConfigs, inputs, ... }:
 {
+  ezConfigs,
+  inputs,
+  ...
+}: {
   imports = [
     inputs.sops-nix.nixosModules.default
   ];
@@ -10,7 +13,8 @@
       };
       defaultSopsFile = "${ezConfigs.root}/secrets/hosts/elitebook.yaml";
       secrets = {
-        usbguard-rules = { };
+        usbguard-rules = {};
+        u2f-mappings.neededForUsers = true;
       };
     };
   };

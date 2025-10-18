@@ -19,8 +19,6 @@ in {
 
       #mpris
       playerctl
-
-      nur.repos.mikilio.xwaylandvideobridge-hypr
     ];
 
     programs = {

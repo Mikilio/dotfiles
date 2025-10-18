@@ -33,6 +33,7 @@ in {
             "slack.*"
             "zoom.*"
             "morgen"
+            "obsidian"
           ]
         );
       allowUnsupportedSystem = true;
@@ -40,7 +41,7 @@ in {
 
     overlays = [
       inputs.sops-nix.overlays.default
-      # inputs.hyprland.overlays.default
+      inputs.nur.overlays.default
       #all normal overrides
       (final: prev: {
         lib =

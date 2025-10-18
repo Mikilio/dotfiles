@@ -6,8 +6,7 @@
   ezModules,
   osConfig,
   ...
-}:
-{
+}: {
   imports = with ezModules; [
     anyrun
     cli
@@ -33,6 +32,8 @@
     transient-services
     xdg
     yazi
+    zen
+    zus
   ];
 
   config = {
@@ -54,7 +55,7 @@
       ];
     };
 
-    pam.yubico.authorizedYubiKeys.ids = [ "cccccbhkevjb" ];
+    pam.yubico.authorizedYubiKeys.ids = ["cccccbhkevjb"];
 
     sops = {
       # or some other source for the decryption key
@@ -62,20 +63,19 @@
       # or which file contains the encrypted secrets
       defaultSopsFile = ../../../secrets/user/mikilio.yaml;
       secrets = {
-        google-git = { };
+        google-git = {};
         weather = {};
         github = {};
       };
     };
     systemd.user.services.sops-nix = {
       Install = {
-        WantedBy = lib.mkForce [ "graphical-session.target" ];
+        WantedBy = lib.mkForce ["graphical-session.target"];
       };
       Unit = {
         After = "graphical-session.target";
         Before = "xdg-desktop-autostart.target";
       };
     };
-
   };
 }

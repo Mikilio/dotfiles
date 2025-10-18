@@ -1,10 +1,4 @@
-{
-  inputs,
-  pkgs,
-  ...
-}:
-{
-
+{pkgs, ...}: {
   #fix portals
   xdg.portal = {
     xdgOpenUsePortal = true;
@@ -12,7 +6,7 @@
       pkgs.xdg-desktop-portal-gtk
     ];
   };
-  environment.pathsToLink = [ "/share/xdg-desktop-portal" "/share/applications" ];
+  environment.pathsToLink = ["/share/xdg-desktop-portal" "/share/applications"];
 
   # for hyprlock
   security.pam.services.hyprlock.u2fAuth = true;

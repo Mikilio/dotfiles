@@ -3,11 +3,9 @@
   pkgs,
   lib,
   ...
-}:
-let
+}: let
   homeDir = config.home.homeDirectory;
-in
-{
+in {
   config = {
     xdg = {
       enable = true;
@@ -17,23 +15,22 @@ in
         createDirectories = true;
         extraConfig = {
           XDG_DEV_DIR = "${homeDir}/Code";
-          XDG_SCREENSHOTS_DIR = "${homeDir}/Pictures/screenshots";
         };
       };
 
       mimeApps = {
         enable = true;
         defaultApplications = {
-          "application/pdf" = [ "sioyek.desktop" ];
-          "text/html" = [ "floorp.desktop" ];
-          "x-scheme-handler/http" = [ "floorp.desktop" ];
-          "x-scheme-handler/https" = [ "floorp.desktop" ];
-          "inode/directory" = [ "yazi.desktop"];
+          "application/pdf" = ["sioyek.desktop"];
+          "text/html" = ["floorp.desktop"];
+          "x-scheme-handler/http" = ["floorp.desktop"];
+          "x-scheme-handler/https" = ["floorp.desktop"];
+          "inode/directory" = ["yazi.desktop"];
         };
       };
     };
 
     xdg.configFile."mimeapps.list".force = true;
-    home.packages = [ pkgs.nur.repos.mikilio.xdg-terminal-exec ];
+    home.packages = [pkgs.nur.repos.mikilio.xdg-terminal-exec];
   };
 }

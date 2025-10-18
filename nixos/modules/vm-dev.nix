@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-{
-
+{pkgs, ...}: {
   programs.virt-manager.enable = true;
   environment = {
     systemPackages = with pkgs; [
@@ -19,10 +17,6 @@
     libvirtd = {
       enable = true;
       qemu = {
-        ovmf = {
-          enable = true;
-          packages = [pkgs.OVMFFull.fd];
-        };
         swtpm.enable = true;
       };
     };
@@ -30,7 +24,7 @@
     containers = {
       enable = true;
       storage.settings = {
-       storage = {
+        storage = {
           driver = "btrfs";
           runroot = "/run/containers/storage";
           graphroot = "/var/lib/containers/storage";
@@ -48,7 +42,7 @@
   };
   services.spice-vdagentd.enable = true;
   networking.firewall = {
-    trustedInterfaces = [ "virbr0" ];
+    trustedInterfaces = ["virbr0"];
     interfaces."podman*".allowedUDPPorts = [53];
   };
 

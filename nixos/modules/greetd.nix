@@ -1,10 +1,8 @@
 {
   pkgs,
-  lib,
   config,
   ...
-}:
-{
+}: {
   config = {
     programs.regreet = {
       enable = true;
@@ -36,7 +34,10 @@
     security.pam = {
       u2f = {
         enable = true;
-        settings.cue = true;
+        settings = {
+          cue = true;
+          authfile = config.sops.secrets.u2f-mappings.path;
+        };
       };
       services = {
         login.u2fAuth = true;

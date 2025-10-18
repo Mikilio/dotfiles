@@ -1,35 +1,33 @@
 {
-  inputs,
   pkgs,
   lib,
   ...
 }: {
-
   programs.anyrun = {
     enable = true;
 
     config = {
-      plugins = with inputs.anyrun.packages.${pkgs.system}; [
-        applications
-        # randr
-        rink
-        shell
-        symbols
+      plugins = [
+        "${pkgs.anyrun}/lib/libapplications.so"
+        "${pkgs.anyrun}/lib/libsymbols.so"
+        "${pkgs.anyrun}/lib/libshell.so"
+        "${pkgs.anyrun}/lib/librink.so"
       ];
 
-      width.fraction = 0.25;
+      width.fraction = 0.3;
+      x.fraction = 0.5;
       y.fraction = 0.25;
-      hidePluginInfo = true;
       closeOnClick = true;
+      maxEntries = 12;
     };
 
-    extraCss = builtins.readFile (./. + "/style-dark.css");
+    extraCss = builtins.readFile (./. + "/style.css");
 
     extraConfigFiles = {
       "applications.ron".text = ''
         Config(
           desktop_actions: true,
-          max_entries: 5, 
+          max_entries: 5,
           terminal: Some(Terminal(
             command: "ghostty",
             args: "--title=ephemeral -e {}",
@@ -53,6 +51,11 @@
   in {
     bindr = [
       "$mod, SPACE, exec, ${toggle "anyrun" true}"
+    ];
+    layerrule = [
+      "blur, anyrun"
+      "ignorealpha 0.5, anyrun"
+      "animation fade, anyrun"
     ];
   };
 }

@@ -1,6 +1,5 @@
 {inputs, ...}: {
   imports = [
-    inputs.nur.modules.homeManager.default
     inputs.nix-index-db.homeModules.nix-index
     inputs.sops-nix.homeManagerModule
   ];
