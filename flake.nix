@@ -16,6 +16,7 @@
           inherit inputs ezConfigs;
         };
         home = {
+          earlyModuleArgs = {inherit inputs;};
           configurationsDirectory = "${ezConfigs.root}/home/profiles";
           modulesDirectory = "${ezConfigs.root}/home/modules";
         };
@@ -134,11 +135,6 @@
         flake-parts.follows = "flake-parts";
         nixpkgs.follows = "nixpkgs";
       };
-    };
-
-    nix-index-db = {
-      url = "github:Mic92/nix-index-database";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nix-gaming = {

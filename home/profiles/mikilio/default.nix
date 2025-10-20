@@ -1,12 +1,4 @@
-{
-  config,
-  options,
-  lib,
-  pkgs,
-  ezModules,
-  osConfig,
-  ...
-}: {
+{ezModules, ...}: {
   imports = with ezModules; [
     anyrun
     cli
@@ -23,6 +15,7 @@
     pass
     pipewire
     productivity
+    private
     sioyek
     spicetify
     ssh
@@ -35,47 +28,4 @@
     zen
     zus
   ];
-
-  config = {
-    home = {
-      username = "mikilio";
-      homeDirectory = osConfig.users.users.mikilio.home;
-      extraOutputsToInstall = [
-        "doc"
-        "devdoc"
-      ];
-    };
-
-    programs = {
-      gpg.publicKeys = [
-        {
-          source = ./gmail_mikilio.asc;
-          trust = 5;
-        }
-      ];
-    };
-
-    pam.yubico.authorizedYubiKeys.ids = ["cccccbhkevjb"];
-
-    sops = {
-      # or some other source for the decryption key
-      gnupg.home = "${config.xdg.dataHome}/gnupg";
-      # or which file contains the encrypted secrets
-      defaultSopsFile = ../../../secrets/user/mikilio.yaml;
-      secrets = {
-        google-git = {};
-        weather = {};
-        github = {};
-      };
-    };
-    systemd.user.services.sops-nix = {
-      Install = {
-        WantedBy = lib.mkForce ["graphical-session.target"];
-      };
-      Unit = {
-        After = "graphical-session.target";
-        Before = "xdg-desktop-autostart.target";
-      };
-    };
-  };
 }

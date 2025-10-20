@@ -1,5 +1,4 @@
 {
-  ezConfigs,
   inputs,
   config,
   ...
@@ -12,7 +11,7 @@
       age = {
         keyFile = "/root/.config/sops/age/keys.txt";
       };
-      defaultSopsFile = "${ezConfigs.root}/secrets/hosts/elitebook.yaml";
+      defaultSopsFile = ../../../secrets/hosts/elitebook.yaml;
       secrets = {
         usbguard-rules = {};
         u2f-mappings = {

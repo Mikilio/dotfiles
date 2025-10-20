@@ -8,7 +8,6 @@
   config,
   pkgs,
   lib,
-  inputs,
   ...
 }: let
   cfg = config.dotfiles.security.target;
@@ -28,7 +27,15 @@ in {
         dbus.enable = true;
         IPCAllowedGroups = ["wheel"];
         restoreControllerDeviceState = true;
-        ruleFile = config.sops.secrets.usbguard-rules.path;
+        rules = ''
+          allow with-connect-type "hardwired"
+          allow  with-interface one-of { 09:00:* }
+
+          allow name "Thunderbolt 4 Docking Station" hash "HqQf+sgpLF/8YHofncFBdqEG4BmMHp37fViu8PE/Gns="
+          allow if allowed-matches(serial "11AD1D0A08B6400E13280B00" name "Thunderbolt 4 Docking Station" hash "HqQf+sgpLF/8YHofncFBdqEG4BmMHp37fViu8PE/Gns=")
+
+          allow name "YubiKey OTP+FIDO+CCID" hash "Q+A8QQReKclmBSaDIYja0w4Bx6ld2IU6wF7HFKdtJ3Q=" with-interface { 03:01:01 03:00:00 0b:00:00 }
+        '';
       };
       # antivirus
       # enable antivirus clamav and
@@ -44,7 +51,7 @@ in {
       # 'scudo' breaks the usage of firefox.
       memoryAllocator.provider = lib.mkForce "libc";
       systemPackages = [
-        inputs.sops-nix.packages.${pkgs.stdenv.system}.default
+        pkgs.sops
       ];
     };
 

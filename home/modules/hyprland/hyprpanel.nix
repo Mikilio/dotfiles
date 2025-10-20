@@ -1,7 +1,6 @@
 {
   lib,
   pkgs,
-  ezConfigs,
   config,
   ...
 }: {
@@ -80,7 +79,7 @@
           };
 
           powermenu = {
-            avatar.image = "${ezConfigs.root}/assets/mikilio.png";
+            avatar.image = ../../../assets/mikilio.png;
             logout = "loginctl terminate-user ${config.home.username}";
           };
 

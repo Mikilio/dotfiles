@@ -11,14 +11,7 @@ in {
     programs = {
       git = {
         enable = true;
-        userName = "Mikilio";
-        userEmail = "official.mikilio@gmail.com";
         delta.enable = true;
-        signing = {
-          signByDefault = true;
-          format = "openpgp";
-          key = "0C159FAB320FEB35!";
-        };
         attributes = [
           "*.pdf diff=pdf"
         ];
@@ -61,15 +54,6 @@ in {
             updateRefs = true;
           };
           mergetool.prompt = false;
-          sendemail = {
-            smtpServer = "smtp.gmail.com";
-            smtpServerPort = 587;
-            smtpEncryption = "tls";
-            smtpUser = "official.mikilio@gmail.com";
-          };
-          credential."smtp://smtp.gmail.com:587".helper = ''
-            !f() { echo username=official.mikilio@gmail.com; echo "password=$(cat ${config.sops.secrets.google-git.path})"; }; f 2> /dev/null
-          '';
           advice = {
             detachedHead = false;
             skippedCherryPicks = false;
@@ -115,7 +99,6 @@ in {
         settings = {
           repoPaths = {
             ":owner/:repo" = "${config.xdg.userDirs.extraConfig.XDG_DEV_DIR}/GitHub/:owner/:repo";
-            "Mikilio/*" = "${config.xdg.userDirs.extraConfig.XDG_DEV_DIR}/GitHub/*";
           };
           pager = {
             diff = "delta --side-by-side";

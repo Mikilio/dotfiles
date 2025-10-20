@@ -24,7 +24,6 @@ in {
       networkmanager = {
         enable = true;
         dns = "systemd-resolved";
-        ensureProfiles.profiles = import ./nm.nix;
         settings = {
           wifi-security.psk-flags = "1";
         };
@@ -35,7 +34,7 @@ in {
     };
 
     services = {
-      #Allow ssh from self 
+      #Allow ssh from self
       openssh = {
         enable = true;
         openFirewall = false;

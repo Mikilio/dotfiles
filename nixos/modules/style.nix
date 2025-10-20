@@ -1,9 +1,6 @@
 {
   pkgs,
-  lib,
   inputs,
-  ezConfigs,
-  config,
   ...
 }: {
   imports = [
@@ -17,7 +14,7 @@
       followSystem = false;
     };
     # image = config.lib.stylix.pixel "base0E";
-    image = "${ezConfigs.root}/assets/wallpapers/default.png";
+    image = ../../assets/wallpapers/default.png;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
 
     polarity = "dark";

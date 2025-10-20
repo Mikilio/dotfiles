@@ -4,7 +4,6 @@
   lib,
   pkgs,
   osConfig,
-  ezConfigs,
   ...
 }: let
   environment = {
@@ -19,7 +18,7 @@
     # only for XWayland but I don't remember why
     XAUTHORITY = "$XDG_RUNTIME_DIR/Xauthority";
     #for EurKey
-    XCOMPOSEFILE="$HOME/.XCompose";
+    XCOMPOSEFILE = "$HOME/.XCompose";
 
     #QT stuff
     QT_AUTO_SCREEN_SCALE_FACTOR = 1;
@@ -30,7 +29,10 @@
     HYPRCURSOR_SIZE = config.stylix.cursor.name;
 
     #GPUs
-    AQ_DRM_DEVICES = if osConfig.specialisation == {} then  "/dev/dri/card0" else "/dev/dri/card1:/dev/dri/card0";
+    AQ_DRM_DEVICES =
+      if osConfig.specialisation == {}
+      then "/dev/dri/card0"
+      else "/dev/dri/card1:/dev/dri/card0";
   };
 in {
   imports = [
@@ -95,7 +97,7 @@ in {
         image = [
           # USER AVATAR
           {
-            path = "${ezConfigs.root}/assets/mikilio.png";
+            path = "${../../../assets/mikilio.png}";
             size = 200;
             position = "0, 250";
             halign = "center";
@@ -216,8 +218,8 @@ in {
             resolve_binds_by_sym = 1;
           }
           {
-            name  = "totem-keyboard";
-            kb_layout=  "eu";
+            name = "totem-keyboard";
+            kb_layout = "eu";
             kb_variant = "basic";
             resolve_binds_by_sym = 1;
           }

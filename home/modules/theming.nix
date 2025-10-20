@@ -1,9 +1,7 @@
 {
-  ezConfigs,
   inputs,
   pkgs,
   lib,
-  config,
   osConfig,
   ...
 }: {
@@ -16,7 +14,7 @@
     palette = ''${lib.getExe pkgs.yq} '.palette | values | join(" ")' ${global.base16Scheme} | tr -d '"' '';
     prism = pkgs.runCommand "prism" {} ''
       mkdir $out
-      for WALLPAPER in $(find ${ezConfigs.root}/assets/wallpapers -type f)
+      for WALLPAPER in $(find ${../..}/assets/wallpapers -type f)
       do
         ${pkgs.lutgen}/bin/lutgen apply $WALLPAPER -o $out/$(basename $WALLPAPER) -- ''$(${palette})
       done
