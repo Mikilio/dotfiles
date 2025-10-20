@@ -42,12 +42,6 @@
                 mv /btrfs_tmp/root "/btrfs_tmp/old_roots/$timestamp"
             fi
 
-            if [[ -e /btrfs_tmp/home ]]; then
-                mkdir -p /btrfs_tmp/old_homes
-                timestamp=$(date --date="@$(stat -c %Y /btrfs_tmp/home)" "+%Y-%m-%-d_%H:%M:%S")
-                mv /btrfs_tmp/home "/btrfs_tmp/old_homes/$timestamp"
-            fi
-
             delete_subvolume_recursively() {
                 IFS=$'\n'
                 for i in $(btrfs subvolume list -o "$1" | cut -f 9- -d ' '); do
@@ -60,12 +54,7 @@
                 delete_subvolume_recursively "$i"
             done
 
-            for i in $(find /btrfs_tmp/old_homes/ -maxdepth 1 -mtime +30); do
-                delete_subvolume_recursively "$i"
-            done
-
             btrfs subvolume create /btrfs_tmp/root
-            btrfs subvolume create /btrfs_tmp/home
             umount /btrfs_tmp
           '';
         };
@@ -99,6 +88,7 @@
           ".steam"
           ".yubico"
           ".zcn"
+          ".zen"
           ".zotero"
           ".local/state"
           ".local/share/applications"
@@ -122,7 +112,8 @@
 
           #exceptions
           ".config/Morgen"
-          ".config/Obsidian"
+          ".config/rclone"
+          ".config/obsidian"
           ".cache/spotify"
           ".cache/vfs"
           ".cache/vfsMeta"

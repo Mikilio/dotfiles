@@ -35,6 +35,11 @@ in {
     };
 
     services = {
+      #Allow ssh from self 
+      openssh = {
+        enable = true;
+        openFirewall = false;
+      };
       # DNS resolver
       resolved = {
         enable = true;

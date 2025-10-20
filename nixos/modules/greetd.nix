@@ -36,7 +36,6 @@
         enable = true;
         settings = {
           cue = true;
-          authfile = config.sops.secrets.u2f-mappings.path;
         };
       };
       services = {

@@ -34,6 +34,7 @@ in {
             "zoom.*"
             "morgen"
             "obsidian"
+            "zerotierone"
           ]
         );
       allowUnsupportedSystem = true;

@@ -184,8 +184,20 @@
       yubikey-manager
       yubico-piv-tool
       gcr
+      age-plugin-yubikey
     ];
   };
+
+  xdg.configFile."sops/age/keys.txt".text = ''
+    #       Serial: 23674753, Slot: 1
+    #         Name: Personal
+    #      Created: Sun, 19 Oct 2025 15:22:21 +0000
+    #   PIN policy: Once   (A PIN is required once per session, if set)
+    # Touch policy: Always (A physical touch is required for every decryption)
+    #    Recipient: age1yubikey1qfevylzne52c04dyhjwyyl5dpqz342kaqpm4eyzv7h04p40r48k9vayesv6
+    AGE-PLUGIN-YUBIKEY-1SYLKJQVZ786A9JSDRSSMT
+
+  '';
 
   services = {
     # TODO: this config is not reusable! create some logic here
