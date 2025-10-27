@@ -53,6 +53,17 @@
         port = 54022;
         user = "mikilio";
       };
+      testbed = {
+        hostname = "testbed.acn.net.cit.tum.de";
+        user = "s12333";
+        port = 10022;
+      };
+     "*.testbed" = {
+        hostname = "%h.acn.net.cit.tum.de";
+        user = "root";
+        proxyJump = "testbed";
+        checkHostIP = false;
+      };
       "." = {
         hashKnownHosts = true;
         extraOptions = {

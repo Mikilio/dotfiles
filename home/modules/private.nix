@@ -30,6 +30,9 @@
       };
     };
 
+    home.username = lib.mkDefault "mikilio";
+    home.homeDirectory = lib.mkDefault "/home/mikilio/";
+
     #NOTE: Private informations per module
 
     #NOTE: email
