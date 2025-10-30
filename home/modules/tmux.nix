@@ -188,6 +188,7 @@
         Description = "tmux user sessions";
         Documentation = "man:tmux(1)";
       };
+      Slice.Slice = [ "app.slice" ];
     };
   };
 }
