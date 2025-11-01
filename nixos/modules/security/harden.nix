@@ -77,7 +77,6 @@ in
       "erofs"
       "exofs"
       "freevxfs"
-      "f2fs"
       "hfs"
       "hpfs"
       "jfs"

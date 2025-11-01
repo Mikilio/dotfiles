@@ -9,11 +9,6 @@
 
   stylix = {
     enable = true;
-    homeManagerIntegration = {
-      autoImport = false;
-      followSystem = false;
-    };
-    # image = config.lib.stylix.pixel "base0E";
     image = ../../assets/wallpapers/default.png;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
 
@@ -49,7 +44,7 @@
       };
 
       emoji = {
-        package = pkgs.noto-fonts-emoji;
+        package = pkgs.noto-fonts-color-emoji;
         name = "Noto Color Emoji";
       };
     };

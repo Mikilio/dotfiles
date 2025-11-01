@@ -4,11 +4,9 @@
   pkgs,
   ...
 }:
-with lib;
-let
-in
-{
-  home.packages = with pkgs; [ xdragon ];
+with lib; let
+in {
+  home.packages = with pkgs; [dragon-drop];
   # yazi file manager
   programs.yazi = {
     enable = true;
@@ -23,14 +21,14 @@ in
     keymap = {
       manager.prepend_keymap = [
         {
-          on = [ "<C-n>" ];
+          on = ["<C-n>"];
           run = ''
             shell 'dragon -x -i -T "$1"' --confirm
           '';
           desc = ''Drag and Drop item'';
         }
         {
-          on = [ "y" ];
+          on = ["y"];
           run = [
             "yank"
             ''
@@ -39,7 +37,7 @@ in
           ];
         }
         {
-          on = [ "<C-s>" ];
+          on = ["<C-s>"];
           run = "shell '$SHELL' --block --confirm";
           desc = "Open shell here";
         }

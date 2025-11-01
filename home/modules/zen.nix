@@ -1,7 +1,6 @@
 {
   inputs,
   config,
-  lib,
   pkgs,
   ...
 }: {
@@ -38,7 +37,10 @@
     defaultApplications = associations;
   };
 
-  stylix.targets.zen-browser.profileNames = ["default"];
+  stylix.targets.zen-browser = {
+    profileNames = ["default"];
+    enableCss = false;
+  };
 
   programs.zen-browser = {
     enable = true;
@@ -105,8 +107,6 @@
         "zen.view.compact.enable-at-startup" = true;
         "zen.welcome-screen.seen" = true;
       };
-
-      userChrome = lib.mkForce "";
 
       extensions = {
         force = true;

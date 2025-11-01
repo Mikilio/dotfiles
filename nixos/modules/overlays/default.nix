@@ -5,13 +5,20 @@
   ...
 }: let
   stable = import inputs.nixpkgs-stable {
-    inherit (pkgs.stdenv) system;
+    inherit (pkgs.stdenv.hostPlatform) system;
     config.allowUnfree = true;
-    config.permittedInsecurePackages = ["electron-27.3.11"];
   };
   patched = import inputs.patched {
-    inherit (pkgs.stdenv) system;
+    inherit (pkgs.stdenv.hostPlatform) system;
     config.allowUnfree = true;
+  };
+
+  noGPU = import inputs.nixpkgs {
+    inherit (pkgs.stdenv.hostPlatform) system;
+    config = {
+      rocmSupport = lib.mkForce false;
+      cudaSupport = lib.mkForce false;
+    };
   };
 in {
   imports = [
@@ -35,6 +42,7 @@ in {
             "morgen"
             "obsidian"
             "zerotierone"
+            "libfprint-2-tod1-goodix"
           ]
         );
       allowUnsupportedSystem = true;
@@ -59,7 +67,8 @@ in {
                 };
           };
 
-        # inherit (stable) logseq;
+        inherit (stable) zerotierone;
+        inherit (noGPU) thunderbird;
 
         clight = prev.clight.overrideAttrs (o: {
           postInstall = ''
@@ -84,20 +93,6 @@ in {
               libGL
             ];
         };
-
-        # #Lot of rebuild be careful
-        # rocmPackages = prev.rocmPackages.overrideScope (
-        #   _final: prev: {
-        #     clr = prev.clr.overrideAttrs (o: {
-        #       passthru = o.passthru // {
-        #         gpuTargets = [
-        #           "gfx1103"
-        #           "gfx1031"
-        #         ];
-        #       };
-        #     });
-        #   }
-        # );
 
         discord = prev.discord-canary.override {
           nss = prev.nss_latest;
@@ -141,14 +136,6 @@ in {
             });
           };
         };
-
-        yazi = inputs.yazi.packages.${pkgs.stdenv.system}.default.overrideAttrs (o: {
-          patches =
-            (o.patches or [])
-            ++ [
-              ./yazi/symlink-status.patch
-            ];
-        });
 
         zen-browser = inputs.zen-browser.packages.${pkgs.system}.default;
 

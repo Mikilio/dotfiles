@@ -11,7 +11,6 @@ in {
     programs = {
       git = {
         enable = true;
-        delta.enable = true;
         attributes = [
           "*.pdf diff=pdf"
         ];
@@ -19,7 +18,7 @@ in {
           enable = true;
           skipSmudge = true;
         };
-        extraConfig = {
+        settings = {
           interactive.singleKey = true;
           format.signoff = true;
           color = {
@@ -60,22 +59,26 @@ in {
           };
           init.defaultBranch = "main";
           commit.verbose = true;
+          alias = {
+            rb = "rebase origin/HEAD";
+            get = "clone --recursive";
+            blame = "-w -M";
+            update = "!git pull && git submodule update --init --recursive";
+            comma = "commit --amend";
+            uncommit = "reset --soft HEAD^";
+            pr = "!\"pr() { git fetch origin pull/$1/head:pr-$1; git checkout pr-$1; }; pr\"";
+            backport = "cherry-pick -x";
+            reset-pr = "reset --hard FETCH_HEAD";
+            force-push = "push --force-with-lease";
+            publish = "!git pull && git push";
+            # recover failed commit messages: https://stackoverflow.com/questions/9133526/git-recover-failed-commits-message
+            recommit = "!git commit -eF $(git rev-parse --git-dir)/COMMIT_EDITMSG";
+          };
         };
-        aliases = {
-          rb = "rebase origin/HEAD";
-          get = "clone --recursive";
-          blame = "-w -M";
-          update = "!git pull && git submodule update --init --recursive";
-          comma = "commit --amend";
-          uncommit = "reset --soft HEAD^";
-          pr = "!\"pr() { git fetch origin pull/$1/head:pr-$1; git checkout pr-$1; }; pr\"";
-          backport = "cherry-pick -x";
-          reset-pr = "reset --hard FETCH_HEAD";
-          force-push = "push --force-with-lease";
-          publish = "!git pull && git push";
-          # recover failed commit messages: https://stackoverflow.com/questions/9133526/git-recover-failed-commits-message
-          recommit = "!git commit -eF $(git rev-parse --git-dir)/COMMIT_EDITMSG";
-        };
+      };
+      delta = {
+        enable = true;
+        enableGitIntegration = true;
       };
       gh = {
         enable = true;

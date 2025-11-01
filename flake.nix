@@ -62,15 +62,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    cloudflared = {
-      url = "github:cloudflare/cloudflared/2024.3.0";
-      flake = false;
-    };
-    cloudflare-go = {
-      url = "github:cloudflare/go/34129e47042e214121b6bbff0ded4712debed18e";
-      flake = false;
-    };
-
     devenv.url = "github:cachix/devenv";
 
     disko = {
@@ -89,26 +80,11 @@
     };
 
     home-manager = {
-      url = "github:Mikilio/home-manager";
+      url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    hyprland = {
-      url = "github:hyprwm/Hyprland/v0.48.0";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    hyprshell = {
-      url = "github:Mikilio/hyprshell";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
     impermanence.url = "github:nix-community/impermanence";
-
-    kmonad = {
-      url = "github:kmonad/kmonad?dir=nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     nixos-generators = {
       url = "github:nix-community/nixos-generators";
@@ -168,9 +144,6 @@
     #   flake = false;
     # };
 
-    yazi = {
-      url = "github:sxyazi/yazi";
-    };
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs.home-manager.follows = "home-manager";

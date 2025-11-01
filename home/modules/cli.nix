@@ -25,7 +25,7 @@ in {
     # utils
     jaq
     file
-    du-dust
+    dust
     duf
     fd
     bat

@@ -1,110 +1,99 @@
 {
   lib,
   pkgs,
+  config,
   ...
-}:
-let
-
+}: let
   wrap = cmds: lib.strings.concatStrings (lib.map (cmd: "uwsm app -- ${cmd} & ") cmds);
-  apps = {
 
-    morgen = {
-      command = [ (lib.getExe pkgs.morgen) ];
-      match_by = "initialClass";
-      initialClass = "Morgen";
-      size = "80% 80%";
-      key = "A"; # Agenda
+  getMatch = sp:
+    if sp.match ? initialClass
+    then "initialClass:${sp.match.initialClass}"
+    else "initialTitle:${sp.match.initialTitle}";
+
+  matchType = lib.types.attrTag {
+    initialClass = lib.mkOption {
+      type = lib.types.str;
+      description = "Initial class name for matching";
+      example = "Morgen";
     };
 
-    zotero = {
-      command = [ (lib.getExe pkgs.zotero) ];
-      match_by = "initialClass";
-      initialClass = "Zotero";
-      size = "90% 90%";
-      key = "R"; # Reading
-    };
-
-    slack = {
-      command = [ (lib.getExe pkgs.slack) ];
-      match_by = "initialClass";
-      initialClass = "Slack";
-      size = "80% 80%";
-      key = "S"; #Social | Slack
-    };
-
-    spotify = {
-      command = [ (lib.getExe pkgs.spotifywm) ];
-      match_by = "initialClass";
-      initialClass = "spotify";
-      size = "80% 80%";
-      key = "T"; # Tunes
-    };
-
-    chat = {
-      command = [ (lib.getExe pkgs.telegram-desktop) "${pkgs.whatsapp-for-linux}/bin/wasistlos" ];
-      match_by = "initialClass";
-      initialClass = "org.telegram.desktop";
-      size = "50% 90%";
-      key = "C"; # Chat
-    };
-
-    vesktop = {
-      command = [ (lib.getExe pkgs.vesktop) ];
-      match_by = "initialClass";
-      initialClass = "vesktop";
-      size = "80% 80%";
-      key = "D"; # Discord
-    };
-
-    teams = {
-      command = [ (lib.getExe pkgs.teams-for-linux)];
-      match_by = "initialClass";
-      initialClass = "temas-for-linux";
-      size = "80% 80%";
-      key = "M"; # Microsoft Teams | Meetings
-    };
-
-    obsidian = {
-      command = [ (lib.getExe pkgs.obsidian) ];
-      match_by = "initialClass";
-      initialClass = "obsidian";
-      size = "90% 90%";
-      key = "N"; # Notes
-    };
-
-    element = {
-      command = [ (lib.getExe pkgs.element-desktop) ];
-      match_by = "initialClass";
-      initialClass = "Element";
-      size = "80% 80%";
-      key = "E"; #Element
-    };
-
-    thunderbird = {
-      command = [ (lib.getExe pkgs.thunderbird-latest) ];
-      match_by = "initialClass";
-      initialClass = "thunderbird";
-      size = "90% 90%";
-      key = "I"; #Inbox
+    initialTitle = lib.mkOption {
+      type = lib.types.str;
+      description = "Initial title for matching";
+      example = "Some App Title";
     };
   };
-  workspaceRule = name: app: "special:scratch_${name},shadow:1, gapsout:60, on-created-empty:${wrap app.command}";
-  windowRule =
-    name: app: "workspace special:scratch_${name} silent, ${app.match_by}:${app.${app.match_by}}";
-  keybind = name: app: "SUPER, ${app.key}, togglespecialworkspace, scratch_${name}";
 
-in
-{
-  wayland.windowManager.hyprland.settings = {
-    misc.initial_workspace_tracking = 0;
-    windowrulev2 = lib.mkAfter (
-      lib.attrsets.mapAttrsToList windowRule apps
-      ++ [
-        "rounding 8, floating:0, onworkspace:s[1]"
-        "bordersize 3, floating:0, onworkspace:s[1]"
-      ]
-    );
-    workspace = lib.mkAfter (lib.attrsets.mapAttrsToList workspaceRule apps);
-    bind = lib.attrsets.mapAttrsToList keybind apps;
+  scratchpad = {
+    options = {
+      command = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        description = "List of commands to launch the application";
+        example = [(lib.getExe pkgs.morgen)];
+      };
+
+      match = lib.mkOption {
+        type = matchType;
+        description = "Matching criteria (exactly one of initialClass or initialTitle as a tagged attr set)";
+      };
+
+      key = lib.mkOption {
+        type = lib.types.str;
+        description = "Keybinding character (e.g., 'A')";
+        example = "A";
+      };
+    };
+  };
+
+  workspaceRule = name: sp: "special:scratch_${name},shadow:1, gapsout:60, on-created-empty:${wrap sp.command}";
+
+  windowRule = name: sp: "workspace special:scratch_${name} silent, ${getMatch sp}";
+
+  keybind = name: sp: "SUPER, ${sp.key}, togglespecialworkspace, scratch_${name}";
+in {
+  options = {
+    # Replace 'my' with your preferred module namespace, e.g., programs.hyprland.scratchApps
+    wayland.windowManager.hyprland.scratchpads = lib.mkOption {
+      type = lib.types.attrsOf (lib.types.submodule scratchpad);
+      default = {};
+      description = "Attribute set of scratchpad applications";
+      example = lib.literalExpression ''
+        {
+          morgen = {
+            command = [ (lib.getExe pkgs.morgen) ];
+            match = {
+              initialClass = "Morgen";
+            };
+            key = "A";
+          };
+          someTitleApp = {
+            command = [ "some-app" ];
+            match = {
+              initialTitle = "Some Title";
+            };
+            key = "K";
+          };
+        }
+      '';
+    };
+  };
+
+  config = lib.mkIf (config.wayland.windowManager.hyprland.scratchpads != {}) {
+    wayland.windowManager.hyprland.settings = {
+      misc.initial_workspace_tracking = 0;
+
+      windowrulev2 = lib.mkAfter (
+        lib.attrsets.mapAttrsToList windowRule config.wayland.windowManager.hyprland.scratchpads
+        ++ [
+          "rounding 8, floating:0, onworkspace:s[1]"
+          "bordersize 3, floating:0, onworkspace:s[1]"
+        ]
+      );
+
+      workspace = lib.mkAfter (lib.attrsets.mapAttrsToList workspaceRule config.wayland.windowManager.hyprland.scratchpads);
+
+      bind = lib.attrsets.mapAttrsToList keybind config.wayland.windowManager.hyprland.scratchpads;
+    };
   };
 }

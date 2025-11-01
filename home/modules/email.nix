@@ -21,7 +21,7 @@
 in {
   programs.thunderbird = {
     enable = true;
-    package = pkgs.thunderbird-latest;
+    package = pkgs.thunderbird;
     settings = {
       "extensions.autoDisableScopes" = 0;
       "mail.identity.default.reply_on_top" = 1;

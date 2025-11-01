@@ -171,7 +171,7 @@
         Unit = {
           Description = "tmux user server";
           Documentation = "man:tmux(1)";
-          PartOf = ["tmux.slice"];
+          After = ["tmux.slice"];
         };
 
         Service = {

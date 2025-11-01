@@ -1,9 +1,7 @@
 {
-  inputs,
   config,
   lib,
   pkgs,
-  osConfig,
   ...
 }: let
   environment = {
@@ -23,16 +21,6 @@
     #QT stuff
     QT_AUTO_SCREEN_SCALE_FACTOR = 1;
     QT_WAYLAND_DISABLE_WINDOWDECORATION = 1;
-
-    #cursor
-    HYPRCURSOR_THEME = config.stylix.cursor.name;
-    HYPRCURSOR_SIZE = config.stylix.cursor.name;
-
-    #GPUs
-    AQ_DRM_DEVICES =
-      if osConfig.specialisation == {}
-      then "/dev/dri/card0"
-      else "/dev/dri/card1:/dev/dri/card0";
   };
 in {
   imports = [
@@ -41,7 +29,14 @@ in {
     ./hyprpanel.nix
     ./hypridle.nix
   ];
-
+  options.i18n.inputMethod.fcitx5.imList = lib.mkOption {
+    type = lib.types.listOf lib.types.str;
+    default = [];
+    description = ''
+      List of input method names to configure in the default fcitx5 group.
+    '';
+    example = ["keyboard-us" "keyboard-ua" "mozc"];
+  };
   config = {
     home = {
       sessionVariables = environment;
@@ -93,34 +88,42 @@ in {
             valign = "top";
           }
         ];
-
-        image = [
-          # USER AVATAR
-          {
-            path = "${../../../assets/mikilio.png}";
-            size = 200;
-            position = "0, 250";
-            halign = "center";
-            valign = "center";
-          }
-        ];
       };
     };
 
     i18n.inputMethod = {
       enable = true;
       type = "fcitx5";
-      fcitx5 = {
+      fcitx5 = let
+        imList = config.i18n.inputMethod.fcitx5.imList;
+        hasMozc = builtins.elem "mozc" imList;
+      in {
         waylandFrontend = true;
-        addons = with pkgs; [
-          fcitx5-mozc
-          fcitx5-gtk
-        ];
-        settings.inputMethod = {
-          GroupOrder."0" = "Default";
-          "Groups/0".Name = "Default";
-          "Groups/0/Items/0".Name = "Keyboard";
-          "Groups/0/Items/1".Name = "Mozc";
+        addons = with pkgs; [fcitx5-gtk] ++ lib.optional hasMozc fcitx5-mozc;
+        settings = {
+          globalOptions = {
+            Behavior = {
+              ShareInputState = "All";
+            };
+            "Hotkey/TriggerKeys"."0" = "Alt+Shift+Shift_L";
+          };
+          inputMethod = let
+            defaultLang = builtins.elemAt (lib.strings.splitString "-" (builtins.head imList)) 1;
+          in
+            {
+              GroupOrder."0" = "Default";
+              "Groups/0" = {
+                Name = "Default";
+                "Default Layout" = defaultLang;
+                DefaultIM =
+                  builtins.elemAt imList 1;
+              };
+            }
+            // (lib.listToAttrs (lib.lists.imap0 (idx: name: {
+                name = "Groups/0/Items/${toString idx}";
+                value = {Name = name;};
+              })
+              imList));
         };
       };
     };
@@ -203,27 +206,9 @@ in {
         input = {
           accel_profile = "flat";
           float_switch_override_focus = 2;
+          kb_layout = "eu";
+          kb_variant = "basic";
         };
-
-        device = [
-          {
-            name = "at-translated-set-2-keyboard";
-            kb_layout = "de,eu";
-            kb_variant = ",eurkey-cmk-dh-iso";
-            resolve_binds_by_sym = 1;
-          }
-          {
-            name = "semico---usb-gaming-keyboard-";
-            kb_layout = "us";
-            resolve_binds_by_sym = 1;
-          }
-          {
-            name = "totem-keyboard";
-            kb_layout = "eu";
-            kb_variant = "basic";
-            resolve_binds_by_sym = 1;
-          }
-        ];
 
         misc = {
           disable_autoreload = true;
@@ -286,7 +271,6 @@ in {
             (mvactive "down" "0 20")
             (mvactive "right" "20 0")
             (mvactive "left" "-20 0")
-            "SUPER ALT, SPACE, exec, hyprctl switchxkblayout current next"
             "SUPER, KP_End, workspace, 1"
             "SUPER, KP_Down, workspace, 2"
             "SUPER, KP_Next, workspace, 3"
@@ -345,18 +329,8 @@ in {
           #markdown preview for neovim
           "tile,title:^(Markdown Preview)(.*)$"
 
-          #weird wezterm workaround
-          "float,class:^(org.wezfurlong.wezterm)$"
-          "tile,class:^(org.wezfurlong.wezterm)$"
-
           #optimization
           "noshadow, floating:0"
-
-          #xwaylandvideobridge
-          "opacity 0.0 override 0.0 override,class:^(xwaylandvideobridge)$"
-          "noanim,class:^(xwaylandvideobridge)$"
-          "nofocus,class:^(xwaylandvideobridge)$"
-          "noinitialfocus,class:^(xwaylandvideobridge)$"
 
           # fix xwayland apps
           "rounding 0, xwayland:1, floating:1"

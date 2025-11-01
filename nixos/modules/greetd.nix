@@ -6,9 +6,6 @@
   config = {
     programs.regreet = {
       enable = true;
-      settings = {
-        GTK.application_prefer_dark_theme = true;
-      };
       cageArgs = [
         "-s"
         "-m"
@@ -31,6 +28,10 @@
        RUN+="${pkgs.systemd}/bin/loginctl unlock-sessions"
     '';
 
+    services.gnome.gnome-keyring.enable = true;
+    programs.seahorse.enable = true;
+    services.fprintd.enable = true;
+
     security.pam = {
       u2f = {
         enable = true;
@@ -39,8 +40,7 @@
         };
       };
       services = {
-        login.u2fAuth = true;
-        sudo.u2fAuth = true;
+        greetd.fprintAuth = false;
       };
     };
   };

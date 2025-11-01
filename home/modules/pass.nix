@@ -18,17 +18,17 @@ in {
           ]
       );
     };
-    programs.browserpass.enable = true;
-    services.pass-secret-service = {
-      enable = true;
-      storePath = "${config.home.homeDirectory}/.local/share/password-store";
-    };
-
-    systemd.user.services.pass-secret-service.Unit = let
-      deps = ["gpg-agent.service"];
-    in {
-      After = deps;
-      Requires = deps;
-    };
+    # programs.browserpass.enable = true;
+    # services.pass-secret-service = {
+    #   enable = true;
+    #   storePath = "${config.home.homeDirectory}/.local/share/password-store";
+    # };
+    #
+    # systemd.user.services.pass-secret-service.Unit = let
+    #   deps = ["gpg-agent.service"];
+    # in {
+    #   After = deps;
+    #   Requires = deps;
+    # };
   };
 }

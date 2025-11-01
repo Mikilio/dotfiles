@@ -29,7 +29,7 @@ in {
       #durov <3
       telegram-desktop
       #ZUCK
-      whatsapp-for-linux
+      wasistlos
 
       #tor <3
       tor-browser
