@@ -20,12 +20,10 @@
     spicetify
     ssh
     starship
-    theming
     tmux
     transient-services
     xdg
     yazi
     zen
-    zus
   ];
 }

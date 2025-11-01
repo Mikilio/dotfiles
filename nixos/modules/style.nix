@@ -10,8 +10,8 @@
   stylix = {
     enable = true;
     homeManagerIntegration = {
-      autoImport = false;
-      followSystem = false;
+      autoImport = true;
+      followSystem = true;
     };
     # image = config.lib.stylix.pixel "base0E";
     image = ../../assets/wallpapers/default.png;

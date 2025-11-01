@@ -59,27 +59,26 @@
         };
 
         dashboard = {
-          directories = {
+          directories = with pkgs; {
             left = {
-              directory1.command = "${lib.getExe pkgs.ghostty} --title=ephemeral -e yazi $XDG_DOWNLOAD_DIR";
+              directory1.command = "${xdg-utils}/bin/xdg-open $XDG_DOWNLOAD_DIR";
               directory1.label = "󰉍 Downloads";
-              directory2.command = "${lib.getExe pkgs.ghostty} --title=ephemeral -e yazi $XDG_VIDEOS_DIR";
+              directory2.command = "${xdg-utils}/bin/xdg-open $XDG_VIDEOS_DIR";
               directory2.label = "󰉏 Videos";
-              directory3.command = "${lib.getExe pkgs.ghostty} --title=ephemeral -e yazi $XDG_DEV_DIR";
+              directory3.command = "${xdg-utils}/bin/xdg-open $XDG_DEV_DIR";
               directory3.label = "󰚝 Code";
             };
             right = {
-              directory1.command = "${lib.getExe pkgs.ghostty} --title=ephemeral -e yazi $XDG_DOCUMENTS_DIR";
+              directory1.command = "${xdg-utils}/bin/xdg-open $XDG_DOCUMENTS_DIR";
               directory1.label = "󱧶 Documents";
-              directory2.command = "${lib.getExe pkgs.ghostty} --title=ephemeral -e yazi $XDG_PICTURES_DIR";
+              directory2.command = "${xdg-utils}/bin/xdg-open $XDG_PICTURES_DIR";
               directory2.label = "󰉏 Pictures";
-              directory3.command = "${lib.getExe pkgs.ghostty} --title=ephemeral -e yazi $HOME";
+              directory3.command = "${xdg-utils}/bin/xdg-open $HOME";
               directory3.label = "󱂵 Home";
             };
           };
 
           powermenu = {
-            avatar.image = ../../../assets/mikilio.png;
             logout = "loginctl terminate-user ${config.home.username}";
           };
 

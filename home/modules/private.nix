@@ -2,6 +2,7 @@
   config,
   lib,
   inputs,
+  pkgs,
   ...
 }: {
   imports = [
@@ -34,6 +35,105 @@
     home.homeDirectory = lib.mkDefault "/home/mikilio/";
 
     #NOTE: Private informations per module
+
+    #NOTE: hyprland
+
+    i18n.inputMethod.fcitx5.imList = ["keyboard-us" "keyboard-ua" "mozc"];
+    programs.hyprpanel.settings.menus.powermenu.avatar.image = ../../assets/mikilio.png;
+    programs.hyprlock.settings.image = [
+      # USER AVATAR
+      {
+        path = "${../../assets/mikilio.png}";
+        size = 200;
+        position = "0, 250";
+        halign = "center";
+        valign = "center";
+      }
+    ];
+    wayland.windowManager.hyprland = {
+      settings.device = [
+        {
+          name = "at-translated-set-2-keyboard";
+          kb_layout = "de,eu";
+          kb_variant = ",eurkey-cmk-dh-iso";
+        }
+        {
+          name = "semico---usb-gaming-keyboard-";
+          kb_layout = "us";
+        }
+      ];
+      scratchpads = {
+        morgen = {
+          command = [(lib.getExe pkgs.morgen)];
+          match.initialClass = "Morgen";
+          size = "80% 80%";
+          key = "A"; # Agenda
+        };
+
+        zotero = {
+          command = [(lib.getExe pkgs.zotero)];
+          match.initialClass = "Zotero";
+          size = "90% 90%";
+          key = "R"; # Reading
+        };
+
+        slack = {
+          command = [(lib.getExe pkgs.slack)];
+          match.initialClass = "Slack";
+          size = "80% 80%";
+          key = "S"; #Social | Slack
+        };
+
+        spotify = {
+          command = [(lib.getExe pkgs.spotifywm)];
+          match.initialClass = "spotify";
+          size = "80% 80%";
+          key = "T"; # Tunes
+        };
+
+        chat = {
+          command = [(lib.getExe pkgs.telegram-desktop) "${pkgs.whatsapp-for-linux}/bin/wasistlos"];
+          match.initialClass = "org.telegram.desktop";
+          size = "50% 90%";
+          key = "C"; # Chat
+        };
+
+        vesktop = {
+          command = [(lib.getExe pkgs.vesktop)];
+          match.initialClass = "vesktop";
+          size = "80% 80%";
+          key = "D"; # Discord
+        };
+
+        teams = {
+          command = [(lib.getExe pkgs.teams-for-linux)];
+          match.initialClass = "temas-for-linux";
+          size = "80% 80%";
+          key = "M"; # Microsoft Teams | Meetings
+        };
+
+        obsidian = {
+          command = [(lib.getExe pkgs.obsidian)];
+          match.initialClass = "obsidian";
+          size = "90% 90%";
+          key = "N"; # Notes
+        };
+
+        element = {
+          command = [(lib.getExe pkgs.element-desktop)];
+          match.initialClass = "Element";
+          size = "80% 80%";
+          key = "E"; #Element
+        };
+
+        thunderbird = {
+          command = [(lib.getExe pkgs.thunderbird-latest)];
+          match.initialClass = "thunderbird";
+          size = "90% 90%";
+          key = "I"; #Inbox
+        };
+      };
+    };
 
     #NOTE: email
 
