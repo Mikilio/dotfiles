@@ -26,6 +26,10 @@ in {
 
   nixpkgs = {
     config = {
+      permittedInsecurePackages = [
+        #user spoofing
+        "jitsi-meet-1.0.8792"
+      ];
       allowUnfreePredicate = pkg:
         builtins.elem [] (
           map (re: builtins.match re (lib.getName pkg)) [
