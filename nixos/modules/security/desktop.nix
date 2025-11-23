@@ -61,10 +61,6 @@ in {
     programs.firejail = {
       enable = true;
       wrappedBinaries = {
-        floorp = {
-          executable = lib.getExe pkgs.floorp-bin;
-          profile = "${pkgs.firejail}/etc/firejail/floorp.profile";
-        };
         thunderbird = {
           executable = lib.getExe pkgs.thunderbird;
           profile = "${pkgs.firejail}/etc/firejail/thunderbird.profile";
