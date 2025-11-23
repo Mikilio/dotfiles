@@ -4,25 +4,16 @@
   config,
   ...
 }: {
-  home.sessionVariables.TINTED_TMUX_OPTION_ACTIVE = 1;
+  home.sessionVariables = {
+    TINTED_TMUX_OPTION_ACTIVE = 1;
+  };
   programs.tmux = {
     enable = true;
     plugins = with pkgs.tmuxPlugins; [
       yank
       open
       copycat
-      {
-        plugin = catppuccin;
-        extraConfig =
-          # tmux
-          ''
-            set -g @catppuccin_flavor "mocha"
-            set -g @catppuccin_window_status_style "rounded"
-
-            set -g @catppuccin_window_text "#W"
-            set -g @catppuccin_window_current_text "#W"
-          '';
-      }
+      dotbar
       {
         plugin = resurrect;
         extraConfig = let
@@ -107,6 +98,10 @@
         bind r source-file ~/.config/tmux/tmux.conf
         bind-key b set-option status
 
+        set-option -g renumber-windows on
+        set -g base-index 1
+        setw -g pane-base-index 1
+
         bind v copy-mode
         bind-key -T copy-mode-vi v send-keys -X begin-selection
         bind-key -T copy-mode-vi C-v send-keys -X rectangle-toggle
@@ -134,9 +129,6 @@
         set -g status-right-length 100
         set -g status-left-length 100
         set -g status-left ""
-        set -g status-right "#{E:@catppuccin_status_application}"
-        set -ag status-right "#{E:@catppuccin_status_session}"
-        set -ag status-right "#{E:@catppuccin_status_uptime}"
       '';
   };
   systemd.user = let
@@ -168,27 +160,27 @@
     start = "${tmux} start-server";
   in {
     services.tmux-server = {
-        Unit = {
-          Description = "tmux user server";
-          Documentation = "man:tmux(1)";
-          After = ["tmux.slice"];
-        };
-
-        Service = {
-          Type= "forking";
-          Slice = "tmux.slice";
-          RemainAfterExit = true;
-          ExecStart = start;
-          ExecStop = shutdown;
-        };
-        Install.WantedBy = ["default.target"];
+      Unit = {
+        Description = "tmux user server";
+        Documentation = "man:tmux(1)";
+        After = ["tmux.slice"];
       };
+
+      Service = {
+        Type = "forking";
+        Slice = "tmux.slice";
+        RemainAfterExit = true;
+        ExecStart = start;
+        ExecStop = shutdown;
+      };
+      Install.WantedBy = ["default.target"];
+    };
     slices.tmux = {
       Unit = {
         Description = "tmux user sessions";
         Documentation = "man:tmux(1)";
       };
-      Slice.Slice = [ "app.slice" ];
+      Slice.Slice = ["app.slice"];
     };
   };
 }
