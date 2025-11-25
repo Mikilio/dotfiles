@@ -108,7 +108,6 @@
     lanzaboote = {
       url = "github:nix-community/lanzaboote";
       inputs = {
-        flake-parts.follows = "flake-parts";
         nixpkgs.follows = "nixpkgs";
       };
     };
@@ -128,7 +127,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    stylix.url = "github:danth/stylix";
+    stylix.url = "github:nix-community/stylix";
 
     srvos.url = "github:nix-community/srvos";
 
