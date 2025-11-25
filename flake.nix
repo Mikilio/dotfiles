@@ -108,7 +108,6 @@
     lanzaboote = {
       url = "github:nix-community/lanzaboote";
       inputs = {
-        flake-parts.follows = "flake-parts";
         nixpkgs.follows = "nixpkgs";
       };
     };
