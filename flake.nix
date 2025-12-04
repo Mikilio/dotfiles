@@ -62,6 +62,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    anyrun-rbw.url = "github:uttarayan21/anyrun-rbw";
+
     devenv.url = "github:cachix/devenv";
 
     disko = {

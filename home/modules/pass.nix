@@ -1,22 +1,31 @@
 {
   pkgs,
-  config,
+  lib,
   ...
 }: let
 in {
   config = {
-    programs.password-store = {
-      enable = true;
-      package = pkgs.pass-wayland.withExtensions (
-        exts:
-          with exts; [
-            pass-otp
-            pass-file
-            # pass-audit
-            pass-update
-            pass-import
-          ]
-      );
+    programs = {
+      rbw = {
+        enable = true;
+        settings = {
+          identity_url = lib.mkDefault "https://identity.bitwarden.eu";
+          base_url = lib.mkDefault "https://vault.mcloud";
+        };
+      };
+      password-store = {
+        enable = true;
+        package = pkgs.pass-wayland.withExtensions (
+          exts:
+            with exts; [
+              pass-otp
+              pass-file
+              # pass-audit
+              pass-update
+              pass-import
+            ]
+        );
+      };
     };
     # programs.browserpass.enable = true;
     # services.pass-secret-service = {

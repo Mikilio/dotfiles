@@ -1,6 +1,7 @@
 {
   pkgs,
   lib,
+  inputs,
   ...
 }: {
   programs.anyrun = {
@@ -8,10 +9,13 @@
 
     config = {
       plugins = [
+        inputs.anyrun-rbw.packages.${pkgs.system}.default
         "${pkgs.anyrun}/lib/libapplications.so"
         "${pkgs.anyrun}/lib/libsymbols.so"
         "${pkgs.anyrun}/lib/libshell.so"
+        "${pkgs.anyrun}/lib/libtranslate.so"
         "${pkgs.anyrun}/lib/librink.so"
+        "${pkgs.anyrun}/lib/libnix_run.so"
       ];
 
       width.fraction = 0.3;
@@ -32,6 +36,23 @@
             command: "ghostty",
             args: "--title=ephemeral -e {}",
           )),
+        )
+      '';
+
+      "translate.ron".text = ''
+        Config(
+          prefix: ":",
+          language_delimiter: ">",
+          max_entries: 3,
+        )
+      '';
+
+      "nix-run.ron".text = ''
+        Config(
+          prefix: ":nr ",
+          allow_unfree: true,
+          channel: "nixpkgs-unstable",
+          max_entries: 3,
         )
       '';
 
