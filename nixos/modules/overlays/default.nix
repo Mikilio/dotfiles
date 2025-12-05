@@ -117,17 +117,20 @@ in {
           enableWidevine = true;
         };
 
-        fjordlauncher = inputs.fjordlauncher.packages.${pkgs.system}.fjordlauncher.override {
-          fjordlauncher-unwrapped =
-            inputs.fjordlauncher.packages.${pkgs.system}.fjordlauncher-unwrapped.overrideAttrs
-            (o: {
-              patches =
-                (o.patches or [])
-                ++ [
-                  ./fjord/no_drm.patch
-                ];
-            });
-        };
+        fjordlauncher = let
+          inherit (pkgs.stdenv.hostPlatform) system;
+        in
+          inputs.fjordlauncher.packages.${system}.fjordlauncher.override {
+            fjordlauncher-unwrapped =
+              inputs.fjordlauncher.packages.${system}.fjordlauncher-unwrapped.overrideAttrs
+              (o: {
+                patches =
+                  (o.patches or [])
+                  ++ [
+                    ./fjord/no_drm.patch
+                  ];
+              });
+          };
 
         python3 = prev.python3.override {
           packageOverrides = python-self: python-super: {
@@ -141,7 +144,7 @@ in {
           };
         };
 
-        zen-browser = inputs.zen-browser.packages.${pkgs.system}.default;
+        zen-browser = inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
         # Zoom, again.
         # https://qumulo.zoom.us

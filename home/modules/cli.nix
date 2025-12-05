@@ -31,7 +31,6 @@ in {
     bat
     ripgrep
     xdg-utils
-    nur.repos.mikilio.xdg-terminal-exec
 
     #nix
     sops

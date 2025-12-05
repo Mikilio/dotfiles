@@ -9,7 +9,7 @@
 
     config = {
       plugins = [
-        inputs.anyrun-rbw.packages.${pkgs.system}.default
+        inputs.anyrun-rbw.packages.${pkgs.stdenv.hostPlatform.system}.default
         "${pkgs.anyrun}/lib/libapplications.so"
         "${pkgs.anyrun}/lib/libsymbols.so"
         "${pkgs.anyrun}/lib/libshell.so"

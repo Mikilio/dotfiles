@@ -88,7 +88,7 @@
         };
 
         chat = {
-          command = [(lib.getExe pkgs.telegram-desktop) "${pkgs.whatsapp-for-linux}/bin/wasistlos"];
+          command = [(lib.getExe pkgs.telegram-desktop) "${pkgs.wasistlos}/bin/wasistlos"];
           match.initialClass = "org.telegram.desktop";
           key = "C"; # Chat
         };
