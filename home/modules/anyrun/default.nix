@@ -58,7 +58,13 @@
 
       "shell.ron".text = ''
         Config(
-          prefix: ">"
+          prefix: "$"
+        )
+      '';
+
+      "rbw.ron".text = ''
+        Config(
+          prefix: "#"
         )
       '';
     };

@@ -47,12 +47,13 @@ in {
         grim # needed by portal for screenshots
         uwsm # for UWSM
         hyprsunset # blulight filter
-        hyprpolkitagent
         wl-clipboard
       ];
 
       file.".XCompose".source = ./XCompose;
     };
+
+    services.polkit-gnome.enable = true;
 
     xdg.configFile = {
       "xkb" = {

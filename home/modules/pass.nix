@@ -9,7 +9,7 @@ in {
       rbw = {
         enable = true;
         settings = {
-          identity_url = lib.mkDefault "https://identity.bitwarden.eu";
+          # identity_url = lib.mkDefault "https://identity.bitwarden.eu";
           base_url = lib.mkDefault "https://vault.mcloud";
           pinentry = pkgs.pinentry-gnome3;
         };
