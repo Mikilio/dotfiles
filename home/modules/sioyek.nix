@@ -10,6 +10,7 @@ let
 in
 {
   config = {
+    xdg.mimeApps.defaultApplicationPackages = [ config.programs.sioyek.package ];
     programs.sioyek = {
       enable = true;
       config = {
