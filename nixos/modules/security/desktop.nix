@@ -21,6 +21,7 @@ in {
       #polkit
       polkit.enable = true;
     };
+
     services = {
       usbguard = {
         enable = true;

@@ -1,4 +1,4 @@
-{pkgs, ...}: let
+{pkgs, lib, ...}: let
 in {
   imports = [./pandoc];
 
@@ -66,10 +66,6 @@ in {
         autoconnect = ["qemu:///system"];
         uris = ["qemu:///system"];
       };
-    };
-
-    xdg.configFile = {
-      "autostart/morgen.desktop".source = "${pkgs.morgen}/share/applications/morgen.desktop";
     };
   };
 }

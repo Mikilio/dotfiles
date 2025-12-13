@@ -5,6 +5,18 @@
 }: let
 in {
   config = {
+    home.packages = with pkgs; [
+      rofi-rbw
+      rofi
+    ];
+
+    xdg.configFile."rofi-rbw.rc".text = ''
+      selector rofi
+      clipboarder wl-copy
+      typer ydotool
+      clear-after 30
+      use-notify-send
+    '';
     programs = {
       rbw = {
         enable = true;

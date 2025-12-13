@@ -2,6 +2,11 @@
   homeDir = config.home.homeDirectory;
 in {
   config = {
+    qt = {
+      qt5ctSettings.Appearance.standard_dialogs = "xdgdesktopportal";
+      qt6ctSettings.Appearance.standard_dialogs = "xdgdesktopportal";
+    };
+
     xdg = {
       enable = true;
 
