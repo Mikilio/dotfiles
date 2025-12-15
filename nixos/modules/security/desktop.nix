@@ -74,7 +74,7 @@ in {
     };
 
     systemd = {
-      user.units.usbguard-notifier.wantedBy = ["graphical-session.target"];
+      user.services.usbguard-notifier.wantedBy = ["graphical-session.target"];
       packages = [
         pkgs.usbguard-notifier
       ];
