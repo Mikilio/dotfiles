@@ -2,9 +2,9 @@
   pkgs,
   lib,
   config,
+  options,
   ...
-}: let
-in {
+}: {
   config = {
     home.packages = with pkgs; [
       rofi-rbw
@@ -17,6 +17,7 @@ in {
       clear-after 30
       use-notify-send
     '';
+
     programs = {
       rbw = {
         enable = true;
@@ -24,17 +25,6 @@ in {
           # identity_url = lib.mkDefault "https://identity.bitwarden.eu";
           base_url = lib.mkDefault "https://vault.mcloud";
           pinentry = pkgs.pinentry-gnome3;
-        };
-      };
-      rofi = {
-        enable = true;
-        theme = let
-          inherit (config.lib.formats.rasi) mkLiteral;
-        in {
-          window = {
-            border = mkLiteral "2px";
-            border-radius = mkLiteral "12px";
-          };
         };
       };
       password-store = {

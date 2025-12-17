@@ -46,6 +46,7 @@ in {
             "morgen"
             "obsidian"
             "zerotierone"
+            "teamviewer.*"
             "libfprint-2-tod1-goodix"
           ]
         );
