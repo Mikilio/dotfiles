@@ -3,13 +3,6 @@
   config,
   ...
 }: {
-  #fix portals
-  xdg.portal = {
-    xdgOpenUsePortal = true;
-    extraPortals = [
-      pkgs.xdg-desktop-portal-gtk
-    ];
-  };
   environment.pathsToLink = ["/share/xdg-desktop-portal" "/share/applications"];
 
   # for hyprlock

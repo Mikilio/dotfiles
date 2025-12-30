@@ -6,20 +6,48 @@
 }:
 with lib; let
 in {
-  home.packages = with pkgs; [dragon-drop];
+  home.packages = with pkgs; [
+    dragon-drop
+    xdg-desktop-portal-termfilechooser
+
+    (
+      pkgs.writeShellScriptBin "btrfs" ''
+        exec /run/wrappers/bin/pkexec ${pkgs.btrfs-progs}/bin/btrfs "$@"
+      ''
+    )
+  ];
+
+  xdg = {
+    portal = {
+      config.hyprland."org.freedesktop.impl.portal.FileChooser" = ["termfilechooser"];
+      extraPortals = [pkgs.xdg-desktop-portal-termfilechooser];
+    };
+
+    configFile."xdg-desktop-portal-termfilechooser/config".text = ''
+      [filechooser]
+      cmd=${pkgs.xdg-desktop-portal-termfilechooser}/share/xdg-desktop-portal-termfilechooser/yazi-wrapper.sh
+      default_dir=$HOME/Downloads
+    '';
+  };
   # yazi file manager
   programs.yazi = {
     enable = true;
     enableBashIntegration = config.programs.bash.enable;
     enableZshIntegration = config.programs.zsh.enable;
     enableNushellIntegration = config.programs.nushell.enable;
+    initLua = ./init.lua;
+
+    plugins = {
+      inherit (pkgs.yaziPlugins) chmod;
+      snapshots = ./snapshots;
+    };
 
     settings = {
       manager.show_symlink = false;
     };
 
     keymap = {
-      manager.prepend_keymap = [
+      mgr.prepend_keymap = [
         {
           on = ["<C-n>"];
           run = ''
@@ -37,9 +65,24 @@ in {
           ];
         }
         {
-          on = ["<C-s>"];
+          on = ["!"];
           run = "shell '$SHELL' --block --confirm";
           desc = "Open shell here";
+        }
+        {
+          on = "<Esc>";
+          run = "close";
+          desc = "Cancel input";
+        }
+        {
+          on = ["c" "m"];
+          run = "plugin chmod";
+          desc = "Chmod on selected files";
+        }
+        {
+          on = "<C-h>";
+          run = "plugin snapshots";
+          desc = "Browse path in snapshots";
         }
       ];
     };

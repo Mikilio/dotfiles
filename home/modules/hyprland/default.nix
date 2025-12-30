@@ -55,10 +55,19 @@ in {
 
     services.polkit-gnome.enable = true;
 
-    xdg.configFile = {
-      "xkb" = {
-        source = ./xkb;
-        recursive = true;
+    xdg = {
+      portal = {
+        xdgOpenUsePortal = true;
+        extraPortals = [
+          pkgs.xdg-desktop-portal-gtk
+        ];
+      };
+
+      configFile = {
+        "xkb" = {
+          source = ./xkb;
+          recursive = true;
+        };
       };
     };
 
@@ -144,7 +153,6 @@ in {
     wayland.windowManager.hyprland = {
       enable = true;
       package = null;
-      portalPackage = null;
       systemd.enable = false; # UWSM
 
       settings = {
