@@ -9,7 +9,7 @@ in {
   home.packages = with pkgs; [
     dragon-drop
     xdg-desktop-portal-termfilechooser
-
+    ouch
     (
       pkgs.writeShellScriptBin "btrfs" ''
         exec /run/wrappers/bin/pkexec ${pkgs.btrfs-progs}/bin/btrfs "$@"
@@ -38,12 +38,27 @@ in {
     initLua = ./init.lua;
 
     plugins = {
-      inherit (pkgs.yaziPlugins) chmod;
+      inherit (pkgs.yaziPlugins) chmod ouch;
       snapshots = ./snapshots;
     };
 
     settings = {
       manager.show_symlink = false;
+      opener = {
+        extract = [
+          {
+            run = ''ouch d -y "$@"'';
+            desc = "Extract here with ouch";
+            for = "unix";
+          }
+        ];
+      };
+      plugin.prepend_previewers = [
+        {
+          mime = "application/{*zip,tar,bzip2,7z*,rar,xz,zstd,java-archive}";
+          run = "ouch";
+        }
+      ];
     };
 
     keymap = {
@@ -80,7 +95,12 @@ in {
           desc = "Chmod on selected files";
         }
         {
-          on = "<C-h>";
+          on = ["C"];
+          run = "plugin ouch";
+          desc = "Compress with ouch";
+        }
+        {
+          on = ["g" "s"];
           run = "plugin snapshots";
           desc = "Browse path in snapshots";
         }
