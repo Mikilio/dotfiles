@@ -80,9 +80,9 @@
       "$mod, SPACE, exec, ${toggle "anyrun" true}"
     ];
     layerrule = [
-      "blur, anyrun"
-      "ignorealpha 0.5, anyrun"
-      "animation fade, anyrun"
+      "blur 1, match:namespace anyrun"
+      "ignore_alpha 0.5, match:namespace anyrun"
+      "animation fade, match:namespace anyrun"
     ];
   };
 }

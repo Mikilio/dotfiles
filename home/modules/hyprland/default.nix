@@ -316,57 +316,51 @@ in {
 
         windowrule = [
           #floating windows
-          "float,class:^(org.gnome.Calculator)$"
-          "float,class:^(org.gnome.Nautilus)$"
-          "float,class:^(pavucontrol)$"
-          "float,class:^(nm-connection-editor)$"
-          "float,class:^(blueberry.py)$"
-          "float,class:^(org.gnome.Settings)$"
-          "float,class:^(org.gnome.design.Palette)$"
-          "float,class:^(Color Picker)$"
-          "float,class:^(xdg-desktop-portal)$"
-          "float,class:^(xdg-desktop-portal-gnome)$"
-          "float,class:^(transmission-gtk)$"
-          "float,class:^(com.github.Aylur.ags)$"
+          "float 1,match:class ^(org.gnome.Calculator)$"
+          "float 1,match:class ^(org.gnome.Nautilus)$"
+          "float 1,match:class ^(pavucontrol)$"
+          "float 1,match:class ^(nm-connection-editor)$"
+          "float 1,match:class ^(blueberry.py)$"
+          "float 1,match:class ^(org.gnome.Settings)$"
+          "float 1,match:class ^(org.gnome.design.Palette)$"
+          "float 1,match:class ^(Color Picker)$"
+          "float 1,match:class ^(xdg-desktop-portal)$"
+          "float 1,match:class ^(xdg-desktop-portal-gnome)$"
+          "float 1,match:class ^(transmission-gtk)$"
+          "float 1,match:class ^(com.github.Aylur.ags)$"
 
           # smart gaps
-          "bordersize 1, floating:0, onworkspace:w[tv1]"
-          # "rounding 0, floating:0, onworkspace:w[tv1]"
-          "bordersize 1, floating:0, onworkspace:f[1]"
-          # "rounding 0, floating:0, onworkspace:f[1]"
+          "border_size 1, match:float 0, match:workspace w[tv1]"
+          # "rounding 0, match:float 0, match:workspace w[tv1]"
+          "border_size 1, match:float 0, match:workspace f[1]"
+          # "rounding 0, match:float 0, match:workspace f[1]"
 
           #markdown preview for neovim
-          "tile,title:^(Markdown Preview)(.*)$"
+          "tile 1, match:title ^(Markdown Preview)(.*)$"
 
           #optimization
-          "noshadow, floating:0"
+          "no_shadow 1, match:float 0"
 
           # fix xwayland apps
-          "rounding 0, xwayland:1, floating:1"
+          "rounding 0, match:xwayland 1, match:float 1"
 
           #Zoom meetings
-          "float,class:^(zoom)$"
-          "pin,title:^(zoom_linux_float_video_window)$"
-          "pin,class:^(zoom)$,title:^(as_toolbar)$"
+          "float 1,match:class ^(zoom)$"
+          "pin 1,match:title ^(zoom_linux_float_video_window)$"
+          "pin 1,match:class ^(zoom)$,match:title ^(as_toolbar)$"
 
           #allow tearing for steam games
-          "immediate, class:^(steam_app_)(.*)$"
+          "immediate 1, match:class ^(steam_app_)(.*)$"
 
           # make picture in picture a nice pinned window
-          "keepaspectratio,class:^(firefox)$,title:^(Picture-in-Picture)$"
-          "keepaspectratio,initialTitle:^(Discord Popout)$"
-          "noborder,class:^(firefox)$,title:^(Picture-in-Picture)$"
-          "noborder,initialTitle:^(Discord Popout)$"
-          "pin,class:^(firefox)$,title:^(Picture-in-Picture)$"
-          "pin,initialTitle:^(Discord Popout)$"
-          "float,class:^(firefox)$,title:^(Picture-in-Picture)$"
-          "float,initialTitle:^(Discord Popout)$"
+          "float 1, pin 1, keep_aspect_ratio 1, border_size 0, match:class ^(firefox)$,match:title ^(Picture-in-Picture)$"
+          "float 1, pin 1, keep_aspect_ratio 1,border_size 0, match:initial_title ^(Discord Popout)$"
 
           #workarount for thunderai
-          "float,class:thunderbird,title:^(?!Mozilla*)"
+          "float 1,match:class thunderbird,match:title ^(?!Mozilla*)"
 
           #floating ephemeral terminals
-          "float,class:com.mitchellh.ghostty,title:ephemeral"
+          "float 1,match:class com.mitchellh.ghostty,match:title ephemeral"
         ];
 
         workspace = [
