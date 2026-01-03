@@ -39,7 +39,7 @@ in {
 
     plugins = {
       inherit (pkgs.yaziPlugins) chmod ouch;
-      snapshots = ./snapshots;
+      snapshots = pkgs.nur.repos.mikilio.snapshot-yazi;
     };
 
     settings = {
