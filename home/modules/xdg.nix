@@ -1,28 +1,33 @@
-{config, ...}: let
+{
+  config,
+  options,
+  lib,
+  ...
+}: let
   homeDir = config.home.homeDirectory;
 in {
-  config = {
-    qt = {
-      qt5ctSettings.Appearance.standard_dialogs = "xdgdesktopportal";
-      qt6ctSettings.Appearance.standard_dialogs = "xdgdesktopportal";
-    };
-
-    xdg = {
-      enable = true;
-
-      userDirs = {
+  config =
+    {
+      xdg = {
         enable = true;
-        createDirectories = true;
-        extraConfig = {
-          XDG_DEV_DIR = "${homeDir}/Code";
+
+        userDirs = {
+          enable = true;
+          createDirectories = true;
+          extraConfig = {
+            XDG_DEV_DIR = "${homeDir}/Code";
+          };
+        };
+
+        terminal-exec.enable = true;
+
+        mimeApps = {
+          enable = true;
         };
       };
-
-      terminal-exec.enable = true;
-
-      mimeApps = {
-        enable = true;
-      };
+    }
+    // lib.optionalAttrs (builtins.hasAttr "stylix" options)
+    {
+      stylix.targets.qt.standardDialogs = "xdgdesktopportal";
     };
-  };
 }
