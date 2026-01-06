@@ -11,7 +11,6 @@
       ./hardware-configuration.nix
       ./secrets.nix
       ./disko-impermanence.nix
-      inputs.nixos-hardware.nixosModules.hp-elitebook-845g9
     ]
     ++ (with ezModules; [
       vm-dev

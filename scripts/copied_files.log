@@ -1,0 +1,51 @@
+# Successfully copied files
+# Format: source -> destination
+
+/persistent/var/log -> /persistent/cache/var/log
+/persistent/var/lib/nixos -> /persistent/cache/var/lib/nixos
+/persistent/var/lib/containers -> /persistent/cache/var/lib/containers
+/persistent/var/lib/libvirt/dnsmasq -> /persistent/cache/var/lib/libvirt/dnsmasq
+/persistent/var/lib/boltd/times -> /persistent/cache/var/lib/boltd/times
+/persistent/var/lib/plymouth -> /persistent/cache/var/lib/plymouth
+/persistent/var/lib/udisks2 -> /persistent/cache/var/lib/udisks2
+/persistent/var/cache/fwupd -> /persistent/cache/var/cache/fwupd
+/persistent/var/lib/fwupd/metadata -> /persistent/cache/var/lib/fwupd/metadata
+/persistent/var/cache/regreet -> /persistent/cache/var/cache/regreet
+/persistent/var/lib/power-profiles-daemon -> /persistent/cache/var/lib/power-profiles-daemon
+/persistent/var/lib/clamav -> /persistent/cache/var/lib/clamav
+/persistent/var/lib/tailscale -> /persistent/cache/var/lib/tailscale
+/persistent/var/lib/nftables -> /persistent/cache/var/lib/nftables
+/persistent/var/lib/NetworkManager -> /persistent/cache/var/lib/NetworkManager
+/persistent/var/lib/libvirt/images -> /persistent/volatile/var/lib/libvirt/images
+/persistent/var/lib/fwupd/pending.db -> /persistent/volatile/var/lib/fwupd/pending.db
+/persistent/var/lib/lastlog/lastlog2.db -> /persistent/volatile/var/lib/lastlog/lastlog2.db
+
+# Skipped files
+# SKIPPED: /persistent/var/lib/btrfs (destination exists)
+# SKIPPED: /persistent/var/lib/systemd (destination exists)
+# SKIPPED: /persistent/var/lib/sops-nix (destination exists)
+# SKIPPED: /persistent/var/lib/libvirt (destination exists)
+# SKIPPED: /persistent/var/lib/swtpm-localca (destination exists)
+# SKIPPED: /persistent/var/lib/boltd/devices (destination exists)
+# SKIPPED: /persistent/var/lib/sbctl (destination exists)
+# SKIPPED: /persistent/var/lib/fwupd/gnupg (destination exists)
+# SKIPPED: /persistent/var/lib/fwupd/pki (destination exists)
+# SKIPPED: /persistent/var/lib/cups/ppd (destination exists)
+# SKIPPED: /persistent/var/lib/cups/ssl (destination exists)
+# SKIPPED: /persistent/var/lib/regreet (destination exists)
+# SKIPPED: /persistent/var/lib/fprint (destination exists)
+# SKIPPED: /persistent/var/lib/upower (destination exists)
+# SKIPPED: /persistent/var/lib/bluetooth (destination exists)
+# SKIPPED: /persistent/var/lib/tpm2-tss (destination exists)
+# SKIPPED: /persistent/var/lib/usbguard (destination exists)
+# SKIPPED: /persistent/var/lib/tpm2-udev-trigger (destination exists)
+# SKIPPED: /persistent/etc/NetworkManager/system-connections (destination exists)
+# SKIPPED: /persistent/root/.config/sops/age/keys.txt (does not exist)
+# SKIPPED: /persistent/var/lib/cups/lpoptions (destination exists)
+# SKIPPED: /persistent/var/lib/cups/printers.conf (destination exists)
+# SKIPPED: /persistent/var/lib/tailscale/tailscale.state (does not exist)
+# SKIPPED: /persistent/var/lib/tailscale/tailscaled.log.conf (destination exists)
+# SKIPPED: /persistent/var/lib/NetworkManager/NetworkManager-intern.conf (destination exists)
+# SKIPPED: /persistent/var/lib/NetworkManager/NetworkManager.state (destination exists)
+# SKIPPED: /persistent/var/lib/NetworkManager/secret_key (destination exists)
+# SKIPPED: /persistent/var/lib/NetworkManager/seen-bssids (destination exists)

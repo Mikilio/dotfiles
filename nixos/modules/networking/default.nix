@@ -7,7 +7,6 @@
     ./desktop.nix
   ];
   options.dotfiles.networking = {
-    enable = pkgs.lib.mkOptional "Networking Settings";
     target = lib.mkOption {
       default = null;
       example = "server";

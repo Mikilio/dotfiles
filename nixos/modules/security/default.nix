@@ -1,10 +1,8 @@
 {
-  config,
   lib,
-  pkgs,
+  options,
   ...
-}:
-{
+}: {
   imports = [
     ./desktop.nix
     ./harden.nix
@@ -18,4 +16,27 @@
       type = lib.types.nullOr lib.types.str;
     };
   };
+  config =
+    {}
+    // lib.optionalAttrs (options.environment?persistence)
+    {
+      environment.persistence = {
+        "/persistent" = {
+          directories = [
+            "/var/lib/tpm2-tss"
+            "/var/lib/usbguard"
+            "/var/lib/tpm2-udev-trigger"
+          ];
+        };
+        "/persistent/cache" = {
+          directories = [
+            {
+              directory = "/var/lib/clamav";
+              user = "clamav";
+              group = "clamav";
+            }
+          ];
+        };
+      };
+    };
 }

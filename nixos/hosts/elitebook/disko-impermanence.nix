@@ -62,65 +62,68 @@
     };
 
     #Impermanence
-    environment.persistence."/persistent" = {
-      enable = true; # NB: Defaults to true, not needed
-      hideMounts = true;
-      directories = [
-        "/var/cache/fwupd"
-        "/var/lib"
-        "/var/log"
-      ];
-      files = [
-        # "/etc/machine-id"
-        "/root/.config/sops/age/keys.txt"
-        "/var/cache/regreet/cache.toml"
-      ];
-      users.mikilio = {
+    environment.persistence = {
+      "/persistent" = {
+        enable = true; # NB: Defaults to true, not needed
+        hideMounts = true;
         directories = [
-          "Desktop"
-          "Code"
-          "Downloads"
-          "Zotero"
-          ".floorp/Default"
-          ".floorp/PWA"
-          ".thunderbird/default"
-          ".pki"
-          ".steam"
-          ".yubico"
-          ".zcn"
-          ".zen"
-          ".zotero"
-          ".local/state"
-          ".local/share/applications"
-          ".local/share/atuin"
-          ".local/share/calibre-ebook.com"
-          ".local/share/com.yubico.yubioath"
-          ".local/share/containers"
-          ".local/share/devenv"
-          ".local/share/direnv"
-          ".local/share/gnupg"
-          ".local/share/nix"
-          ".local/share/nvim"
-          ".local/share/password-store"
-          ".local/share/sioyek"
-          ".local/share/Steam"
-          ".local/share/TelegramDesktop"
-          ".local/share/tmux"
-          ".local/share/Trash"
-          ".local/share/wasistlos"
-          ".local/share/zoxide"
-
-          #exceptions
-          ".config/Morgen"
-          ".config/rclone"
-          ".config/obsidian"
-          ".cache/spotify"
-          ".cache/vfs"
-          ".cache/vfsMeta"
-          ".cache/wasistlos"
+          "/var/lib/btrfs"
+          "/var/lib/systemd"
+          "/var/lib/sops-nix"
         ];
-        files = [
-          ".ssh/known_hosts"
+        # users.mikilio = {
+        #   directories = [
+        #     "Desktop"
+        #     "Code"
+        #     "Downloads"
+        #     "Zotero"
+        #     ".floorp/Default"
+        #     ".floorp/PWA"
+        #     ".thunderbird/default"
+        #     ".pki"
+        #     ".steam"
+        #     ".yubico"
+        #     ".zcn"
+        #     ".zen"
+        #     ".zotero"
+        #     ".local/state"
+        #     ".local/share/applications"
+        #     ".local/share/atuin"
+        #     ".local/share/calibre-ebook.com"
+        #     ".local/share/com.yubico.yubioath"
+        #     ".local/share/containers"
+        #     ".local/share/devenv"
+        #     ".local/share/direnv"
+        #     ".local/share/gnupg"
+        #     ".local/share/nix"
+        #     ".local/share/nvim"
+        #     ".local/share/password-store"
+        #     ".local/share/sioyek"
+        #     ".local/share/Steam"
+        #     ".local/share/TelegramDesktop"
+        #     ".local/share/tmux"
+        #     ".local/share/Trash"
+        #     ".local/share/wasistlos"
+        #     ".local/share/zoxide"
+        #
+        #     #exceptions
+        #     ".config/Morgen"
+        #     ".config/rclone"
+        #     ".config/obsidian"
+        #     ".cache/spotify"
+        #     ".cache/vfs"
+        #     ".cache/vfsMeta"
+        #     ".cache/wasistlos"
+        #   ];
+        #   files = [
+        #     ".ssh/known_hosts"
+        #   ];
+        # };
+      };
+      "/persistent/cache" = {
+        directories = [
+          "/var/log"
+          "/var/lib/nixos"
         ];
       };
     };
