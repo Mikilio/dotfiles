@@ -10,7 +10,7 @@
       enable = true;
       gamescopeSession = {
         enable = true;
-        args = [ "--prefer-vk-device" "--prefer-output DP-8" ];
+        args = ["--prefer-vk-device" "--prefer-output DP-8"];
         env = {
           MESA_VK_DEVICE_SELECT = "1002:73df!";
         };
@@ -36,7 +36,11 @@
 
   services = {
     # see https://github.com/fufexan/nix-gaming/#pipewire-low-latency
-    pipewire.lowLatency.enable = true;
+    pipewire.lowLatency = {
+      enable = true;
+      quantum = 32;
+      alsa.enable = true;
+    };
   };
 
   hardware = {

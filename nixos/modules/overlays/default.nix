@@ -45,7 +45,6 @@ in {
             "zoom.*"
             "morgen"
             "obsidian"
-            "zerotierone"
             "teamviewer.*"
             "libfprint-2-tod1-goodix"
           ]
@@ -72,7 +71,6 @@ in {
                 };
           };
 
-        inherit (stable) zerotierone;
         inherit (noGPU) thunderbird;
 
         clight = prev.clight.overrideAttrs (o: {
@@ -142,6 +140,8 @@ in {
                   ./pypass/multi-gpgid.patch
                 ];
             });
+            # https://github.com/NixOS/nixpkgs/pull/477084
+            beets = patched.python3.pkgs.beets;
           };
         };
 

@@ -49,8 +49,8 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/release-24.11";
-    patched.url = "github:Mikilio/nixpkgs/zotero";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
+    patched.url = "github:doronbehar/nixpkgs/pkg/beets%40fixed";
 
     flake-parts = {
       url = "github:hercules-ci/flake-parts";

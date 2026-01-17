@@ -19,15 +19,30 @@
     alsa.support32Bit = true;
     jack.enable = true;
     pulse.enable = true;
+    extraConfig = {
+      client."high-quality-music" = {
+        stream.rules = [
+          {
+            matches = [
+              {
+                "application.process.binary" = "mpv";
+              }
+            ];
+
+            actions = {
+              update-props = {
+                "resample.quality" = 10;
+              };
+            };
+          }
+        ];
+      };
+    };
     wireplumber = {
       enable = true;
 
       configPackages = [
         (pkgs.writeTextDir "share/wireplumber/wireplumber.conf.d/50-hdmi-stereo-quality.conf" ''
-          context.properties = {
-            resample.quality = 10
-          }
-
           monitor.alsa.rules = [
             {
               matches = [
@@ -49,14 +64,14 @@
             {
               matches = [
                 {
-                  device.name = "~bluez_card.*"
-                  device.product.id = "0x0cd3"
-                  device.vendor.id = "usb:054c"
+                  api.bluez5.address = "~AC:80:0A.*"
                 }
               ]
               actions = {
                 update-props = {
                   bluez5.a2dp.ldac.quality = "hq"
+                  bluez5.auto-connect = [ a2dp_sink ]
+                  bluez5.codecs = [ ldac ]
                 }
               }
             }

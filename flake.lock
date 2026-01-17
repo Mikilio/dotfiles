@@ -1059,16 +1059,16 @@
     },
     "nixpkgs-stable": {
       "locked": {
-        "lastModified": 1751290243,
-        "narHash": "sha256-kNf+obkpJZWar7HZymXZbW+Rlk3HTEIMlpc6FCNz0Ds=",
+        "lastModified": 1768621446,
+        "narHash": "sha256-6YwHV1cjv6arXdF/PQc365h1j+Qje3Pydk501Rm4Q+4=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "5ab036a8d97cb9476fbe81b09076e6e91d15e1b6",
+        "rev": "72ac591e737060deab2b86d6952babd1f896d7c5",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "release-24.11",
+        "ref": "nixos-25.11",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -1308,16 +1308,16 @@
     },
     "patched": {
       "locked": {
-        "lastModified": 1733669843,
-        "narHash": "sha256-9B8dNxl/bmKBs+4JSJiP9F8QdKJV3lKZoKnY6aOBvMI=",
-        "owner": "Mikilio",
+        "lastModified": 1768735923,
+        "narHash": "sha256-2jMf3oAo+xbYCKnMOWdZ3/6enEvgqNpiEmRsvoHkACQ=",
+        "owner": "doronbehar",
         "repo": "nixpkgs",
-        "rev": "a322ef1fc27ebf1d646ed58ce462b276ecb45e7b",
+        "rev": "a615e9dcab270852e0e31fe92e91e714a887d171",
         "type": "github"
       },
       "original": {
-        "owner": "Mikilio",
-        "ref": "zotero",
+        "owner": "doronbehar",
+        "ref": "pkg/beets@fixed",
         "repo": "nixpkgs",
         "type": "github"
       }
