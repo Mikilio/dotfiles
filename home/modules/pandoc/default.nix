@@ -8,7 +8,7 @@
       pandoc = {
         enable = true;
         defaults = {
-          highlight-style = "${config.home.sessionVariables.XDG_CONFIG_HOME}/pandoc/dracula.theme";
+          highlight-style = "${config.xdg.configHome}/pandoc/dracula.theme";
           metadata = {
             author = "Kilian Mio";
             keywords = ["Dracula theme"];
@@ -19,16 +19,18 @@
             filecolor = "draculagreen";
             geometry = "margin=1in";
             header-includes = [
-              "\\usepackage\{${config.home.sessionVariables.XDG_CONFIG_HOME}/pandoc/draculatheme\}"
+              ''
+                \usepackage{${config.xdg.configHome}/pandoc/draculatheme}
+              ''
               ''
                 \directlua{
-                  luaotfload.add_fallback("noto-sans", { "Noto Sans CJK JP:mode=harf;", "Noto Color Emoji:mode=harf;" })
-                  luaotfload.add_fallback("noto-serif", { "Noto Serif CJK JP:mode=harf;", "Noto Color Emoji:mode=harf;" })
-                  luaotfload.add_fallback("noto-mono", { "Noto Sans Mono CJK JP:mode=harf;", , "Noto Color Emoji:mode=harf;" })
+                  luaotfload.add_fallback("emoji-sans", { "Noto Sans CJK JP:mode=harf;", "Noto Color Emoji:mode=harf;" })
+                  luaotfload.add_fallback("emoji-serif", { "Noto Serif CJK JP:mode=harf;", "Noto Color Emoji:mode=harf;" })
+                  luaotfload.add_fallback("emoji-mono", { "Noto Sans Mono CJK JP:mode=harf;", "Noto Color Emoji:mode=harf;" })
                 }
-                \setmainfont{DejaVuSerif}[RawFeature={fallback=noto-serif}]
-                \setsansfont{DejaVuSans}[RawFeature={fallback=noto-sans}]
-                \setmonofont{DejaVuMono}[RawFeature={fallback=noto-mono}]
+                \setmainfont{DejaVuSerif}[RawFeature={fallback=emoji-serif}]
+                \setsansfont{DejaVuSans}[RawFeature={fallback=emoji-sans}]
+                \setmonofont{DejaVuSansMono}[RawFeature={fallback=emoji-mono}]
               ''
             ];
             linkcolor = "draculapink";
@@ -46,7 +48,10 @@
       };
     };
 
-    home.packages = [pkgs.noto-fonts-cjk-sans-static];
+    home.packages = with pkgs; [
+      noto-fonts-cjk-sans-static
+      noto-fonts-cjk-serif-static
+    ];
 
     xdg.configFile = {
       "pandoc/dracula.theme".source = ./dracula.theme;
