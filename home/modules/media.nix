@@ -28,8 +28,8 @@ in {
         enable = true;
         extraConfig = ''
           audio_output {
-              type    "pulse"
-              name    "pipewire-pulse"
+              type    "pipewire"
+              name    "Pipewire"
           }
         '';
       };
@@ -164,7 +164,7 @@ in {
             keep_output = "yes";
             keep_profiles = "yes";
             output_path = "${config.xdg.dataHome}/essentia/xtraction_data";
-            essentia_extractor = lib.getExe pkgs.essentia-extractor;
+            essentia_extractor = "${pkgs.nur.repos.mikilio.essentia}/bin/essentia_streaming_extractor_music";
             extractor_profile = {
               highlevel = {
                 svm_models = let
