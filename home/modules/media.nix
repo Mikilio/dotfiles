@@ -28,8 +28,8 @@ in {
         enable = true;
         extraConfig = ''
           audio_output {
-              type    "pulse"
-              name    "pipewire-pulse"
+              type    "pipewire"
+              name    "Pipewire"
           }
         '';
       };
@@ -93,6 +93,7 @@ in {
             "smartplaylist"
             "musicbrainz"
             "edit"
+            "info"
             "chroma"
             "xtractor"
             "listenbrainz"
@@ -149,6 +150,10 @@ in {
                 name = "all.m3u";
                 query = "";
               }
+              {
+                name ="hype.m3u";
+                query ="'mood_electronic:0.8..' 'danceable:0.98..' 'mood_relaxed:..0.95'";
+              }
             ];
           };
           musicbrainz = {
@@ -164,7 +169,7 @@ in {
             keep_output = "yes";
             keep_profiles = "yes";
             output_path = "${config.xdg.dataHome}/essentia/xtraction_data";
-            essentia_extractor = lib.getExe pkgs.essentia-extractor;
+            essentia_extractor = "${pkgs.nur.repos.mikilio.essentia}/bin/essentia_streaming_extractor_music";
             extractor_profile = {
               highlevel = {
                 svm_models = let

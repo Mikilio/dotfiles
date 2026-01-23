@@ -21,17 +21,21 @@
     pulse.enable = true;
     extraConfig = {
       client."high-quality-music" = {
-        stream.rules = [
+        "stream.rules" = [
           {
             matches = [
               {
-                "application.process.binary" = "mpv";
+                "node.name" = "mpv";
+              }
+              {
+                "node.name" = "mpd.Pipewire";
               }
             ];
 
             actions = {
               update-props = {
                 "resample.quality" = 10;
+                "node.latency" = "2048/48000";
               };
             };
           }
@@ -59,7 +63,7 @@
           ]
         '')
 
-        (pkgs.writeTextDir "share/wireplumber/wireplumber.conf.d/51-wh-1000xm3-ldac-hq.conf" ''
+        (pkgs.writeTextDir "share/wireplumber/wireplumber.conf.d/ldac-for-sony.conf" ''
           monitor.bluez.rules = [
             {
               matches = [
