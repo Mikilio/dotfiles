@@ -28,8 +28,8 @@ in {
         enable = true;
         extraConfig = ''
           audio_output {
-              type    "pulse"
-              name    "pipewire-pulse"
+              type    "pipewire"
+              name    "Pipewire"
           }
         '';
       };
