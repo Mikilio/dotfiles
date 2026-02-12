@@ -5,7 +5,40 @@
   ...
 }:
 with lib; let
-  # media - control and enjoy audio/video
+  linkhandler = pkgs.writeShellApplication {
+    name = "linkhandler";
+
+    runtimeInputs = with pkgs; [
+      curl
+      mpv
+      imv
+      sioyek
+      xdg-utils
+    ];
+
+    text = ''
+      url="$1"
+
+      handle_fallback() {
+        setsid -f xdg-open "$url" >/dev/null 2>&1
+      }
+
+      tmp_file="/tmp/$(echo "$url" | sed "s/.*\///;s/%20/ /g")"
+
+      case "$url" in
+        *mkv|*webm|*mp4|*youtube.com/watch*|*youtube.com/playlist*|*youtube.com/shorts*|*youtu.be*|*hooktube.com*|*bitchute.com*|*odysee.com*)
+          mpv -quiet "$url" >/dev/null 2>&1 || handle_fallback ;;
+        *png|*jpg|*jpe|*jpeg|*gif|*webp)
+          { curl -sL "$url" > "$tmp_file" && imv "$tmp_file" >/dev/null 2>&1; } || handle_fallback ;;
+        *pdf|*cbz|*cbr)
+          { curl -sL "$url" > "$tmp_file" && sioyek "$tmp_file" >/dev/null 2>&1; } || handle_fallback ;;
+        *mp3|*flac|*opus|*ogg|*wav|*m4a|*mp3?source*)
+          mpv --no-video -quiet "$url" >/dev/null 2>&1 || handle_fallback ;;
+        *)
+          handle_fallback ;;
+      esac
+    '';
+  };
 in {
   config = {
     home.packages = with pkgs; [
@@ -21,6 +54,9 @@ in {
       playerctl
       #music player
       mpc
+      #open urls in specialized program
+      linkhandler
+      urlscan
     ];
 
     services = {
@@ -28,8 +64,8 @@ in {
         enable = true;
         extraConfig = ''
           audio_output {
-              type    "pipewire"
-              name    "Pipewire"
+            type    "pipewire"
+            name    "Pipewire"
           }
         '';
       };
@@ -47,8 +83,24 @@ in {
 
       obs-studio = {
         enable = true;
-        plugins = with pkgs.obs-studio-plugins; [
-        ];
+        # plugins = with pkgs.obs-studio-plugins; [ ];
+      };
+
+      newsboat = {
+        enable = true;
+        autoFetchArticles.enable = true;
+        autoVacuum.enable = true;
+        autoReload = true;
+        browser = lib.getExe linkhandler;
+        extraConfig = ''
+          external-url-viewer "urlscan -dc -r 'linkhandler {}'"
+          podcast-auto-enqueue yes
+          player "mpv --vid=no --"
+          delete-played-files yes
+          download-path ~/Desktop/Podcasts
+          download-filename-format "%F-%t.%e"
+          podlist-format "%i %u %-20S %F"
+        '';
       };
 
       beets = let
@@ -151,8 +203,8 @@ in {
                 query = "";
               }
               {
-                name ="hype.m3u";
-                query ="'mood_electronic:0.8..' 'danceable:0.98..' 'mood_relaxed:..0.95'";
+                name = "hype.m3u";
+                query = "'mood_electronic:0.8..' 'danceable:0.98..' 'mood_relaxed:..0.95'";
               }
             ];
           };
