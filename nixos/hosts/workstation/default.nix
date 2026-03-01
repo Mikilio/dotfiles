@@ -26,6 +26,8 @@
     setSocketVariable = true;
   };
 
+  services.opencode = {};
+
   users.mutableUsers = false;
   users.users.mikilio = {
     isNormalUser = true;

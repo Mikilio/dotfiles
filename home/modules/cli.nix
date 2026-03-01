@@ -109,6 +109,8 @@ in {
     atuin = {
       enable = true;
       enableBashIntegration = true;
+      daemon.enable = true;
+      forceOverwriteSettings = true;
       settings.filter_mode_shell_up_key_binding = "session";
     };
     less = {

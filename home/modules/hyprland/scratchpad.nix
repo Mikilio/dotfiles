@@ -8,8 +8,8 @@
 
   getMatch = sp:
     if sp.match ? initialClass
-    then "initialClass:${sp.match.initialClass}"
-    else "initialTitle:${sp.match.initialTitle}";
+    then "match:initial_class ${sp.match.initialClass}"
+    else "match:initial_title ${sp.match.initialTitle}";
 
   matchType = lib.types.attrTag {
     initialClass = lib.mkOption {
@@ -83,11 +83,11 @@ in {
     wayland.windowManager.hyprland.settings = {
       misc.initial_workspace_tracking = 0;
 
-      windowrulev2 = lib.mkAfter (
+      windowrule = lib.mkAfter (
         lib.attrsets.mapAttrsToList windowRule config.wayland.windowManager.hyprland.scratchpads
         ++ [
-          "rounding 8, floating:0, onworkspace:s[1]"
-          "bordersize 3, floating:0, onworkspace:s[1]"
+          "rounding 8, match:float 0, match:workspace s[1]"
+          "border_size 3, match:float 0, match:workspace s[1]"
         ]
       );
 

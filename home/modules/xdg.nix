@@ -15,7 +15,7 @@ in {
           enable = true;
           createDirectories = true;
           extraConfig = {
-            XDG_DEV_DIR = "${homeDir}/Code";
+            DEV= "${homeDir}/Code";
           };
         };
 

@@ -15,10 +15,7 @@
       xdg.mimeApps = let
         associations = builtins.listToAttrs (map (name: {
             inherit name;
-            value = let
-              zen-browser = config.programs.zen-browser.package;
-            in
-              zen-browser.meta.desktopFileName;
+            value = "zen-beta.desktop";
           }) [
             "application/x-extension-shtml"
             "application/x-extension-xhtml"
@@ -93,6 +90,20 @@
           "pt-BR"
           "ja"
         ];
+        globalExtensions = with pkgs.nur.repos.rycee.firefox-addons; [
+          ublock-origin
+          stylus
+          languagetool
+          wikiwand-wikipedia-modernized
+          zotero-connector
+          return-youtube-dislikes
+          clearurls
+          steam-database
+          decentraleyes
+          metamask
+          bitwarden
+          wappalyzer
+        ];
 
         profiles.default = rec {
           settings = {
@@ -106,39 +117,6 @@
             "zen.view.compact.toolbar-flash-popup" = true;
             "zen.view.compact.enable-at-startup" = true;
             "zen.welcome-screen.seen" = true;
-          };
-
-          extensions = {
-            force = true;
-            packages = with pkgs.nur.repos.rycee.firefox-addons; [
-              ublock-origin
-              stylus
-              languagetool
-              wikiwand-wikipedia-modernized
-              zotero-connector
-              return-youtube-dislikes
-              clearurls
-              steam-database
-              decentraleyes
-              metamask
-              bitwarden
-            ];
-            # settings = {
-            #   "uBlock0@raymondhill.net".settings = {
-            #     default_area = "navbar";
-            #   };
-            #   "zotero@chnm.gmu.edu".settings = {
-            #     default_area = "navbar";
-            #   };
-            #   "webextension@metamask.io".settings = {
-            #     default_area = "navbar";
-            #   };
-            #
-            #   # required for Stylus
-            #   "{7a7a4a92-a2a0-41d1-9fd7-1e92480d612d}".settings = {
-            #     dbInChromeStorage = true;
-            #   };
-            # };
           };
 
           # pinsForce = true;

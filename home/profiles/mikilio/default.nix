@@ -26,4 +26,8 @@
     yazi
     zen
   ];
+
+  programs.mcp = {
+    enable = true;
+  };
 }

@@ -42,8 +42,8 @@ in {
       sessionVariables = environment;
 
       packages = with pkgs; [
-        xorg.xprop # get properties from XWayland
-        xorg.xauth # to enable ssh Xforwarding
+        xprop # get properties from XWayland
+        xauth # to enable ssh Xforwarding
         grim # needed by portal for screenshots
         uwsm # for UWSM
         hyprsunset # blulight filter

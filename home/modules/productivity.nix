@@ -1,4 +1,8 @@
-{pkgs, lib, ...}: let
+{
+  pkgs,
+  lib,
+  ...
+}: let
 in {
   imports = [./pandoc];
 
@@ -15,7 +19,7 @@ in {
       gimp
 
       # office
-      libreoffice-still
+      libreoffice
 
       # 3d modelling
       blender

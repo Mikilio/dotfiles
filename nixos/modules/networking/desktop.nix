@@ -42,8 +42,10 @@ in {
         # DNS resolver
         resolved = {
           enable = true;
-          dnsovertls = "true";
-          dnssec = "allow-downgrade";
+          settings.Resolve = {
+            DNSOverTLS = "true";
+            DNSSEC = "allow-downgrade";
+          };
         };
       };
     }

@@ -15,6 +15,7 @@
     ])
     ++ [
       inputs.nur.modules.nixos.default
+      ./opencode.nix
     ];
 
   documentation.dev.enable = true;

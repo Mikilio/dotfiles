@@ -105,34 +105,13 @@ in {
 
       beets = let
         python = pkgs.python3.pkgs;
-        beets-xtractor = with python;
-          buildPythonPackage rec {
-            pname = "beets-xtractor";
-            version = "v0.4.2";
-            pyproject = true;
-
-            src = pkgs.fetchFromGitHub {
-              owner = "adamjakab";
-              repo = "BeetsPluginXtractor";
-              rev = version;
-              hash = "sha256-it4qQ2OS4qBEaGLJK8FVGpjlvg0MQICazV7TAM8lH9s=";
-            };
-
-            build-system = [
-              setuptools
-            ];
-
-            nativeBuildInputs = [
-              beets-minimal
-            ];
-          };
       in {
         enable = true;
         package = python.beets.override {
           pluginOverrides = {
             xtractor = {
               enable = true;
-              propagatedBuildInputs = [beets-xtractor];
+              propagatedBuildInputs = [python.beets-xtractor];
             };
           };
         };
