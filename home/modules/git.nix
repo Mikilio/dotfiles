@@ -101,7 +101,7 @@ in {
         enable = true;
         settings = {
           repoPaths = {
-            ":owner/:repo" = "${config.xdg.userDirs.extraConfig.XDG_DEV_DIR}/GitHub/:owner/:repo";
+            ":owner/:repo" = "${config.xdg.userDirs.extraConfig.DEV}/GitHub/:owner/:repo";
           };
           pager = {
             diff = "delta --side-by-side";
@@ -176,14 +176,14 @@ in {
         git-branchless
         ghq-fork
       ];
-      sessionVariables.GHQ_ROOT = "${config.xdg.userDirs.extraConfig.XDG_DEV_DIR}/Public";
+      sessionVariables.GHQ_ROOT = "${config.xdg.userDirs.extraConfig.DEV}/Public";
     };
     xdg.configFile."ghorg/conf.yaml" = {
       force = true;
       text =
         # yml
         ''
-          GHORG_ABSOLUTE_PATH_TO_CLONE_TO: ${config.xdg.userDirs.extraConfig.XDG_DEV_DIR}/Org
+          GHORG_ABSOLUTE_PATH_TO_CLONE_TO: ${config.xdg.userDirs.extraConfig.DEV}/Org
           GHORG_CLONE_PROTOCOL: ssh
           GHORG_GITHUB_TOKEN: ${config.sops.secrets.github.path}
 

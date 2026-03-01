@@ -50,7 +50,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
-    patched.url = "github:doronbehar/nixpkgs/pkg/beets%40fixed";
+    patched.url = "github:NixOS/nixpkgs/9be065038f6f8f10f33634af78ee4d73682f785e";
 
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
@@ -117,6 +117,11 @@
     nix-gaming = {
       url = "github:fufexan/nix-gaming";
       inputs.flake-parts.follows = "flake-parts";
+    };
+
+    opencode-config = {
+      url = "github:Mikilio/opencode-config";
+      flake = false;
     };
 
     sessionx = {

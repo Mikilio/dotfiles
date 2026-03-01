@@ -58,7 +58,7 @@
         user = "s12333";
         port = 10022;
       };
-     "*.testbed" = {
+      "*.testbed" = {
         hostname = "%h.acn.net.cit.tum.de";
         user = "root";
         proxyJump = "testbed";
@@ -67,7 +67,7 @@
       "." = {
         hashKnownHosts = true;
         extraOptions = {
-          XAuthLocation = "${pkgs.xorg.xauth}/bin/xauth";
+          XAuthLocation = "${pkgs.xauth}/bin/xauth";
           KexAlgorithms = "curve25519-sha256,curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521";
         };
       };

@@ -44,6 +44,7 @@ in {
             "slack.*"
             "zoom.*"
             "morgen"
+            "wappalyzer"
             "obsidian"
             "teamviewer.*"
             "libfprint-2-tod1-goodix"
@@ -70,8 +71,6 @@ in {
                   type = lib.types.bool;
                 };
           };
-
-        inherit (noGPU) thunderbird;
 
         clight = prev.clight.overrideAttrs (o: {
           postInstall = ''
@@ -140,8 +139,28 @@ in {
                   ./pypass/multi-gpgid.patch
                 ];
             });
-            # https://github.com/NixOS/nixpkgs/pull/477084
             beets = patched.python3.pkgs.beets;
+            beets-xtractor = with patched.python3.pkgs;
+              buildPythonPackage rec {
+                pname = "beets-xtractor";
+                version = "v0.4.2";
+                pyproject = true;
+
+                src = pkgs.fetchFromGitHub {
+                  owner = "adamjakab";
+                  repo = "BeetsPluginXtractor";
+                  rev = version;
+                  hash = "sha256-it4qQ2OS4qBEaGLJK8FVGpjlvg0MQICazV7TAM8lH9s=";
+                };
+
+                build-system = [
+                  setuptools
+                ];
+
+                nativeBuildInputs = [
+                  beets-minimal
+                ];
+              };
           };
         };
 
