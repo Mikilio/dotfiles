@@ -3,11 +3,12 @@
     anyrun
     cli
     email
-    floorp
+    games
     gpg
     git
     ghostty
     hyprland
+    impermanence
     media
     nushell
     # nvim
@@ -15,7 +16,7 @@
     pass
     pipewire
     productivity
-    private
+    # rofi
     sioyek
     spicetify
     ssh
@@ -25,9 +26,6 @@
     xdg
     yazi
     zen
+    ./private.nix
   ];
-
-  programs.mcp = {
-    enable = true;
-  };
 }

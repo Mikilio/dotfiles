@@ -24,5 +24,16 @@
     // lib.optionalAttrs (builtins.hasAttr "stylix" options)
     {
       stylix.targets.nixvim.plugin = "base16-nvim";
+    }
+    // lib.optionalAttrs (builtins.hasAttr "persistence" options.home)
+    {
+      home.persistence."/persistent/storage" = {
+        directories = [
+          {
+            directory = ".local/share/nvim";
+            mode = "0700";
+          }
+        ];
+      };
     };
 }

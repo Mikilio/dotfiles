@@ -10,12 +10,14 @@
       inputs.disko.nixosModules.disko
       ./hardware-configuration.nix
       ./secrets.nix
-      ./disko-impermanence.nix
+      ./disko.nix
     ]
     ++ (with ezModules; [
       vm-dev
       thunderbolt
       lanzaboote
+      impermanence
+      opencode
       pipewire
       plymouth
       style
@@ -98,6 +100,7 @@
     mikilio = {
       isNormalUser = true;
       hashedPassword = "$y$j9T$Uz2XlDPZYF5T2ikyr5k7M0$iMEYT24K5XMrrSFo0Qyq41nuW3bCtjzo5ZCx/5wDGp6";
+      homeMode = "755";
       extraGroups = [
         "adbusers"
         "input"

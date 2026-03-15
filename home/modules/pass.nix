@@ -1,15 +1,10 @@
 {
   pkgs,
   lib,
-  config,
   options,
   ...
 }: {
   config = {
-    home.packages = with pkgs; [
-      rofi-rbw
-    ];
-
     xdg.configFile."rofi-rbw.rc".text = ''
       selector rofi
       clipboarder wl-copy
@@ -53,5 +48,30 @@
     #   After = deps;
     #   Requires = deps;
     # };
+    home =
+      {
+        packages = with pkgs; [
+          rofi-rbw
+        ];
+      }
+      // lib.optionalAttrs (builtins.hasAttr "persistence" options.home)
+      {
+        persistence."/persistent/storage" = {
+          directories = [
+            {
+              directory = ".local/share/password-store";
+              mode = "0700";
+            }
+            {
+              directory = ".local/share/rbw";
+              mode = "0700";
+            }
+            {
+              directory = ".config/Bitwarden";
+              mode = "0700";
+            }
+          ];
+        };
+      };
   };
 }

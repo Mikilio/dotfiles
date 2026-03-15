@@ -324,5 +324,20 @@
         profileNames = ["default"];
         enableCss = false;
       };
+    }
+    // lib.optionalAttrs (builtins.hasAttr "persistence" options.home)
+    {
+      home.persistence."/persistent/storage" = {
+        directories = [
+          {
+            directory = ".zen";
+            mode = "0700";
+          }
+          {
+            directory = ".config/zen";
+            mode = "0700";
+          }
+        ];
+      };
     };
 }

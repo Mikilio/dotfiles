@@ -2,6 +2,7 @@
   lib,
   pkgs,
   config,
+  options,
   ...
 }:
 with lib; let
@@ -41,24 +42,6 @@ with lib; let
   };
 in {
   config = {
-    home.packages = with pkgs; [
-      #reading, writing and editing meta information
-      exiftool
-      # audio control
-      pavucontrol
-      # torrents
-      transmission-remote-gtk
-      #bluetooth
-      bluez
-      #mpris
-      playerctl
-      #music player
-      mpc
-      #open urls in specialized program
-      linkhandler
-      urlscan
-    ];
-
     services = {
       mpd = {
         enable = true;
@@ -229,5 +212,49 @@ in {
     services = {
       udiskie.enable = true;
     };
+
+    home =
+      {
+        packages = with pkgs; [
+          #reading, writing and editing meta information
+          exiftool
+          # audio control
+          pavucontrol
+          # torrents
+          transmission-remote-gtk
+          #bluetooth
+          bluez
+          #mpris
+          playerctl
+          #music player
+          mpc
+          #open urls in specialized program
+          linkhandler
+          urlscan
+        ];
+      }
+      // lib.optionalAttrs (builtins.hasAttr "persistence" options.home)
+      {
+        persistence."/persistent/storage" = {
+          directories = [
+            {
+              directory = ".config/beets";
+              mode = "0700";
+            }
+          ];
+        };
+        persistence."/persistent/cache" = {
+          directories = [
+            {
+              directory = ".local/share/mpd";
+              mode = "0755";
+            }
+            {
+              directory = ".local/share/essentia";
+              mode = "0755";
+            }
+          ];
+        };
+      };
   };
 }

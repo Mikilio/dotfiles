@@ -1,5 +1,5 @@
 {
-  config,
+  options,
   lib,
   pkgs,
   ...
@@ -13,218 +13,252 @@
     )
   );
 in {
-  home.packages = with pkgs; [
-    # archives
-    zip
-    unzip
-    unar
+  config = {
+    home =
+      {
+        packages = with pkgs; [
+          # archives
+          zip
+          unzip
+          unar
 
-    #TUI
-    calcurse
+          #TUI
+          calcurse
 
-    # utils
-    jaq
-    file
-    dust
-    duf
-    fd
-    bat
-    ripgrep
-    xdg-utils
+          # utils
+          jaq
+          file
+          dust
+          duf
+          fd
+          bat
+          ripgrep
+          xdg-utils
 
-    #nix
-    sops
-    alejandra
-    deadnix
-    statix
-    cachix
-    devenv
+          #nix
+          sops
+          alejandra
+          deadnix
+          statix
+          cachix
+          devenv
 
-    #DevOps
-    kubectl
-  ];
+          #DevOps
+          kubectl
+        ];
+        shellAliases = {
+          # Alias's to modified commands
+          cp = "cp -i";
+          mv = "mv -i";
+          rm = "rm -iv";
+          cat = "bat";
+          mkdir = "mkdir -p";
+          ping = "ping -c 10";
+          x = "xargs";
+          g = "git";
+          cls = "clear";
+          multitail = "multitail --no-repeat -c";
 
-  programs = {
-    bash = {
-      enable = true;
-      enableCompletion = false;
-      historyFileSize = 0;
-      historyControl = [
-        "ignoreboth"
-        "erasedups"
-      ];
-      historyIgnore = [
-        "&"
-        "[bf]g"
-        "exit"
-        "reset"
-        "clear"
-      ];
-      shellOptions = [
-        "autocd"
-        "cdspell"
-        "dirspell"
-        "extglob"
-        "globstar"
-        "no_empty_cmd_completion"
-        "checkwinsize"
-        "checkhash"
-        "histverify"
-        "histreedit"
-        "cmdhist"
-      ];
-      bashrcExtra = ''
-        set -o notify           # notify of completed background jobs immediately
-        set -o noclobber        # don\'t overwrite files by accident
-        ulimit -S -c 0          # disable core dumps
-        # if [ -t 0 ]; then
-        #   stty -ctlecho;        #turn off control character echoing
-        # fi
-        unset HISTFILE
-      '';
-      initExtra = ''
-        source "${lib.getExe pkgs.complete-alias}"
-        complete -F _complete_alias "''${!BASH_ALIASES[@]}"
-      '';
-    };
+          # Change directory aliases
+          ".." = "cd ..";
+          "..." = "cd ../..";
 
-    bat = {
-      enable = true;
-      config = {
-        pager = "less -FR";
+          # cd into the old directory
+          bd = "cd \"$OLDPWD\"";
+
+          # Remove a directory and all files
+          rmd = "/bin/rm  --recursive --force --verbose ";
+
+          # alias chmod commands
+          mx = "chmod a+x";
+          m000 = "chmod -R 000";
+          m644 = "chmod -R 644";
+          m666 = "chmod -R 666";
+          m755 = "chmod -R 755";
+          m777 = "chmod -R 777";
+
+          # Show open ports
+          openports = "netstat -nape --inet";
+
+          # Alias's for archives
+          mktar = "tar -cvf";
+          mkbz2 = "tar -cvjf";
+          mkgz = "tar -cvzf";
+          untar = "tar -xvf";
+          unbz2 = "tar -xvjf";
+          ungz = "tar -xvzf";
+
+          # Alias's for systemcontrol
+          us = "systemctl --user";
+          rs = "sudo systemctl";
+          xo = "xdg-open";
+          hm = "home-manager";
+        };
+        sessionVariables = {
+          CARAPACE_BRIDGES = "zsh,fish,bash,inshellisense";
+
+          DIRENV_LOG_FORMAT = "";
+        };
+        sessionPath = ["$HOME/.local/share/bin"];
+      }
+      // lib.optionalAttrs (builtins.hasAttr "persistence" options.home)
+      {
+        persistence."/persistent/storage" = {
+          directories = [
+            {
+              directory = ".local/share/zoxide";
+              mode = "0700";
+            }
+            {
+              directory = ".local/share/atuin";
+              mode = "0700";
+            }
+          ];
+        };
+
+        persistence."/persistent/cache" = {
+          directories = [
+            {
+              directory = ".cache/nix-index";
+              mode = "0700";
+            }
+            {
+              directory = ".local/share/devenv";
+              mode = "0700";
+            }
+            {
+              directory = ".local/share/direnv";
+              mode = "0700";
+            }
+          ];
+        };
       };
-    };
-    btop.enable = true;
-    broot.enable = true;
-    carapace.enable = true;
-    direnv = {
-      enable = true;
-      nix-direnv.enable = true;
-    };
-    eza = {
-      enable = true;
-      git = true;
-      icons = "auto";
-    };
-    atuin = {
-      enable = true;
-      enableBashIntegration = true;
-      daemon.enable = true;
-      forceOverwriteSettings = true;
-      settings.filter_mode_shell_up_key_binding = "session";
-    };
-    less = {
-      enable = true;
-      config = ''
-        #env
-        LESS = --quit-if-one-screen --ignore-case --status-column --LONG-PROMPT --RAW-CONTROL-CHARS --HILITE-UNREAD --tabs=4 --no-init --window=-4
-        LESS_TERMCAP_mb = [01;31m
-        LESS_TERMCAP_md = [01;36m
-        LESS_TERMCAP_me = [0m
-        LESS_TERMCAP_se = [0m
-        LESS_TERMCAP_so = [1;44;33m
-        LESS_TERMCAP_ue = [0m
-        LESS_TERMCAP_us = [01;32m
-      '';
-    };
-    lesspipe.enable = true;
 
-    nix-index = {
-      enable = true;
-      enableBashIntegration = true;
-    };
-    readline = {
-      enable = true;
-      bindings = {
-        "\\e[6~" = "menu-complete";
-        "\\e[5~" = "menu-complete-backward";
+    programs = {
+      bash = {
+        enable = true;
+        enableCompletion = false;
+        historyFileSize = 0;
+        historyControl = [
+          "ignoreboth"
+          "erasedups"
+        ];
+        historyIgnore = [
+          "&"
+          "[bf]g"
+          "exit"
+          "reset"
+          "clear"
+        ];
+        shellOptions = [
+          "autocd"
+          "cdspell"
+          "dirspell"
+          "extglob"
+          "globstar"
+          "no_empty_cmd_completion"
+          "checkwinsize"
+          "checkhash"
+          "histverify"
+          "histreedit"
+          "cmdhist"
+        ];
+        bashrcExtra = ''
+          set -o notify           # notify of completed background jobs immediately
+          set -o noclobber        # don\'t overwrite files by accident
+          ulimit -S -c 0          # disable core dumps
+          # if [ -t 0 ]; then
+          #   stty -ctlecho;        #turn off control character echoing
+          # fi
+          unset HISTFILE
+        '';
+        initExtra = ''
+          source "${lib.getExe pkgs.complete-alias}"
+          complete -F _complete_alias "''${!BASH_ALIASES[@]}"
+        '';
       };
-      variables = {
-        editing-mode = "vi";
-        vi-ins-mode-string = "\\1\\e[6 q\\2";
-        vi-cmd-mode-string = "\\1\\e[2 q\\2";
-        show-mode-in-prompt = true;
-        revert-all-at-newline = true;
-        colored-stats = true;
-        colored-completion-prefix = true;
-        completion-ignore-case = true;
-        completion-prefix-display-length = 3;
-        mark-symlinked-directories = true;
-        show-all-if-ambiguous = true;
-        show-all-if-unmodified = true;
-        skip-completed-text = true;
-        visible-stats = true;
+
+      bat = {
+        enable = true;
+        config = {
+          pager = "less -FR";
+        };
       };
+      btop.enable = true;
+      broot.enable = true;
+      carapace.enable = true;
+      direnv = {
+        enable = true;
+        nix-direnv.enable = true;
+      };
+      eza = {
+        enable = true;
+        git = true;
+        icons = "auto";
+      };
+      atuin = {
+        enable = true;
+        enableBashIntegration = true;
+        daemon.enable = true;
+        forceOverwriteSettings = true;
+        settings.filter_mode_shell_up_key_binding = "session";
+      };
+      less = {
+        enable = true;
+        config = ''
+          #env
+          LESS = --quit-if-one-screen --ignore-case --status-column --LONG-PROMPT --RAW-CONTROL-CHARS --HILITE-UNREAD --tabs=4 --no-init --window=-4
+          LESS_TERMCAP_mb = [01;31m
+          LESS_TERMCAP_md = [01;36m
+          LESS_TERMCAP_me = [0m
+          LESS_TERMCAP_se = [0m
+          LESS_TERMCAP_so = [1;44;33m
+          LESS_TERMCAP_ue = [0m
+          LESS_TERMCAP_us = [01;32m
+        '';
+      };
+      lesspipe.enable = true;
+
+      nix-index = {
+        enable = true;
+        enableBashIntegration = true;
+      };
+      readline = {
+        enable = true;
+        bindings = {
+          "\\e[6~" = "menu-complete";
+          "\\e[5~" = "menu-complete-backward";
+        };
+        variables = {
+          editing-mode = "vi";
+          vi-ins-mode-string = "\\1\\e[6 q\\2";
+          vi-cmd-mode-string = "\\1\\e[2 q\\2";
+          show-mode-in-prompt = true;
+          revert-all-at-newline = true;
+          colored-stats = true;
+          colored-completion-prefix = true;
+          completion-ignore-case = true;
+          completion-prefix-display-length = 3;
+          mark-symlinked-directories = true;
+          show-all-if-ambiguous = true;
+          show-all-if-unmodified = true;
+          skip-completed-text = true;
+          visible-stats = true;
+        };
+      };
+      skim = {
+        enable = true;
+        defaultCommand = "rg --color=always --line-number '{}'";
+        defaultOptions = [
+          "--ansi"
+          "--preview '${preview} {}'"
+        ];
+        changeDirWidgetOptions = [
+          "--preview 'exa --icons --git --color always -T -L 3 {} | head -200'"
+          "--exact"
+        ];
+      };
+      zoxide.enable = true;
     };
-    skim = {
-      enable = true;
-      defaultCommand = "rg --color=always --line-number '{}'";
-      defaultOptions = [
-        "--ansi"
-        "--preview '${preview} {}'"
-      ];
-      changeDirWidgetOptions = [
-        "--preview 'exa --icons --git --color always -T -L 3 {} | head -200'"
-        "--exact"
-      ];
-    };
-    zoxide.enable = true;
-  };
-
-  home = {
-    shellAliases = {
-      # Alias's to modified commands
-      cp = "cp -i";
-      mv = "mv -i";
-      rm = "rm -iv";
-      cat = "bat";
-      mkdir = "mkdir -p";
-      ping = "ping -c 10";
-      x = "xargs";
-      g = "git";
-      cls = "clear";
-      multitail = "multitail --no-repeat -c";
-
-      # Change directory aliases
-      ".." = "cd ..";
-      "..." = "cd ../..";
-
-      # cd into the old directory
-      bd = "cd \"$OLDPWD\"";
-
-      # Remove a directory and all files
-      rmd = "/bin/rm  --recursive --force --verbose ";
-
-      # alias chmod commands
-      mx = "chmod a+x";
-      m000 = "chmod -R 000";
-      m644 = "chmod -R 644";
-      m666 = "chmod -R 666";
-      m755 = "chmod -R 755";
-      m777 = "chmod -R 777";
-
-      # Show open ports
-      openports = "netstat -nape --inet";
-
-      # Alias's for archives
-      mktar = "tar -cvf";
-      mkbz2 = "tar -cvjf";
-      mkgz = "tar -cvzf";
-      untar = "tar -xvf";
-      unbz2 = "tar -xvjf";
-      ungz = "tar -xvzf";
-
-      # Alias's for systemcontrol
-      us = "systemctl --user";
-      rs = "sudo systemctl";
-      xo = "xdg-open";
-      hm = "home-manager";
-    };
-    sessionVariables = {
-      CARAPACE_BRIDGES = "zsh,fish,bash,inshellisense";
-
-      DIRENV_LOG_FORMAT = "";
-    };
-    sessionPath = ["$HOME/.local/share/bin"];
   };
 }
