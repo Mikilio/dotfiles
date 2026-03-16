@@ -51,6 +51,14 @@ in {
     systemd.services.opencode = {
       description = "Opencode AI server";
       wantedBy = ["multi-user.target"];
+      path = with pkgs; [
+        nix
+        git
+        file
+        curl
+        gnutar
+        podman
+      ];
 
       serviceConfig = {
         Type = "simple";
