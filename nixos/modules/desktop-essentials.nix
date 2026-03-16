@@ -33,6 +33,12 @@
       # make HM-managed GTK stuff work
       dconf.enable = true;
     };
+
+    systemd.services.nix-deamon.serviceConfig = {
+      MemoryHigh = "6G";
+      MemoryMax = "8G";
+    };
+
     environment =
       {
         systemPackages = with pkgs; [

@@ -59,6 +59,10 @@ in {
         gnutar
         podman
       ];
+      environment = {
+        inherit (config.environment.variables) NIX_PATH;
+        OPENCODE_CONFIG_DIR = configSource;
+      };
 
       serviceConfig = {
         Type = "simple";
@@ -70,9 +74,11 @@ in {
         ProtectSystem = "strict";
         ProtectHome = "read-only";
         PrivateDevices = true;
-        NoNewPrivileges = true;
+        RestrictNetworkInterfaces = ["~mycelium" "~wg0"];
+        # NoNewPrivileges = true;
         RestrictRealtime = true;
-        # RestrictSUIDSGID = true;
+        RestrictSUIDSGID = true;
+        Delegate = "yes";
         ProtectProc = "invisible";
 
         IPAddressDeny = "all";
@@ -81,8 +87,6 @@ in {
         RuntimeDirectory = "opencode";
         StateDirectory = "opencode";
         CacheDirectory = "opencode";
-
-        Environment = "OPENCODE_CONFIG_DIR=${configSource}";
 
         BindReadOnlyPaths = [
           "/var/run/docker.sock"
