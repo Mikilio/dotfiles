@@ -64,7 +64,7 @@ in {
         PrivateDevices = true;
         NoNewPrivileges = true;
         RestrictRealtime = true;
-        RestrictSUIDSGID = true;
+        # RestrictSUIDSGID = true;
         ProtectProc = "invisible";
 
         IPAddressDeny = "all";
