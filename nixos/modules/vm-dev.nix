@@ -4,10 +4,44 @@
   options,
   ...
 }: {
-  config =
-    {
-      programs.virt-manager.enable = true;
-      environment = {
+  config = {
+    programs.virt-manager.enable = true;
+    virtualisation = {
+      libvirtd = {
+        enable = true;
+        qemu = {
+          swtpm.enable = true;
+        };
+      };
+      spiceUSBRedirection.enable = true;
+      containers = {
+        enable = true;
+        storage.settings = {
+          storage = {
+            driver = "btrfs";
+            runroot = "/run/containers/storage";
+            graphroot = "/var/lib/containers/storage";
+            options.overlay.mountopt = "nodev,metacopy=on";
+          };
+        };
+      };
+      oci-containers.backend = "podman";
+      podman = {
+        enable = true;
+        autoPrune.enable = true;
+        dockerCompat = true;
+        dockerSocket.enable = true;
+      };
+    };
+    services.spice-vdagentd.enable = true;
+    networking.firewall = {
+      trustedInterfaces = ["virbr0"];
+      interfaces."podman*".allowedUDPPorts = [53];
+    };
+
+    security.unprivilegedUsernsClone = true;
+    environment =
+      {
         systemPackages = with pkgs; [
           dive # look into docker image layers
           podman-tui # Terminal mgmt UI for Podman
@@ -19,69 +53,35 @@
             export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
           fi
         '';
-      };
-      virtualisation = {
-        libvirtd = {
-          enable = true;
-          qemu = {
-            swtpm.enable = true;
+      }
+      // lib.optionalAttrs (options.environment?persistence)
+      {
+        persistence = {
+          "/persistent/storage" = {
+            directories = [
+              "/var/lib/libvirt"
+              {
+                directory = "/var/lib/swtpm-localca";
+                user = "tss";
+                group = "tss";
+              }
+            ];
+          };
+          "/persistent/cache" = {
+            directories = [
+              "/var/lib/containers"
+              "/var/lib/libvirt/dnsmasq"
+            ];
+          };
+          "/persistent/volatile" = {
+            directories = [
+              {
+                directory = "/var/lib/libvirt/images";
+                mode = "0711";
+              }
+            ];
           };
         };
-        spiceUSBRedirection.enable = true;
-        containers = {
-          enable = true;
-          storage.settings = {
-            storage = {
-              driver = "btrfs";
-              runroot = "/run/containers/storage";
-              graphroot = "/var/lib/containers/storage";
-              options.overlay.mountopt = "nodev,metacopy=on";
-            };
-          };
-        };
-        oci-containers.backend = "podman";
-        podman = {
-          enable = true;
-          autoPrune.enable = true;
-          dockerCompat = true;
-          dockerSocket.enable = true;
-        };
       };
-      services.spice-vdagentd.enable = true;
-      networking.firewall = {
-        trustedInterfaces = ["virbr0"];
-        interfaces."podman*".allowedUDPPorts = [53];
-      };
-
-      security.unprivilegedUsernsClone = true;
-    }
-    // lib.optionalAttrs (options.environment?persistence)
-    {
-      environment.persistence = {
-        "/persistent/storage" = {
-          directories = [
-            "/var/lib/libvirt"
-            {
-              directory = "/var/lib/swtpm-localca";
-              user = "tss";
-              group = "tss";
-            }
-          ];
-        };
-        "/persistent/cache" = {
-          directories = [
-            "/var/lib/containers"
-            "/var/lib/libvirt/dnsmasq"
-          ];
-        };
-        "/persistent/volatile" = {
-          directories = [
-            {
-              directory = "/var/lib/libvirt/images";
-              mode = "0711";
-            }
-          ];
-        };
-      };
-    };
+  };
 }

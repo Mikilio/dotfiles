@@ -36,6 +36,7 @@ in {
       home = "/var/lib/opencode/";
       description = "Opencode AI service user";
       useDefaultShell = true;
+      autoSubUidGidRange = true;
       extraGroups = ["docker"];
     };
 
@@ -45,7 +46,7 @@ in {
       wrapper = pkgs.writeShellScriptBin "opencode" ''
         exec ${cfg.package}/bin/opencode attach http://127.0.0.1:${toString cfg.port} "$@"
       '';
-    in [ wrapper ];
+    in [wrapper];
 
     systemd.services.opencode = {
       description = "Opencode AI server";
