@@ -24,14 +24,14 @@ in {
           mu
 
           #svg and png editing
-          inkscape
-          gimp
+          # inkscape
+          # gimp
 
           # office
           libreoffice
 
           # 3d modelling
-          blender
+          # blender
 
           # books
           # calibre
@@ -48,7 +48,7 @@ in {
           tor-browser
 
           #mumble
-          mumble
+          # mumble
 
           #Calendar
           morgen
@@ -71,8 +71,11 @@ in {
           #science
           zotero
 
+          #study
+          anki
+
           #ftp
-          filezilla
+          # filezilla
         ];
       }
       // lib.optionalAttrs (builtins.hasAttr "persistence" options.home)
@@ -86,6 +89,7 @@ in {
               ".local/share/calibre-ebook.com"
               ".local/share/TelegramDesktop"
               ".local/share/wasistlos"
+              ".local/share/Anki2"
 
               #exceptions
               ".config/libreoffice"
@@ -107,6 +111,7 @@ in {
               ".cache/vfs"
               ".cache/vfsMeta"
               ".cache/wasistlos"
+              ".cache/Anki"
             ];
           };
         };

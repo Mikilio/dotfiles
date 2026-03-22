@@ -18,6 +18,14 @@ in {
             DEV = "${homeDir}/Code";
           };
         };
+        portal = {
+          enable = true;
+          config = {
+            common = {
+              default = "*";
+            };
+          };
+        };
 
         terminal-exec.enable = true;
 
