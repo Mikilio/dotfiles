@@ -47,9 +47,6 @@
     programs.yazi = {
       enable = true;
       shellWrapperName = "y";
-      enableBashIntegration = config.programs.bash.enable;
-      enableZshIntegration = config.programs.zsh.enable;
-      enableNushellIntegration = config.programs.nushell.enable;
       initLua = ./init.lua;
 
       plugins = {

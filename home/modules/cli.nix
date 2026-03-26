@@ -16,6 +16,11 @@ in {
   config = {
     home =
       {
+        shell = {
+          enableBashIntegration = true;
+          enableNushellIntegration = true;
+        };
+
         packages = with pkgs; [
           # archives
           zip
@@ -47,29 +52,17 @@ in {
           kubectl
         ];
         shellAliases = {
-          # Alias's to modified commands
-          cp = "cp -i";
-          mv = "mv -i";
-          rm = "rm -iv";
-          cat = "bat";
+          # === Modified commands ===
           mkdir = "mkdir -p";
           ping = "ping -c 10";
+
+          # === Simple shortcuts ===
           x = "xargs";
-          g = "git";
           cls = "clear";
           multitail = "multitail --no-repeat -c";
+          rmd = "rm --recursive --force --verbose";
 
-          # Change directory aliases
-          ".." = "cd ..";
-          "..." = "cd ../..";
-
-          # cd into the old directory
-          bd = "cd \"$OLDPWD\"";
-
-          # Remove a directory and all files
-          rmd = "/bin/rm  --recursive --force --verbose ";
-
-          # alias chmod commands
+          # === chmod ===
           mx = "chmod a+x";
           m000 = "chmod -R 000";
           m644 = "chmod -R 644";
@@ -77,10 +70,7 @@ in {
           m755 = "chmod -R 755";
           m777 = "chmod -R 777";
 
-          # Show open ports
-          openports = "netstat -nape --inet";
-
-          # Alias's for archives
+          # === Archives ===
           mktar = "tar -cvf";
           mkbz2 = "tar -cvjf";
           mkgz = "tar -cvzf";
@@ -88,12 +78,38 @@ in {
           unbz2 = "tar -xvjf";
           ungz = "tar -xvzf";
 
-          # Alias's for systemcontrol
+          # === System ===
           us = "systemctl --user";
           rs = "sudo systemctl";
           xo = "xdg-open";
           hm = "home-manager";
+          openports = "netstat -nape --inet";
+
+          # === Git ===
+          g = "git";
+          gst = "git status";
+          gp = "git push origin HEAD";
+          gpu = "git pull origin";
+          gco = "git checkout";
+          gb = "git branch";
+          ga = "git add -p";
+          gdiff = "git diff";
+
+          # === Kubernetes ===
+          k = "kubectl";
+          kg = "kubectl get";
+          kd = "kubectl describe";
+          kdel = "kubectl delete";
+          kl = "kubectl logs -f";
+          kgpo = "kubectl get pod";
+          ke = "kubectl exec -it";
+
+          # === Eza ===
+          l = "eza --all";
+          ll = "eza --long";
+          lt = "eza --tree --level=2 --long --git";
         };
+
         sessionVariables = {
           CARAPACE_BRIDGES = "zsh,fish,bash,inshellisense";
 
@@ -120,6 +136,10 @@ in {
           directories = [
             {
               directory = ".cache/nix-index";
+              mode = "0700";
+            }
+            {
+              directory = ".cache/nix-search-tv";
               mode = "0700";
             }
             {
@@ -176,6 +196,18 @@ in {
           source "${lib.getExe pkgs.complete-alias}"
           complete -F _complete_alias "''${!BASH_ALIASES[@]}"
         '';
+        shellAliases = {
+          # navigation
+          ".." = "cd ..";
+          "..." = "cd ../..";
+          bd = "cd \"$OLDPWD\"";
+
+          # Override to external commands with interactive flags
+          rm = "rm -iv";
+          cp = "cp -i";
+          mv = "mv -i";
+          cat = "bat";
+        };
       };
 
       bat = {
@@ -184,9 +216,14 @@ in {
           pager = "less -FR";
         };
       };
+
       btop.enable = true;
-      broot.enable = true;
-      carapace.enable = true;
+
+      carapace = {
+        enable = true;
+        ignoreCase = true;
+      };
+
       direnv = {
         enable = true;
         nix-direnv.enable = true;
@@ -198,7 +235,6 @@ in {
       };
       atuin = {
         enable = true;
-        enableBashIntegration = true;
         daemon.enable = true;
         forceOverwriteSettings = true;
         settings.filter_mode_shell_up_key_binding = "session";
@@ -221,8 +257,21 @@ in {
 
       nix-index = {
         enable = true;
-        enableBashIntegration = true;
       };
+
+      nix-search-tv = {
+        enable = true;
+        enableTelevisionIntegration = true;
+      };
+
+      nushell = {
+        enable = true;
+        extraConfig = ''
+          $env.config.show_banner = false
+          $env.config.edit_mode = "vi"
+        '';
+      };
+
       readline = {
         enable = true;
         bindings = {
@@ -246,19 +295,13 @@ in {
           visible-stats = true;
         };
       };
-      skim = {
+      television = {
         enable = true;
-        defaultCommand = "rg --color=always --line-number '{}'";
-        defaultOptions = [
-          "--ansi"
-          "--preview '${preview} {}'"
-        ];
-        changeDirWidgetOptions = [
-          "--preview 'exa --icons --git --color always -T -L 3 {} | head -200'"
-          "--exact"
-        ];
       };
-      zoxide.enable = true;
+
+      zoxide = {
+        enable = true;
+      };
     };
   };
 }

@@ -107,28 +107,14 @@
     dart = lang "" "blue";
     elixir = lang "" "purple";
   };
-  tomlFormat = pkgs.formats.toml {};
-  starshipCmd = "${pkgs.starship}/bin/starship";
 in {
-  xdg.configFile."starship.toml" = {
-    source = tomlFormat.generate "starship-config" settings;
-  };
-
-  programs.bash.initExtra = ''
-    eval "$(${starshipCmd} init bash)"
-  '';
-
-  programs.zsh.initExtra = ''
-    eval "$(${starshipCmd} init zsh)"
-  '';
-
-  programs.nushell = {
-    extraEnv = ''
-      mkdir ${config.xdg.cacheHome}/starship
-      ${starshipCmd} init nu | save -f ${config.xdg.cacheHome}/starship/init.nu
-    '';
-    extraConfig = ''
-      use ${config.xdg.cacheHome}/starship/init.nu
-    '';
+  programs.starship = {
+    enable = true;
+    enableBashIntegration = true;
+    enableNushellIntegration = true;
+    inherit settings;
+    presets = [
+      "nerd-font-symbols"
+    ];
   };
 }
