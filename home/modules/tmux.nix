@@ -3,11 +3,13 @@
   lib,
   config,
   options,
+  osConfig ? null,
   ...
 }: {
   config = {
     programs.tmux = {
       enable = true;
+      shell = lib.mkIf (osConfig != null) (lib.getExe osConfig.users.users.${config.home.username}.shell);
       plugins = with pkgs.tmuxPlugins; [
         yank
         open

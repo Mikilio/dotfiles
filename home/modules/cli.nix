@@ -52,23 +52,18 @@ in {
           kubectl
         ];
         shellAliases = {
-          # === Modified commands ===
-          mkdir = "mkdir -p";
+          # === External commands (work everywhere) ===
           ping = "ping -c 10";
-
-          # === Simple shortcuts ===
           x = "xargs";
           cls = "clear";
           multitail = "multitail --no-repeat -c";
-          rmd = "rm --recursive --force --verbose";
 
-          # === chmod ===
-          mx = "chmod a+x";
-          m000 = "chmod -R 000";
+          # === chmod (only safe/useful ones) ===
+          mx = "chmod o+x";
           m644 = "chmod -R 644";
-          m666 = "chmod -R 666";
+          m600 = "chmod -R 600";
+          m700 = "chmod -R 700";
           m755 = "chmod -R 755";
-          m777 = "chmod -R 777";
 
           # === Archives ===
           mktar = "tar -cvf";
@@ -103,11 +98,6 @@ in {
           kl = "kubectl logs -f";
           kgpo = "kubectl get pod";
           ke = "kubectl exec -it";
-
-          # === Eza ===
-          l = "eza --all";
-          ll = "eza --long";
-          lt = "eza --tree --level=2 --long --git";
         };
 
         sessionVariables = {
@@ -197,16 +187,25 @@ in {
           complete -F _complete_alias "''${!BASH_ALIASES[@]}"
         '';
         shellAliases = {
-          # navigation
+          # === Bash-only navigation ===
           ".." = "cd ..";
           "..." = "cd ../..";
           bd = "cd \"$OLDPWD\"";
 
-          # Override to external commands with interactive flags
+          # === Override Nushell built-ins with external commands ===
           rm = "rm -iv";
+          cat = "bat";
           cp = "cp -i";
           mv = "mv -i";
-          cat = "bat";
+          mkdir = "mkdir -p";
+
+          # === Uses flags Nushell rm doesn't have ===
+          rmd = "rm --recursive --force --verbose";
+
+          # === Eza ===
+          l = "eza --all";
+          ll = "eza --long";
+          lt = "eza --tree --level=2 --long --git";
         };
       };
 
@@ -264,11 +263,25 @@ in {
         enableTelevisionIntegration = true;
       };
 
+      nix-your-shell.enable = true;
+
       nushell = {
         enable = true;
+        shellAliases = {
+          cat = "bat";
+          l = "ls -a";
+          ll = "ls -l";
+          # Tree view - eza is actually useful here since Nushell has no tree
+          lt = "eza --tree --level=2 --long --icons --git";
+        };
         extraConfig = ''
           $env.config.show_banner = false
           $env.config.edit_mode = "vi"
+
+          # rmd equivalent
+          def rmd [...paths: path] {
+            rm -r -f ...$paths
+          }
         '';
       };
 
@@ -295,6 +308,12 @@ in {
           visible-stats = true;
         };
       };
+
+      starship = {
+        enable = true;
+        presets = ["nerd-font-symbols"];
+      };
+
       television = {
         enable = true;
       };
