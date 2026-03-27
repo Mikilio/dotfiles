@@ -51,8 +51,9 @@ in {
       # Undo setting memory allocator to 'scudo'.
       # 'scudo' breaks the usage of firefox.
       memoryAllocator.provider = lib.mkForce "libc";
-      systemPackages = [
-        pkgs.sops
+      systemPackages = with pkgs; [
+        sops
+        pcscliteWithPolkit
       ];
     };
 
@@ -79,6 +80,12 @@ in {
         pkgs.usbguard-notifier
       ];
       coredump.enable = false;
+
+      services."polkit-agent-helper@".serviceConfig = lib.mkIf config.security.pam.u2f.enable {
+        PrivateDevices = false;
+        ProtectHome = "read-only";
+        DeviceAllow = ["/dev/urandom r" "char-hidraw rw"];
+      };
     };
   };
 }

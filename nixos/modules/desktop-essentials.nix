@@ -1,6 +1,7 @@
 {
   pkgs,
   lib,
+  config,
   options,
   ...
 }: {
@@ -20,7 +21,7 @@
         mountOnMedia = true;
       };
       davfs2.enable = true;
-
+      #printing
       printing.enable = true;
       # smart card deamon
       pcscd.enable = true;
@@ -34,18 +35,15 @@
       dconf.enable = true;
     };
 
-    systemd.services.nix-deamon.serviceConfig = {
-      MemoryHigh = "6G";
-      MemoryMax = "8G";
+    systemd.services = {
+      nix-deamon.serviceConfig = {
+        MemoryHigh = "6G";
+        MemoryMax = "8G";
+      };
     };
 
     environment =
-      {
-        systemPackages = with pkgs; [
-          pcscliteWithPolkit
-        ];
-      }
-      // lib.optionalAttrs (options.environment?persistence)
+      lib.optionalAttrs (options.environment?persistence)
       {
         persistence = {
           "/persistent/storage" = {
