@@ -10,7 +10,6 @@
     hyprland
     impermanence
     media
-    nushell
     # nvim
     neovix
     pass
@@ -18,9 +17,7 @@
     productivity
     # rofi
     sioyek
-    spicetify
     ssh
-    starship
     tmux
     transient-services
     xdg

@@ -72,43 +72,13 @@ in {
                 };
           };
 
-        clight = prev.clight.overrideAttrs (o: {
-          postInstall = ''
-            rm -r $out/etc/xdg/autostart
-          '';
-        });
-
-        steam = prev.steam.override {
-          extraPkgs = pkgs:
-            with pkgs; [
-              keyutils
-              libkrb5
-              gamemode
-            ];
-        };
-
-        lutris = prev.lutris.override {
-          extraPkgs = p: [];
-          extraLibraries = p:
-            with p; [
-              jansson
-              libGL
-            ];
-        };
+        inherit (stable) git-branchless;
 
         discord = prev.discord-canary.override {
           nss = prev.nss_latest;
           withOpenASAR = true;
           withVencord = true;
         };
-
-        ghostty = prev.ghostty.overrideAttrs (o: {
-          postPatch = ''
-            shopt -s globstar
-            substituteInPlace **/*.zig --replace 'const xev = @import("xev");' 'const xev = @import("xev").Epoll;'
-            shopt -u globstar
-          '';
-        });
 
         vivaldi = prev.vivaldi.override {
           proprietaryCodecs = true;
@@ -139,8 +109,8 @@ in {
                   ./pypass/multi-gpgid.patch
                 ];
             });
-            beets = patched.python3.pkgs.beets;
-            beets-xtractor = with patched.python3.pkgs;
+            beets = prev.python3.pkgs.beets;
+            beets-xtractor = with prev.python3.pkgs;
               buildPythonPackage rec {
                 pname = "beets-xtractor";
                 version = "v0.4.2";
