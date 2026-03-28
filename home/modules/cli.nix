@@ -272,7 +272,7 @@ in {
           l = "ls -a";
           ll = "ls -l";
           # Tree view - eza is actually useful here since Nushell has no tree
-          lt = "eza --tree --level=2 --long --icons --git";
+          lt = "eza --tree --level=3 --long --icons --git";
         };
         extraConfig = ''
           $env.config.show_banner = false

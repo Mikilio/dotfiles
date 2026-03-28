@@ -4,6 +4,9 @@
   options,
   ...
 }: {
+  imports = [
+    ./rosec.nix
+  ];
   config = {
     xdg.configFile."rofi-rbw.rc".text = ''
       selector rofi
