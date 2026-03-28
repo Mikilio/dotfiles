@@ -312,6 +312,9 @@ in {
       starship = {
         enable = true;
         presets = ["nerd-font-symbols"];
+        settings = {
+          shell.disabled = false;
+        };
       };
 
       television = {
