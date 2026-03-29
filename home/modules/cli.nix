@@ -267,6 +267,11 @@ in {
 
       nushell = {
         enable = true;
+        plugins = with pkgs.nushellPlugins; [
+          polars
+          formats
+          query
+        ];
         shellAliases = {
           cat = "bat";
           l = "ls -a";

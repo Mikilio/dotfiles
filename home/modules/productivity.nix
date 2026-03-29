@@ -14,6 +14,12 @@ in {
         uris = ["qemu:///system"];
       };
     };
+    programs.anki = {
+      enable = true;
+      minimalistMode = true;
+      addons = [pkgs.ankiAddons.puppy-reinforcement];
+    };
+
     home =
       {
         packages = with pkgs; [
@@ -70,9 +76,6 @@ in {
 
           #science
           zotero
-
-          #study
-          anki
 
           #ftp
           # filezilla
