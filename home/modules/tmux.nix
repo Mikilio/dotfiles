@@ -9,7 +9,7 @@
   config = {
     programs.tmux = {
       enable = true;
-      shell = lib.mkIf (osConfig != null) (lib.getExe osConfig.users.users.${config.home.username}.shell);
+      shell = lib.mkIf (osConfig != null) "/run/current-system/sw${osConfig.users.users.${config.home.username}.shell.shellPath}";
       plugins = with pkgs.tmuxPlugins; [
         yank
         open
