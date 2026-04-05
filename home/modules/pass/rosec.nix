@@ -5,8 +5,8 @@
   ...
 }: let
   cfg = config.services.rosec;
-  toTOML = lib.generators.toTOML {};
-  configFile = pkgs.writeText "rosec.toml" (toTOML cfg.settings);
+
+  format = pkgs.formats.toml {};
 in {
   options.services.rosec = {
     enable = lib.mkEnableOption "rosec secrets daemon";
@@ -17,7 +17,7 @@ in {
     };
 
     settings = lib.mkOption {
-      type = lib.types.attrs;
+      type = format.type;
       default = {};
       description = ''
         Configuration for rosec in Nix attribute set format.
@@ -39,9 +39,11 @@ in {
     # Add rosec to D-Bus packages
     dbus.packages = [cfg.package];
 
+    home.packages = [cfg.package];
+
     # Generate config file if settings are provided
     xdg.configFile = lib.mkIf (cfg.settings != {}) {
-      "rosec/config.toml".source = configFile;
+      "rosec/config.toml".source = format.generate "config.toml" cfg.settings;
     };
   };
 }

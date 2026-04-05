@@ -39,6 +39,44 @@
         );
       };
     };
+
+    services.rosec = {
+      enable = true;
+      package = pkgs.nur.repos.mikilio.rosec;
+      settings = {
+        service = {
+          dedup_strategy = "priority";
+        };
+        autolock = {
+          on_session_lock = true;
+          idle_timeout_minutes = 5;
+        };
+        provider = [
+          {
+            kind = "gnome-keyring";
+            id = "gnome-keyring";
+            name = "GNOME Keyring";
+          }
+          {
+            id = "personal";
+            kind = "bitwarden-pm";
+            tls_mode = "system";
+            offline_cache = false;
+            options = {
+              email = "kilian.mio@mikilio.com";
+              region = "eu";
+              base_url = "https://vault.mcloud";
+              allowed_hosts = "*.bitwarden.com, *.bitwarden.eu, vault.mcloud";
+            };
+          }
+          {
+            id = "local";
+            kind = "local";
+            path = "/home/mikilio/.local/share/rosec/vaults/local.vault";
+          }
+        ];
+      };
+    };
     # programs.browserpass.enable = true;
     # services.pass-secret-service = {
     #   enable = true;
@@ -67,6 +105,10 @@
             }
             {
               directory = ".local/share/rbw";
+              mode = "0700";
+            }
+            {
+              directory = ".local/share/rosec";
               mode = "0700";
             }
             {
