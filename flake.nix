@@ -71,6 +71,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    elephant.url = "github:abenz1267/elephant";
+
     ez-configs = {
       url = "github:ehllie/ez-configs";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -144,6 +146,11 @@
     #   url = "https://addons.thunderbird.net/thunderbird/downloads/latest/gmail-conversation-view/addon-54035-latest.xpi?src=dp-btn-primary";
     #   flake = false;
     # };
+
+    walker = {
+      url = "github:abenz1267/walker";
+      inputs.elephant.follows = "elephant";
+    };
 
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
