@@ -93,6 +93,7 @@
       {
         packages = with pkgs; [
           rofi-rbw
+          openssh-askpass
         ];
       }
       // lib.optionalAttrs (builtins.hasAttr "persistence" options.home)

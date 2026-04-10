@@ -50,7 +50,7 @@
       initLua = ./init.lua;
 
       plugins = {
-        inherit (pkgs.yaziPlugins) chmod ouch;
+        inherit (pkgs.yaziPlugins) chmod ouch gvfs;
         snapshots = pkgs.nur.repos.mikilio.snapshot-yazi;
       };
 

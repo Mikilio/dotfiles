@@ -1,7 +1,6 @@
 {
   pkgs,
   lib,
-  config,
   options,
   ...
 }: {
@@ -33,6 +32,11 @@
       gnome-disks.enable = true;
       # make HM-managed GTK stuff work
       dconf.enable = true;
+
+      ssh = {
+        enableAskPassword = true;
+        askPassword = "${pkgs.openssh-askpass}/libexec/gtk-ssh-askpass";
+      };
     };
 
     systemd.services = {
