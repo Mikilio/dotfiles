@@ -1,6 +1,5 @@
 {
   options,
-  config,
   lib,
   pkgs,
   ...
@@ -33,7 +32,7 @@
 
     xdg = {
       portal = {
-        config.hyprland."org.freedesktop.impl.portal.FileChooser" = ["termfilechooser"];
+        config.default."org.freedesktop.impl.portal.FileChooser" = ["termfilechooser"];
         extraPortals = [pkgs.xdg-desktop-portal-termfilechooser];
       };
 
@@ -65,12 +64,27 @@
             }
           ];
         };
-        plugin.prepend_previewers = [
-          {
-            mime = "application/{*zip,tar,bzip2,7z*,rar,xz,zstd,java-archive}";
-            run = "ouch";
-          }
-        ];
+        plugin = {
+          prepend_preloaders = [
+            # Do not preload files in mounted locations
+            { name = "/run/user/1000/gvfs/**/*"; run = "noop"; }
+            # For mounted hard disk/drive
+            { name = "/run/media/USER_NAME/**/*"; run = "noop"; }
+          ];
+          prepend_previewers = [
+            # Allow to preview folder
+            { name = "*/"; run = "folder"; }
+            # Existing ouch previewer
+            {
+              mime = "application/{*zip,tar,bzip2,7z*,rar,xz,zstd,java-archive}";
+              run = "ouch";
+            }
+            # Do not preview files in mounted locations
+            { name = "/run/user/1000/gvfs/**/*"; run = "noop"; }
+            # For mounted hard disk/drive
+            { name = "/run/media/USER_NAME/**/*"; run = "noop"; }
+          ];
+        };
       };
 
       keymap = {
@@ -116,6 +130,62 @@
             run = "plugin snapshots";
             desc = "Browse path in snapshots";
           }
+          # GVFS Mount keybindings
+          {
+            on = ["M" "m"];
+            run = "plugin gvfs -- select-then-mount --jump";
+            desc = "Select device to mount and jump to its mount point";
+          }
+          {
+            on = ["M" "R"];
+            run = "plugin gvfs -- remount-current-cwd-device";
+            desc = "Remount device under cwd";
+          }
+          {
+            on = ["M" "u"];
+            run = "plugin gvfs -- select-then-unmount --eject";
+            desc = "Select device then eject";
+          }
+          {
+            on = ["M" "U"];
+            run = "plugin gvfs -- select-then-unmount --eject --force";
+            desc = "Select device then force to eject/unmount";
+          }
+          {
+            on = ["M" "a"];
+            run = "plugin gvfs -- add-mount";
+            desc = "Add a GVFS mount URI";
+          }
+          {
+            on = ["M" "e"];
+            run = "plugin gvfs -- edit-mount";
+            desc = "Edit a GVFS mount URI";
+          }
+          {
+            on = ["M" "r"];
+            run = "plugin gvfs -- remove-mount";
+            desc = "Remove a GVFS mount URI";
+          }
+          {
+            on = ["g" "m"];
+            run = "plugin gvfs -- jump-to-device --automount";
+            desc = "Automount then select device to jump to its mount point";
+          }
+          {
+            on = ["\`" "\`"];
+            run = "plugin gvfs -- jump-back-prev-cwd";
+            desc = "Jump back to the position before jumped to device";
+          }
+          {
+            on = ["M" "t"];
+            run = "plugin gvfs -- automount-when-cd";
+            desc = "Enable automount when cd to device under cwd";
+          }
+          {
+            on = ["M" "T"];
+            run = "plugin gvfs -- automount-when-cd --disabled";
+            desc = "Disable automount when cd to device under cwd";
+          }
         ];
       };
 
@@ -126,16 +196,8 @@
             text = "";
           }
           {
-            name = "Templates";
-            text = "";
-          }
-          {
             name = "Nexus";
             text = "";
-          }
-          {
-            name = "Documents";
-            text = "󰂺";
           }
           {
             name = "Public";
