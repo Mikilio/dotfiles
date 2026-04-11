@@ -2,6 +2,7 @@
   options,
   lib,
   pkgs,
+  config,
   ...
 }: {
   config = {
@@ -10,7 +11,9 @@
         packages = with pkgs; [
           dragon-drop
           xdg-desktop-portal-termfilechooser
+          libsecret
           ouch
+          glib
           (
             pkgs.writeShellScriptBin "btrfs" ''
               exec /run/wrappers/bin/pkexec ${pkgs.btrfs-progs}/bin/btrfs "$@"
@@ -22,6 +25,7 @@
       {
         persistence."/persistent/storage" = {
           directories = [
+            ".local/share/yazi"
             {
               directory = ".local/share/Trash";
               mode = "0700";
@@ -64,25 +68,42 @@
             }
           ];
         };
-        plugin = {
+        plugin = let
+          username = config.home.username;
+        in {
           prepend_preloaders = [
             # Do not preload files in mounted locations
-            { name = "/run/user/1000/gvfs/**/*"; run = "noop"; }
+            {
+              name = "/run/user/1000/gvfs/**/*";
+              run = "noop";
+            }
             # For mounted hard disk/drive
-            { name = "/run/media/USER_NAME/**/*"; run = "noop"; }
+            {
+              name = "/run/media/${username}/**/*";
+              run = "noop";
+            }
           ];
           prepend_previewers = [
             # Allow to preview folder
-            { name = "*/"; run = "folder"; }
+            {
+              name = "*/";
+              run = "folder";
+            }
             # Existing ouch previewer
             {
               mime = "application/{*zip,tar,bzip2,7z*,rar,xz,zstd,java-archive}";
               run = "ouch";
             }
             # Do not preview files in mounted locations
-            { name = "/run/user/1000/gvfs/**/*"; run = "noop"; }
+            {
+              name = "/run/user/1000/gvfs/**/*";
+              run = "noop";
+            }
             # For mounted hard disk/drive
-            { name = "/run/media/USER_NAME/**/*"; run = "noop"; }
+            {
+              name = "/run/media/${username}/**/*";
+              run = "noop";
+            }
           ];
         };
       };
@@ -92,7 +113,7 @@
           {
             on = ["<C-n>"];
             run = ''
-              shell 'dragon -x -i -T "$1"' --confirm
+              shell 'dragon-drop -x -i -T "$1"' --confirm
             '';
             desc = ''Drag and Drop item'';
           }
