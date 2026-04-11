@@ -41,6 +41,11 @@ in {
 
     home.packages = [cfg.package];
 
+    xdg.portal = {
+      config.common."org.freedesktop.impl.portal.Secret" = ["rosec"];
+      extraPortals = [cfg.package];
+    };
+
     # Generate config file if settings are provided
     xdg.configFile = lib.mkIf (cfg.settings != {}) {
       "rosec/config.toml".source = format.generate "config.toml" cfg.settings;

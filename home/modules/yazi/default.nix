@@ -32,7 +32,7 @@
 
     xdg = {
       portal = {
-        config.default."org.freedesktop.impl.portal.FileChooser" = ["termfilechooser"];
+        config.common."org.freedesktop.impl.portal.FileChooser" = ["termfilechooser"];
         extraPortals = [pkgs.xdg-desktop-portal-termfilechooser];
       };
 

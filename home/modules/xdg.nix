@@ -22,7 +22,7 @@ in {
           enable = true;
           config = {
             common = {
-              default = "*";
+              default = "gtk";
             };
           };
         };
