@@ -9,6 +9,9 @@
       programs.ssh = {
         enable = true;
         enableDefaultConfig = false;
+        includes = [
+          "~/.lima/*/ssh.config"
+        ];
         matchBlocks = {
           uni = {
             hostname = "lxhalle.in.tum.de";
