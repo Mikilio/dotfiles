@@ -117,6 +117,9 @@ in {
               ".cache/Anki"
             ];
           };
+          "/persistent/volatile".directories = [
+            ".lima"
+          ];
         };
       };
   };
