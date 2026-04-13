@@ -21,8 +21,6 @@ in
 {
   config = lib.mkIf (cfg != null) {
 
-    boot.kernelPackages = mkDefault pkgs.linuxKernel.packages.linux_hardened;
-
     nix.settings.allowed-users = mkDefault [ "@users" ];
 
     environment.memoryAllocator.provider = mkDefault "scudo";
