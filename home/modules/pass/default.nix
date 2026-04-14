@@ -49,13 +49,17 @@
         };
         autolock = {
           on_session_lock = true;
-          idle_timeout_minutes = 5;
         };
         provider = [
           {
             kind = "gnome-keyring";
             id = "gnome-keyring";
             name = "GNOME Keyring";
+          }
+          {
+            id = "local";
+            kind = "local";
+            path = "/home/mikilio/.local/share/rosec/vaults/local.vault";
           }
           {
             id = "personal";
@@ -68,11 +72,6 @@
               base_url = "https://vault.mcloud";
               allowed_hosts = "*.bitwarden.com, *.bitwarden.eu, vault.mcloud";
             };
-          }
-          {
-            id = "local";
-            kind = "local";
-            path = "/home/mikilio/.local/share/rosec/vaults/local.vault";
           }
         ];
       };
