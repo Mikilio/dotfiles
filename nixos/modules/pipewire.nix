@@ -1,4 +1,5 @@
 {
+  lib,
   pkgs,
   config,
   ...
@@ -15,7 +16,7 @@
 
   services.pipewire = {
     enable = true;
-    package = pkgs.pipewire.override { libldac-dec = null; };
+    package = pkgs.pipewire.overrideAttrs (o: {mesonFlags = o.mesonFlags ++ [(lib.mesonEnable "bluez5-codec-ldac-dec" false)];});
     alsa.enable = true;
     alsa.support32Bit = true;
     jack.enable = true;

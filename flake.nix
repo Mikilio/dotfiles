@@ -98,7 +98,7 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
     neovix = {
-      url = "github:Mikilio/neovix/lz-n";
+      url = "github:Mikilio/neovix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
