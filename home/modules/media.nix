@@ -211,6 +211,7 @@ in {
 
     services = {
       udiskie.enable = true;
+      mpris-proxy.enable = true;
     };
 
     home =

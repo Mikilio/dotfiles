@@ -15,6 +15,7 @@
 
   services.pipewire = {
     enable = true;
+    package = pkgs.pipewire.override { libldac-dec = null; };
     alsa.enable = true;
     alsa.support32Bit = true;
     jack.enable = true;
@@ -75,7 +76,8 @@
                 update-props = {
                   bluez5.a2dp.ldac.quality = "hq"
                   bluez5.auto-connect = [ a2dp_sink ]
-                  bluez5.codecs = [ ldac ]
+                  bluez5.hw-volume = [ a2dp_sink ]
+                  bluez5.codecs = [ ldac aac sbc]
                 }
               }
             }
