@@ -53,7 +53,7 @@
       initLua = ./init.lua;
 
       plugins = {
-        inherit (pkgs.yaziPlugins) chmod ouch gvfs;
+        inherit (pkgs.yaziPlugins) chmod ouch gvfs mediainfo;
         snapshots = pkgs.nur.repos.mikilio.snapshot-yazi;
       };
 
@@ -70,8 +70,47 @@
         };
         plugin = let
           username = config.home.username;
-        in {
-          prepend_preloaders = [
+          media = [
+            {
+              mime = "{audio,video,image}/*";
+              run = "mediainfo";
+            }
+            {
+              mime = "application/subrip";
+              run = "mediainfo";
+            }
+            {
+              url = "*.{ai,eps,ait}";
+              run = "mediainfo";
+            }
+
+            # Adobe Illustrator
+            {
+              mime = "application/postscript";
+              run = "mediainfo";
+            }
+            {
+              mime = "application/illustrator";
+              run = "mediainfo";
+            }
+            {
+              mime = "application/dvb.ait";
+              run = "mediainfo";
+            }
+            {
+              mime = "application/vnd.adobe.illustrator";
+              run = "mediainfo";
+            }
+            {
+              mime = "image/x-eps";
+              run = "mediainfo";
+            }
+            {
+              mime = "application/eps";
+              run = "mediainfo";
+            }
+          ];
+          gvfs = [
             # Do not preload files in mounted locations
             {
               name = "/run/user/1000/gvfs/**/*";
@@ -83,28 +122,22 @@
               run = "noop";
             }
           ];
-          prepend_previewers = [
-            # Allow to preview folder
-            {
-              name = "*/";
-              run = "folder";
-            }
-            # Existing ouch previewer
-            {
-              mime = "application/{*zip,tar,bzip2,7z*,rar,xz,zstd,java-archive}";
-              run = "ouch";
-            }
-            # Do not preview files in mounted locations
-            {
-              name = "/run/user/1000/gvfs/**/*";
-              run = "noop";
-            }
-            # For mounted hard disk/drive
-            {
-              name = "/run/media/${username}/**/*";
-              run = "noop";
-            }
-          ];
+        in {
+          prepend_preloaders = gvfs ++ media;
+          prepend_previewers =
+            [
+              # Allow to preview folder
+              {
+                name = "*/";
+                run = "folder";
+              }
+              # Existing ouch previewer
+              {
+                mime = "application/{*zip,tar,bzip2,7z*,rar,xz,zstd,java-archive}";
+                run = "ouch";
+              }
+            ]
+            ++ gvfs ++ media;
         };
       };
 
