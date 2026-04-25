@@ -71,6 +71,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    dms-plugin-registry = {
+      url = "github:AvengeMedia/dms-plugin-registry";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     elephant.url = "github:abenz1267/elephant";
 
     ez-configs = {
@@ -131,7 +136,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    stylix.url = "github:nix-community/stylix";
+    stylix.url = "github:Mikilio/stylix/qt-update";
 
     srvos.url = "github:nix-community/srvos";
 
@@ -146,6 +151,11 @@
     #   url = "https://addons.thunderbird.net/thunderbird/downloads/latest/gmail-conversation-view/addon-54035-latest.xpi?src=dp-btn-primary";
     #   flake = false;
     # };
+
+    quickshell = {
+      url = "git+https://git.outfoxxed.me/quickshell/quickshell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     walker = {
       url = "github:abenz1267/walker";

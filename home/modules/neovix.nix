@@ -5,6 +5,7 @@
   options,
   ...
 }: {
+  programs.neovim.defaultEditor = true;
   home =
     {
       packages = [inputs.neovix.packages.${pkgs.stdenv.hostPlatform.system}.default];

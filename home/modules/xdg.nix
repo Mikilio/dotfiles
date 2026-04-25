@@ -14,6 +14,7 @@ in {
         userDirs = {
           enable = true;
           createDirectories = true;
+          setSessionVariables = true;
           extraConfig = {
             DEV = "${homeDir}/Code";
           };
@@ -57,10 +58,6 @@ in {
           {
             directory = "Desktop";
             mode = "0755";
-          }
-          {
-            directory = ".config";
-            mode = "0700";
           }
           {
             directory = "Documents";

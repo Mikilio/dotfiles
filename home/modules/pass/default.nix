@@ -2,6 +2,7 @@
   pkgs,
   lib,
   options,
+  config,
   ...
 }: {
   imports = [
@@ -37,6 +38,9 @@
               pass-import
             ]
         );
+        settings = {
+          PASSWORD_STORE_DIR = "${config.xdg.dataHome}/password-store";
+        };
       };
     };
 

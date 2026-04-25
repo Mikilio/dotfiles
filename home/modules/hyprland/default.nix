@@ -26,8 +26,6 @@ in {
   imports = [
     ./shikane.nix
     ./scratchpad.nix
-    ./hyprpanel.nix
-    ./hypridle.nix
   ];
   options.i18n.inputMethod.fcitx5.imList = lib.mkOption {
     type = lib.types.listOf lib.types.str;
@@ -69,36 +67,6 @@ in {
           source = ./xkb;
           recursive = true;
         };
-      };
-    };
-
-    programs.hyprlock = {
-      enable = true;
-      settings = {
-        # GENERAL
-        general = {
-          disable_loading_bar = true;
-          hide_cursor = true;
-        };
-
-        label = [
-          # TIME
-          {
-            text = ''cmd[update:30000] echo "$(date +"%R")"'';
-            font_size = 90;
-            position = "-30, 0";
-            halign = "right";
-            valign = "top";
-          }
-          # DATE
-          {
-            text = ''cmd[update:43200000] echo "$(date +"%A, %d %B %Y")"'';
-            font_size = 25;
-            position = "-30, -150";
-            halign = "right";
-            valign = "top";
-          }
-        ];
       };
     };
 

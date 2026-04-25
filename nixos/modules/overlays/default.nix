@@ -72,7 +72,7 @@ in {
                 };
           };
 
-        inherit (stable) git-branchless;
+        inherit (stable) davfs2;
 
         discord = prev.discord-canary.override {
           nss = prev.nss_latest;

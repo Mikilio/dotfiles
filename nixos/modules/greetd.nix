@@ -8,15 +8,6 @@
   inherit (pkgs.nur.repos.mikilio) rosec;
 in {
   config = {
-    programs.regreet = {
-      enable = true;
-      cageArgs = [
-        "-s"
-        "-m"
-        "last"
-      ];
-    };
-
     services.udev.extraRules = ''
       ACTION=="remove",\
        ENV{ID_BUS}=="usb",\
@@ -32,8 +23,6 @@ in {
        RUN+="${pkgs.systemd}/bin/loginctl unlock-sessions"
     '';
 
-    services.gnome.gnome-keyring.enable = true;
-    programs.seahorse.enable = true;
     services.fprintd.enable = true;
 
     security.pam = {

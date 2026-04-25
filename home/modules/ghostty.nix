@@ -7,7 +7,6 @@
 in {
   programs.ghostty = {
     enable = true;
-    enableBashIntegration = true;
     settings = {
       initial-command = "${pkgs.tmux}/bin/tmux attach-session -t Desktop || bash
 ";

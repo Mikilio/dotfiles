@@ -45,7 +45,6 @@
       gpg-agent = {
         enable = true;
         enableSshSupport = true;
-        enableBashIntegration = true;
         pinentry.package = pkgs.pinentry-gnome3;
         grabKeyboardAndMouse = false;
         defaultCacheTtl = 60;
@@ -54,7 +53,10 @@
     };
     home =
       {
-        sessionVariables.GPG_TTY = "$(tty)";
+        sessionVariables = {
+          GNUPGHOME = config.programs.gpg.homedir;
+          GPG_TTY = "$(tty)";
+        };
         packages = with pkgs; [
           yubioath-flutter
           yubikey-personalization

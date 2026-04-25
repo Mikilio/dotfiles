@@ -20,13 +20,19 @@
     themes.stylix = {
       # modified from https://github.com/abenz1267/walker/blob/master/resources/themes/default/style.css
       style = let
-        inherit (config.stylix.generated) palette;
+        # inherit (config.stylix.generated) palette;
       in
         #css
+        /*
+        @define-color window_bg_color #${palette.base00};
+        */
+        /*
+        @define-color accent_bg_color #${palette.base0D};
+        */
+        /*
+        @define-color theme_fg_color  #${palette.base05};
+        */
         ''
-          @define-color window_bg_color #${palette.base00};
-          @define-color accent_bg_color #${palette.base0D};
-          @define-color theme_fg_color  #${palette.base05};
           @define-color error_bg_color #C34043;
           @define-color error_fg_color #DCD7BA;
 
