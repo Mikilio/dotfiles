@@ -24,7 +24,6 @@
   };
 in {
   imports = [
-    ./shikane.nix
     ./scratchpad.nix
   ];
   options.i18n.inputMethod.fcitx5.imList = lib.mkOption {
@@ -126,11 +125,6 @@ in {
 
       settings = {
         "$mod" = "SUPER";
-
-        monitor = [
-          "desc:Chimei Innolux Corporation 0x1435,preferred,auto-down,1.2"
-          ",preferred,auto-up,auto"
-        ];
 
         general = {
           border_size = 2;
