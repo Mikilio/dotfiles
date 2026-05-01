@@ -1194,11 +1194,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1776048331,
-        "narHash": "sha256-efI14uYhTX/EE6dyvzpyzy6l/Pa9eXnkwmqWTyniUJ8=",
+        "lastModified": 1777650546,
+        "narHash": "sha256-wwckGDKZX589cdNtF4J66l5BMpSZPgefKix19oCMb7g=",
         "owner": "Mikilio",
         "repo": "home-manager",
-        "rev": "bd2d416de2154e5b23142f543fa04210e3755cf5",
+        "rev": "6395c3ad51ad1876221c357d2e725b558184255a",
         "type": "github"
       },
       "original": {

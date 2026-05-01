@@ -19,6 +19,10 @@
         enable = true;
         mountOnMedia = true;
       };
+      
+      #provide location
+      geoclue2.enable = true;
+
       davfs2.enable = true;
       #printing
       printing.enable = true;

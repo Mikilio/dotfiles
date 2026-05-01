@@ -40,9 +40,12 @@
         "gtk-4.0/gtk.css".enable = false;
       };
 
+      services.polkit-gnome.enable = lib.mkForce false;
+
       programs = {
         ghostty.settings.theme = lib.mkIf config.programs.ghostty.enable (lib.mkForce "dankcolors");
         television.settings.ui.theme = lib.mkIf config.programs.television.enable (lib.mkForce "matugen");
+        yazi.theme = lib.mkIf config.programs.yazi.enable (lib.mkForce {});
       };
 
       home =
