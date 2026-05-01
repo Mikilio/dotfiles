@@ -42,12 +42,6 @@ in {
 
     users.groups.opencode = {};
 
-    environment.systemPackages = let
-      wrapper = pkgs.writeShellScriptBin "opencode" ''
-        exec ${cfg.package}/bin/opencode attach http://127.0.0.1:${toString cfg.port} "$@"
-      '';
-    in [wrapper];
-
     systemd.services.opencode = {
       description = "Opencode AI server";
       wantedBy = ["multi-user.target"];
