@@ -48,7 +48,7 @@ in {
           #durov <3
           telegram-desktop
           #ZUCK
-          wasistlos
+          karere
 
           #tor <3
           tor-browser
@@ -91,7 +91,7 @@ in {
               ".zotero"
               ".local/share/calibre-ebook.com"
               ".local/share/TelegramDesktop"
-              ".local/share/wasistlos"
+              ".local/share/karere"
               ".local/share/Anki2"
 
               #exceptions
@@ -107,7 +107,7 @@ in {
               ".config/obsidian"
               ".config/Element"
               ".config/teams-for-linux"
-              ".config/wasistlos"
+              ".config/karere"
               ".config/vesktop"
 
               #actual caches

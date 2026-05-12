@@ -85,7 +85,7 @@
   environment.etc."machine-id".text = "39bab0f0f3f34287810d06dc1877ba47";
   # for dock
   #stop generating annoying coredumps in home dir
-  systemd.coredump.extraConfig = "Storage=journal";
+  systemd.coredump.settings.Coredump = "Storage=journal";
   #for julle
   security.lockKernelModules = false;
   #for embedded systems
