@@ -24,6 +24,7 @@
   };
 in {
   imports = [
+    ./keybinds.nix
     ./scratchpad.nix
   ];
   options.i18n.inputMethod.fcitx5.imList = lib.mkOption {
@@ -187,95 +188,6 @@ in {
           vrr = 1;
           focus_on_activate = true;
         };
-
-        binds = {
-          allow_workspace_cycles = true;
-        };
-
-        bind = let
-          binding = mod: cmd: key: arg: "${mod}, ${key}, ${cmd}, ${arg}";
-          mvfocus = binding "SUPER" "movefocus";
-          ws = binding "SUPER" "workspace";
-          resizeactive = binding "SUPER CTRL" "resizeactive";
-          mvactive = binding "SUPER ALT" "moveactive";
-          mvtows = binding "SUPER ALT" "movetoworkspace";
-          arr = [
-            1
-            2
-            3
-            4
-            5
-            6
-            7
-            8
-            9
-          ];
-        in
-          [
-            "ALT, Tab, cyclenext"
-            "ALT, Tab, bringactivetotop"
-            "SUPER, Tab, focuscurrentorlast"
-            "CTRL ALT, Delete, exit"
-            "SUPER, Q, killactive"
-            "SUPER, F, togglefloating"
-            "SUPER, P, pin"
-            "SUPER, Z, fullscreen"
-            "SUPER, ., layoutmsg, togglesplit"
-
-            (mvfocus "up" "u")
-            (mvfocus "down" "d")
-            (mvfocus "right" "r")
-            (mvfocus "left" "l")
-            (ws "bracketleft" "r-1")
-            (ws "bracketright" "r+1")
-            ", code:195, workspace, r+1"
-            ", code:194, changegroupactive, f"
-            ", code:193, togglegroup"
-            ", code:192, changegroupactive, b"
-            ", code:191, workspace, r-1"
-            (mvtows "bracketleft" "r-1")
-            (mvtows "bracketright" "r+1")
-            (resizeactive "up" "0 -20")
-            (resizeactive "down" "0 20")
-            (resizeactive "right" "20 0")
-            (resizeactive "left" "-20 0")
-            (mvactive "up" "0 -20")
-            (mvactive "down" "0 20")
-            (mvactive "right" "20 0")
-            (mvactive "left" "-20 0")
-            "SUPER, KP_End, workspace, 1"
-            "SUPER, KP_Down, workspace, 2"
-            "SUPER, KP_Next, workspace, 3"
-            "SUPER, KP_Left, workspace, 4"
-            "SUPER, KP_Begin, workspace, 5"
-            "SUPER, KP_Right, workspace, 6"
-            "SUPER, KP_Home, workspace, 7"
-            "SUPER, KP_Up, workspace, 8"
-            "SUPER, KP_Prior, workspace, 9"
-          ]
-          ++ (map (i: ws (toString i) (toString i)) arr)
-          ++ (map (i: mvtows (toString i) (toString i)) arr);
-
-        bindle = [
-          ",XF86MonBrightnessUp,   exec, ${lib.getExe pkgs.brightnessctl} set 5%+"
-          ",XF86MonBrightnessDown, exec, ${lib.getExe pkgs.brightnessctl} set 5%-"
-          ",XF86AudioRaiseVolume,  exec, ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
-          ",XF86AudioLowerVolume,  exec, ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-        ];
-
-        bindl = [
-          ",XF86AudioPlay,    exec, ${lib.getExe pkgs.playerctl} play-pause"
-          ",XF86AudioStop,    exec, ${lib.getExe pkgs.playerctl} pause"
-          ",XF86AudioPause,   exec, ${lib.getExe pkgs.playerctl} pause"
-          ",XF86AudioPrev,    exec, ${lib.getExe pkgs.playerctl} previous"
-          ",XF86AudioNext,    exec, ${lib.getExe pkgs.playerctl} next"
-          ",XF86AudioMicMute, exec, ${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
-        ];
-
-        bindm = [
-          "SUPER, mouse:273, resizewindow"
-          "SUPER, mouse:272, movewindow"
-        ];
 
         windowrule = [
           #floating windows

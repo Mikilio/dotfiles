@@ -27,13 +27,14 @@
         qt5ctSettings.Appearance.color_scheme_path = "${config.home.homeDirectory}/.local/share/color-schemes/DankMatugen.colors";
       };
 
-      wayland.windowManager.hyprland.settings.source = lib.mkAfter [
-        "./dms/colors.conf"
-        "./dms/cursor.conf"
-        "./dms/layout.conf"
-        "./dms/outputs.conf"
-        "./dms/windowrules.conf"
-      ];
+      wayland.windowManager.hyprland.extraConfig = ''
+        source=./dms/colors.conf
+        source=./dms/cursor.conf
+        source=./dms/layout.conf
+        source=./dms/outputs.conf
+        source=./dms/windowrules.conf
+        source=./dms/binds.conf
+      '';
 
       xdg.configFile = {
         "gtk-3.0/gtk.css".enable = false;
