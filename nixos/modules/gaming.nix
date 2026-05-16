@@ -10,9 +10,16 @@
       enable = true;
       gamescopeSession = {
         enable = true;
-        args = ["--prefer-vk-device" "--prefer-output DP-8"];
+        args = [
+          "--prefer-vk-device"
+          "1002:73df"
+          "--backend"
+          "drm"
+          "--prefer-output"
+          "DP-8,DP-9,eDP-1"
+        ];
         env = {
-          MESA_VK_DEVICE_SELECT = "1002:73df!";
+          MESA_VK_DEVICE_SELECT = "1002:73df";
         };
       };
       extraCompatPackages = [
