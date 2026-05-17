@@ -1,4 +1,9 @@
-{inputs, lib, config, ...}: {
+{
+  inputs,
+  lib,
+  config,
+  ...
+}: {
   imports = [inputs.impermanence.nixosModules.impermanence];
 
   config = {
@@ -7,18 +12,19 @@
     #usefulness disputed
     fileSystems."/persistent/volatile".neededForBoot = true;
 
-    systemd.services =
-    let
+    systemd.services = let
       files =
         config.sops.age.sshKeyPaths
         ++ (lib.lists.optional (config.sops.age.keyFile != null) config.sops.age.keyFile);
-    in
-    {
+    in {
       sops-install-secrets.unitConfig.RequiresMountsFor = files;
       sops-install-secrets-for-users.unitConfig.RequiresMountsFor = files;
     };
 
-    services.userborn.enable = true;
+    services.userborn = {
+      enable = true;
+      passwordFilesLocation = "/persistent/storage/etc";
+    };
 
     boot = {
       # Allow installation to change EFI variables
@@ -86,6 +92,13 @@
           "/var/lib/systemd"
           "/var/lib/sops-nix"
         ];
+        files =
+          []
+          ++ lib.optionals (config.services.userborn.enable) [
+            "/etc/group"
+            "/etc/passwd"
+            "/etc/shadow"
+          ];
       };
       "/persistent/cache" = {
         directories = [
