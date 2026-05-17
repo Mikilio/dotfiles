@@ -288,9 +288,12 @@ in {
             rm -r -f ...$paths
           }
 
-          mkdir ~/.cache/devenv/
-          devenv hook nu | save --force ~/.cache/devenv/hook.nu
-          source ~/.cache/devenv/hook.nu
+          const dir = "~/.cache/devenv"
+          const hook = $dir | path join "hook.nu"
+          mkdir $dir
+          if ($dir | path exists) { devenv hook nu | save --force $hook }
+          const guard = if ($hook | path exists) { $hook }
+          source $guard
         '';
       };
 

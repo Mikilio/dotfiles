@@ -127,6 +127,10 @@ in {
       settings = {
         "$mod" = "SUPER";
 
+        ecosystem = {
+          no_update_news = true;
+        };
+
         general = {
           border_size = 2;
           allow_tearing = true;
