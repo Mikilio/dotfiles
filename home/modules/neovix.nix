@@ -9,6 +9,10 @@
   home =
     {
       packages = [inputs.neovix.packages.${pkgs.stdenv.hostPlatform.system}.default];
+      sessionVariables = {
+        EDITOR = "vi";
+        VISUAL = "vi";
+      };
     }
     // lib.optionalAttrs (builtins.hasAttr "persistence" options.home)
     {

@@ -279,15 +279,19 @@ in {
           # Tree view - eza is actually useful here since Nushell has no tree
           lt = "eza --tree --level=3 --long --icons --git";
         };
-        extraConfig = ''
-          $env.config.show_banner = false
-          $env.config.edit_mode = "vi"
 
+        settings = {
+          show_banner = false;
+          edit_mode = "vi";
+          buffer_editor = "vi";
+        };
+        extraConfig = ''
           # rmd equivalent
           def rmd [...paths: path] {
             rm -r -f ...$paths
           }
 
+          # devenv integration
           const dir = "~/.cache/devenv"
           const hook = $dir | path join "hook.nu"
           mkdir $dir
