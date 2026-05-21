@@ -12,6 +12,7 @@
           dragon-drop
           xdg-desktop-portal-termfilechooser
           libsecret
+          mediainfo
           ouch
           glib
           (
