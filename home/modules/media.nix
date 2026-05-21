@@ -158,7 +158,6 @@ in {
           smartplaylist = {
             relative_to = config.services.mpd.musicDirectory;
             playlist_dir = config.services.mpd.playlistDirectory;
-            forward_slash = "no";
             playlists = [
               {
                 name = "all.m3u";
