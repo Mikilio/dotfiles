@@ -241,6 +241,10 @@ in {
               directory = ".config/beets";
               mode = "0700";
             }
+            {
+              directory = ".config/newsboat";
+              mode = "0700";
+            }
           ];
         };
         persistence."/persistent/cache" = {
