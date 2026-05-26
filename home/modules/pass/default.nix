@@ -54,28 +54,11 @@
         autolock = {
           on_session_lock = true;
         };
-        provider = [
-          {
-            kind = "gnome-keyring";
-            id = "gnome-keyring";
-            name = "GNOME Keyring";
-          }
+        provider = lib.mkBefore [
           {
             id = "local";
             kind = "local";
-            path = "/home/mikilio/.local/share/rosec/vaults/local.vault";
-          }
-          {
-            id = "personal";
-            kind = "bitwarden-pm";
-            tls_mode = "system";
-            offline_cache = false;
-            options = {
-              email = "kilian.mio@mikilio.com";
-              region = "eu";
-              base_url = "https://vault.mcloud";
-              allowed_hosts = "*.bitwarden.com, *.bitwarden.eu, vault.mcloud";
-            };
+            path = "${config.home.homeDirectory}/.local/share/rosec/vaults/local.vault";
           }
         ];
       };

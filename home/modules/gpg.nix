@@ -35,6 +35,7 @@
           verbose = true;
         };
         scdaemonSettings = {
+          inherit (config.programs.gpg) homedir;
           disable-ccid = true;
         };
       };
