@@ -13,20 +13,7 @@
       programs = {
         steam = {
           enable = true;
-          gamescopeSession = {
-            enable = true;
-            args = [
-              "--prefer-vk-device"
-              "1002:73df"
-              "--backend"
-              "drm"
-              "--prefer-output"
-              "DP-8,DP-9,eDP-1"
-            ];
-            env = {
-              MESA_VK_DEVICE_SELECT = "1002:73df";
-            };
-          };
+          gamescopeSession.enable = true;
           extraCompatPackages = [
             pkgs.proton-ge-bin
           ];
@@ -51,7 +38,7 @@
         pipewire.lowLatency = {
           enable = true;
           quantum = 32;
-          alsa.enable = true;
+          alsa.enable = false;
         };
       };
 
