@@ -2,6 +2,7 @@
   options,
   lib,
   pkgs,
+  config,
   ...
 }: let
   preview = pkgs.writeShellScript "preview.sh" (
@@ -292,7 +293,7 @@ in {
           }
 
           # devenv integration
-          const dir = "~/.cache/devenv"
+          const dir = "${config.home.homeDirectory}/.cache/devenv"
           const hook = $dir | path join "hook.nu"
           mkdir $dir
           if ($dir | path exists) { devenv hook nu | save --force $hook }
