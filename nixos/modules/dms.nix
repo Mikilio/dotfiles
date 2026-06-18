@@ -1,5 +1,9 @@
-{inputs, pkgs, ...}: {
-  imports = [inputs.dms-plugin-registry.modules.default];
+{
+  inputs,
+  pkgs,
+  ...
+}: {
+  imports = [inputs.dms-plugin-registry.nixosModules.default];
 
   config = {
     services.displayManager.dms-greeter = {
