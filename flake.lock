@@ -809,16 +809,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1778080895,
-        "narHash": "sha256-0DdSXlMbPWET2V4zEhAwBngPMt4aLa2FuNZXccHWXoc=",
-        "owner": "Mikilio",
+        "lastModified": 1781844424,
+        "narHash": "sha256-sWBr0D6eu6UhmtM87NOd4oOYilIclFXGDd/s7tVvO10=",
+        "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "db60307b4e87a9a3d5e90535ca2f67b180314922",
+        "rev": "c804fab681f03ec772390af4421bcc9bce80c1d9",
         "type": "github"
       },
       "original": {
-        "owner": "Mikilio",
-        "ref": "master",
+        "owner": "nix-community",
         "repo": "home-manager",
         "type": "github"
       }

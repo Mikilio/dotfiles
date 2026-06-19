@@ -94,7 +94,7 @@
     };
 
     home-manager = {
-      url = "github:Mikilio/home-manager/master";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
