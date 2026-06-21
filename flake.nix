@@ -141,7 +141,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    stylix.url = "github:Mikilio/stylix/qt-update";
+    stylix.url = "github:nix-community/stylix";
 
     srvos.url = "github:nix-community/srvos";
 
