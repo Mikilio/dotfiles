@@ -41,7 +41,7 @@
       programs.zen-browser = {
         enable = true;
 
-        nativeMessagingHosts = [pkgs.bitwarden-desktop];
+        nativeMessagingHosts = [];
         policies = let
           mkLockedAttrs = builtins.mapAttrs (_: value: {
             Value = value;
