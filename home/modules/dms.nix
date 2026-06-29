@@ -28,12 +28,13 @@
       };
 
       wayland.windowManager.hyprland.extraConfig = ''
-        source=./dms/colors.conf
-        source=./dms/cursor.conf
-        source=./dms/layout.conf
-        source=./dms/outputs.conf
-        source=./dms/windowrules.conf
-        source=./dms/binds.conf
+        require("dms.colors")
+        require("dms.outputs")
+        require("dms.layout")
+        require("dms.cursor")
+        require("dms.binds")
+        require("dms.binds-user")
+        require("dms.windowrules")
       '';
 
       xdg.configFile = {

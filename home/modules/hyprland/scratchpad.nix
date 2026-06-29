@@ -8,8 +8,8 @@
 
   getMatch = sp:
     if sp.match ? initialClass
-    then "match:initial_class ${sp.match.initialClass}"
-    else "match:initial_title ${sp.match.initialTitle}";
+    then {initial_class = sp.match.initialClass;}
+    else {initial_title = sp.match.initialTitle;};
 
   matchType = lib.types.attrTag {
     initialClass = lib.mkOption {
@@ -46,14 +46,25 @@
     };
   };
 
-  workspaceRule = name: sp: "special:scratch_${name},shadow:1, gapsout:60, on-created-empty:${wrap sp.command}";
+  workspaceRule = name: sp: {
+    workspace = "special:scratch_${name}";
+    gaps_out = 60;
+    on_created_empty = lib.generators.mkLuaInline ''"${wrap sp.command}"'';
+  };
 
-  windowRule = name: sp: "workspace special:scratch_${name} silent, ${getMatch sp}";
+  windowRule = name: sp: {
+    workspace = "special:scratch_${name} silent";
+    match = getMatch sp;
+  };
 
-  keybind = name: sp: "SUPER, ${sp.key}, togglespecialworkspace, scratch_${name}";
+  keybind = name: sp: {
+    _args = [
+      "SUPER + ${sp.key}"
+      (lib.generators.mkLuaInline "hl.dsp.workspace.toggle_special(\"scratch_${name}\")")
+    ];
+  };
 in {
   options = {
-    # Replace 'my' with your preferred module namespace, e.g., programs.hyprland.scratchApps
     wayland.windowManager.hyprland.scratchpads = lib.mkOption {
       type = lib.types.attrsOf (lib.types.submodule scratchpad);
       default = {};
@@ -81,17 +92,25 @@ in {
 
   config = lib.mkIf (config.wayland.windowManager.hyprland.scratchpads != {}) {
     wayland.windowManager.hyprland.settings = {
-      misc.initial_workspace_tracking = 0;
+      config.misc.initial_workspace_tracking = 0;
 
-      windowrule = lib.mkAfter (
+      window_rule = lib.mkAfter (
         lib.attrsets.mapAttrsToList windowRule config.wayland.windowManager.hyprland.scratchpads
         ++ [
-          "rounding 8, match:float 0, match:workspace s[1]"
-          "border_size 3, match:float 0, match:workspace s[1]"
+          {
+            match.float = false;
+            match.workspace = "s[1]";
+            rounding = 8;
+          }
+          {
+            match.float = false;
+            match.workspace = "s[1]";
+            border_size = 3;
+          }
         ]
       );
 
-      workspace = lib.mkAfter (lib.attrsets.mapAttrsToList workspaceRule config.wayland.windowManager.hyprland.scratchpads);
+      workspace_rule = lib.mkAfter (lib.attrsets.mapAttrsToList workspaceRule config.wayland.windowManager.hyprland.scratchpads);
 
       bind = lib.attrsets.mapAttrsToList keybind config.wayland.windowManager.hyprland.scratchpads;
     };

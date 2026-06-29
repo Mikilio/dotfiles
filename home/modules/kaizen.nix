@@ -36,8 +36,11 @@
   };
 
   wayland.windowManager.hyprland.settings = {
-    bind = [
-      "CTRL ALT, R, exec, systemctl --user restart kaizen.service"
-    ];
+    bind = [{
+      _args = [
+        "CTRL + ALT + R"
+        (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("systemctl --user restart kaizen.service")'')
+      ];
+    }];
   };
 }

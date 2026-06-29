@@ -76,13 +76,17 @@
       runserv = lib.optionalString service "run-as-service";
     in "pkill ${prog} || ${runserv} ${program}";
   in {
-    bindr = [
-      "$mod, SPACE, exec, ${toggle "anyrun" true}"
-    ];
-    layerrule = [
-      "blur 1, match:namespace anyrun"
-      "ignore_alpha 0.5, match:namespace anyrun"
-      "animation fade, match:namespace anyrun"
+    bind = [{
+      _args = [
+        (lib.generators.mkLuaInline "mod .. \" + SPACE\"")
+        (lib.generators.mkLuaInline "hl.dsp.exec_cmd(\"${toggle "anyrun" true}\")")
+        { release = true; }
+      ];
+    }];
+    layer_rule = [
+      { match.namespace = "anyrun"; blur = true; }
+      { match.namespace = "anyrun"; ignore_alpha = 0.5; }
+      { match.namespace = "anyrun"; animation = "fade"; }
     ];
   };
 }

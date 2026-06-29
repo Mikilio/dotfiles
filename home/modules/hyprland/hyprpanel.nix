@@ -1,5 +1,6 @@
 {
   pkgs,
+  lib,
   config,
   ...
 }: {
@@ -133,8 +134,11 @@
 
   services.network-manager-applet.enable = true;
   wayland.windowManager.hyprland.settings = {
-    bind = [
-      "CTRL ALT, R, exec, systemctl --user restart hyprpanel.service"
-    ];
+    bind = [{
+      _args = [
+        "CTRL + ALT + R"
+        (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("systemctl --user restart hyprpanel.service")'')
+      ];
+    }];
   };
 }

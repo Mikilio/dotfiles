@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   inputs,
   ...
 }: {
@@ -243,11 +244,20 @@
   };
 
   wayland.windowManager.hyprland.settings = {
-    bindr = [
-      "$mod, SPACE, exec, nc -U /run/user/1000/walker/walker.sock"
-    ];
-    layerrule = [
-      "blur on, ignore_alpha 0.5, animation fade, match:namespace walker"
+    bind = [{
+      _args = [
+        (lib.generators.mkLuaInline "mod .. \" + SPACE\"")
+        (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("nc -U /run/user/1000/walker/walker.sock")'')
+        { release = true; }
+      ];
+    }];
+    layer_rule = [
+      {
+        match.namespace = "walker";
+        blur = true;
+        ignore_alpha = 0.5;
+        animation = "fade";
+      }
     ];
   };
 }

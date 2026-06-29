@@ -67,9 +67,8 @@ in {
           source = ./xkb;
           recursive = true;
         };
-       "uwsm/env".source = "${config.home.sessionVariablesPackage}/etc/profile.d/hm-session-vars.sh";
+        "uwsm/env".source = "${config.home.sessionVariablesPackage}/etc/profile.d/hm-session-vars.sh";
       };
-
     };
 
     i18n.inputMethod = {
@@ -127,128 +126,391 @@ in {
       systemd.enable = false; # UWSM
 
       settings = {
-        "$mod" = "SUPER";
-
-        ecosystem = {
-          no_update_news = true;
+        mod = {
+          _var = "SUPER";
         };
 
-        general = {
-          border_size = 2;
-          allow_tearing = true;
-        };
-
-        xwayland = {
-          force_zero_scaling = true;
-        };
-
-        dwindle = {
-          preserve_split = true;
-        };
-
-        decoration = {
-          dim_inactive = false;
-          rounding = 8;
-
-          shadow = {
-            enabled = true;
-            range = 8;
-            render_power = 2;
+        config = {
+          ecosystem = {
+            no_update_news = true;
           };
 
-          blur = {
-            enabled = true;
-            size = 6;
-            passes = 2;
-            new_optimizations = "on";
-            noise = 1.0e-2;
-            contrast = 0.9;
-            brightness = 0.8;
-            popups = true;
+          general = {
+            border_size = 2;
+            allow_tearing = true;
+          };
+
+          xwayland = {
+            force_zero_scaling = true;
+          };
+
+          dwindle = {
+            preserve_split = true;
+          };
+
+          decoration = {
+            dim_inactive = false;
+            rounding = 8;
+
+            shadow = {
+              enabled = true;
+              range = 8;
+              render_power = 2;
+            };
+
+            blur = {
+              enabled = true;
+              size = 6;
+              passes = 2;
+              noise = 1.0e-2;
+              contrast = 0.9;
+              brightness = 0.8;
+              popups = true;
+            };
+          };
+
+          input = {
+            accel_profile = "flat";
+            float_switch_override_focus = 2;
+            kb_layout = "eu";
+            kb_variant = "basic";
+          };
+
+          misc = {
+            disable_autoreload = true;
+            vrr = 1;
+            focus_on_activate = true;
+          };
+
+          debug = {
+            disable_logs = false;
           };
         };
 
-        animations = {
-          enabled = true;
-          bezier = "myBezier, 0.05, 0.9, 0.1, 1.05";
-          animation = [
-            "windows, 1, 3, myBezier"
-            "windowsOut, 1, 7, default, popin 80%"
-            "border, 1, 10, default"
-            "fade, 1, 7, default"
-            "workspaces, 1, 6, default"
-            "specialWorkspace, 1, 6, default, slidefadevert 20%"
-          ];
-        };
+        curve = [
+          {
+            _args = [
+              "easeOutQuint"
+              {
+                type = "bezier";
+                points = [[0.23 1] [0.32 1]];
+              }
+            ];
+          }
+          {
+            _args = [
+              "easeInOutCubic"
+              {
+                type = "bezier";
+                points = [[0.65 0.05] [0.36 1]];
+              }
+            ];
+          }
+          {
+            _args = [
+              "linear"
+              {
+                type = "bezier";
+                points = [[0 0] [1 1]];
+              }
+            ];
+          }
+          {
+            _args = [
+              "almostLinear"
+              {
+                type = "bezier";
+                points = [[0.5 0.5] [0.75 1]];
+              }
+            ];
+          }
+          {
+            _args = [
+              "quick"
+              {
+                type = "bezier";
+                points = [[0.15 0] [0.1 1]];
+              }
+            ];
+          }
+          {
+            _args = [
+              "easy"
+              {
+                type = "spring";
+                mass = 1;
+                stiffness = 71.2633;
+                dampening = 15.8273644;
+              }
+            ];
+          }
+        ];
+        animation = [
+          {
+            leaf = "specialWorkspace";
+            enabled = true;
+            speed = 6;
+            bezier = "default";
+            style = "slidefadevert 20%";
+          }
+          {
+            leaf = "global";
+            enabled = true;
+            speed = 10;
+            bezier = "default";
+          }
+          {
+            leaf = "border";
+            enabled = true;
+            speed = 5.39;
+            bezier = "easeOutQuint";
+          }
+          {
+            leaf = "windows";
+            enabled = true;
+            speed = 4.79;
+            spring = "easy";
+          }
+          {
+            leaf = "windowsIn";
+            enabled = true;
+            speed = 4.1;
+            spring = "easy";
+            style = "popin 87%";
+          }
+          {
+            leaf = "windowsOut";
+            enabled = true;
+            speed = 1.49;
+            bezier = "linear";
+            style = "popin 87%";
+          }
+          {
+            leaf = "fadeIn";
+            enabled = true;
+            speed = 1.73;
+            bezier = "almostLinear";
+          }
+          {
+            leaf = "fadeOut";
+            enabled = true;
+            speed = 1.46;
+            bezier = "almostLinear";
+          }
+          {
+            leaf = "fade";
+            enabled = true;
+            speed = 3.03;
+            bezier = "quick";
+          }
+          {
+            leaf = "layers";
+            enabled = true;
+            speed = 3.81;
+            bezier = "easeOutQuint";
+          }
+          {
+            leaf = "layersIn";
+            enabled = true;
+            speed = 4;
+            bezier = "easeOutQuint";
+            style = "fade";
+          }
+          {
+            leaf = "layersOut";
+            enabled = true;
+            speed = 1.5;
+            bezier = "linear";
+            style = "fade";
+          }
+          {
+            leaf = "fadeLayersIn";
+            enabled = true;
+            speed = 1.79;
+            bezier = "almostLinear";
+          }
+          {
+            leaf = "fadeLayersOut";
+            enabled = true;
+            speed = 1.39;
+            bezier = "almostLinear";
+          }
+          {
+            leaf = "workspaces";
+            enabled = true;
+            speed = 1.94;
+            bezier = "almostLinear";
+            style = "fade";
+          }
+          {
+            leaf = "workspacesIn";
+            enabled = true;
+            speed = 1.21;
+            bezier = "almostLinear";
+            style = "fade";
+          }
+          {
+            leaf = "workspacesOut";
+            enabled = true;
+            speed = 1.94;
+            bezier = "almostLinear";
+            style = "fade";
+          }
+          {
+            leaf = "zoomFactor";
+            enabled = true;
+            speed = 7;
+            bezier = "quick";
+          }
+        ];
 
-        input = {
-          accel_profile = "flat";
-          float_switch_override_focus = 2;
-          kb_layout = "eu";
-          kb_variant = "basic";
-        };
-
-        misc = {
-          disable_autoreload = true;
-          vrr = 1;
-          focus_on_activate = true;
-        };
-
-        windowrule = [
+        window_rule = [
           #floating windows
-          "float 1,match:class ^(org.gnome.Calculator)$"
-          "float 1,match:class ^(org.gnome.Nautilus)$"
-          "float 1,match:class ^(pavucontrol)$"
-          "float 1,match:class ^(nm-connection-editor)$"
-          "float 1,match:class ^(blueberry.py)$"
-          "float 1,match:class ^(org.gnome.Settings)$"
-          "float 1,match:class ^(org.gnome.design.Palette)$"
-          "float 1,match:class ^(Color Picker)$"
-          "float 1,match:class ^(xdg-desktop-portal)$"
-          "float 1,match:class ^(xdg-desktop-portal-gnome)$"
-          "float 1,match:class ^(transmission-gtk)$"
-          "float 1,match:class ^(com.github.Aylur.ags)$"
+          {
+            match.class = "^(org.gnome.Calculator)$";
+            float = true;
+          }
+          {
+            match.class = "^(org.gnome.Nautilus)$";
+            float = true;
+          }
+          {
+            match.class = "^(pavucontrol)$";
+            float = true;
+          }
+          {
+            match.class = "^(nm-connection-editor)$";
+            float = true;
+          }
+          {
+            match.class = "^(blueberry.py)$";
+            float = true;
+          }
+          {
+            match.class = "^(org.gnome.Settings)$";
+            float = true;
+          }
+          {
+            match.class = "^(org.gnome.design.Palette)$";
+            float = true;
+          }
+          {
+            match.class = "^(Color Picker)$";
+            float = true;
+          }
+          {
+            match.class = "^(xdg-desktop-portal)$";
+            float = true;
+          }
+          {
+            match.class = "^(xdg-desktop-portal-gnome)$";
+            float = true;
+          }
+          {
+            match.class = "^(transmission-gtk)$";
+            float = true;
+          }
+          {
+            match.class = "^(com.github.Aylur.ags)$";
+            float = true;
+          }
 
           # smart gaps
-          "border_size 1, match:float 0, match:workspace w[tv1]"
-          # "rounding 0, match:float 0, match:workspace w[tv1]"
-          "border_size 1, match:float 0, match:workspace f[1]"
-          # "rounding 0, match:float 0, match:workspace f[1]"
+          {
+            match.float = false;
+            match.workspace = "w[tv1]";
+            border_size = 1;
+          }
+          {
+            match.float = false;
+            match.workspace = "f[1]";
+            border_size = 1;
+          }
 
           #markdown preview for neovim
-          "tile 1, match:title ^(Markdown Preview)(.*)$"
+          {
+            match.title = "^(Markdown Preview)(.*)$";
+            tile = true;
+          }
 
           #optimization
-          "no_shadow 1, match:float 0"
+          {
+            match.float = false;
+            no_shadow = true;
+          }
 
           # fix xwayland apps
-          "rounding 0, match:xwayland 1, match:float 1"
+          {
+            match.xwayland = true;
+            match.float = true;
+            rounding = 0;
+          }
 
           #Zoom meetings
-          "float 1,match:class ^(zoom)$"
-          "pin 1,match:title ^(zoom_linux_float_video_window)$"
-          "pin 1,match:class ^(zoom)$,match:title ^(as_toolbar)$"
+          {
+            match.class = "^(zoom)$";
+            float = true;
+          }
+          {
+            match.title = "^(zoom_linux_float_video_window)$";
+            pin = true;
+          }
+          {
+            match.class = "^(zoom)$";
+            match.title = "^(as_toolbar)$";
+            pin = true;
+          }
 
           #allow tearing for steam games
-          "immediate 1, match:class ^(steam_app_)(.*)$"
+          {
+            match.class = "^(steam_app_)(.*)$";
+            immediate = true;
+          }
 
           # make picture in picture a nice pinned window
-          "float 1, pin 1, keep_aspect_ratio 1, border_size 0, match:class ^(firefox)$,match:title ^(Picture-in-Picture)$"
-          "float 1, pin 1, keep_aspect_ratio 1,border_size 0, match:initial_title ^(Discord Popout)$"
+          {
+            match.class = "^(firefox)$";
+            match.title = "^(Picture-in-Picture)$";
+            float = true;
+            pin = true;
+            keep_aspect_ratio = true;
+            border_size = 0;
+          }
+          {
+            match.initial_title = "^(Discord Popout)$";
+            float = true;
+            pin = true;
+            keep_aspect_ratio = true;
+            border_size = 0;
+          }
 
           #workarount for thunderai
-          "float 1,match:class thunderbird,match:title ^(?!Mozilla*)"
+          {
+            match.class = "thunderbird";
+            match.title = "^(?!Mozilla*)";
+            float = true;
+          }
 
           #floating ephemeral terminals
-          "float 1,match:class com.mitchellh.ghostty,match:title ephemeral"
+          {
+            match.class = "com.mitchellh.ghostty";
+            match.title = "ephemeral";
+            float = true;
+          }
         ];
 
-        workspace = [
-          "w[tv1], gapsout:0, gapsin:0"
-          "f[1], gapsout:0, gapsin:0"
+        workspace_rule = [
+          {
+            workspace = "w[tv1]";
+            gaps_out = 0;
+            gaps_in = 0;
+          }
+          {
+            workspace = "f[1]";
+            gaps_out = 0;
+            gaps_in = 0;
+          }
         ];
-
-        debug.disable_logs = false;
       };
     };
   };
