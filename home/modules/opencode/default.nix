@@ -32,7 +32,11 @@
           enable = true;
           package = pkgs.writeShellScriptBin "opencode" ''
             ${lib.strings.concatLines exports}
-            ${lib.getExe pkgs.opencode}
+            exec ${pkgs.systemd}/bin/systemd-run \
+              --user \
+              --scope \
+              --collect \
+              -- ${lib.getExe pkgs.opencode} "$@"
           '';
           enableMcpIntegration = true;
           extraPackages = with pkgs; [
