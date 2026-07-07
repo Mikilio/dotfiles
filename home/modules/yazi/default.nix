@@ -59,7 +59,7 @@
       };
 
       settings = {
-        manager.show_symlink = false;
+        mgr.show_symlink = false;
         opener = {
           extract = [
             {
@@ -84,30 +84,8 @@
               url = "*.{ai,eps,ait}";
               run = "mediainfo";
             }
-
-            # Adobe Illustrator
             {
-              mime = "application/postscript";
-              run = "mediainfo";
-            }
-            {
-              mime = "application/illustrator";
-              run = "mediainfo";
-            }
-            {
-              mime = "application/dvb.ait";
-              run = "mediainfo";
-            }
-            {
-              mime = "application/vnd.adobe.illustrator";
-              run = "mediainfo";
-            }
-            {
-              mime = "image/x-eps";
-              run = "mediainfo";
-            }
-            {
-              mime = "application/eps";
+              mime = "{application/postscript,application/illustrator,application/dvb.ait,application/vnd.adobe.illustrator,image/x-eps,application/eps}";
               run = "mediainfo";
             }
           ];

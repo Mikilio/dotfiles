@@ -12,74 +12,72 @@
         includes = [
           "~/.lima/*/ssh.config"
         ];
-        matchBlocks = {
+        settings = {
           uni = {
-            hostname = "lxhalle.in.tum.de";
-            user = "mio";
-            forwardX11 = true;
-            forwardAgent = true;
+            HostName = "lxhalle.in.tum.de";
+            User = "mio";
+            ForwardX11 = true;
+            ForwardAgent = true;
           };
           dr01 = {
-            hostname = "176.9.139.62";
-            port = 54022;
-            user = "mikilio";
+            HostName = "176.9.139.62";
+            Port = 54022;
+            User = "mikilio";
           };
           dr01-root = {
-            hostname = "176.9.139.62";
-            port = 54022;
-            user = "root";
+            HostName = "176.9.139.62";
+            Port = 54022;
+            User = "root";
           };
           dr01-rescue = {
-            hostname = "176.9.139.62";
-            user = "root";
+            HostName = "176.9.139.62";
+            User = "root";
           };
           dr01wg = {
-            hostname = "10.10.0.1";
-            port = 54022;
-            user = "mikilio";
+            HostName = "10.10.0.1";
+            Port = 54022;
+            User = "mikilio";
           };
           dr01unlock = {
-            hostname = "176.9.139.62";
-            user = "root";
-            port = 2222;
+            HostName = "176.9.139.62";
+            User = "root";
+            Port = 2222;
           };
           dr02unlock = {
-            hostname = "88.99.164.24";
-            user = "root";
-            port = 2222;
+            HostName = "88.99.164.24";
+            User = "root";
+            Port = 2222;
           };
           dr02-root = {
-            hostname = "88.99.164.24";
-            port = 54022;
-            user = "root";
+            HostName = "88.99.164.24";
+            Port = 54022;
+            User = "root";
           };
           dr02-rescue = {
-            hostname = "88.99.164.24";
-            user = "root";
-            port = 22;
+            HostName = "88.99.164.24";
+            User = "root";
+            Port = 22;
           };
           dr02 = {
-            hostname = "88.99.164.24";
-            port = 54022;
-            user = "mikilio";
+            HostName = "88.99.164.24";
+            Port = 54022;
+            User = "mikilio";
           };
           testbed = {
-            hostname = "testbed.acn.net.cit.tum.de";
-            user = "s12333";
-            port = 10022;
+            HostName = "testbed.acn.net.cit.tum.de";
+            User = "s12333";
+            Port = 10022;
           };
           "*.testbed" = {
-            hostname = "%h.acn.net.cit.tum.de";
-            user = "root";
-            proxyJump = "testbed";
-            checkHostIP = false;
+            HostName = "%h.acn.net.cit.tum.de";
+            User = "root";
+            ProxyJump = "testbed";
+            CheckHostIP = false;
           };
           "." = {
-            hashKnownHosts = true;
-            extraOptions = {
-              XAuthLocation = "${pkgs.xauth}/bin/xauth";
-              KexAlgorithms = "curve25519-sha256,curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521";
-            };
+            HashKnownHosts = true;
+            XAuthLocation = "${pkgs.xauth}/bin/xauth";
+            KexAlgorithms = "curve25519-sha256,curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521";
           };
         };
       };
