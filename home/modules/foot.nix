@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, lib, config, ... }:
 let
   inherit (builtins) concatStringsSep attrNames readDir;
 in
@@ -10,7 +10,7 @@ in
     server.enable = true;
     settings = {
       main = {
-        shell = "${pkgs.tmux}/bin/tmux attach-session";
+        shell = "${lib.getExe pkgs.tmux} list-sessions >/dev/null 2>&1 && ${lib.getExe pkgs.tmux} attach-session || exec ${pkgs.bashInteractive}/bin/bash";
         login-shell = "yes";
       };
 

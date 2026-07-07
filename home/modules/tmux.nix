@@ -173,6 +173,7 @@
           RemainAfterExit = true;
           ExecStart = start;
           ExecStop = shutdown;
+          Environment = ["TMUX_TMPDIR=%t"];
         };
         Install.WantedBy = ["default.target"];
       };
