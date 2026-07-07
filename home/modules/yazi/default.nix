@@ -114,12 +114,12 @@
           gvfs = [
             # Do not preload files in mounted locations
             {
-              name = "/run/user/1000/gvfs/**/*";
+              url = "/run/user/1000/gvfs/**/*";
               run = "noop";
             }
             # For mounted hard disk/drive
             {
-              name = "/run/media/${username}/**/*";
+              url = "/run/media/${username}/**/*";
               run = "noop";
             }
           ];
@@ -129,7 +129,7 @@
             [
               # Allow to preview folder
               {
-                name = "*/";
+                url = "*/";
                 run = "folder";
               }
               # Existing ouch previewer
