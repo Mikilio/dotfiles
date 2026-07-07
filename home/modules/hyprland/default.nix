@@ -24,7 +24,7 @@
   };
 in {
   imports = [
-    ./keybinds.nix
+    # ./keybinds.nix
     ./scratchpad.nix
   ];
   options.i18n.inputMethod.fcitx5.imList = lib.mkOption {

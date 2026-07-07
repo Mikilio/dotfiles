@@ -10,19 +10,7 @@
 
   config =
     {
-      services.displayManager.dms-greeter = {
-        enable = true;
-        compositor = {
-          name = "hyprland";
-          customConfig = ''
-            env = DMS_RUN_GREETER,1
-
-            misc {
-                disable_hyprland_logo = true
-            }
-          '';
-        };
-      };
+      services.displayManager.dms-greeter.enable = true;
 
       programs.dms-shell = {
         enable = true;
@@ -50,6 +38,7 @@
             user = lib.mkDefault user;
           };
           dms-greeter = {
+            enable = true;
             # Sync your user's DankMaterialShell theme with the greeter. You'll probably want this
             configHome = "/home/${user}";
 

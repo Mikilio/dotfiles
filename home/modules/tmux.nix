@@ -158,7 +158,7 @@
             echo "tmux has been running for less than 60 seconds ($elapsed us); skipping save script..."
         fi
       '';
-      start = "${tmux} start-server";
+      start = "${pkgs.bashInteractive}/bin/bash -c '. ${config.home.profileDirectory}/etc/profile.d/hm-session-vars.sh && exec ${tmux} start-server'";
     in {
       services.tmux-server = {
         Unit = {
@@ -173,7 +173,6 @@
           RemainAfterExit = true;
           ExecStart = start;
           ExecStop = shutdown;
-          Environment = ["TMUX_TMPDIR=%t"];
         };
         Install.WantedBy = ["default.target"];
       };

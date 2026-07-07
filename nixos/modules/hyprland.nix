@@ -14,6 +14,18 @@
     ];
     displayManager = {
       defaultSession = "hyprland-uwsm";
+      dms-greeter = {
+        compositor = {
+          name = "hyprland";
+          customConfig = ''
+            env = DMS_RUN_GREETER,1
+
+            misc {
+                disable_hyprland_logo = true
+            }
+          '';
+        };
+      };
     };
   };
 
