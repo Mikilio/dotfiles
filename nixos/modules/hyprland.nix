@@ -8,9 +8,14 @@
   # for hyprlock
   security.pam.services.hyprlock = {};
 
-  services.dbus.packages = with pkgs; [
-    xdg-desktop-portal-hyprland
-  ];
+  services = {
+    dbus.packages = with pkgs; [
+      xdg-desktop-portal-hyprland
+    ];
+    displayManager = {
+      defaultSession = "hyprland-uwsm";
+    };
+  };
 
   # enable hyprland and required options
   programs = {
