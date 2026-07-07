@@ -20,6 +20,11 @@
         plugins = {
           dankBatteryAlerts.enable = true;
           dockerManager.enable = true;
+          commandRunner.enable = true;
+          emojiLauncher.enable = true;
+          nixPackageRunner.enable = true;
+          calculator.enable = true;
+          dankGifSearch.enable = true;
         };
       };
     }
