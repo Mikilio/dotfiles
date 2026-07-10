@@ -250,7 +250,7 @@ in {
             enabled = true;
             speed = 6;
             bezier = "default";
-            style = "slidefadevert 20%";
+            style = "slidefadevert -20%";
           }
           {
             leaf = "global";
@@ -360,6 +360,45 @@ in {
             enabled = true;
             speed = 6;
             bezier = "easeOutQuint";
+          }
+        ];
+
+        # non-application window rules
+        window_rule = [
+          # smart gaps
+          {
+            match.float = false;
+            match.workspace = "w[tv1]";
+            border_size = 1;
+          }
+          {
+            match.float = false;
+            match.workspace = "f[1]";
+            border_size = 1;
+          }
+          # optimization
+          {
+            match.float = false;
+            no_shadow = true;
+          }
+          # fix xwayland apps
+          {
+            match.xwayland = true;
+            match.float = true;
+            rounding = 0;
+          }
+        ];
+
+        workspace_rule = [
+          {
+            workspace = "w[tv1]";
+            gaps_out = 0;
+            gaps_in = 0;
+          }
+          {
+            workspace = "f[1]";
+            gaps_out = 0;
+            gaps_in = 0;
           }
         ];
       };
