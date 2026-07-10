@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  inputs,
   ...
 }: let
   cfg = config.services.opencode;
@@ -19,17 +18,9 @@ in {
       default = 4096;
       description = "Port to listen on";
     };
-
-    preset = lib.mkOption {
-      type = lib.types.enum ["antigravity" "custom" "geminicli" "github"];
-      default = "custom";
-      description = "Which preset opencode.json to use from opencode-config";
-    };
   };
 
-  config = let
-    configSource = "${inputs.opencode-config.outPath}/opencode.${cfg.preset}.example.json";
-  in {
+  config = {
     users.users.opencode = {
       isSystemUser = true;
       group = "opencode";
@@ -55,7 +46,6 @@ in {
       ];
       environment = {
         inherit (config.environment.variables) NIX_PATH;
-        OPENCODE_CONFIG_DIR = configSource;
       };
 
       serviceConfig = {
