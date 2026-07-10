@@ -49,6 +49,7 @@
   workspaceRule = name: sp: {
     workspace = "special:scratch_${name}";
     gaps_out = 60;
+    layout = "scrolling";
     on_created_empty = lib.generators.mkLuaInline ''"${wrap sp.command}"'';
   };
 

@@ -136,21 +136,20 @@ in {
           };
 
           general = {
-            border_size = 2;
             allow_tearing = true;
+            layout = "master";
           };
 
           xwayland = {
             force_zero_scaling = true;
           };
 
-          dwindle = {
-            preserve_split = true;
+          master = {
+            mfact = 0.6;
           };
 
           decoration = {
             dim_inactive = false;
-            rounding = 8;
 
             shadow = {
               enabled = true;
@@ -262,253 +261,105 @@ in {
           {
             leaf = "border";
             enabled = true;
-            speed = 5.39;
+            speed = 8;
             bezier = "easeOutQuint";
           }
           {
             leaf = "windows";
             enabled = true;
-            speed = 4.79;
+            speed = 5;
             spring = "easy";
           }
           {
             leaf = "windowsIn";
             enabled = true;
-            speed = 4.1;
+            speed = 4;
             spring = "easy";
-            style = "popin 87%";
+            style = "popin 90%";
           }
           {
             leaf = "windowsOut";
             enabled = true;
-            speed = 1.49;
-            bezier = "linear";
-            style = "popin 87%";
+            speed = 3;
+            bezier = "easeOutQuint";
+            style = "popin 90%";
           }
           {
             leaf = "fadeIn";
             enabled = true;
-            speed = 1.73;
-            bezier = "almostLinear";
+            speed = 2.5;
+            bezier = "easeOutQuint";
           }
           {
             leaf = "fadeOut";
             enabled = true;
-            speed = 1.46;
-            bezier = "almostLinear";
+            speed = 2;
+            bezier = "easeOutQuint";
           }
           {
             leaf = "fade";
             enabled = true;
-            speed = 3.03;
-            bezier = "quick";
+            speed = 4;
+            bezier = "easeOutQuint";
           }
           {
             leaf = "layers";
             enabled = true;
-            speed = 3.81;
-            bezier = "easeOutQuint";
+            speed = 3.5;
+            spring = "easy";
           }
           {
             leaf = "layersIn";
             enabled = true;
-            speed = 4;
-            bezier = "easeOutQuint";
+            speed = 3;
+            spring = "easy";
             style = "fade";
           }
           {
             leaf = "layersOut";
             enabled = true;
-            speed = 1.5;
-            bezier = "linear";
+            speed = 2.5;
+            bezier = "easeOutQuint";
             style = "fade";
           }
           {
             leaf = "fadeLayersIn";
             enabled = true;
-            speed = 1.79;
-            bezier = "almostLinear";
+            speed = 2.5;
+            spring = "easy";
           }
           {
             leaf = "fadeLayersOut";
             enabled = true;
-            speed = 1.39;
-            bezier = "almostLinear";
+            speed = 2;
+            bezier = "easeOutQuint";
           }
           {
             leaf = "workspaces";
             enabled = true;
-            speed = 1.94;
-            bezier = "almostLinear";
-            style = "fade";
+            speed = 7;
+            bezier = "easeOutQuint";
+            style = "slideright";
           }
           {
             leaf = "workspacesIn";
             enabled = true;
-            speed = 1.21;
-            bezier = "almostLinear";
-            style = "fade";
+            speed = 5;
+            bezier = "easeOutQuint";
+            style = "slideright";
           }
           {
             leaf = "workspacesOut";
             enabled = true;
-            speed = 1.94;
-            bezier = "almostLinear";
-            style = "fade";
+            speed = 4;
+            bezier = "easeOutQuint";
+            style = "slideright";
           }
           {
             leaf = "zoomFactor";
             enabled = true;
-            speed = 7;
-            bezier = "quick";
-          }
-        ];
-
-        window_rule = [
-          #floating windows
-          {
-            match.class = "^(org.gnome.Calculator)$";
-            float = true;
-          }
-          {
-            match.class = "^(org.gnome.Nautilus)$";
-            float = true;
-          }
-          {
-            match.class = "^(pavucontrol)$";
-            float = true;
-          }
-          {
-            match.class = "^(nm-connection-editor)$";
-            float = true;
-          }
-          {
-            match.class = "^(blueberry.py)$";
-            float = true;
-          }
-          {
-            match.class = "^(org.gnome.Settings)$";
-            float = true;
-          }
-          {
-            match.class = "^(org.gnome.design.Palette)$";
-            float = true;
-          }
-          {
-            match.class = "^(Color Picker)$";
-            float = true;
-          }
-          {
-            match.class = "^(xdg-desktop-portal)$";
-            float = true;
-          }
-          {
-            match.class = "^(xdg-desktop-portal-gnome)$";
-            float = true;
-          }
-          {
-            match.class = "^(transmission-gtk)$";
-            float = true;
-          }
-          {
-            match.class = "^(com.github.Aylur.ags)$";
-            float = true;
-          }
-
-          # smart gaps
-          {
-            match.float = false;
-            match.workspace = "w[tv1]";
-            border_size = 1;
-          }
-          {
-            match.float = false;
-            match.workspace = "f[1]";
-            border_size = 1;
-          }
-
-          #markdown preview for neovim
-          {
-            match.title = "^(Markdown Preview)(.*)$";
-            tile = true;
-          }
-
-          #optimization
-          {
-            match.float = false;
-            no_shadow = true;
-          }
-
-          # fix xwayland apps
-          {
-            match.xwayland = true;
-            match.float = true;
-            rounding = 0;
-          }
-
-          #Zoom meetings
-          {
-            match.class = "^(zoom)$";
-            float = true;
-          }
-          {
-            match.title = "^(zoom_linux_float_video_window)$";
-            pin = true;
-          }
-          {
-            match.class = "^(zoom)$";
-            match.title = "^(as_toolbar)$";
-            pin = true;
-          }
-
-          #allow tearing for steam games
-          {
-            match.class = "^(steam_app_)(.*)$";
-            immediate = true;
-          }
-
-          # make picture in picture a nice pinned window
-          {
-            match.class = "^(firefox)$";
-            match.title = "^(Picture-in-Picture)$";
-            float = true;
-            pin = true;
-            keep_aspect_ratio = true;
-            border_size = 0;
-          }
-          {
-            match.initial_title = "^(Discord Popout)$";
-            float = true;
-            pin = true;
-            keep_aspect_ratio = true;
-            border_size = 0;
-          }
-
-          #workarount for thunderai
-          {
-            match.class = "thunderbird";
-            match.title = "^(?!Mozilla*)";
-            float = true;
-          }
-
-          #floating ephemeral terminals
-          {
-            match.class = "com.mitchellh.ghostty";
-            match.title = "ephemeral";
-            float = true;
-          }
-        ];
-
-        workspace_rule = [
-          {
-            workspace = "w[tv1]";
-            gaps_out = 0;
-            gaps_in = 0;
-          }
-          {
-            workspace = "f[1]";
-            gaps_out = 0;
-            gaps_in = 0;
+            speed = 6;
+            bezier = "easeOutQuint";
           }
         ];
       };
