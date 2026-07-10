@@ -21,9 +21,6 @@
     };
   };
 in {
-  imports = [
-  ];
-
   nixpkgs = {
     config = {
       permittedInsecurePackages = [

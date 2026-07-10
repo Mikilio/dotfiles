@@ -3,13 +3,8 @@
   lib,
   options,
   config,
-  inputs,
   ...
 }: {
-  imports = [
-    inputs.dcal.homeModules.default
-  ];
-
   config =
     {
       systemd.user = {
@@ -53,16 +48,6 @@
         ghostty.settings.theme = lib.mkIf config.programs.ghostty.enable (lib.mkForce "dankcolors");
         television.settings.ui.theme = lib.mkIf config.programs.television.enable (lib.mkForce "matugen");
         yazi.theme = lib.mkIf config.programs.yazi.enable (lib.mkForce {});
-        dank-calendar = {
-          enable = true;
-          systemd.enable = true;
-          settings = ''
-            remindersEnabled = true;
-            use24HourClock = true;
-            defaultReminderMinutes = 10;
-            snoozeMinutes = 5;
-          '';
-        };
       };
 
       home =

@@ -37,13 +37,15 @@
         };
       };
 
-      perSystem = {
-        pkgs,
-        lib,
-        system,
-        ...
-      }: {
+      perSystem = {pkgs, ...}: {
         formatter = pkgs.alejandra;
+        devShells = {
+          default = pkgs.mkShell {
+            packages = with pkgs; [
+              nixd
+            ];
+          };
+        };
       };
     };
 
@@ -75,7 +77,7 @@
       url = "github:AvengeMedia/DankMaterialShell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    
+
     dcal = {
       url = "github:AvengeMedia/dankcalendar";
       inputs.nixpkgs.follows = "nixpkgs";

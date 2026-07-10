@@ -6,14 +6,27 @@
   config,
   ...
 }: {
-  imports = [inputs.dms-plugin-registry.nixosModules.default];
+  imports = [
+    inputs.dms-plugin-registry.nixosModules.default
+    inputs.dcal.nixosModules.default
+  ];
 
   config =
     {
+      nixpkgs.overlays = [
+        (final: prev: {
+          dcal = config.programs.dank-calendar.package;
+        })
+      ];
+
       services.displayManager.dms-greeter.enable = true;
 
       programs = {
         dsearch = {
+          enable = true;
+          systemd.enable = true;
+        };
+        dank-calendar = {
           enable = true;
           systemd.enable = true;
         };
