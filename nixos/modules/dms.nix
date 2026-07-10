@@ -12,19 +12,26 @@
     {
       services.displayManager.dms-greeter.enable = true;
 
-      programs.dms-shell = {
-        enable = true;
-        package = inputs.dms.packages.${pkgs.stdenv.hostPlatform.system}.default;
-        quickshell.package = inputs.quickshell.packages.${pkgs.stdenv.hostPlatform.system}.quickshell;
-        enableAudioWavelength = false;
-        plugins = {
-          dankBatteryAlerts.enable = true;
-          dockerManager.enable = true;
-          commandRunner.enable = true;
-          emojiLauncher.enable = true;
-          nixPackageRunner.enable = true;
-          calculator.enable = true;
-          dankGifSearch.enable = true;
+      programs = {
+        dsearch = {
+          enable = true;
+          systemd.enable = true;
+        };
+        dms-shell = {
+          enable = true;
+          package = inputs.dms.packages.${pkgs.stdenv.hostPlatform.system}.default;
+          quickshell.package = inputs.quickshell.packages.${pkgs.stdenv.hostPlatform.system}.quickshell;
+          enableAudioWavelength = false;
+          enableCalendarEvents = false;
+          plugins = {
+            dankBatteryAlerts.enable = true;
+            dockerManager.enable = true;
+            commandRunner.enable = true;
+            emojiLauncher.enable = true;
+            nixPackageRunner.enable = true;
+            calculator.enable = true;
+            dankGifSearch.enable = true;
+          };
         };
       };
     }

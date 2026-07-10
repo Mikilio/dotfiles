@@ -75,6 +75,11 @@
       url = "github:AvengeMedia/DankMaterialShell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    
+    dcal = {
+      url = "github:AvengeMedia/dankcalendar";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     dms-plugin-registry = {
       url = "github:AvengeMedia/dms-plugin-registry";
