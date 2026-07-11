@@ -51,6 +51,7 @@
     gaps_out = 60;
     layout = "scrolling";
     on_created_empty = lib.generators.mkLuaInline ''"${wrap sp.command}"'';
+    layout_opts.focus_fit_method = 1;
   };
 
   windowRule = name: sp: {
