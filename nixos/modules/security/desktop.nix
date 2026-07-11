@@ -79,7 +79,10 @@ in {
       packages = [
         pkgs.usbguard-notifier
       ];
-      coredump.enable = false;
+      coredump = {
+        enable = true;
+        settings.Coredump.Storage = "journal";
+      };
 
       services."polkit-agent-helper@".serviceConfig = lib.mkIf config.security.pam.u2f.enable {
         PrivateDevices = false;

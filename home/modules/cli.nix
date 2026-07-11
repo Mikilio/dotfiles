@@ -106,7 +106,7 @@ in {
 
           DIRENV_LOG_FORMAT = "";
         };
-        sessionPath = ["$HOME/.local/share/bin"];
+        sessionPath = ["${config.home.homeDirectory}/.local/share/bin"];
       }
       // lib.optionalAttrs (builtins.hasAttr "persistence" options.home)
       {
