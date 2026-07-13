@@ -81,12 +81,6 @@
           key = "S"; #Social | Slack
         };
 
-        spotify = {
-          command = [(lib.getExe pkgs.spotifywm)];
-          match.initialClass = "spotify";
-          key = "T"; # Tunes
-        };
-
         chat = {
           command = [(lib.getExe pkgs.telegram-desktop) "${pkgs.wasistlos}/bin/wasistlos"];
           match.initialClass = "org.telegram.desktop";

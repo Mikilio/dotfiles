@@ -5,6 +5,10 @@
   config,
   ...
 }: {
+  imports = [
+    ./keybinds.nix
+  ];
+
   config =
     {
       systemd.user = {
@@ -32,7 +36,6 @@
         require("dms.outputs")
         require("dms.layout")
         require("dms.cursor")
-        require("dms.binds")
         require("dms.binds-user")
         require("dms.windowrules")
       '';
