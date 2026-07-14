@@ -116,8 +116,6 @@ in {
       gtk4.extraConfig.gtk-im-module = "fcitx";
     };
 
-    systemd.user.services.hyprpaper.Service.Slice = "background-graphical.slice";
-
     # enable hyprland
     wayland.windowManager.hyprland = {
       enable = true;

@@ -8,7 +8,9 @@ in {
   programs.ghostty = {
     enable = true;
     settings = {
-      command = "${lib.getExe pkgs.tmux} list-sessions >/dev/null 2>&1 && ${lib.getExe pkgs.tmux} attach-session -t Desktop || exec ${pkgs.bashInteractive}/bin/bash";
+      command = ''
+        ${pkgs.bashInteractive}/bin/bash -c '${lib.getExe pkgs.tmux} list-sessions >/dev/null 2>&1 && exec ${lib.getExe pkgs.tmux} attach-session -t Desktop || exec ${pkgs.bashInteractive}/bin/bash'
+      '';
       window-decoration = false;
       confirm-close-surface = false;
 

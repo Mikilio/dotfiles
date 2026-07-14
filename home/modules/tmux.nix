@@ -23,7 +23,7 @@
 
               sed -i \
                 -e '/_popup_/d' \
-                -e 's| --cmd .*-vim-pack-dir||g' \
+                -e 's| --cmd lua .*||g' \
                 -e "s|/etc/profiles/per-user/$USER/bin/||g" \
                 -e 's|/nix/store.*/bin/||g' \
                 "$file"
@@ -34,6 +34,7 @@
               set -g @resurrect-processes 'ssh psql mysql sqlite3 btop bat socat "nix repl" ~python3 "~yarn watch" yazi "gh dash"'
               set -g @resurrect-dir ~/.local/share/tmux/resurrect
               set -g @resurrect-hook-post-save-all ${clean_save}
+              set -g @continuum-save-interval '0'
             '';
         }
         {
@@ -158,7 +159,10 @@
             echo "tmux has been running for less than 60 seconds ($elapsed us); skipping save script..."
         fi
       '';
-      start = "${pkgs.bashInteractive}/bin/bash -c '. ${config.home.profileDirectory}/etc/profile.d/hm-session-vars.sh && exec ${tmux} start-server'";
+
+      start = ''
+        ${pkgs.bashInteractive}/bin/bash -c 'exec ${tmux} start-server'
+      '';
     in {
       services.tmux-server = {
         Unit = {
@@ -174,14 +178,14 @@
           ExecStart = start;
           ExecStop = shutdown;
         };
-        Install.WantedBy = ["default.target"];
+        Install.WantedBy = ["graphical-session.target"];
       };
       slices.tmux = {
         Unit = {
           Description = "tmux user sessions";
           Documentation = "man:tmux(1)";
+          PartOf = ["tmux-server.service"];
         };
-        Slice.Slice = ["app.slice"];
       };
     };
     home =
