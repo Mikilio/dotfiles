@@ -26,6 +26,8 @@ in {
       permittedInsecurePackages = [
         #user spoofing
         "jitsi-meet-1.0.8792"
+        #EOL but used
+        "electron-40.10.5"
       ];
       allowUnfreePredicate = pkg:
         builtins.elem [] (
