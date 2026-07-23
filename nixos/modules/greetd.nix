@@ -23,7 +23,13 @@ in {
        RUN+="${pkgs.systemd}/bin/loginctl unlock-sessions"
     '';
 
-    services.fprintd.enable = true;
+    services = {
+      fprintd.enable = true;
+      rosec = {
+        enable = true;
+        pam.enable = true;
+      };
+    };
 
     security.pam = {
       u2f = {
@@ -36,28 +42,11 @@ in {
         greetd = {
           fprintAuth = false;
           u2fAuth = false;
-          rules = let
-            rule = {
-              rosec = {
-                control = "optional";
-                order = 20000;
-                modulePath = "${rosec}/lib/security/pam_mysql.so";
-              };
-            };
-          in {
-            auth = rule;
-            session = rule;
-            password = rule;
-          };
         };
       };
     };
     environment =
-      {
-        systemPackages = [
-          rosec
-        ];
-      }
+      {}
       // lib.optionalAttrs (options.environment?persistence)
       {
         persistence = {
