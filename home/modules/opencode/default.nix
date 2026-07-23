@@ -67,13 +67,23 @@
     }
     // lib.optionalAttrs (builtins.hasAttr "persistence" options.home)
     {
-      home.persistence."/persistent/cache" = {
-        directories = [
-          {
-            directory = ".local/share/opencode";
-            mode = "0700";
-          }
-        ];
+      home.persistence = {
+        "/persistent/storage" = {
+          directories = [
+            {
+              directory = ".local/share/opencode";
+              mode = "0700";
+            }
+          ];
+        };
+        "/persistent/cache" = {
+          directories = [
+            {
+              directory = ".config/opencode";
+              mode = "0700";
+            }
+          ];
+        };
       };
     };
 }

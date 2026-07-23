@@ -24,6 +24,7 @@
               sed -i \
                 -e '/_popup_/d' \
                 -e 's| --cmd lua .*||g' \
+                -e 's| --cmd .*vim-pack-dir||g' \
                 -e "s|/etc/profiles/per-user/$USER/bin/||g" \
                 -e 's|/nix/store.*/bin/||g' \
                 "$file"
@@ -185,6 +186,7 @@
           Description = "tmux user sessions";
           Documentation = "man:tmux(1)";
           PartOf = ["tmux-server.service"];
+          After = ["graphical-session.target"];
         };
       };
     };
