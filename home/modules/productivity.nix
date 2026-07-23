@@ -103,12 +103,13 @@ in {
           "/persistent/cache" = {
             directories = [
               #Electron mess
-              ".config/Morgen"
               ".config/obsidian"
               ".config/Element"
               ".config/teams-for-linux"
               ".config/karere"
               ".config/vesktop"
+              ".config/Slack"
+              ".config/Signal"
 
               #actual caches
               ".cache/vfs"

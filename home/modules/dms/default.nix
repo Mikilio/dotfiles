@@ -68,6 +68,7 @@
             "/persistent/storage".directories = [
               ".config/matugen"
               ".config/DankMaterialShell"
+              ".local/share/dankcal"
             ];
           };
         };
