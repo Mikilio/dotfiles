@@ -46,7 +46,7 @@
 
     services.rosec = {
       enable = true;
-      package = pkgs.nur.repos.mikilio.rosec;
+      package = pkgs.rosecFull;
       settings = {
         service = {
           dedup_strategy = "priority";

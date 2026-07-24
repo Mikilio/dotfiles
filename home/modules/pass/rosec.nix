@@ -11,10 +11,7 @@ in {
   options.services.rosec = {
     enable = lib.mkEnableOption "rosec secrets daemon";
 
-    package = lib.mkOption {
-      type = lib.types.package;
-      description = "The rosec package to use";
-    };
+    package = lib.mkPackageOption pkgs "rosec" {};
 
     settings = lib.mkOption {
       type = format.type;
