@@ -169,7 +169,7 @@
         Unit = {
           Description = "tmux user server";
           Documentation = "man:tmux(1)";
-          After = ["tmux.slice"];
+          After = ["tmux.slice" "graphical-session.target"];
         };
 
         Service = {
@@ -186,7 +186,6 @@
           Description = "tmux user sessions";
           Documentation = "man:tmux(1)";
           PartOf = ["tmux-server.service"];
-          After = ["graphical-session.target"];
         };
       };
     };
