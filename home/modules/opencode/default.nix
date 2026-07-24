@@ -5,70 +5,45 @@
   options,
   ...
 }: {
-  options.programs.opencode.environments = lib.mkOption {
-    type = lib.types.attrsOf lib.types.str;
-    default = {};
-    description = ''
-      Environment variables to set for OpenCode, where the value is a command
-      that outputs the environment variable value (without trailing newline).
+  config = {
+    programs = {
+      opencode = {
+        enable = true;
+        enableMcpIntegration = true;
+        context = ''
+          You are running on NixOS. Key facts:
 
-      Example:
-        {
-          CONTEXT7_API_KEY = "rbw get context7-api-key";
-          ANTHROPIC_API_KEY = "op read op://Personal/Anthropic/api_key";
-        }
-    '';
-    example = {
-      CONTEXT7_API_KEY = "rbw get context7-api-key";
-    };
-  };
+          - You have access to all nix CLI commands.
+          - If a tool or package is missing, install it impermanently with `nix-shell -p <package> --run "..."` or `nix run nixpkgs#<package> -- ...`. Do not attempt to use package managers like apt, dnf, or brew.
+          - If a command fails because a binary is missing, reach for nix first.
 
-  config = let
-    exports = lib.mapAttrsToList (n: v: "export ${n}=\"$(${v} | tr -d '\\n')\"") config.programs.opencode.environments;
-  in
-    {
-      programs = {
-        opencode = {
-          enable = true;
-          package = pkgs.writeShellScriptBin "opencode" ''
-            ${lib.strings.concatLines exports}
-            exec ${pkgs.systemd}/bin/systemd-run \
-              --user \
-              --scope \
-              --collect \
-              -- ${lib.getExe pkgs.opencode} "$@"
-          '';
-          enableMcpIntegration = true;
-          extraPackages = with pkgs; [
-          ];
-        };
-        mcp = {
-          enable = true;
-          servers = {
-            playwright = {
-              command = "docker";
-              args = ["run" "-i" "--rm" "--init" "--pull=always" "mcr.microsoft.com/playwright/mcp"];
-            };
-            context7 = {
-              url = "https://mcp.context7.com/mcp";
-              headers = {
-                CONTEXT7_API_KEY = "{env:CONTEXT7_API_KEY}";
-              };
-            };
-            github = {
-              url = "https://api.githubcopilot.com/mcp/readonly";
-              headers = {
-                Authorization = "Bearer {env:GITHUB_PAT}";
-              };
-            };
+          All dependencies you care about are likely in the nix store. Always use the nix CLI to discover them.
+          DO NOT search or query the nix store with any unix commands.
+        '';
+      };
+      mcp = {
+        enable = true;
+        servers = {
+          playwright = {
+            enabled = false;
+            command = "docker";
+            args = ["run" "-i" "--rm" "--init" "--pull=always" "mcr.microsoft.com/playwright/mcp"];
           };
         };
       };
-    }
-    // lib.optionalAttrs (builtins.hasAttr "persistence" options.home)
-    {
-      home.persistence = {
-        "/persistent/storage" = {
+    };
+    home =
+      {
+        packages = with pkgs; [
+          mgrep
+          openspec
+          nono
+          pi-coding-agent
+        ];
+      }
+      // lib.optionalAttrs (builtins.hasAttr "persistence" options.home)
+      {
+        persistence."/persistent/cache" = {
           directories = [
             {
               directory = ".local/share/opencode";
@@ -76,14 +51,6 @@
             }
           ];
         };
-        "/persistent/cache" = {
-          directories = [
-            {
-              directory = ".config/opencode";
-              mode = "0700";
-            }
-          ];
-        };
       };
-    };
+  };
 }
