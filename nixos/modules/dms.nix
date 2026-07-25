@@ -58,10 +58,6 @@
       in
         lib.mkIf (users
           != []) {
-          autoLogin = {
-            enable = true;
-            user = lib.mkDefault user;
-          };
           dms-greeter = {
             enable = true;
             # Sync your user's DankMaterialShell theme with the greeter. You'll probably want this
