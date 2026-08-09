@@ -76,7 +76,56 @@
 
       herdr = {
         enable = true;
-        settings = {};
+        settings = {
+          onboarding = false;
+
+          theme = {
+            name = "terminal";
+            auto_switch = true;
+            dark_name = "terminal";
+            light_name = "terminal";
+          };
+
+          keys = {
+            prefix = "ctrl+space";
+            previous_tab = "alt+p";
+            next_tab = "alt+n";
+            copy_mode = "prefix+v";
+            focus_pane_left = "ctrl+left";
+            focus_pane_down = "ctrl+down";
+            focus_pane_up = "ctrl+up";
+            focus_pane_right = "ctrl+right";
+            split_vertical = "prefix+%";
+            split_horizontal = ''prefix+"'';
+            command = [
+              {
+                key = "prefix+e";
+                type = "plugin_action";
+                command = "chmarax.herdr-nvim.toggle";
+                description = "toggle nvim sidebar";
+              }
+              {
+                key = "prefix+o";
+                type = "plugin_action";
+                command = "chmarax.herdr-nvim.pick-file";
+                description = "open file from agent output";
+              }
+            ];
+          };
+
+          worktrees = {
+            directory = "~/Code/worktrees";
+          };
+
+          ui = {
+            prompt_new_tab_name = false;
+            agent_panel_sort = "priority";
+            show_agent_labels_on_pane_borders = true;
+            toast = {
+              delivery = "system";
+            };
+          };
+        };
       };
 
       mcp = {
@@ -98,6 +147,14 @@
           nono
           pi-coding-agent
         ];
+
+        file = {
+          ".config/herdr/plugins/herdr-nvim".source = pkgs.herdr-nvim;
+        };
+
+        activation.herdrPluginLink = lib.hm.dag.entryAfter ["writeBoundary"] ''
+          ${lib.getExe pkgs.herdr} plugin link ${config.home.homeDirectory}/.config/herdr/plugins/herdr-nvim >/dev/null 2>&1 || true
+        '';
       }
       // lib.optionalAttrs (builtins.hasAttr "persistence" options.home)
       {
