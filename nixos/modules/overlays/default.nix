@@ -46,6 +46,7 @@ in {
             "wappalyzer"
             "obsidian"
             "teamviewer.*"
+            "claude-code"
             "libfprint-2-tod1-goodix"
           ]
         );
