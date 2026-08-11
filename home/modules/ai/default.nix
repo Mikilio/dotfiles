@@ -166,6 +166,21 @@
             }
           ];
         };
+
+        persistence."/persistent/storage" = {
+          directories = [
+            {
+              directory = ".local/state/herdr";
+              mode = "0700";
+            }
+          ];
+          files = [
+            {
+              file = ".config/herdr/session.json";
+              parentDirectory = {mode = "0700";};
+            }
+          ];
+        };
       };
   };
 }

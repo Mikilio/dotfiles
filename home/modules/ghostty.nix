@@ -1,16 +1,27 @@
 {
   pkgs,
   lib,
+  config,
+  options,
   ...
 }: let
   inherit (builtins) concatStringsSep attrNames readDir;
+
+  tmux = lib.getExe pkgs.tmux;
+  tmuxCommand = ''
+    ${pkgs.bashInteractive}/bin/bash -c '${tmux} list-sessions >/dev/null 2>&1 && exec ${tmux} attach-session -t Desktop || exec ${pkgs.bashInteractive}/bin/bash'
+  '';
+
+  herdrEnabled = builtins.hasAttr "herdr" options.programs && config.programs.herdr.enable;
 in {
   programs.ghostty = {
     enable = true;
     settings = {
-      command = ''
-        ${pkgs.bashInteractive}/bin/bash -c '${lib.getExe pkgs.tmux} list-sessions >/dev/null 2>&1 && exec ${lib.getExe pkgs.tmux} attach-session -t Desktop || exec ${pkgs.bashInteractive}/bin/bash'
-      '';
+      command = lib.mkIf (config.programs.tmux.enable || herdrEnabled) (
+        if config.programs.tmux.enable
+        then tmuxCommand
+        else lib.getExe pkgs.herdr
+      );
       window-decoration = false;
       confirm-close-surface = false;
 
