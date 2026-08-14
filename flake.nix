@@ -6,36 +6,9 @@
       systems = ["x86_64-linux"];
 
       imports = [
-        inputs.ez-configs.flakeModule
-        inputs.home-manager.flakeModules.home-manager
+        ./nixos/modules/flake-module.nix
+        ./home/modules/flake-module.nix
       ];
-
-      ezConfigs = {
-        root = ./.;
-        globalArgs = {
-          inherit inputs ezConfigs;
-        };
-        home = {
-          earlyModuleArgs = {inherit inputs;};
-          configurationsDirectory = "${ezConfigs.root}/home/profiles";
-          modulesDirectory = "${ezConfigs.root}/home/modules";
-        };
-        nixos = {
-          earlyModuleArgs = {inherit inputs;};
-          configurationsDirectory = "${ezConfigs.root}/nixos/hosts";
-          modulesDirectory = "${ezConfigs.root}/nixos/modules";
-          hosts = {
-            elitebook = {
-              userHomeModules = ["mikilio"];
-            };
-            gamebox = {
-              userHomeModules = ["mikilio"];
-            };
-            pi-probe.importDefault = false;
-            installer.importDefault = false;
-          };
-        };
-      };
 
       perSystem = {pkgs, ...}: {
         formatter = pkgs.alejandra;
@@ -68,11 +41,6 @@
 
     devenv.url = "github:cachix/devenv";
 
-    disko = {
-      url = "github:nix-community/disko";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     dms = {
       url = "github:AvengeMedia/DankMaterialShell";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -95,11 +63,6 @@
 
     elephant.url = "github:abenz1267/elephant";
 
-    ez-configs = {
-      url = "github:ehllie/ez-configs";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     fjordlauncher = {
       url = "github:unmojang/FjordLauncher";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -111,13 +74,6 @@
     };
 
     impermanence.url = "github:nix-community/impermanence";
-
-    nixos-generators = {
-      url = "github:nix-community/nixos-generators";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
     neovix = {
       url = "github:Mikilio/neovix";
