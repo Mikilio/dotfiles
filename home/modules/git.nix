@@ -134,7 +134,7 @@ in {
         set -e
 
         if [ $# -ne 1 ]; then
-          echo "Usage: gh ghq owner/repo"
+          echo "Usage: ghq-fork owner/repo"
           exit 1
         fi
 
@@ -144,21 +144,20 @@ in {
         user=$(gh api user --jq .login)
 
         echo "🔁 Forking $repo..."
-        gh repo fork "$repo" --remote=false
+        gh repo fork "$repo"
 
         echo "📥 Cloning fork via ghq..."
         ghq get "$user/$name"
 
         echo "🔗 Setting upstream remote..."
         cd "$(ghq list -p "$user/$name")"
+        git remote remove upstream 2>/dev/null || true
         git remote add upstream "https://github.com/$owner/$name.git"
 
         echo "📌 Adding to zoxide..."
         zoxide add .
 
         echo "✅ Done! Repo is ready at: $(pwd)"
-
-
       '';
     in {
       packages = with pkgs; [
