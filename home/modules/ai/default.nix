@@ -164,6 +164,10 @@
               directory = ".local/share/opencode";
               mode = "0700";
             }
+            {
+              directory = ".config/herdr";
+              mode = "0700";
+            }
           ];
         };
 
@@ -172,12 +176,6 @@
             {
               directory = ".local/state/herdr";
               mode = "0700";
-            }
-          ];
-          files = [
-            {
-              file = ".config/herdr/session.json";
-              parentDirectory = {mode = "0700";};
             }
           ];
         };

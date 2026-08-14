@@ -19,7 +19,6 @@
     sioyek
     ssh
     tmux
-    transient-services
     xdg
     yazi
     zen
