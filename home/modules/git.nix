@@ -82,19 +82,10 @@ in {
       };
       gh = {
         enable = true;
-        hosts = {
-          "github.com" = {
-            user = "Mikilio";
-          };
-        };
         gitCredentialHelper.enable = true;
         extensions = [pkgs.gh-notify];
         settings = {
           git_protocol = "ssh";
-          aliases = {
-            co = "pr checkout";
-            pv = "pr view";
-          };
         };
       };
       gh-dash = {
@@ -172,22 +163,10 @@ in {
     in {
       packages = with pkgs; [
         ghq
-        ghorg
         git-branchless
         ghq-fork
       ];
       sessionVariables.GHQ_ROOT = "${config.xdg.userDirs.extraConfig.DEV}/Public";
-    };
-    xdg.configFile."ghorg/conf.yaml" = {
-      force = true;
-      text =
-        # yml
-        ''
-          GHORG_ABSOLUTE_PATH_TO_CLONE_TO: ${config.xdg.userDirs.extraConfig.DEV}/Org
-          GHORG_CLONE_PROTOCOL: ssh
-          GHORG_GITHUB_TOKEN: ${config.sops.secrets.github.path}
-
-        '';
     };
   };
 }

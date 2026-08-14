@@ -2,8 +2,15 @@
   pkgs,
   lib,
   config,
+  options,
   ...
 }: {
+  warnings = lib.optional (!(options ? sops && config.sops.secrets ? weather)) ''
+    The HyprPanel weather widget will not get an API key.
+    You may not get all the goodies — define the `weather` sops secret to
+    enable it (see the template in `home/modules/private.nix`).
+  '';
+
   programs.hyprpanel = {
     enable = true;
     systemd.enable = true;
@@ -52,11 +59,14 @@
           time = {
             military = true;
           };
-          weather = {
-            unit = "metric";
-            location = "Munich";
-            key = config.sops.secrets.weather.path;
-          };
+          weather =
+            {
+              unit = "metric";
+              location = "Munich";
+            }
+            // lib.optionalAttrs (options ? sops && config.sops.secrets ? weather) {
+              key = config.sops.secrets.weather.path;
+            };
         };
 
         dashboard = {
@@ -134,11 +144,13 @@
 
   services.network-manager-applet.enable = true;
   wayland.windowManager.hyprland.settings = {
-    bind = [{
-      _args = [
-        "CTRL + ALT + R"
-        (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("systemctl --user restart hyprpanel.service")'')
-      ];
-    }];
+    bind = [
+      {
+        _args = [
+          "CTRL + ALT + R"
+          (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("systemctl --user restart hyprpanel.service")'')
+        ];
+      }
+    ];
   };
 }

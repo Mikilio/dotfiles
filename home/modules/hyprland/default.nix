@@ -35,6 +35,28 @@ in {
     example = ["keyboard-us" "keyboard-ua" "mozc"];
   };
   config = {
+    assertions = [
+      {
+        assertion =
+          builtins.length config.i18n.inputMethod.fcitx5.imList
+          >= 2
+          && builtins.length (lib.strings.splitString "-" (builtins.head config.i18n.inputMethod.fcitx5.imList)) >= 2;
+        message = ''
+          `i18n.inputMethod.fcitx5.imList` is empty or malformed, but the fcitx5
+          input method config requires it: the first entry provides the default
+          keyboard layout (as "layout-variant", e.g. "keyboard-us") and the second
+          entry the default input method.
+
+          Set at least two entries in your profile, e.g.:
+
+            i18n.inputMethod.fcitx5.imList = ["keyboard-us" "keyboard-ua" "mozc"];
+
+          See the template in `home/modules/private.nix` or the example in
+          `mcloud/users/mikilio/common.nix`.
+        '';
+      }
+    ];
+
     home = {
       sessionVariables = environment;
 
