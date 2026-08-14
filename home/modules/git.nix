@@ -126,7 +126,10 @@ in {
           };
         };
       };
-      lazygit.enable = true;
+      lazygit = {
+        enable = true;
+        settings.overrideGpg = true;
+      };
     };
 
     home = let
