@@ -768,6 +768,22 @@
         "type": "gitlab"
       }
     },
+    "herdr-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1786633944,
+        "narHash": "sha256-8rauWsiFvp847ku4OCrhECQGoQUUiZdKOZtjQ2xShYg=",
+        "owner": "ChmaraX",
+        "repo": "herdr-nvim",
+        "rev": "40aadeab3cef3702ef5e05069181c7168084794f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ChmaraX",
+        "repo": "herdr-nvim",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -871,6 +887,7 @@
       "inputs": {
         "flake-parts": "flake-parts_3",
         "focus": "focus",
+        "herdr-nvim": "herdr-nvim",
         "nixpkgs": [
           "nixpkgs"
         ],
@@ -878,11 +895,11 @@
         "treefmt-nix": "treefmt-nix_2"
       },
       "locked": {
-        "lastModified": 1784985435,
-        "narHash": "sha256-mMrliEdwLkrecgJlAy4DQxU9ZrWS5RSvCElRsxMogUI=",
+        "lastModified": 1786728520,
+        "narHash": "sha256-vU4wS1Klps6iDwVTjYHbyU5JBpIAX40oEaEyb8K195g=",
         "owner": "Mikilio",
         "repo": "neovix",
-        "rev": "cc6c038bebacdcce3a27e734692b356c12cedaab",
+        "rev": "1a7b7f9984c495cbe98f17781a261bb736d5708c",
         "type": "github"
       },
       "original": {
