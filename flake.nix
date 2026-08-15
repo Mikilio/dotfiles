@@ -7,7 +7,9 @@
 
       imports = [
         ./nixos/modules/flake-module.nix
+        ./nixos/tests/flake-module.nix
         ./home/modules/flake-module.nix
+        ./home/tests/flake-module.nix
       ];
 
       perSystem = {pkgs, ...}: {
