@@ -6,9 +6,35 @@ on:
   workflow_dispatch:
 
 jobs:
-  checks:
+  checks-list:
     runs-on: ubuntu-latest
-    timeout-minutes: 360
+    outputs:
+      matrix: ${{ steps.chunk.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v30
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Split checks into groups
+        id: chunk
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Hosted runners only have ~14 GB of disk; each VM test pulls a
+          # multi-GB NixOS closure, so a single `nix flake check` over all
+          # checks exceeds the runner. Split the checks into groups and let
+          # each matrix job build one group.
+          checks=$(nix eval --json .#checks.x86_64-linux --apply 's: builtins.attrNames s')
+          groups=$(printf '%s' "$checks" | python3 -c 'import json,sys; n=json.load(sys.stdin); print(json.dumps({"group":[n[i:i+4] for i in range(0,len(n),4)]}))')
+          echo "matrix=$groups" >> "$GITHUB_OUTPUT"
+
+  checks:
+    needs: checks-list
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.checks-list.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v30
@@ -21,10 +47,35 @@ jobs:
       - name: Run checks
         shell: bash
         run: |
-          set -o pipefail
-          # --accept-flake-config: use the substituters declared in flake.nix
-          # (incl. mikilio.cachix.org) instead of building from source.
-          # Evaluation warnings (e.g. upstream deprecations) are not failures;
-          # filter them out of the log so they can't pollute CI output.
-          nix flake check --accept-flake-config --print-build-logs 2>&1 \
-            | grep -v -E 'evaluation warning:|trace: Obsolete option'
+          set -uo pipefail
+          fail=0
+          for check in ${{ join(matrix.group, ' ') }}; do
+            echo "::group::Running $check"
+            # --accept-flake-config: use the substituters declared in flake.nix
+            # (incl. mikilio.cachix.org) instead of building from source.
+            # Evaluation warnings (e.g. upstream deprecations) are not
+            # failures; filter them out of the log so they cannot pollute CI
+            # output. Build (and run) the check with `nix build` instead of
+            # `nix flake check` so each check is run in isolation and can be
+            # skipped/reported independently.
+            log=/tmp/check-build.log
+            nix build --accept-flake-config --print-build-logs \
+              ".#checks.x86_64-linux.$check" >"$log" 2>&1
+            status=$?
+            grep -v -E 'evaluation warning:|trace: Obsolete option' "$log" || true
+            if [ "$status" -eq 0 ]; then
+              echo "PASS: $check"
+            else
+              echo "FAIL: $check"
+              fail=1
+            fi
+            echo "::endgroup::"
+            # Keep the store within the runner's ~14 GB disk: gc when it gets
+            # tight. The cachix daemon pushes paths as they are built, so this
+            # only reaps paths that were already uploaded.
+            free_kb=$(df --output=avail /nix/store | awk 'NR==2 {print $1}')
+            if [ "$free_kb" -lt 3145728 ]; then
+              nix store gc
+            fi
+          done
+          exit $fail
