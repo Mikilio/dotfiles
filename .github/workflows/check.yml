@@ -1,0 +1,22 @@
+name: checks
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v30
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: cachix/cachix-action@v15
+        with:
+          name: mikilio
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+      - name: Run checks
+        run: nix flake check --print-build-logs
