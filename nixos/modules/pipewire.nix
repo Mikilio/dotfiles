@@ -22,49 +22,16 @@
     jack.enable = true;
     pulse.enable = true;
     extraConfig = {
-      client."high-quality-music" = {
-        "stream.rules" = [
-          {
-            matches = [
-              {
-                "node.name" = "mpv";
-              }
-              {
-                "node.name" = "mpd.Pipewire";
-              }
-            ];
-
-            actions = {
-              update-props = {
-                "resample.quality" = 10;
-                "node.latency" = "2048/48000";
-              };
-            };
-          }
-        ];
+      client."90-resample-quality" = {
+        "stream.properties" = {
+          "resample.quality" = 10;
+        };
       };
     };
     wireplumber = {
       enable = true;
 
       configPackages = [
-        (pkgs.writeTextDir "share/wireplumber/wireplumber.conf.d/50-hdmi-stereo-quality.conf" ''
-          monitor.alsa.rules = [
-            {
-              matches = [
-                {
-                  api.alsa.path = "hdmi-stereo"
-                }
-              ]
-              actions = {
-                update-props = {
-                  api.alsa.period-size = 2048
-                }
-              }
-            }
-          ]
-        '')
-
         (pkgs.writeTextDir "share/wireplumber/wireplumber.conf.d/ldac-for-sony.conf" ''
           monitor.bluez.rules = [
             {

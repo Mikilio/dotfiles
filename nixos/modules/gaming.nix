@@ -1,13 +1,9 @@
 {
-  inputs,
   options,
   lib,
   pkgs,
   ...
 }: {
-  imports = [
-    inputs.nix-gaming.nixosModules.pipewireLowLatency
-  ];
   config =
     {
       programs = {
@@ -30,15 +26,6 @@
               renice = 15;
             };
           };
-        };
-      };
-
-      services = {
-        # see https://github.com/fufexan/nix-gaming/#pipewire-low-latency
-        pipewire.lowLatency = {
-          enable = true;
-          quantum = 32;
-          alsa.enable = false;
         };
       };
 
