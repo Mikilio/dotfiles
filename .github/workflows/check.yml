@@ -19,4 +19,12 @@ jobs:
           name: mikilio
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
       - name: Run checks
-        run: nix flake check --print-build-logs
+        shell: bash
+        run: |
+          set -o pipefail
+          # --accept-flake-config: use the substituters declared in flake.nix
+          # (incl. mikilio.cachix.org) instead of building from source.
+          # Evaluation warnings (e.g. upstream deprecations) are not failures;
+          # filter them out of the log so they can't pollute CI output.
+          nix flake check --accept-flake-config --print-build-logs 2>&1 \
+            | grep -v -E 'evaluation warning:|trace: Obsolete option'
