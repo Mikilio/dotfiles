@@ -28,12 +28,10 @@ evaluate on the pinned inputs and should be fixed or removed:
 
 | Test            | Reason                                                              |
 | --------------- | ------------------------------------------------------------------- |
-| `home-ai`       | references `pkgs.herdr-nvim`, which does not exist in the nixpkgs fork |
 | `home-brave`    | `programs.brave` does not exist in pinned home-manager              |
 | `home-firefox`  | references removed NUR addon `omnivore`                             |
 | `home-hyprpanel`| `hyprland/hyprpanel.nix` is not a module and is not imported        |
 | `home-keepassxc`| fails to evaluate                                                    |
-| `home-media`    | references removed `python3.pkgs.beets-xtractor`                    |
 | `home-private`  | references deleted `assets/`                                        |
 | `home-vivaldi`  | `programs.vivaldi` does not exist in pinned home-manager            |
 
@@ -49,6 +47,9 @@ profiles provide. See `./lib.nix`:
   `null` (UWSM provides it); the config generator needs a real package.
 - `nurAccommodation` — `nixpkgs.overlays = [inputs.nur.overlays.default]` for
   modules referencing `pkgs.nur`.
+- Repo overlay — modules referencing repo-overlay packages (`herdr-nvim`,
+  `beets-xtractor`) import `self.nixosModules.overlays` in the system `modules`
+  (it also pulls in the NUR overlay).
 - `allowUnfree` — for modules pulling unfree firefox addons.
 - `xdgPortal*Accommodation` — `xdg.portal.enable` asserts HM- and
   NixOS-level portal implementations plus `environment.pathsToLink`.
