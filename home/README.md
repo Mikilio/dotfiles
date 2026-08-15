@@ -14,7 +14,6 @@ Name            | Description
 `dunst`         |
 `firefox        |
 `foot`          |
-`games`         |
 `gbar`          |
 `git`           |
 `gpg`           |
