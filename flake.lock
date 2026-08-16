@@ -791,15 +791,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1784913159,
-        "narHash": "sha256-JWq0BfjO4ktpH5USfQNQzdvHpIDT8fSKD5K7LvdMRFs=",
-        "owner": "nix-community",
+        "lastModified": 1786883840,
+        "narHash": "sha256-oAF9TiFkX2AX3Gbh6td5I4hk31Og3a5AC3uTXMghv9I=",
+        "owner": "Mikilio",
         "repo": "home-manager",
-        "rev": "079a3b5d1aa6a719920a51316253b7d6dd22738d",
+        "rev": "76d11990d04ea141105478a75f52236fc794e13b",
         "type": "github"
       },
       "original": {
-        "owner": "nix-community",
+        "owner": "Mikilio",
+        "ref": "herdr-plugins",
         "repo": "home-manager",
         "type": "github"
       }

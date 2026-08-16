@@ -71,7 +71,7 @@
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:Mikilio/home-manager/herdr-plugins";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
