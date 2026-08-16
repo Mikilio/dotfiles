@@ -1,7 +1,6 @@
 {
   pkgs,
   lib,
-  config,
   options,
   ...
 }: {
@@ -76,6 +75,9 @@
 
       herdr = {
         enable = true;
+        plugins."chmarax.herdr-nvim" = {
+          package = pkgs.herdr-nvim;
+        };
         settings = {
           onboarding = false;
 
@@ -147,14 +149,6 @@
           nono
           pi-coding-agent
         ];
-
-        file = {
-          ".config/herdr/plugins/herdr-nvim".source = pkgs.herdr-nvim;
-        };
-
-        activation.herdrPluginLink = lib.hm.dag.entryAfter ["writeBoundary"] ''
-          ${lib.getExe pkgs.herdr} plugin link ${config.home.homeDirectory}/.config/herdr/plugins/herdr-nvim >/dev/null 2>&1 || true
-        '';
       }
       // lib.optionalAttrs (builtins.hasAttr "persistence" options.home)
       {
