@@ -141,24 +141,20 @@ in {
             rev = "9ce76bba554ba022ee622bcf7b04793011728aa2";
             hash = "sha256-szXayf81beA0ti9kx0uQja49+G59Og2bYOze8v+pbik=";
           };
-          bin = pkgs.rustPlatform.buildRustPackage rec {
-            pname = "herdr-nvim-bin";
+        in
+          pkgs.rustPlatform.buildRustPackage {
+            pname = "herdr-nvim";
             version = "0.1.1";
             inherit src;
             cargoLock.lockFile = "${src}/Cargo.lock";
+            postInstall = ''
+              cp -r $src/lua $out/lua
+              cp $src/herdr-plugin.toml $out/
+              mkdir -p $out/herdr
+              cp $src/herdr/run.sh $out/herdr/
+              chmod +x $out/herdr/run.sh
+            '';
           };
-        in
-          pkgs.runCommand "herdr-nvim-plugin"
-          {
-            inherit src bin;
-          } ''
-            mkdir -p $out/bin $out/herdr
-            cp -r $src/lua $out/lua
-            cp $src/herdr-plugin.toml $out/
-            cp $src/herdr/run.sh $out/herdr/
-            chmod +x $out/herdr/run.sh
-            cp $bin/bin/herdr-nvim $out/bin/
-          '';
 
         zen-browser = inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
