@@ -16,6 +16,6 @@ in
     testScript =
       loginScript
       + ''
-        machine.succeed("su - alice -c 'zen --version'")
+        machine.succeed("su - alice -c 'zen-beta --version'")
       '';
   }

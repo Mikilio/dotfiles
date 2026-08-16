@@ -47,6 +47,9 @@ jobs:
       - name: Run checks
         shell: bash
         run: |
+          # GitHub runs bash with -e by default; we want each check reported
+          # independently, so disable errexit for the loop below.
+          set +e
           set -uo pipefail
           fail=0
           for check in ${{ join(matrix.group, ' ') }}; do

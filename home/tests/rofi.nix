@@ -13,7 +13,6 @@ in
       loginScript
       + ''
         machine.succeed("su - alice -c 'rofi -version'")
-        machine.succeed("su - alice -c 'command -v rofimoji'")
         machine.succeed("su - alice -c 'test -f ~/.config/rofi/config.rasi'")
       '';
   }

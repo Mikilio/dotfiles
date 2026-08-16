@@ -12,7 +12,7 @@ in
     testScript =
       loginScript
       + ''
-        machine.succeed("su - alice -c 'command -v neovix'")
+        machine.succeed("su - alice -c 'command -v nvim'")
         machine.succeed("su - alice -c 'test -n \"$EDITOR\"'")
       '';
   }

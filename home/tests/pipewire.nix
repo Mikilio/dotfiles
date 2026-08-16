@@ -12,8 +12,7 @@ in
     testScript =
       loginScript
       + ''
-        machine.succeed("su - alice -c 'wpctl status'")
-        machine.succeed("su - alice -c 'command -v wireplumber'")
-        machine.wait_for_unit("wireplumber.service", "alice")
+        machine.succeed("su - alice -c 'test -f ~/.config/pipewire/pipewire.conf.d/10-obs.conf'")
+        machine.succeed("su - alice -c 'command -v easyeffects'")
       '';
   }

@@ -13,6 +13,6 @@ in
       loginScript
       + ''
         machine.succeed("su - alice -c 'sioyek --version'")
-        machine.succeed("su - alice -c 'test -f ~/.config/sioyek/prefs.config'")
+        machine.succeed("su - alice -c 'test -f ~/.config/sioyek/prefs_user.config'")
       '';
   }

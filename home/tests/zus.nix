@@ -13,6 +13,7 @@ in
     testScript =
       loginScript
       + ''
-        machine.succeed("su - alice -c 'zus --version'")
+        machine.succeed("su - alice -c 'rclone version'")
+        machine.succeed("su - alice -c 'test -f ~/.config/rclone/rclone.conf'")
       '';
   }

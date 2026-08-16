@@ -14,6 +14,6 @@ in
       + ''
         machine.succeed("su - alice -c 'pandoc --version'")
         machine.succeed("su - alice -c 'command -v lualatex'")
-        machine.succeed("su - alice -c 'test -f ~/.config/pandoc/defaults.yaml'")
+        machine.succeed("su - alice -c 'test -f ~/.config/pandoc/dracula.theme'")
       '';
   }

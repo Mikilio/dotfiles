@@ -13,8 +13,8 @@ in
       loginScript
       + ''
         machine.succeed("su - alice -c 'gpg --version'")
-        machine.succeed("su - alice -c 'command -v yubikey-manager'")
+        machine.succeed("su - alice -c 'command -v ykman'")
         machine.succeed("su - alice -c 'command -v age-plugin-yubikey'")
-        machine.wait_for_unit("gpg-agent.service", "alice")
+        machine.wait_for_unit("gpg-agent.socket", "alice")
       '';
   }

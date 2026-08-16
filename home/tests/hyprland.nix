@@ -15,6 +15,6 @@ in
       loginScript
       + ''
         machine.succeed("su - alice -c 'uwsm --version'")
-        machine.succeed("su - alice -c 'test -f ~/.config/hypr/hyprland.conf'")
+        machine.succeed("su - alice -c 'test -f ~/.config/hypr/hyprland.lua'")
       '';
   }

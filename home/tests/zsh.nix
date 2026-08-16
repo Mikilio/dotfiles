@@ -16,6 +16,6 @@ in
       loginScript
       + ''
         machine.succeed("su - alice -c 'zsh --version'")
-        machine.succeed("su - alice -c 'test -f ~/.zshrc'")
+        machine.succeed("su - alice -c 'test -f ~/.config/zsh/.zshrc'")
       '';
   }

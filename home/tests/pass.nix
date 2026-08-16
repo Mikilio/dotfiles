@@ -20,7 +20,7 @@ in
       loginScript
       + ''
         machine.succeed("su - alice -c 'pass --version'")
-        machine.succeed("su - alice -c 'command -v rofi-pass'")
-        machine.succeed("su - alice -c 'command -v pass-otp'")
+        machine.succeed("su - alice -c 'command -v rofi-rbw'")
+        machine.succeed("su - alice -c 'pass otp --help'")
       '';
   }

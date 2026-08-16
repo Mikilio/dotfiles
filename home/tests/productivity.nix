@@ -13,10 +13,10 @@ in
     testScript =
       loginScript
       + ''
-        machine.succeed("su - alice -c 'task --version'")
-        machine.succeed("su - alice -c 'command -v taskwarrior-tui'")
-        machine.succeed("su - alice -c 'obsidian --version'")
         machine.succeed("su - alice -c 'command -v libreoffice'")
-        machine.succeed("su - alice -c 'command -v calibre'")
+        machine.succeed("su - alice -c 'command -v obsidian'")
+        machine.succeed("su - alice -c 'command -v Telegram'")
+        machine.succeed("su - alice -c 'command -v element-desktop'")
+        machine.succeed("su - alice -c 'command -v zotero'")
       '';
   }

@@ -16,7 +16,7 @@ in
         machine.succeed("su - alice -c 'eza --version'")
         machine.succeed("su - alice -c 'fd --version'")
         machine.succeed("su - alice -c 'starship --version'")
-        machine.succeed("su - alice -c 'nushell --version'")
+        machine.succeed("su - alice -c 'nu --version'")
         machine.succeed("su - alice -c 'atuin --version'")
         machine.succeed("su - alice -c 'direnv --version'")
         machine.succeed("su - alice -c 'zoxide --version'")
