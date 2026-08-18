@@ -128,7 +128,7 @@ in {
       };
       lazygit = {
         enable = true;
-        settings.overrideGpg = true;
+        settings.git.overrideGpg = true;
       };
     };
 
