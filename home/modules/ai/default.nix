@@ -64,7 +64,16 @@
       claude-code = {
         enable = true;
         enableMcpIntegration = true;
+        configDir = "${config.xdg.configHome}/claude";
         inherit context skills;
+        settings.hooks.SessionStart = [{
+          matcher = "*";
+          hooks = [{
+            type = "command";
+            command = "$HOME/.config/claude/hooks/herdr-agent-state.sh";
+            timeout = 10;
+          }];
+        }];
       };
 
       opencode = {
@@ -161,6 +170,18 @@
             {
               directory = ".config/herdr";
               mode = "0700";
+            }
+            {
+              directory = ".config/claude/hooks";
+              mode = "0755";
+            }
+            {
+              directory = ".config/opencode/plugins";
+              mode = "0755";
+            }
+            {
+              directory = ".pi/agent/extensions";
+              mode = "0755";
             }
           ];
         };
