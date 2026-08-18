@@ -128,7 +128,7 @@
     # };
 
     quickshell = {
-      url = "git+https://git.outfoxxed.me/quickshell/quickshell";
+      url = "github:quickshell-mirror/quickshell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
