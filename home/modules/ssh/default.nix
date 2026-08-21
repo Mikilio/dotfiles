@@ -84,12 +84,12 @@
     }
     // lib.optionalAttrs (builtins.hasAttr "persistence" options.home)
     {
+      # Persisted as a directory on purpose: a per-file bind mount for
+      # known_hosts makes ssh's link(2)-based host key rotation fail with
+      # "Invalid cross-device link".
       home.persistence."/persistent/storage" = {
-        files = [
-          {
-            file = ".ssh/known_hosts";
-            parentDirectory = {mode = "0700";};
-          }
+        directories = [
+          {directory = ".ssh"; mode = "0700";}
         ];
       };
     };
