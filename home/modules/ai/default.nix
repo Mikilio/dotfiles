@@ -153,6 +153,25 @@
     };
     home =
       {
+        # herdr's hook scripts ship inside the binary, not the store path,
+        # so they can only be installed imperatively — refresh on every
+        # activation.
+        activation.herdrIntegrations = lib.mkIf config.programs.herdr.enable (
+          lib.hm.dag.entryAfter ["writeBoundary"] (
+            let
+              herdrExe = lib.getExe pkgs.herdr;
+              claudeDir = config.home.sessionVariables.CLAUDE_CONFIG_DIR;
+            in ''
+              export CLAUDE_CONFIG_DIR="${claudeDir}"
+              mkdir -p "${claudeDir}" "$HOME/.config/opencode" "$HOME/.pi/agent"
+              for target in pi claude opencode; do
+                if ! ${herdrExe} integration install "$target"; then
+                  echo "herdrIntegrations: warning: $target integration install failed" >&2
+                fi
+              done
+            ''
+          )
+        );
         packages = with pkgs; [
           mgrep
           openspec
