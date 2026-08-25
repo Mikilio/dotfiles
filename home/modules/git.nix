@@ -129,6 +129,7 @@ in {
       lazygit = {
         enable = true;
         settings.git.overrideGpg = true;
+        settings.git.fetchAll = false;
       };
     };
 
