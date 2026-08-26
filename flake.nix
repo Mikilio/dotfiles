@@ -25,7 +25,7 @@
     };
 
   inputs = {
-    nixpkgs.url = "github:Mikilio/nixpkgs/package/rosec";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
     patched.url = "github:NixOS/nixpkgs/9be065038f6f8f10f33634af78ee4d73682f785e";
 
