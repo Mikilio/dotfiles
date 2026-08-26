@@ -40,8 +40,6 @@
       interfaces."podman*".allowedUDPPorts = [53];
     };
 
-    security.unprivilegedUsernsClone = true;
-
     #For TAP to in VMs to work properly
     boot.kernel.sysctl = {
       "net.ipv4.ip_forward" = 1;

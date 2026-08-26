@@ -5,23 +5,17 @@
 # stability. If you experience any stability issues when using the
 # profile, try disabling it. If you report an issue and use this
 # profile, always mention that you do.
-
 {
   config,
   lib,
   pkgs,
   ...
 }:
-
-with lib;
-
-let
+with lib; let
   cfg = config.dotfiles.security.target;
-in
-{
+in {
   config = lib.mkIf (cfg != null) {
-
-    nix.settings.allowed-users = mkDefault [ "@users" ];
+    nix.settings.allowed-users = mkDefault ["@users"];
 
     environment.memoryAllocator.provider = mkDefault "scudo";
     environment.variables.SCUDO_OPTIONS = mkDefault "ZeroContents=1";
@@ -31,9 +25,6 @@ in
     security.protectKernelImage = mkDefault true;
 
     security.forcePageTableIsolation = mkDefault true;
-
-    # This is required by podman to run containers in rootless mode.
-    security.unprivilegedUsernsClone = mkDefault config.virtualisation.docker.rootless.enable;
 
     security.virtualisation.flushL1DataCache = mkDefault "always";
 
