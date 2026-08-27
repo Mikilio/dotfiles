@@ -26,7 +26,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-26.05";
     patched.url = "github:NixOS/nixpkgs/9be065038f6f8f10f33634af78ee4d73682f785e";
 
     flake-parts = {
@@ -128,7 +128,7 @@
     # };
 
     quickshell = {
-      url = "github:quickshell-mirror/quickshell";
+      url = "git+https://git.outfoxxed.me/quickshell/quickshell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -139,7 +139,10 @@
 
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
-      inputs.home-manager.follows = "home-manager";
+      inputs = {
+        home-manager.follows = "home-manager";
+        nixpkgs.follows = "nixpkgs";
+      };
     };
   };
 

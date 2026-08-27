@@ -37,7 +37,6 @@
         scdaemonSettings = {
           inherit (config.programs.gpg) homedir;
           disable-ccid = true;
-          auto-card-retry-count = "1";
         };
       };
     };
