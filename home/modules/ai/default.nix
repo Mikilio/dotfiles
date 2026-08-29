@@ -67,14 +67,18 @@
         enableMcpIntegration = true;
         configDir = "${config.xdg.configHome}/claude";
         inherit context skills;
-        settings.hooks.SessionStart = [{
-          matcher = "*";
-          hooks = [{
-            type = "command";
-            command = "$HOME/.config/claude/hooks/herdr-agent-state.sh";
-            timeout = 10;
-          }];
-        }];
+        settings.hooks.SessionStart = [
+          {
+            matcher = "*";
+            hooks = [
+              {
+                type = "command";
+                command = "$HOME/.config/claude/hooks/herdr-agent-state.sh";
+                timeout = 10;
+              }
+            ];
+          }
+        ];
       };
 
       opencode = {
@@ -163,7 +167,6 @@
               claudeDir = config.home.sessionVariables.CLAUDE_CONFIG_DIR;
             in ''
               export CLAUDE_CONFIG_DIR="${claudeDir}"
-              mkdir -p "${claudeDir}" "$HOME/.config/opencode" "$HOME/.pi/agent"
               for target in pi claude opencode; do
                 if ! ${herdrExe} integration install "$target"; then
                   echo "herdrIntegrations: warning: $target integration install failed" >&2
