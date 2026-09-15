@@ -1,0 +1,18 @@
+/* ==UserStyle==
+@name           Matugen
+@namespace      github.com/openstyles/stylus
+@version        1.0.0
+@description    Base Colors for matugen
+@author         Me
+==/UserStyle== */
+@-moz-document regexp(".*") {
+  :root {
+  <* for name, value in colors *>
+      --{{name}}: {{value.default.hex}};
+  <* endfor *>
+
+  <* for name, value in colors *>
+      --{{name}}_rgb: {{value.default.red}} {{value.default.green}} {{value.default.blue}};
+  <* endfor *>
+  }
+}

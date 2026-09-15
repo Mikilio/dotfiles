@@ -43,6 +43,7 @@
       xdg.configFile = {
         "gtk-3.0/gtk.css".enable = false;
         "gtk-4.0/gtk.css".enable = false;
+        "matugen/templates".source = ./matugen/templates;
       };
 
       services.polkit-gnome.enable = lib.mkForce false;

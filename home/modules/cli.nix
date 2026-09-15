@@ -286,7 +286,7 @@ in {
           edit_mode = "vi";
           buffer_editor = "vi";
         };
-        extraConfig = ''
+        extraConfig = lib.mkAfter ''
           # rmd equivalent
           def rmd [...paths: path] {
             rm -r -f ...$paths
@@ -299,6 +299,9 @@ in {
           if ($dir | path exists) { devenv hook nu | save --force $hook }
           const guard = if ($hook | path exists) { $hook }
           source $guard
+
+          # Keep Ctrl+T (smart autocomplete) but drop television's history picker so atuin owns Ctrl+R
+          $env.config.keybindings = ($env.config.keybindings | where name != "tv_history")
         '';
       };
 
