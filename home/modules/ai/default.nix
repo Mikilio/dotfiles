@@ -167,6 +167,9 @@
               claudeDir = config.home.sessionVariables.CLAUDE_CONFIG_DIR;
             in ''
               export CLAUDE_CONFIG_DIR="${claudeDir}"
+              # herdr >= 0.8 refuses to install an integration unless the
+              # target app's directory already exists.
+              mkdir -p "$HOME/.pi/agent/extensions" "$CLAUDE_CONFIG_DIR" "$HOME/.config/opencode"
               for target in pi claude opencode; do
                 if ! ${herdrExe} integration install "$target"; then
                   echo "herdrIntegrations: warning: $target integration install failed" >&2
