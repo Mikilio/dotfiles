@@ -63,7 +63,7 @@
           yubikey-personalization
           yubikey-manager
           yubico-piv-tool
-          gcr
+          gcr_4
           age-plugin-yubikey
         ];
       }
