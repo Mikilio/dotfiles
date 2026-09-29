@@ -13,15 +13,20 @@
   '';
 
   herdrEnabled = builtins.hasAttr "herdr" options.programs && config.programs.herdr.enable;
+  herdrCommand =
+    if herdrEnabled && config.programs.herdr ? attachCommand
+    then config.programs.herdr.attachCommand
+    else null;
 in {
   programs.ghostty = {
     enable = true;
     settings = {
-      command = lib.mkIf (config.programs.tmux.enable || herdrEnabled) (
+      command =
         if config.programs.tmux.enable
         then tmuxCommand
-        else lib.getExe pkgs.herdr
-      );
+        else if herdrCommand != null
+        then herdrCommand
+        else "";
       window-decoration = false;
       confirm-close-surface = false;
 

@@ -1,0 +1,60 @@
+{
+  inputs,
+  lib,
+  pkgs,
+  self,
+}: let
+  inherit (import ./lib.nix {inherit inputs lib pkgs;}) mkHomeTest loginScript;
+  herdr = lib.getExe pkgs.herdr;
+  userCtl = cmd: "su - alice -c 'XDG_RUNTIME_DIR=/run/user/$(id -u) systemctl --user ${cmd}'";
+in
+  mkHomeTest {
+    name = "home-herdr";
+    module = self.homeModules.herdr;
+    modules = [
+      ({...}: {
+        # 32 GiB of installed memory, 50% of which is 16384M.
+        hardware.facter.reportPath = ./fixtures/facter.json;
+        hardware.facter.enable = lib.mkForce false;
+      })
+    ];
+    homeModules = [
+      ({config, ...}: {
+        programs.herdr.enable = true;
+
+        # Reads the option back out so the test can assert the real path.
+        xdg.configFile."herdr-attach-path".text = config.programs.herdr.attachCommand;
+      })
+    ];
+    testScript =
+      loginScript
+      + ''
+        # The user manager, and every shell it spawns, know the socket.
+        machine.succeed("su - alice -c 'grep -qF HERDR_SOCKET_PATH=/home/alice/.config/herdr/herdr.sock ~/.config/environment.d/10-home-manager.conf'")
+        machine.succeed("${userCtl "show-environment | grep -qF HERDR_SOCKET_PATH=/home/alice/.config/herdr/herdr.sock"}")
+
+        # 50% of 32 GiB, derived from the facter report rather than the board's
+        # max_size of 64 GiB.
+        machine.succeed("su - alice -c 'grep -q MemoryMax=16384M ~/.config/systemd/user/herdr.slice'")
+        machine.succeed("su - alice -c 'grep -q MemoryLow=1G ~/.config/systemd/user/herdr.slice'")
+        machine.succeed("su - alice -c 'grep -q ManagedOOMPreference=avoid ~/.config/systemd/user/herdr.slice'")
+        machine.succeed("su - alice -c 'grep -q ManagedOOMMemoryPressure=kill ~/.config/systemd/user/herdr.slice'")
+
+        # The server runs in the slice, and starts when the user session does.
+        machine.succeed("su - alice -c 'grep -qF Slice=herdr.slice ~/.config/systemd/user/herdr.service'")
+        machine.succeed("su - alice -c 'test -L ~/.config/systemd/user/default.target.wants/herdr.service'")
+
+        # The attach wrapper is a real, executable file.
+        machine.succeed("su - alice -c 'test -x \"$(cat ~/.config/herdr-attach-path)\"'")
+
+        # The unit is up, the user manager applied the slice ceiling, and the
+        # server answers on the socket.
+        machine.succeed("${userCtl "is-active herdr.service"}")
+        machine.succeed("${userCtl "is-enabled herdr.service"}")
+        machine.succeed("${userCtl "show herdr.slice -p MemoryMax | grep -q MemoryMax=17179869184"}")
+        machine.succeed("${userCtl "show herdr.service -p ControlGroup | grep -q herdr.slice"}")
+        machine.succeed(
+            "su - alice -c 'HERDR_SOCKET_PATH=$HOME/.config/herdr/herdr.sock ${herdr} api snapshot'"
+        )
+      '';
+  }

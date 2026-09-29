@@ -17,6 +17,14 @@
         All dependencies you care about are likely in the nix store. Always use the nix CLI to discover them.
         DO NOT search or query the nix store with any unix commands.
 
+        ## Nix resource bounds
+
+        Keep every nix invocation tight — a bounded job set, never the whole machine.
+
+        - Pass `--max-jobs` and `--cores` to anything that fans out (`nix build`, `nix build .#...`, `nix flake check`); wrap the heaviest ones in `systemd-run --user --scope -p CPUQuota=… -p MemoryMax=…`.
+        - Verify a flake one output at a time: `nix eval .#checks.<system>.<name> --apply 'drv: drv.drvPath'` names the check that broke, where `nix flake check` evaluates every output and reports only the first failure. Reserve `nix flake check` for when the user asks for a whole-flake run, and cap it (`--no-build --max-jobs 1 --cores 1`) even then.
+        - A cached evaluation is not a verification. Re-run with `--option eval-cache false` when the claim is "this evaluates", not "this is unchanged" — the cache answers both, and only one of them is the finding.
+
         ## Engineering skills
 
         Matt Pocock's full suite of stable skills is installed verbatim from upstream (engineering + productivity). User-invoked skills are fired by typing `/name` (e.g. `/grill-with-docs`); model-invoked skills (`/tdd`, `/code-review`, `/codebase-design`, `/domain-modeling`, `/diagnosing-bugs`, `/research`, `/prototype`, `/wizard`, `/grilling`) fire automatically when the task fits. `/ask-matt` is the router over the user-invoked skills.
@@ -155,6 +163,7 @@
         };
       };
     };
+
     home =
       {
         # herdr's hook scripts ship inside the binary, not the store path,

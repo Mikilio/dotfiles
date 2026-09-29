@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "system": "x86_64-linux",
+  "virtualisation": "none",
+  "smbios": {
+    "memory_array": [
+      {
+        "max_size": "0x4000000"
+      }
+    ],
+    "memory_device": [
+      {
+        "handle": 35,
+        "manufacturer": "Samsung",
+        "size": 16777216,
+        "form_factor": {
+          "name": "SODIMM"
+        }
+      },
+      {
+        "handle": 36,
+        "manufacturer": "Samsung",
+        "size": 16777216,
+        "form_factor": {
+          "name": "SODIMM"
+        }
+      }
+    ]
+  }
+}
