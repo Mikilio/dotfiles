@@ -46,6 +46,19 @@
       exec ${lib.getExe pkgs.bashInteractive}
     '';
   };
+
+  # A user unit starts before any shell has sourced the profile, so the wrapper
+  # sources it rather than taking the user manager's environment.
+  serveScript = pkgs.writeShellApplication {
+    name = "herdr-serve";
+    runtimeInputs = [cfg.package];
+    text = ''
+      # 2>/dev/null drops the `tty` diagnostic from GPG_TTY=$(tty).
+      # shellcheck disable=SC1091
+      . "${config.home.sessionVariablesPackage}/etc/profile.d/hm-session-vars.sh" 2>/dev/null
+      exec ${lib.getExe cfg.package} server
+    '';
+  };
 in {
   options.programs.herdr = {
     socketPath = mkOption {
@@ -109,12 +122,8 @@ in {
       }
     ];
 
-    # The systemd variant is the one that reaches the user manager, which is
-    # what the server service inherits. Home Manager writes it to
-    # ~/.config/environment.d, so the session generators hand the same value to
-    # every shell and terminal; setting `home.sessionVariables` as well would
-    # collide on that same file.
-    systemd.user.sessionVariables.HERDR_SOCKET_PATH = cfg.socketPath;
+    # The socket path lives in the profile for both shells and the serve wrapper.
+    home.sessionVariables.HERDR_SOCKET_PATH = cfg.socketPath;
 
     # The server binds the socket itself and nothing else is guaranteed to have
     # created the directory before the user manager reaches default.target.
@@ -140,7 +149,7 @@ in {
       Unit.Description = "Herdr session server";
       Service = {
         Type = "exec";
-        ExecStart = "${lib.getExe cfg.package} server";
+        ExecStart = "${serveScript}/bin/herdr-serve";
         Slice = "herdr.slice";
         Restart = "on-failure";
         RestartSec = 1;

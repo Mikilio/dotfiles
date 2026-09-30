@@ -29,9 +29,8 @@ in
     testScript =
       loginScript
       + ''
-        # The user manager, and every shell it spawns, know the socket.
-        machine.succeed("su - alice -c 'grep -qF HERDR_SOCKET_PATH=/home/alice/.config/herdr/herdr.sock ~/.config/environment.d/10-home-manager.conf'")
-        machine.succeed("${userCtl "show-environment | grep -qF HERDR_SOCKET_PATH=/home/alice/.config/herdr/herdr.sock"}")
+        # The socket path is a profile variable, not a user manager one.
+        machine.fail("su - alice -c 'grep -q HERDR_SOCKET_PATH ~/.config/environment.d/10-home-manager.conf'")
 
         # 50% of 32 GiB, derived from the facter report rather than the board's
         # max_size of 64 GiB.
@@ -56,5 +55,13 @@ in
         machine.succeed(
             "su - alice -c 'HERDR_SOCKET_PATH=$HOME/.config/herdr/herdr.sock ${herdr} api snapshot'"
         )
+
+        # The serve wrapper sourced the profile, which the manager's own
+        # environment does not have.
+        machine.fail("${userCtl "show-environment | grep -q HERDR_SOCKET_PATH"}")
+        main_pid = machine.succeed("${userCtl "show herdr.service -p MainPID --value"}").strip()
+        server_env = machine.succeed(f"su - alice -c 'tr \"\\0\" \"\\n\" < /proc/{main_pid}/environ'")
+        assert "__HM_SESS_VARS_SOURCED=1" in server_env
+        assert "HERDR_SOCKET_PATH=/home/alice/.config/herdr/herdr.sock" in server_env
       '';
   }
