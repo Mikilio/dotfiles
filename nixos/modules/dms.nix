@@ -34,7 +34,6 @@
         quickshell.package = inputs.quickshell.packages.${pkgs.stdenv.hostPlatform.system}.quickshell;
         excludePackages = [pkgs.cava];
         plugins = {
-          dankBatteryAlerts.enable = true;
           dockerManager.enable = true;
           commandRunner.enable = true;
           emojiLauncher.enable = true;
