@@ -46,7 +46,7 @@
       gpg-agent = {
         enable = true;
         enableSshSupport = true;
-        pinentry.package = pkgs.pinentry-qt;
+        pinentry.package = pkgs.pinentry-egui;
         grabKeyboardAndMouse = false;
         defaultCacheTtl = 60;
         maxCacheTtl = 120;

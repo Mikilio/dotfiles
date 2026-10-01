@@ -23,7 +23,7 @@
         settings = {
           # identity_url = lib.mkDefault "https://identity.bitwarden.eu";
           base_url = lib.mkDefault "https://vault.mcloud";
-          pinentry = pkgs.pinentry-gnome3;
+          pinentry = pkgs.pinentry-egui;
         };
       };
       password-store = {
