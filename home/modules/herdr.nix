@@ -146,7 +146,12 @@ in {
     };
 
     systemd.user.services.herdr = {
-      Unit.Description = "Herdr session server";
+      Unit = {
+        Description = "Herdr session server";
+        # uwsm exports the compositor environment when graphical-session.target
+        # starts, so the server follows the session in rather than racing it.
+        After = ["graphical-session.target"];
+      };
       Service = {
         Type = "exec";
         ExecStart = "${serveScript}/bin/herdr-serve";
@@ -155,7 +160,7 @@ in {
         RestartSec = 1;
         OOMPolicy = "continue";
       };
-      Install.WantedBy = ["default.target"];
+      Install.WantedBy = ["graphical-session.target"];
     };
   };
 }

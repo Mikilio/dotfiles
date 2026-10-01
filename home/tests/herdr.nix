@@ -24,6 +24,17 @@ in
 
         # Reads the option back out so the test can assert the real path.
         xdg.configFile."herdr-attach-path".text = config.programs.herdr.attachCommand;
+
+        # graphical-session.target refuses a manual start, so the test pulls it
+        # in as a dependency the way a real session does.
+        systemd.user.services.herdr-test-session = {
+          Unit.Wants = ["graphical-session.target"];
+          Service = {
+            Type = "oneshot";
+            ExecStart = "${pkgs.coreutils}/bin/true";
+          };
+          Install.WantedBy = ["default.target"];
+        };
       })
     ];
     testScript =
@@ -41,13 +52,15 @@ in
 
         # The server runs in the slice, and starts when the user session does.
         machine.succeed("su - alice -c 'grep -qF Slice=herdr.slice ~/.config/systemd/user/herdr.service'")
-        machine.succeed("su - alice -c 'test -L ~/.config/systemd/user/default.target.wants/herdr.service'")
+        machine.succeed("su - alice -c 'grep -q After=graphical-session.target ~/.config/systemd/user/herdr.service'")
+        machine.succeed("su - alice -c 'test -L ~/.config/systemd/user/graphical-session.target.wants/herdr.service'")
 
         # The attach wrapper is a real, executable file.
         machine.succeed("su - alice -c 'test -x \"$(cat ~/.config/herdr-attach-path)\"'")
 
         # The unit is up, the user manager applied the slice ceiling, and the
         # server answers on the socket.
+        machine.succeed("${userCtl "start graphical-session.target"}")
         machine.succeed("${userCtl "is-active herdr.service"}")
         machine.succeed("${userCtl "is-enabled herdr.service"}")
         machine.succeed("${userCtl "show herdr.slice -p MemoryMax | grep -q MemoryMax=17179869184"}")
