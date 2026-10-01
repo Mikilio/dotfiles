@@ -60,8 +60,10 @@ in
 
         # The unit is up, the user manager applied the slice ceiling, and the
         # server answers on the socket.
-        machine.succeed("${userCtl "start graphical-session.target"}")
-        machine.succeed("${userCtl "is-active herdr.service"}")
+        # graphical-session.target refuses a manual start, so a helper unit
+        # pulls it in the way a session does.
+        machine.succeed("${userCtl "start herdr-test-session.service"}")
+        machine.wait_for_unit("herdr.service", "alice")
         machine.succeed("${userCtl "is-enabled herdr.service"}")
         machine.succeed("${userCtl "show herdr.slice -p MemoryMax | grep -q MemoryMax=17179869184"}")
         machine.succeed("${userCtl "show herdr.service -p ControlGroup | grep -q herdr.slice"}")
