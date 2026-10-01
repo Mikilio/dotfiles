@@ -46,7 +46,7 @@
       gpg-agent = {
         enable = true;
         enableSshSupport = true;
-        pinentry.package = pkgs.pinentry-gnome3;
+        pinentry.package = pkgs.pinentry-qt;
         grabKeyboardAndMouse = false;
         defaultCacheTtl = 60;
         maxCacheTtl = 120;
