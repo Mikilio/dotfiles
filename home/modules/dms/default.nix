@@ -1,4 +1,5 @@
 {
+  inputs,
   pkgs,
   lib,
   options,
@@ -7,6 +8,7 @@
 }: {
   imports = [
     ./keybinds.nix
+    inputs.dank-pinentry.homeModules.default
   ];
 
   config =
@@ -49,6 +51,14 @@
       services.polkit-gnome.enable = lib.mkForce false;
 
       programs = {
+        # gpg-agent's pinentry-program, so home.modules.gpg must not also set
+        # services.gpg-agent.pinentry.package.
+        dank-pinentry = {
+          enable = true;
+          configureGpgAgent = true;
+          installPlugin = false;
+        };
+
         ghostty.settings.theme = lib.mkIf config.programs.ghostty.enable (lib.mkForce "dankcolors");
         television.settings.ui.theme = lib.mkIf config.programs.television.enable (lib.mkForce "matugen");
         yazi.theme = lib.mkIf config.programs.yazi.enable (lib.mkForce {});
@@ -59,6 +69,17 @@
           packages = with pkgs; [
             papirus-icon-theme
           ];
+
+          # The plugin's DependencyCheck refuses to load without the binary. It
+          # probes `command -v dank-pinentry` first, but dms.service runs with
+          # a read-only store PATH (nixpkgs sets
+          # systemd.user.services.dms.path to []) and does not inherit the
+          # home-manager profile, so PATH never resolves. ~/.local/bin is one
+          # of the three paths it falls back to.
+          file.".local/bin/dank-pinentry" = {
+            source = "${config.programs.dank-pinentry.package}/bin/dank-pinentry";
+            executable = true;
+          };
         }
         // lib.optionalAttrs (builtins.hasAttr "persistence" options.home)
         {

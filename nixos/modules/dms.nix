@@ -40,6 +40,7 @@
           nixPackageRunner.enable = true;
           calculator.enable = true;
           dankGifSearch.enable = true;
+          dankbarPinentry.enable = true;
         };
       };
       dms-greeter = {

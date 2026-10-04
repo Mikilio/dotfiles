@@ -1,4 +1,5 @@
 {
+  inputs,
   pkgs,
   lib,
   options,
@@ -23,7 +24,10 @@
         settings = {
           # identity_url = lib.mkDefault "https://identity.bitwarden.eu";
           base_url = lib.mkDefault "https://vault.mcloud";
-          pinentry = pkgs.pinentry-egui;
+          # Same binary gpg-agent is pointed at, so a vault unlock looks like
+          # the rest of the prompts. rbw spawns it directly, so it needs the
+          # path here rather than going through gpg-agent.
+          pinentry = inputs.dank-pinentry.packages.${pkgs.stdenv.hostPlatform.system}.dank-pinentry;
         };
       };
       password-store = {
