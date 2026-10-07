@@ -57,6 +57,10 @@
           enable = true;
           configureGpgAgent = true;
           installPlugin = false;
+          # auto prefers the terminal whenever one is usable, which draws
+          # gpg prompts as a curses TUI inside the requesting terminal. Draw
+          # them in the DMS widget instead.
+          ui = "dms";
         };
 
         ghostty.settings.theme = lib.mkIf config.programs.ghostty.enable (lib.mkForce "dankcolors");
