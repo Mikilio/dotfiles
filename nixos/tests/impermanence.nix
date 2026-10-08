@@ -56,11 +56,23 @@ in
             assertion = config.services.userborn.enable;
             message = "userborn should be enabled";
           }
+          {
+            assertion = !config.environment.etc.subuid.enable && !config.environment.etc.subgid.enable;
+            message = "subid placeholders must stay out of /etc, they are bind-mount points";
+          }
         ];
       })
     ];
     testScript = ''
       machine.wait_for_unit("multi-user.target")
       machine.succeed("mountpoint /persistent/storage")
+
+      # newuidmap needs these bind-mounted, not symlinked.
+      machine.succeed("mountpoint /etc/subuid")
+      machine.succeed("mountpoint /etc/subgid")
+
+      # Re-activating must not write over the mount points.
+      activation_output = machine.succeed("/run/current-system/activate 2>&1")
+      assert "could not create target" not in activation_output, activation_output
     '';
   }

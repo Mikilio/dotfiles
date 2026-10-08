@@ -3,7 +3,14 @@
   lib,
   config,
   ...
-}: {
+}: let
+  inherit (config.services.userborn) enable static passwordFilesLocation;
+
+  # userborn bind-mounts these into /etc; newuidmap rejects symlinks.
+  subIdFiles = ["subuid" "subgid"];
+
+  subIdFilesOutsideEtc = enable && !static && passwordFilesLocation != "/etc";
+in {
   imports = [inputs.impermanence.nixosModules.impermanence];
 
   config = {
@@ -24,6 +31,29 @@
     services.userborn = {
       enable = true;
       passwordFilesLocation = "/persistent/storage/etc";
+    };
+
+    # rename(2) onto a mount point fails with EBUSY, so keep these out of
+    # the /etc tree and let activation create the mount points instead.
+    environment.etc = lib.mkIf subIdFilesOutsideEtc (
+      lib.genAttrs subIdFiles (_: {enable = false;})
+    );
+
+    # After `etc` (to repair anything setup-etc.pl dropped as obsolete),
+    # but before systemd establishes the binds at boot.
+    system.activationScripts = lib.mkIf subIdFilesOutsideEtc {
+      userborn-subid-mountpoints = {
+        deps = ["etc"];
+        text =
+          lib.concatMapStrings (file: ''
+            if [[ ! -e /etc/${file} && ! -L /etc/${file} ]]; then
+              echo "creating /etc/${file} for userborn..."
+              : > /etc/${file}
+              chmod 0644 /etc/${file}
+            fi
+          '')
+          subIdFiles;
+      };
     };
 
     boot = {
