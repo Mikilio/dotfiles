@@ -14,6 +14,10 @@
   config =
     {
       systemd.user = {
+        sessionVariables = {
+          inherit (config.home.sessionVariables) SSH_ASKPASS SUDO_ASKPASS;
+        };
+
         services = {
           zen-chrome-http-server = {
             Unit.Description = "Simple HTTP Server for ZEN Chrome directory";
@@ -61,6 +65,14 @@
           # gpg prompts as a curses TUI inside the requesting terminal. Draw
           # them in the DMS widget instead.
           ui = "dms";
+          # Install dank-askpass and point sudo -A and ssh at it, so every
+          # password dialog draws in the DMS widget. rosecd reads SSH_ASKPASS
+          # for its own askpass use, so this is how rosec reaches it too.
+          askpass = {
+            enable = true;
+            sudo = true;
+            ssh = true;
+          };
         };
 
         ghostty.settings.theme = lib.mkIf config.programs.ghostty.enable (lib.mkForce "dankcolors");
