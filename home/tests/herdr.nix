@@ -55,6 +55,11 @@ in
         machine.succeed("su - alice -c 'grep -q After=graphical-session.target ~/.config/systemd/user/herdr.service'")
         machine.succeed("su - alice -c 'test -L ~/.config/systemd/user/graphical-session.target.wants/herdr.service'")
 
+        # ExecStart embeds hm-session-vars.sh, so an unrelated session-variable
+        # change rewrites the unit and would otherwise make every rebuild
+        # stop+start the server. keep-old stops sd-switch from doing that.
+        machine.succeed("su - alice -c 'grep -qF X-SwitchMethod=keep-old ~/.config/systemd/user/herdr.service'")
+
         # The attach wrapper is a real, executable file.
         machine.succeed("su - alice -c 'test -x \"$(cat ~/.config/herdr-attach-path)\"'")
 

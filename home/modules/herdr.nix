@@ -151,6 +151,12 @@ in {
         # uwsm exports the compositor environment when graphical-session.target
         # starts, so the server follows the session in rather than racing it.
         After = ["graphical-session.target"];
+        # ExecStart embeds the serve wrapper, which embeds hm-session-vars.sh, so
+        # any change to a session variable rewrites the unit. Without this,
+        # every rebuild stops and starts the server, HUP'ing every pane and
+        # every attached client — which closes every ghostty surface running
+        # herdr-attach and takes the terminal (and the session) with it.
+        X-SwitchMethod = "keep-old";
       };
       Service = {
         Type = "exec";
