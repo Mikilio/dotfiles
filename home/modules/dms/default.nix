@@ -52,6 +52,9 @@
         "matugen/templates".source = ./matugen/templates;
       };
 
+      # .ics files open in Dank Calendar.
+      xdg.mimeApps.defaultApplications."text/calendar" = "com.danklinux.dankcalendar.desktop";
+
       services.polkit-gnome.enable = lib.mkForce false;
 
       programs = {

@@ -31,6 +31,11 @@ in {
         "mail.biff.show_tray_icon_always" = true;
         "mail.minimizeToTray" = true;
         "ldap_2.servers.outlook.dirType" = 3;
+        # Thunderbird is the mail handler; never prompt about it.
+        "mail.shell.checkDefaultClient" = false;
+        # Leave .ics invitations as plain attachments, with no iTIP UI.
+        "calendar.itip.showImipBar" = false;
+        "calendar.itip.newInvitationDisplay" = true;
         "dom.security.unexpected_system_load_telemetry_enabled" = false;
         "network.trr.confirmation_telemetry_enabled" = false;
         "privacy.trackingprotection.origin_telemetry.enabled" = false;
@@ -55,6 +60,8 @@ in {
         };
       };
     };
+
+    xdg.mimeApps.defaultApplications."x-scheme-handler/mailto" = "thunderbird.desktop";
 
     home =
       {
