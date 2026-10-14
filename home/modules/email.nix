@@ -1,4 +1,5 @@
 {
+  config,
   options,
   pkgs,
   inputs,
@@ -22,6 +23,12 @@
   ];
 in {
   config = {
+    warnings = lib.optional (config.accounts.email.accounts == {}) ''
+      Thunderbird is enabled but `accounts.email.accounts` is empty, so it
+      starts with no mailboxes. This is recommended for the full experience —
+      add at least one account in your profile.
+    '';
+
     programs.thunderbird = {
       enable = true;
       package = pkgs.thunderbird;

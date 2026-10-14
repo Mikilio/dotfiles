@@ -10,6 +10,12 @@
     ./rosec.nix
   ];
   config = {
+    warnings = lib.optional (config.programs.rbw.settings.base_url == null) ''
+      No Bitwarden base_url is configured for rbw, so it will fall back to the
+      public bitwarden.com server. Pointing it at your own Vaultwarden is
+      recommended.
+    '';
+
     xdg.configFile."rofi-rbw.rc".text = ''
       selector rofi
       clipboarder wl-copy
@@ -23,7 +29,6 @@
         enable = true;
         settings = {
           # identity_url = lib.mkDefault "https://identity.bitwarden.eu";
-          base_url = lib.mkDefault "https://vault.mcloud";
           # Same binary gpg-agent is pointed at, so a vault unlock looks like
           # the rest of the prompts. rbw spawns it directly, so it needs the
           # path here rather than going through gpg-agent.

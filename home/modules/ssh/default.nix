@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   options,
   lib,
@@ -6,6 +7,14 @@
 }: {
   config =
     {
+      warnings =
+        lib.optional
+        (lib.all (name: name == ".") (builtins.attrNames config.programs.ssh.settings))
+        ''
+          No SSH hosts are configured, so ssh has no aliases to offer. Declaring
+          your hosts in your profile is recommended.
+        '';
+
       programs.ssh = {
         enable = true;
         enableDefaultConfig = false;
@@ -13,67 +22,6 @@
           "~/.lima/*/ssh.config"
         ];
         settings = {
-          uni = {
-            HostName = "lxhalle.in.tum.de";
-            User = "mio";
-            ForwardX11 = true;
-            ForwardAgent = true;
-          };
-          dr01 = {
-            HostName = "176.9.139.62";
-            Port = 54022;
-            User = "mikilio";
-          };
-          dr01-root = {
-            HostName = "176.9.139.62";
-            Port = 54022;
-            User = "root";
-          };
-          dr01-rescue = {
-            HostName = "176.9.139.62";
-            User = "root";
-          };
-          dr01wg = {
-            HostName = "10.10.0.1";
-            Port = 54022;
-            User = "mikilio";
-          };
-          dr01unlock = {
-            HostName = "176.9.139.62";
-            User = "root";
-            Port = 2222;
-          };
-          dr02unlock = {
-            HostName = "88.99.164.24";
-            User = "root";
-            Port = 2222;
-          };
-          dr02-root = {
-            HostName = "88.99.164.24";
-            Port = 54022;
-            User = "root";
-          };
-          dr02-rescue = {
-            HostName = "88.99.164.24";
-            User = "root";
-            Port = 22;
-          };
-          dr02 = {
-            HostName = "88.99.164.24";
-            Port = 54022;
-            User = "mikilio";
-          };
-          testbed = {
-            HostName = "testbed.acn.net.cit.tum.de";
-            User = "s12333";
-            Port = 10022;
-          };
-          "*.testbed" = {
-            HostName = "%h.acn.net.cit.tum.de";
-            User = "root";
-            ProxyJump = "testbed";
-            CheckHostIP = false;
-          };
           "." = {
             HashKnownHosts = true;
             XAuthLocation = "${pkgs.xauth}/bin/xauth";
@@ -89,7 +37,10 @@
       # "Invalid cross-device link".
       home.persistence."/persistent/storage" = {
         directories = [
-          {directory = ".ssh"; mode = "0700";}
+          {
+            directory = ".ssh";
+            mode = "0700";
+          }
         ];
       };
     };

@@ -12,6 +12,14 @@ in
     homeModules = [
       self.homeModules.xdg
       xdgPortalHmAccommodation
+      # The git home module asserts a commit identity is set; the profile
+      # normally provides it.
+      {
+        programs.git.settings.user = {
+          name = "Alice";
+          email = "alice@example.com";
+        };
+      }
     ];
     modules = [xdgPortalSystemAccommodation];
     testScript =

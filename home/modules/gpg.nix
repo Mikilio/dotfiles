@@ -4,8 +4,23 @@
   pkgs,
   lib,
   ...
-}: {
+}: let
+  hasPublicKeys = config.programs.gpg.publicKeys != [];
+  hasSshKeys = config.services.gpg-agent.sshKeys != null && config.services.gpg-agent.sshKeys != [];
+in {
   config = {
+    warnings =
+      lib.optional (!hasPublicKeys) ''
+        `programs.gpg.publicKeys` is empty, so no public keys are imported into
+        the keyring. This is recommended for the full experience — import at
+        least the keys you use for signing and encryption.
+      ''
+      ++ lib.optional (!hasSshKeys) ''
+        `services.gpg-agent.sshKeys` is not set, so the GPG agent exposes no
+        SSH keys even though `enableSshSupport` is on. This is recommended for
+        the full experience — list the keygrips you want to use over SSH.
+      '';
+
     programs = {
       gpg = {
         enable = true;

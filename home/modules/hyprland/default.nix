@@ -50,9 +50,6 @@ in {
           Set at least two entries in your profile, e.g.:
 
             i18n.inputMethod.fcitx5.imList = ["keyboard-us" "keyboard-ua" "mozc"];
-
-          See the template in `home/modules/private.nix` or the example in
-          `mcloud/users/mikilio/common.nix`.
         '';
       }
     ];

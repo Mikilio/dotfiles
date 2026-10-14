@@ -1,6 +1,7 @@
 {
   inputs,
   config,
+  options,
   lib,
   pkgs,
   ...
@@ -10,6 +11,14 @@ in {
   config = {
     assertions = [
       (hm.assertions.assertPlatform "services.keepassxc" pkgs platforms.linux)
+      {
+        assertion = options ? sops && config.sops.secrets ? keepassxc;
+        message = ''
+          The keepassxc module needs a sops secret called `keepassxc` holding
+          your database password, because it is fed to keepassxc at startup via
+          `sops.secrets.keepassxc.path`.
+        '';
+      }
     ];
 
     systemd.user.services.keepassxc = {

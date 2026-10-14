@@ -38,6 +38,17 @@
         defaultApplications = associations;
       };
 
+      warnings =
+        lib.optional (
+          config.programs.zen-browser.profiles.default.containers
+          == {}
+          && config.programs.zen-browser.profiles.default.spaces == {}
+        ) ''
+          No Zen Browser containers or spaces are declared, so the browser starts
+          with a stock setup. Declaring them in your profile is recommended for
+          the full experience.
+        '';
+
       programs.zen-browser = {
         enable = true;
         setAsDefaultBrowser = true;
@@ -85,28 +96,7 @@
           };
         };
 
-        languagePacks = [
-          "en-GB"
-          "de"
-          "pt-BR"
-          "ja"
-        ];
-        globalExtensions = with pkgs.nur.repos.rycee.firefox-addons; [
-          ublock-origin
-          stylus
-          languagetool
-          wikiwand-wikipedia-modernized
-          zotero-connector
-          return-youtube-dislikes
-          clearurls
-          steam-database
-          decentraleyes
-          metamask
-          bitwarden
-          wappalyzer
-        ];
-
-        profiles.default = rec {
+        profiles.default = {
           settings = {
             "zen.workspaces.continue-where-left-off" = true;
             "zen.workspaces.natural-scroll" = true;
@@ -118,132 +108,6 @@
             "zen.view.compact.toolbar-flash-popup" = true;
             "zen.view.compact.enable-at-startup" = true;
             "zen.welcome-screen.seen" = true;
-          };
-
-          # pinsForce = true;
-          # pins = {
-          #   "GitHub" = {
-          #     id = "5d7b65e6-dabc-414e-b464-cb7c5f9193b7";
-          #     workspace = spaces."R&D".id;
-          #     url = "https://github.com";
-          #     position = 101;
-          #     isEssential = true;
-          #   };
-          #   "Hetzner" = {
-          #     id = "11ab3ddb-3208-435a-b61e-93a901156cc6";
-          #     workspace = spaces."R&D".id;
-          #     url = "https://console.hetzner.cloud/";
-          #     position = 102;
-          #     isEssential = true;
-          #   };
-          #   "Tailscale" = {
-          #     id = "567c89f0-4c8e-4891-ac33-e50006bd1c63";
-          #     workspace = spaces."R&D".id;
-          #     url = "https://login.tailscale.com/admin/machines";
-          #     position = 103;
-          #     isEssential = true;
-          #   };
-          #   "Odoo.sh" = {
-          #     id = "7f888b49-f584-4332-8042-0e8f03c8e4a7";
-          #     workspace = spaces."Work".id;
-          #     url = "https://www.odoo.sh/";
-          #     position = 104;
-          #     isEssential = true;
-          #   };
-          # };
-
-          containersForce = true;
-          containers = {
-            WorkAccounts = {
-              color = "blue";
-              icon = "briefcase";
-              id = 1;
-            };
-            Shopping = {
-              color = "yellow";
-              icon = "dollar";
-              id = 2;
-            };
-            Fun = {
-              color = "purple";
-              icon = "chill";
-              id = 3;
-            };
-          };
-
-          spacesForce = true;
-          spaces = let
-            base00 = {
-              blue = 46;
-              green = 30;
-              red = 30;
-            };
-          in {
-            "Work" = {
-              id = "e829a486-6281-4a23-9f08-1069bf04a2dd";
-              icon = "💼";
-              position = 1000;
-              container = containers."WorkAccounts".id;
-              theme = {
-                type = "gradient";
-                colors = [
-                  base00
-                  {
-                    blue = 250;
-                    green = 180;
-                    red = 137;
-                  }
-                  {
-                    blue = 175;
-                    green = 226;
-                    red = 249;
-                  }
-                ];
-              };
-            };
-            "R&D" = {
-              id = "128b19b1-be0a-4fbc-9f84-3f6871f123ac";
-              icon = "🔬";
-              position = 1001;
-              theme = {
-                type = "gradient";
-                colors = [
-                  base00
-                  {
-                    blue = 247;
-                    green = 166;
-                    red = 203;
-                  }
-                  {
-                    blue = 250;
-                    green = 180;
-                    red = 137;
-                  }
-                ];
-              };
-            };
-            "Fun" = {
-              id = "e3abe55c-b699-4d22-a349-e6902bb44741";
-              icon = "🎉";
-              position = 1002;
-              container = containers."Fun".id;
-              theme = {
-                type = "gradient";
-                colors = [
-                  base00
-                  {
-                    blue = 161;
-                    green = 227;
-                    red = 166;
-                  }
-                  {
-                    blue = 168;
-                    green = 139;
-                    red = 243;
-                  }
-                ];
-              };
-            };
           };
 
           search = {

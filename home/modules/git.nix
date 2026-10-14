@@ -6,8 +6,47 @@
   ...
 }:
 with lib; let
+  gitUser = config.programs.git.iniContent.user or {};
+  hasIdentity = (gitUser.name or null) != null && (gitUser.email or null) != null;
+  hasSigningKey = config.programs.git.signing.key != null;
+  hasGhHosts = config.programs.gh.hosts != {};
 in {
   config = {
+    assertions = [
+      {
+        assertion = hasIdentity;
+        message = ''
+          `programs.git` is enabled but no commit identity is configured, so
+          Git cannot create commits. Set both the name and the email in your
+          profile, either on the new `settings` option or the legacy
+          `userName`/`userEmail` pair:
+
+            programs.git.settings.user = {
+              name = "Jane Doe";
+              email = "jane@example.com";
+            };
+        '';
+      }
+    ];
+
+    warnings =
+      optional (!hasSigningKey) ''
+        `programs.git.signing.key` is not set, so commits and tags will not be
+        signed. This is recommended for the full experience:
+
+          programs.git.signing = {
+            key = "0C159FAB320FEB35!";
+            signByDefault = true;
+          };
+      ''
+      ++ optional (!hasGhHosts) ''
+        `programs.gh.hosts` is empty, so `gh` has no host configured and you
+        will have to authenticate it by hand. This is recommended for the full
+        experience:
+
+          programs.gh.hosts."github.com".user = "your-username";
+      '';
+
     programs = {
       git = {
         enable = true;

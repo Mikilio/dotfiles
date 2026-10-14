@@ -6,9 +6,9 @@
   ...
 }: {
   warnings = lib.optional (!(options ? sops && config.sops.secrets ? weather)) ''
-    The HyprPanel weather widget will not get an API key.
-    You may not get all the goodies — define the `weather` sops secret to
-    enable it (see the template in `home/modules/private.nix`).
+    The HyprPanel weather widget will not get an API key, so it may not show
+    all the details. Define a `weather` sops secret in your profile to enable
+    it.
   '';
 
   programs.hyprpanel = {
