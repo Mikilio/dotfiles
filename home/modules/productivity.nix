@@ -75,10 +75,7 @@ in {
           element-desktop
 
           #science
-          zotero
-
-          #ftp
-          # filezilla
+          # zotero
         ];
       }
       // lib.optionalAttrs (builtins.hasAttr "persistence" options.home)
