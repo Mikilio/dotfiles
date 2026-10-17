@@ -42,6 +42,7 @@ in {
             "teams"
             "slack.*"
             "zoom.*"
+            "easyroam-connect-desktop"
             "wappalyzer"
             "obsidian"
             "teamviewer.*"
