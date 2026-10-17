@@ -56,9 +56,6 @@ in {
           #mumble
           # mumble
 
-          #Calendar
-          morgen
-
           #10xorganization
           obsidian
           pdfannots2json

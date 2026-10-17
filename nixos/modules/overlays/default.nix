@@ -42,7 +42,6 @@ in {
             "teams"
             "slack.*"
             "zoom.*"
-            "morgen"
             "wappalyzer"
             "obsidian"
             "teamviewer.*"
