@@ -81,7 +81,6 @@ in {
           yubikey-manager
           yubico-piv-tool
           gcr_4
-          age-plugin-yubikey
         ];
       }
       // lib.optionalAttrs (builtins.hasAttr "persistence" options.home)
