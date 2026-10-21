@@ -5,6 +5,15 @@
 }: {
   environment.pathsToLink = ["/share/xdg-desktop-portal" "/share/applications"];
 
+  # Hardware video decode for the Wayland desktop: VA-API via Mesa, with the
+  # VDPAU/VA-API bridge so older players can still use it. nixos-facter only
+  # enables hardware.graphics (the driver); these userspace libs are ours.
+  hardware.graphics.extraPackages = with pkgs; [
+    libva
+    libva-vdpau-driver
+    libvdpau-va-gl
+  ];
+
   # for hyprlock
   security.pam.services.hyprlock = {};
 

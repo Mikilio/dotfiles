@@ -24,7 +24,8 @@ in {
     '';
 
     services = {
-      fprintd.enable = true;
+      # services.fprintd.enable is set by nixos-facter from the hardware
+      # report.
       rosec = {
         enable = true;
         pam.enable = true;

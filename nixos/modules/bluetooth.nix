@@ -6,8 +6,9 @@
 }: {
   config =
     {
+      # hardware.bluetooth.enable is set by nixos-facter from the hardware
+      # report.
       hardware.bluetooth = {
-        enable = true;
         package = pkgs.bluez5-experimental;
         settings = {
           # make Xbox Series X controller work

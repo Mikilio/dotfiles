@@ -33,6 +33,8 @@ in {
         nftables.enable = true;
       };
 
+      hardware.facter.detected.dhcp.enable = false;
+
       services = {
         #Allow ssh from self
         openssh = {

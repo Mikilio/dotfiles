@@ -5,7 +5,37 @@
   options,
   config,
   ...
-}: {
+}: let
+  # Home-manager validates ~/.config/ghostty/config at activation by running
+  # `ghostty +validate-config`. That config sets `theme = dankcolors`, but DMS
+  # only generates themes/dankcolors at runtime (dms matugen), so at activation
+  # the theme does not exist and validation fails, breaking
+  # home-manager-*.service on every boot before DMS has ever run.
+  #
+  # ghostty has no fallback-theme option and treats a missing named theme as a
+  # hard error, so the only way to tolerate it without also home-managing the
+  # theme (which would clobber DMS's live colors on every activation) is to
+  # validate everything except the missing-theme error. ghostty prints that
+  # error as `theme "<name>" not found, tried path "..."`, which never starts
+  # with the config path, whereas real errors are `<config>:<line>:...`.
+  ghosttyConfigValidator = pkgs.writeShellApplication {
+    name = "ghostty-config-validate-allow-missing-theme";
+    runtimeInputs = [config.programs.ghostty.package];
+    text = ''
+      config_file="$1"
+      if output=$(ghostty +validate-config --config-file="$config_file" 2>&1); then
+        exit 0
+      fi
+
+      # Drop missing-theme notices; anything left is a real validation error.
+      real_errors=$(printf '%s\n' "$output" | grep -v '^theme ".*" not found, tried path ' || true)
+      if [ -n "$real_errors" ]; then
+        printf '%s\n' "$real_errors" >&2
+        exit 1
+      fi
+    '';
+  };
+in {
   imports = [
     ./keybinds.nix
     inputs.dank-pinentry.homeModules.default
@@ -46,11 +76,17 @@
         require("dms.windowrules")
       '';
 
-      xdg.configFile = {
-        "gtk-3.0/gtk.css".enable = false;
-        "gtk-4.0/gtk.css".enable = false;
-        "matugen/templates".source = ./matugen/templates;
-      };
+      xdg.configFile =
+        {
+          "gtk-3.0/gtk.css".enable = false;
+          "gtk-4.0/gtk.css".enable = false;
+          "matugen/templates".source = ./matugen/templates;
+        }
+        // lib.optionalAttrs config.programs.ghostty.enable {
+          # Tolerate `theme = dankcolors` not existing yet (DMS generates it at
+          # runtime); see ghosttyConfigValidator above.
+          "ghostty/config".onChange = lib.mkForce "${lib.getExe ghosttyConfigValidator} ${config.xdg.configHome}/ghostty/config";
+        };
 
       # .ics files open in Dank Calendar.
       xdg.mimeApps.defaultApplications."text/calendar" = "com.danklinux.dankcalendar.desktop";

@@ -5,6 +5,10 @@
 }: {
   config =
     {
+      # Early KMS: load the amdgpu driver in stage 1 so Plymouth and the LUKS
+      # prompt render at native resolution. nixos-facter does not do this.
+      hardware.amdgpu.initrd.enable = true;
+
       boot = {
         plymouth = {
           enable = true;

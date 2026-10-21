@@ -30,6 +30,8 @@
       pcscd.enable = true;
       #secure usb devices
       fwupd.enable = true;
+      #discard unused blocks on the SSD
+      fstrim.enable = true;
     };
 
     programs = {

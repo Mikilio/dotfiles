@@ -29,6 +29,10 @@ in
             assertion = config.security.pam.services ? hyprlock;
             message = "hyprlock pam service should be configured";
           }
+          {
+            assertion = builtins.any (p: (p.pname or "") == "libva") config.hardware.graphics.extraPackages;
+            message = "VA-API libs should be present for hardware video decode";
+          }
         ];
       })
     ];

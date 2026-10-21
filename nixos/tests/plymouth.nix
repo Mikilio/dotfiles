@@ -27,6 +27,10 @@ in
             assertion = config.boot.initrd.systemd.enable;
             message = "initrd systemd should be enabled";
           }
+          {
+            assertion = config.hardware.amdgpu.initrd.enable;
+            message = "amdgpu early KMS should be enabled for native-resolution boot";
+          }
         ];
       })
     ];
