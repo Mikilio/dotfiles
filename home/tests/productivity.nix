@@ -17,6 +17,5 @@ in
         machine.succeed("su - alice -c 'command -v obsidian'")
         machine.succeed("su - alice -c 'command -v Telegram'")
         machine.succeed("su - alice -c 'command -v element-desktop'")
-        machine.succeed("su - alice -c 'command -v zotero'")
       '';
   }

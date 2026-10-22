@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "system": "x86_64-linux",
+  "virtualisation": "none",
+  "smbios": {
+    "memory_array": [
+      {
+        "max_size": "0x4000000"
+      }
+    ],
+    "memory_device": [
+      {
+        "handle": 35,
+        "manufacturer": "Samsung",
+        "size": 16777216,
+        "form_factor": {
+          "name": "SODIMM"
+        }
+      },
+      {
+        "handle": 36,
+        "manufacturer": "Samsung",
+        "size": 16777216,
+        "form_factor": {
+          "name": "SODIMM"
+        }
+      }
+    ]
+  },
+  "hardware": {
+    "bluetooth": [
+      {
+        "bus_type": {
+          "hex": "0003",
+          "name": "USB",
+          "value": 3
+        },
+        "class_list": [
+          "Bluetooth"
+        ],
+        "device": {
+          "hex": "223c",
+          "name": "MT7921 Bluetooth",
+          "value": 8764
+        },
+        "model": "MT7921 Bluetooth",
+        "vendor": {
+          "hex": "0e8d",
+          "name": "MediaTek, Inc.",
+          "value": 3725
+        }
+      }
+    ],
+    "fingerprint": [
+      {
+        "bus_type": {
+          "hex": "0003",
+          "name": "USB",
+          "value": 3
+        },
+        "class_list": [
+          "Fingerprint"
+        ],
+        "device": {
+          "hex": "0c82",
+          "name": "Fingerprint Reader",
+          "value": 3202
+        },
+        "model": "ELAN:ARM-M4",
+        "vendor": {
+          "hex": "04f3",
+          "name": "ELAN Microelectronics",
+          "value": 1267
+        }
+      }
+    ]
+  }
+}
