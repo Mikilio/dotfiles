@@ -14,7 +14,7 @@ in
     modules = [
       ({...}: {
         # 32 GiB of installed memory, 50% of which is 16384M.
-        hardware.facter.reportPath = ./fixtures/facter.json;
+        hardware.facter.reportPath = ../../fixtures/facter.json;
         hardware.facter.enable = lib.mkForce false;
       })
     ];

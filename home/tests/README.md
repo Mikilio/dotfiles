@@ -53,3 +53,9 @@ profiles provide. See `./lib.nix`:
 - `allowUnfree` — for modules pulling unfree firefox addons.
 - `xdgPortal*Accommodation` — `xdg.portal.enable` asserts HM- and
   NixOS-level portal implementations plus `environment.pathsToLink`.
+- Facter report — `fixtures/facter.json` is a hardware report for the machine
+  (its memory size, USB Bluetooth radio and ELAN fingerprint reader), holding
+  only the fields the tests read. Tests that need facter detection point
+  `hardware.facter.reportPath` at it and force
+  `hardware.facter.enable = false`, so the report is read but no hardware
+  support is derived for the VM.
