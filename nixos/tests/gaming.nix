@@ -10,10 +10,17 @@ in
     name = "gaming";
     module = self.nixosModules.gaming;
     modules = [
+      self.nixosModules.home-manager
+      self.nixosModules.overlays
       {
         nixpkgs.config.allowUnfreePredicate = _: true;
+        home-manager.users.gamer.home.stateVersion = "26.05";
       }
-      ({config, ...}: {
+      ({
+        config,
+        pkgs,
+        ...
+      }: {
         assertions = [
           {
             assertion = config.programs.steam.enable;
@@ -39,11 +46,19 @@ in
             assertion = config.hardware.steam-hardware.enable;
             message = "steam-hardware should be enabled";
           }
+          {
+            assertion = builtins.any (p: (p.pname or p.name or "") == "fjordlauncher" || builtins.match ".*fjordlauncher.*" (p.pname or p.name or "") != null) (config.home-manager.users.gamer.home.packages or []);
+            message = "fjordlauncher should be installed for gaming user";
+          }
         ];
       })
     ];
     testScript = ''
       machine.wait_for_unit("multi-user.target")
       machine.succeed("id gamer")
+      machine.succeed("command -v steam")
+      machine.succeed("command -v gamemoded")
+      machine.succeed("command -v gamescope")
+      machine.succeed("su - gamer -c 'command -v fjordlauncher'")
     '';
   }
