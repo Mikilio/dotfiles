@@ -11,7 +11,7 @@ in {
     programs = {
       zsh = {
         enable = true;
-        enableAutosuggestions = true;
+        autosuggestion.enable = true;
         autocd = true;
         dirHashes = {
           dl = "$HOME/etc/download";
@@ -22,13 +22,13 @@ in {
           vids = "$HOME/media/videos/";
           nixpkgs = "$HOME/dev/nixpkgs";
         };
-        dotDir = ".config/zsh";
+        dotDir = "${config.xdg.configHome}/zsh";
         history = {
           expireDuplicatesFirst = true;
           path = "${config.xdg.dataHome}/zsh_history";
         };
 
-        initExtra = ''
+        initContent = ''
           # search history based on what's typed in the prompt
           autoload -U history-search-end
           zle -N history-beginning-search-backward-end history-search-end
