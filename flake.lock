@@ -296,7 +296,7 @@
         "type": "github"
       }
     },
-    "dms": {
+    "dux": {
       "inputs": {
         "dank-qml-common": "dank-qml-common_3",
         "flake-compat": "flake-compat_2",
@@ -318,7 +318,7 @@
         "type": "github"
       }
     },
-    "dms-plugin-registry": {
+    "dux-plugin-registry": {
       "inputs": {
         "nixpkgs": [
           "nixpkgs"
@@ -1394,8 +1394,8 @@
         "dank-pinentry": "dank-pinentry",
         "dcal": "dcal",
         "devenv": "devenv",
-        "dms": "dms",
-        "dms-plugin-registry": "dms-plugin-registry",
+        "dux": "dux",
+        "dux-plugin-registry": "dux-plugin-registry",
         "elephant": "elephant",
         "fjordlauncher": "fjordlauncher",
         "flake-parts": "flake-parts_2",

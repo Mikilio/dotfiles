@@ -7,14 +7,14 @@
   inherit (import ./lib.nix {inherit inputs lib pkgs;}) mkTest;
 in
   mkTest {
-    name = "dms";
-    module = self.nixosModules.dms;
+    name = "dux";
+    module = self.nixosModules.dux;
     modules = [
       ({config, ...}: {
         assertions = [
           {
-            assertion = config.programs.dms-shell.enable;
-            message = "dms-shell should be enabled";
+            assertion = config.programs.dux-shell.enable;
+            message = "dux-shell should be enabled";
           }
           {
             assertion = config.programs.dank-calendar.enable;
@@ -25,12 +25,12 @@ in
             message = "dsearch should be enabled";
           }
           {
-            assertion = config.programs.dms-greeter.enable;
-            message = "dms-greeter should be enabled";
+            assertion = config.programs.dux-greeter.enable;
+            message = "dux-greeter should be enabled";
           }
           {
-            assertion = config.programs.dms-greeter.compositor.name == "hyprland";
-            message = "dms-greeter should use hyprland";
+            assertion = config.programs.dux-greeter.compositor.name == "hyprland";
+            message = "dux-greeter should use hyprland";
           }
         ];
       })

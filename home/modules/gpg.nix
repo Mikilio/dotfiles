@@ -61,9 +61,6 @@ in {
       gpg-agent = {
         enable = true;
         enableSshSupport = true;
-        # pinentry-program is written by programs.dank-pinentry
-        # (configureGpgAgent) in home/modules/dms. Setting pinentry.package
-        # here as well would emit the key twice.
         grabKeyboardAndMouse = false;
         defaultCacheTtl = 60;
         maxCacheTtl = 120;

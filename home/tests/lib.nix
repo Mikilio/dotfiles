@@ -39,7 +39,7 @@
   };
 
   # The hyprland home module asserts i18n.inputMethod.fcitx5.imList has at
-  # least two entries; any test importing hyprland (directly or via dms/anyrun/
+  # least two entries; any test importing hyprland (directly or via dux/anyrun/
   # walker) must provide it.
   hyprlandAccommodation = {
     i18n.inputMethod.fcitx5.imList = ["keyboard-us" "keyboard-ua"];

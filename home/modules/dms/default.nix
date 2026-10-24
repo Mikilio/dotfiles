@@ -7,14 +7,14 @@
   ...
 }: let
   # Home-manager validates ~/.config/ghostty/config at activation by running
-  # `ghostty +validate-config`. That config sets `theme = dankcolors`, but DMS
-  # only generates themes/dankcolors at runtime (dms matugen), so at activation
+  # `ghostty +validate-config`. That config sets `theme = dankcolors`, but dux
+  # only generates themes/dankcolors at runtime (dux matugen), so at activation
   # the theme does not exist and validation fails, breaking
-  # home-manager-*.service on every boot before DMS has ever run.
+  # home-manager-*.service on every boot before dux has ever run.
   #
   # ghostty has no fallback-theme option and treats a missing named theme as a
   # hard error, so the only way to tolerate it without also home-managing the
-  # theme (which would clobber DMS's live colors on every activation) is to
+  # theme (which would clobber dux's live colors on every activation) is to
   # validate everything except the missing-theme error. ghostty prints that
   # error as `theme "<name>" not found, tried path "..."`, which never starts
   # with the config path, whereas real errors are `<config>:<line>:...`.
@@ -68,12 +68,12 @@ in {
       };
 
       wayland.windowManager.hyprland.extraConfig = ''
-        require("dms.colors")
-        require("dms.outputs")
-        require("dms.layout")
-        require("dms.cursor")
-        require("dms.binds-user")
-        require("dms.windowrules")
+        require("dux.colors")
+        require("dux.outputs")
+        require("dux.layout")
+        require("dux.cursor")
+        require("dux.binds-user")
+        require("dux.windowrules")
       '';
 
       xdg.configFile =
@@ -83,7 +83,7 @@ in {
           "matugen/templates".source = ./matugen/templates;
         }
         // lib.optionalAttrs config.programs.ghostty.enable {
-          # Tolerate `theme = dankcolors` not existing yet (DMS generates it at
+          # Tolerate `theme = dankcolors` not existing yet (dux generates it at
           # runtime); see ghosttyConfigValidator above.
           "ghostty/config".onChange = lib.mkForce "${lib.getExe ghosttyConfigValidator} ${config.xdg.configHome}/ghostty/config";
         };
@@ -102,10 +102,10 @@ in {
           installPlugin = false;
           # auto prefers the terminal whenever one is usable, which draws
           # gpg prompts as a curses TUI inside the requesting terminal. Draw
-          # them in the DMS widget instead.
-          ui = "dms";
+          # them in the dux widget instead.
+          ui = "dux";
           # Install dank-askpass and point sudo -A and ssh at it, so every
-          # password dialog draws in the DMS widget. rosecd reads SSH_ASKPASS
+          # password dialog draws in the dux widget. rosecd reads SSH_ASKPASS
           # for its own askpass use, so this is how rosec reaches it too.
           askpass = {
             enable = true;
@@ -126,9 +126,9 @@ in {
           ];
 
           # The plugin's DependencyCheck refuses to load without the binary. It
-          # probes `command -v dank-pinentry` first, but dms.service runs with
+          # probes `command -v dank-pinentry` first, but dux.service runs with
           # a read-only store PATH (nixpkgs sets
-          # systemd.user.services.dms.path to []) and does not inherit the
+          # systemd.user.services.dux.path to []) and does not inherit the
           # home-manager profile, so PATH never resolves. ~/.local/bin is one
           # of the three paths it falls back to.
           file.".local/bin/dank-pinentry" = {
@@ -140,7 +140,7 @@ in {
         {
           persistence = {
             "/persistent/cache".directories = [
-              ".config/hypr/dms"
+              ".config/hypr/dux"
             ];
             "/persistent/storage".directories = [
               ".config/matugen"

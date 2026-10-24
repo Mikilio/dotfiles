@@ -81,31 +81,31 @@ in {
 
           # application launchers
           (mkBind "SUPER + T" ''hl.dsp.exec_cmd("ghostty")'')
-          (mkBind "SUPER + space" ''hl.dsp.exec_cmd("dms ipc call spotlight toggle")'')
-          (mkBind "ALT + space" ''hl.dsp.exec_cmd("dms ipc call spotlight-bar toggle")'')
-          (mkBind "SUPER + V" ''hl.dsp.exec_cmd("dms ipc call clipboard toggle")'')
-          (mkBind "SUPER + comma" ''hl.dsp.exec_cmd("dms ipc call settings focusOrToggle")'')
-          (mkBind "SUPER + N" ''hl.dsp.exec_cmd("dms ipc call notifications toggle")'')
-          (mkBind "SUPER + SHIFT + N" ''hl.dsp.exec_cmd("dms ipc call notepad toggle")'')
-          (mkBind "SUPER + Y" ''hl.dsp.exec_cmd("dms ipc call dankdash wallpaper")'')
-          (mkBind "SUPER + TAB" ''hl.dsp.exec_cmd("dms ipc call hypr toggleOverview")'')
-          (mkBind "SUPER + X" ''hl.dsp.exec_cmd("dms ipc call powermenu toggle")'')
+          (mkBind "SUPER + space" ''hl.dsp.exec_cmd("dux ipc call spotlight toggle")'')
+          (mkBind "ALT + space" ''hl.dsp.exec_cmd("dux ipc call spotlight-bar toggle")'')
+          (mkBind "SUPER + V" ''hl.dsp.exec_cmd("dux ipc call clipboard toggle")'')
+          (mkBind "SUPER + comma" ''hl.dsp.exec_cmd("dux ipc call settings focusOrToggle")'')
+          (mkBind "SUPER + N" ''hl.dsp.exec_cmd("dux ipc call notifications toggle")'')
+          (mkBind "SUPER + SHIFT + N" ''hl.dsp.exec_cmd("dux ipc call notepad toggle")'')
+          (mkBind "SUPER + Y" ''hl.dsp.exec_cmd("dux ipc call dankdash wallpaper")'')
+          (mkBind "SUPER + TAB" ''hl.dsp.exec_cmd("dux ipc call hypr toggleOverview")'')
+          (mkBind "SUPER + X" ''hl.dsp.exec_cmd("dux ipc call powermenu toggle")'')
 
           # cheat sheet
-          (mkBind "SUPER + SHIFT + Slash" ''hl.dsp.exec_cmd("dms ipc call keybinds toggle hyprland")'')
+          (mkBind "SUPER + SHIFT + Slash" ''hl.dsp.exec_cmd("dux ipc call keybinds toggle hyprland")'')
 
           # security
-          (mkBind "SUPER + ALT + L" ''hl.dsp.exec_cmd("dms ipc call lock lock")'')
+          (mkBind "SUPER + ALT + L" ''hl.dsp.exec_cmd("dux ipc call lock lock")'')
           (mkBind "SUPER + SHIFT + E" "hl.dsp.exit()")
 
           # window management
           (mkBind "SUPER + W" "hl.dsp.group.toggle()")
-          (mkBind "SUPER + SHIFT + W" ''hl.dsp.exec_cmd("dms ipc call window-rules toggle")'')
+          (mkBind "SUPER + SHIFT + W" ''hl.dsp.exec_cmd("dux ipc call window-rules toggle")'')
 
           # screenshots
-          (mkBind "Print" ''hl.dsp.exec_cmd("dms screenshot")'')
-          (mkBind "CTRL + Print" ''hl.dsp.exec_cmd("dms screenshot full")'')
-          (mkBind "ALT + Print" ''hl.dsp.exec_cmd("dms screenshot window")'')
+          (mkBind "Print" ''hl.dsp.exec_cmd("dux screenshot")'')
+          (mkBind "CTRL + Print" ''hl.dsp.exec_cmd("dux screenshot full")'')
+          (mkBind "ALT + Print" ''hl.dsp.exec_cmd("dux screenshot window")'')
 
           # display profiles & dpms
           (mkBind "SUPER + SHIFT + P" "hl.dsp.dpms({ action = \"toggle\" })")
@@ -114,48 +114,48 @@ in {
         ++ (map (i: mkBind "SUPER + SHIFT + ${toString i}" "hl.dsp.window.move({ workspace = ${toString i} })") arr)
         ++ [
           # bindle (locked + repeating)
-          (mkBind' "XF86MonBrightnessUp" ''hl.dsp.exec_cmd("dms ipc call brightness increment 5 \"\"")'' {
+          (mkBind' "XF86MonBrightnessUp" ''hl.dsp.exec_cmd("dux ipc call brightness increment 5 \"\"")'' {
             locked = true;
             repeating = true;
           })
-          (mkBind' "XF86MonBrightnessDown" ''hl.dsp.exec_cmd("dms ipc call brightness decrement 5 \"\"")'' {
+          (mkBind' "XF86MonBrightnessDown" ''hl.dsp.exec_cmd("dux ipc call brightness decrement 5 \"\"")'' {
             locked = true;
             repeating = true;
           })
-          (mkBind' "XF86AudioRaiseVolume" ''hl.dsp.exec_cmd("dms ipc call audio increment 3")'' {
+          (mkBind' "XF86AudioRaiseVolume" ''hl.dsp.exec_cmd("dux ipc call audio increment 3")'' {
             locked = true;
             repeating = true;
           })
-          (mkBind' "XF86AudioLowerVolume" ''hl.dsp.exec_cmd("dms ipc call audio decrement 3")'' {
+          (mkBind' "XF86AudioLowerVolume" ''hl.dsp.exec_cmd("dux ipc call audio decrement 3")'' {
             locked = true;
             repeating = true;
           })
 
           # bindl (locked)
-          (mkBind' "XF86AudioPlay" ''hl.dsp.exec_cmd("dms ipc call mpris playPause")'' {
+          (mkBind' "XF86AudioPlay" ''hl.dsp.exec_cmd("dux ipc call mpris playPause")'' {
             locked = true;
           })
-          (mkBind' "XF86AudioPause" ''hl.dsp.exec_cmd("dms ipc call mpris playPause")'' {
+          (mkBind' "XF86AudioPause" ''hl.dsp.exec_cmd("dux ipc call mpris playPause")'' {
             locked = true;
           })
-          (mkBind' "XF86AudioPrev" ''hl.dsp.exec_cmd("dms ipc call mpris previous")'' {
+          (mkBind' "XF86AudioPrev" ''hl.dsp.exec_cmd("dux ipc call mpris previous")'' {
             locked = true;
           })
-          (mkBind' "XF86AudioNext" ''hl.dsp.exec_cmd("dms ipc call mpris next")'' {
+          (mkBind' "XF86AudioNext" ''hl.dsp.exec_cmd("dux ipc call mpris next")'' {
             locked = true;
           })
-          (mkBind' "CTRL + XF86AudioRaiseVolume" ''hl.dsp.exec_cmd("dms ipc call mpris increment 3")'' {
-            locked = true;
-            repeating = true;
-          })
-          (mkBind' "CTRL + XF86AudioLowerVolume" ''hl.dsp.exec_cmd("dms ipc call mpris decrement 3")'' {
+          (mkBind' "CTRL + XF86AudioRaiseVolume" ''hl.dsp.exec_cmd("dux ipc call mpris increment 3")'' {
             locked = true;
             repeating = true;
           })
-          (mkBind' "XF86AudioMute" ''hl.dsp.exec_cmd("dms ipc call audio mute")'' {
+          (mkBind' "CTRL + XF86AudioLowerVolume" ''hl.dsp.exec_cmd("dux ipc call mpris decrement 3")'' {
+            locked = true;
+            repeating = true;
+          })
+          (mkBind' "XF86AudioMute" ''hl.dsp.exec_cmd("dux ipc call audio mute")'' {
             locked = true;
           })
-          (mkBind' "XF86AudioMicMute" ''hl.dsp.exec_cmd("dms ipc call audio micmute")'' {
+          (mkBind' "XF86AudioMicMute" ''hl.dsp.exec_cmd("dux ipc call audio micmute")'' {
             locked = true;
           })
 

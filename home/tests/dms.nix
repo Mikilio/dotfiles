@@ -7,8 +7,8 @@
   inherit (import ./lib.nix {inherit inputs lib pkgs;}) mkHomeTest loginScript hyprlandAccommodation hyprlandPackageAccommodation xdgPortalSystemAccommodation;
 in
   mkHomeTest {
-    name = "home-dms";
-    module = self.homeModules.dms;
+    name = "home-dux";
+    module = self.homeModules.dux;
     modules = [xdgPortalSystemAccommodation];
     homeModules = [
       self.homeModules.hyprland

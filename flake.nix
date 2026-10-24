@@ -43,7 +43,7 @@
 
     devenv.url = "github:cachix/devenv";
 
-    dms = {
+    dux = {
       url = "github:AvengeMedia/DankMaterialShell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -63,7 +63,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    dms-plugin-registry = {
+    dux-plugin-registry = {
       url = "github:AvengeMedia/dms-plugin-registry";
       inputs.nixpkgs.follows = "nixpkgs";
     };

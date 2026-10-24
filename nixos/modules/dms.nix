@@ -7,7 +7,7 @@
   ...
 }: {
   imports = [
-    inputs.dms-plugin-registry.nixosModules.default
+    inputs.dux-plugin-registry.nixosModules.default
     inputs.dcal.nixosModules.default
     inputs.dank-greeter.nixosModules.default
   ];
@@ -28,9 +28,9 @@
         enable = true;
         systemd.enable = true;
       };
-      dms-shell = {
+      dux-shell = {
         enable = true;
-        package = inputs.dms.packages.${pkgs.stdenv.hostPlatform.system}.default;
+        package = inputs.dux.packages.${pkgs.stdenv.hostPlatform.system}.default;
         quickshell.package = inputs.quickshell.packages.${pkgs.stdenv.hostPlatform.system}.quickshell;
         excludePackages = [pkgs.cava];
         plugins = {
@@ -43,7 +43,7 @@
           dankbarPinentry.enable = true;
         };
       };
-      dms-greeter = {
+      dux-greeter = {
         enable = true;
         compositor.name = "hyprland";
         # Sync your user's DankMaterialShell theme with the greeter. You'll probably want this

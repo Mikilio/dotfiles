@@ -22,7 +22,7 @@ in
             message = "hyprland should use UWSM";
           }
           {
-            assertion = config.services.displayManager.dms-greeter.compositor.name == "hyprland";
+            assertion = config.services.displayManager.dux-greeter.compositor.name == "hyprland";
             message = "display manager greeter should use hyprland";
           }
           {
