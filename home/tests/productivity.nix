@@ -9,7 +9,7 @@ in
   mkHomeTest {
     name = "home-productivity";
     module = self.homeModules.productivity;
-    modules = [allowUnfree];
+    modules = [self.nixosModules.overlays];
     testScript =
       loginScript
       + ''

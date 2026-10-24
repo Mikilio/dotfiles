@@ -26,6 +26,8 @@ in {
       permittedInsecurePackages = [
         #user spoofing
         "jitsi-meet-1.0.8792"
+        #for zotero
+        "firefox-esr-140-bin-unwrapped-140.17.0esr"
         #EOL but used
         "electron-40.10.5"
       ];
@@ -33,7 +35,6 @@ in {
         builtins.elem [] (
           map (re: builtins.match re (lib.getName pkg)) [
             # The Wall of Shame
-            "spotify"
             "steam.*"
             "languagetool*"
             "tampermonkey*"
@@ -48,6 +49,7 @@ in {
             "teamviewer.*"
             "claude-code"
             "libfprint-2-tod1-goodix"
+            "firefox-esr-140-bin-unwrapped"
           ]
         );
       allowUnsupportedSystem = true;

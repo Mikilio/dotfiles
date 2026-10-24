@@ -72,7 +72,7 @@ in {
           element-desktop
 
           #science
-          # zotero
+          zotero
         ];
       }
       // lib.optionalAttrs (builtins.hasAttr "persistence" options.home)
