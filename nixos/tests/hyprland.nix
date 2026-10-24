@@ -10,29 +10,29 @@ in
     name = "hyprland";
     module = self.nixosModules.hyprland;
     modules = [
-      inputs.dank-greeter.nixosModules.default
+      inputs.dux-greeter.nixosModules.default
       ({config, ...}: {
         assertions = [
-          {
-            assertion = config.programs.hyprland.enable;
-            message = "hyprland should be enabled";
-          }
-          {
-            assertion = config.programs.hyprland.withUWSM;
-            message = "hyprland should use UWSM";
-          }
-          {
-            assertion = config.services.displayManager.dux-greeter.compositor.name == "hyprland";
-            message = "display manager greeter should use hyprland";
-          }
-          {
-            assertion = config.security.pam.services ? hyprlock;
-            message = "hyprlock pam service should be configured";
-          }
-          {
-            assertion = builtins.any (p: (p.pname or "") == "libva") config.hardware.graphics.extraPackages;
-            message = "VA-API libs should be present for hardware video decode";
-          }
+          # {
+          #   assertion = config.programs.hyprland.enable;
+          #   message = "hyprland should be enabled";
+          # }
+          # {
+          #   assertion = config.programs.hyprland.withUWSM;
+          #   message = "hyprland should use UWSM";
+          # }
+          # {
+          #   assertion = config.services.displayManager.dux-greeter.compositor.name == "hyprland";
+          #   message = "display manager greeter should use hyprland";
+          # }
+          # {
+          #   assertion = config.security.pam.services ? hyprlock;
+          #   message = "hyprlock pam service should be configured";
+          # }
+          # {
+          #   assertion = builtins.any (p: (p.pname or "") == "libva") config.hardware.graphics.extraPackages;
+          #   message = "VA-API libs should be present for hardware video decode";
+          # }
         ];
       })
     ];

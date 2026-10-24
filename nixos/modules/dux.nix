@@ -1,15 +1,12 @@
 {
   inputs,
   pkgs,
-  lib,
-  options,
   config,
   ...
 }: {
   imports = [
     inputs.dux-plugin-registry.nixosModules.default
     inputs.dcal.nixosModules.default
-    inputs.dank-greeter.nixosModules.default
   ];
 
   config = {
@@ -20,7 +17,7 @@
     ];
 
     programs = {
-      dsearch = {
+      dux-search = {
         enable = true;
         systemd.enable = true;
       };
@@ -43,14 +40,11 @@
           dankbarPinentry.enable = true;
         };
       };
-      dux-greeter = {
-        enable = true;
-        compositor.name = "hyprland";
-        # Sync your user's DankMaterialShell theme with the greeter. You'll probably want this
-        configHome = lib.mkIf (options?home-manager && (builtins.attrNames config.home-manager.users) != []) "/home/${
-          builtins.head (builtins.attrNames config.home-manager.users)
-        }";
-      };
+    };
+
+    services.displayManager.dux-greeter = {
+      enable = true;
+      package = inputs.dux-greeter.packages.${pkgs.stdenv.hostPlatform.system}.default;
     };
   };
 }

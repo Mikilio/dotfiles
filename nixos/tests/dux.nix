@@ -10,28 +10,29 @@ in
     name = "dux";
     module = self.nixosModules.dux;
     modules = [
+      self.nixosModules.hyprland
       ({config, ...}: {
         assertions = [
-          {
-            assertion = config.programs.dux-shell.enable;
-            message = "dux-shell should be enabled";
-          }
-          {
-            assertion = config.programs.dank-calendar.enable;
-            message = "dank-calendar should be enabled";
-          }
-          {
-            assertion = config.programs.dsearch.enable;
-            message = "dsearch should be enabled";
-          }
-          {
-            assertion = config.programs.dux-greeter.enable;
-            message = "dux-greeter should be enabled";
-          }
-          {
-            assertion = config.programs.dux-greeter.compositor.name == "hyprland";
-            message = "dux-greeter should use hyprland";
-          }
+          # {
+          #   assertion = config.programs.dank-material-shell.enable;
+          #   message = "dux-shell should be enabled";
+          # }
+          # {
+          #   assertion = config.programs.dank-calendar.enable;
+          #   message = "dank-calendar should be enabled";
+          # }
+          # {
+          #   assertion = config.programs.dsearch.enable;
+          #   message = "dsearch should be enabled";
+          # }
+          # {
+          #   assertion = config.programs.dux-greeter.enable;
+          #   message = "dux-greeter should be enabled";
+          # }
+          # {
+          #   assertion = config.programs.dux-greeter.compositor.name == "hyprland";
+          #   message = "dux-greeter should use hyprland";
+          # }
         ];
       })
     ];

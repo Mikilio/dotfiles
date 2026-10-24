@@ -159,27 +159,6 @@
         "type": "github"
       }
     },
-    "dank-greeter": {
-      "inputs": {
-        "dank-qml-common": "dank-qml-common",
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1792874115,
-        "narHash": "sha256-DVarBpQgKDmHtY/RU1qB0+yFr+NyN7J76uTqMR+PnNY=",
-        "owner": "AvengeMedia",
-        "repo": "dank-greeter",
-        "rev": "a3e0257af4df252ed5a74d9e5ebe1b017971fbca",
-        "type": "github"
-      },
-      "original": {
-        "owner": "AvengeMedia",
-        "repo": "dank-greeter",
-        "type": "github"
-      }
-    },
     "dank-pinentry": {
       "inputs": {
         "flake-utils": "flake-utils_2",
@@ -251,7 +230,7 @@
     },
     "dcal": {
       "inputs": {
-        "dank-qml-common": "dank-qml-common_2",
+        "dank-qml-common": "dank-qml-common",
         "nixpkgs": [
           "nixpkgs"
         ]
@@ -259,14 +238,14 @@
       "locked": {
         "lastModified": 1792831832,
         "narHash": "sha256-obzSUNSrxmvtI6JnjuW7a1OUTiJZ730DMSwvs3mBNKA=",
-        "owner": "AvengeMedia",
-        "repo": "dankcalendar",
+        "owner": "duxlabs-dev",
+        "repo": "dux-calendar",
         "rev": "050dbb3c85b59a8adf10bb4bd9bc6c4de58a9957",
         "type": "github"
       },
       "original": {
-        "owner": "AvengeMedia",
-        "repo": "dankcalendar",
+        "owner": "duxlabs-dev",
+        "repo": "dux-calendar",
         "type": "github"
       }
     },
@@ -298,23 +277,44 @@
     },
     "dux": {
       "inputs": {
-        "dank-qml-common": "dank-qml-common_3",
+        "dank-qml-common": "dank-qml-common_2",
         "flake-compat": "flake-compat_2",
         "nixpkgs": [
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1792874118,
-        "narHash": "sha256-YWVIcmm/e+qzaL3YZRTzHKc5WdVJ1vZGQjBT1YPUxzY=",
-        "owner": "AvengeMedia",
-        "repo": "DankMaterialShell",
-        "rev": "20bcf8559b10f30f3ad9c169cfecbe86a22f1b63",
+        "lastModified": 1792916281,
+        "narHash": "sha256-GOualyzWzPpBQeD6wl9G3DOnXeCUOr9E/FZz7b+4qLc=",
+        "owner": "duxlabs-dev",
+        "repo": "dux-shell",
+        "rev": "6d65f304e58377258975bfb22a31faffed3789c3",
         "type": "github"
       },
       "original": {
-        "owner": "AvengeMedia",
-        "repo": "DankMaterialShell",
+        "owner": "duxlabs-dev",
+        "repo": "dux-shell",
+        "type": "github"
+      }
+    },
+    "dux-greeter": {
+      "inputs": {
+        "dank-qml-common": "dank-qml-common_3",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1792916684,
+        "narHash": "sha256-0Hfww32ATWlBNUrKtiq1T81HZOp7ttRJsmSjKnQym94=",
+        "owner": "duxlabs-dev",
+        "repo": "dux-greeter",
+        "rev": "f7f14eb752a3a5a84b7bb1f71526ee763667f13e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "duxlabs-dev",
+        "repo": "dux-greeter",
         "type": "github"
       }
     },
@@ -325,16 +325,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1792847535,
-        "narHash": "sha256-XXzhm2nFKB9VhVPoL1pLwWZ/41gdm6f558krvCsHDeY=",
-        "owner": "AvengeMedia",
-        "repo": "dms-plugin-registry",
-        "rev": "7cc53b0fa6bfc05d9bdf6f9fccf9f6314818357e",
+        "lastModified": 1792895078,
+        "narHash": "sha256-GInOfCKf01qodyr5Ea4/T/UN40qwRzQuDdAGpDsvJKo=",
+        "owner": "duxlabs-dev",
+        "repo": "dux-plugin-registry",
+        "rev": "51669fbf1b1dd6f623ba226df69984fe53037d22",
         "type": "github"
       },
       "original": {
-        "owner": "AvengeMedia",
-        "repo": "dms-plugin-registry",
+        "owner": "duxlabs-dev",
+        "repo": "dux-plugin-registry",
         "type": "github"
       }
     },
@@ -742,11 +742,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1790500375,
-        "narHash": "sha256-XN3sDtn8TU9hAc9xqZ+SqRB/HHm2wjxM6aSWYLJU+oo=",
+        "lastModified": 1791909798,
+        "narHash": "sha256-VAhpCOmrun/KXimYfR8NM88bciKCui7CqHHhThSzgag=",
         "owner": "cachix",
         "repo": "git-hooks.nix",
-        "rev": "a0e4241b51206fbcbf52fd322eb5f0cd80f153c4",
+        "rev": "1ba1dbfe28738c9a71c266be6efa5b89e75491a9",
         "type": "github"
       },
       "original": {
@@ -965,11 +965,11 @@
         "nixpkgs": "nixpkgs_6"
       },
       "locked": {
-        "lastModified": 1792814551,
-        "narHash": "sha256-HS1flMED9AFUgCNG6AX0NppRLotTdVX1jGuLsgM/Q2A=",
+        "lastModified": 1792901103,
+        "narHash": "sha256-VbsfLbMg3zXKHCqxIeH5QKrybsHV0poTVWTs3vmkSJE=",
         "owner": "fufexan",
         "repo": "nix-gaming",
-        "rev": "2b027ac8c57e1ea2db14f9f6bb1b350aea562bd8",
+        "rev": "9e7de3651cda3b67fd43d16b5b584bee174c1597",
         "type": "github"
       },
       "original": {
@@ -1187,11 +1187,11 @@
     },
     "nixpkgs_6": {
       "locked": {
-        "lastModified": 1791487292,
-        "narHash": "sha256-tqM7xDEsaeK1p6VvRygeZ9LkQRpUUkbRT02BHv6hnTM=",
+        "lastModified": 1792812153,
+        "narHash": "sha256-T2+XBfNbf9pecLUWS4+RtuVNZ3W8K5taG5QdV71mWlk=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "8edc0c72e3a38faf5434e40d1f19431125fe4b30",
+        "rev": "674a2028661e550a97400c1cc992b9cca9a668a1",
         "type": "github"
       },
       "original": {
@@ -1275,11 +1275,11 @@
         "nixpkgs": "nixpkgs_8"
       },
       "locked": {
-        "lastModified": 1792873617,
-        "narHash": "sha256-OdJiiOV10rgE6fYHcL32wk2pdNB5lyKaC59YfrcUdtY=",
+        "lastModified": 1792918016,
+        "narHash": "sha256-JPAVqoV02DyXkfT8DaU6oFpQTqqhbSzoHoPBKBLQ0LM=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "711607051dc873399f74c029853449160d2274a6",
+        "rev": "d8d3956c79e063193c7c0d435681bad06329339c",
         "type": "github"
       },
       "original": {
@@ -1390,11 +1390,11 @@
     "root": {
       "inputs": {
         "anyrun-rbw": "anyrun-rbw",
-        "dank-greeter": "dank-greeter",
         "dank-pinentry": "dank-pinentry",
         "dcal": "dcal",
         "devenv": "devenv",
         "dux": "dux",
+        "dux-greeter": "dux-greeter",
         "dux-plugin-registry": "dux-plugin-registry",
         "elephant": "elephant",
         "fjordlauncher": "fjordlauncher",

@@ -103,7 +103,7 @@ in {
           # auto prefers the terminal whenever one is usable, which draws
           # gpg prompts as a curses TUI inside the requesting terminal. Draw
           # them in the dux widget instead.
-          ui = "dux";
+          ui = "dms";
           # Install dank-askpass and point sudo -A and ssh at it, so every
           # password dialog draws in the dux widget. rosecd reads SSH_ASKPASS
           # for its own askpass use, so this is how rosec reaches it too.
@@ -140,11 +140,12 @@ in {
         {
           persistence = {
             "/persistent/cache".directories = [
+              ".config/hypr/dms"
               ".config/hypr/dux"
             ];
             "/persistent/storage".directories = [
               ".config/matugen"
-              ".config/DankMaterialShell"
+              ".config/dms"
               ".local/share/dankcal"
             ];
           };

@@ -1,5 +1,7 @@
 {
+  lib,
   pkgs,
+  options,
   config,
   ...
 }: {
@@ -27,13 +29,16 @@
         compositor = {
           name = "hyprland";
           customConfig = ''
-            env = dux_RUN_GREETER,1
+            env = DMS_RUN_GREETER,1
 
             misc {
                 disable_hyprland_logo = true
             }
           '';
         };
+        configHome = lib.mkIf (options?home-manager && (builtins.attrNames config.home-manager.users) != []) "/home/${
+          builtins.head (builtins.attrNames config.home-manager.users)
+        }";
       };
     };
   };

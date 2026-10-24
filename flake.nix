@@ -44,7 +44,7 @@
     devenv.url = "github:cachix/devenv";
 
     dux = {
-      url = "github:AvengeMedia/DankMaterialShell";
+      url = "github:duxlabs-dev/dux-shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -53,18 +53,18 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    dank-greeter = {
-      url = "github:AvengeMedia/dank-greeter";
+    dux-greeter = {
+      url = "github:duxlabs-dev/dux-greeter";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     dcal = {
-      url = "github:AvengeMedia/dankcalendar";
+      url = "github:duxlabs-dev/dux-calendar";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     dux-plugin-registry = {
-      url = "github:AvengeMedia/dms-plugin-registry";
+      url = "github:duxlabs-dev/dux-plugin-registry";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
