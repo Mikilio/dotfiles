@@ -1,6 +1,8 @@
 {
   inputs,
+  lib,
   pkgs,
+  options,
   config,
   ...
 }: {
@@ -9,42 +11,57 @@
     inputs.dcal.nixosModules.default
   ];
 
-  config = {
-    nixpkgs.overlays = [
-      (final: prev: {
-        dcal = config.programs.dank-calendar.package;
-      })
-    ];
+  config =
+    {
+      nixpkgs.overlays = [
+        (final: prev: {
+          dcal = config.programs.dank-calendar.package;
+        })
+      ];
 
-    programs = {
-      dux-search = {
-        enable = true;
-        systemd.enable = true;
+      programs = {
+        dux-search = {
+          enable = true;
+          systemd.enable = true;
+        };
+        dank-calendar = {
+          enable = true;
+          systemd.enable = true;
+        };
+        dux-shell = {
+          enable = true;
+          package = inputs.dux.packages.${pkgs.stdenv.hostPlatform.system}.default;
+          quickshell.package = inputs.quickshell.packages.${pkgs.stdenv.hostPlatform.system}.quickshell;
+          excludePackages = [pkgs.cava];
+          plugins = {
+            dockerManager.enable = true;
+            commandRunner.enable = true;
+            emojiLauncher.enable = true;
+            nixPackageRunner.enable = true;
+            calculator.enable = true;
+            dankGifSearch.enable = true;
+            dankbarPinentry.enable = true;
+          };
+        };
       };
-      dank-calendar = {
+
+      services.displayManager.dux-greeter = {
         enable = true;
-        systemd.enable = true;
+        package = inputs.dux-greeter.packages.${pkgs.stdenv.hostPlatform.system}.default;
       };
-      dux-shell = {
-        enable = true;
-        package = inputs.dux.packages.${pkgs.stdenv.hostPlatform.system}.default;
-        quickshell.package = inputs.quickshell.packages.${pkgs.stdenv.hostPlatform.system}.quickshell;
-        excludePackages = [pkgs.cava];
-        plugins = {
-          dockerManager.enable = true;
-          commandRunner.enable = true;
-          emojiLauncher.enable = true;
-          nixPackageRunner.enable = true;
-          calculator.enable = true;
-          dankGifSearch.enable = true;
-          dankbarPinentry.enable = true;
+    }
+    // lib.optionalAttrs (options.environment?persistence)
+    {
+      environment.persistence = {
+        "/persistent/cache" = {
+          directories = [
+            {
+              directory = "/var/lib/dms-greeter";
+              user = "dms-greeter";
+              group = "dms-greeter";
+            }
+          ];
         };
       };
     };
-
-    services.displayManager.dux-greeter = {
-      enable = true;
-      package = inputs.dux-greeter.packages.${pkgs.stdenv.hostPlatform.system}.default;
-    };
-  };
 }
