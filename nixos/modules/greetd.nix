@@ -54,19 +54,9 @@ in {
           "/persistent/storage" = {
             directories = [
               {
-                directory = "/var/lib/regreet";
-                user = "greeter";
-                group = "greeter";
-              }
-              {
                 directory = "/var/lib/fprint";
                 mode = "0700";
               }
-            ];
-          };
-          "/persistent/cache" = {
-            directories = [
-              "/var/cache/regreet"
             ];
           };
           "/persistent/volatile" = {
