@@ -68,12 +68,12 @@ in {
       };
 
       wayland.windowManager.hyprland.extraConfig = ''
-        require("dux.colors")
-        require("dux.outputs")
-        require("dux.layout")
-        require("dux.cursor")
-        require("dux.binds-user")
-        require("dux.windowrules")
+        require("dms.colors")
+        require("dms.outputs")
+        require("dms.layout")
+        require("dms.cursor")
+        require("dms.binds-user")
+        require("dms.windowrules")
       '';
 
       xdg.configFile =
@@ -100,13 +100,7 @@ in {
           enable = true;
           configureGpgAgent = true;
           installPlugin = false;
-          # auto prefers the terminal whenever one is usable, which draws
-          # gpg prompts as a curses TUI inside the requesting terminal. Draw
-          # them in the dux widget instead.
           ui = "dms";
-          # Install dank-askpass and point sudo -A and ssh at it, so every
-          # password dialog draws in the dux widget. rosecd reads SSH_ASKPASS
-          # for its own askpass use, so this is how rosec reaches it too.
           askpass = {
             enable = true;
             sudo = true;
